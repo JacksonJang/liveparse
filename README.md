@@ -1,6 +1,6 @@
 # LiveParse
 
-LiveParse is a local-first JSON parser UI benchmarked against `json.parser.online.fr`.
+LiveParse is a local-first JSON parser for validating, formatting, and exploring JSON directly in the browser.
 
 ## Features
 
@@ -33,7 +33,7 @@ Preview serves the built app at `http://localhost:4173`.
 
 ## Cloudflare Tunnel deployment for liveparse.com
 
-The request said “cloudfront tunnel local”; this project is configured for the local-tunnel product that matches that workflow: Cloudflare Tunnel (`cloudflared`).
+This project can be served from a local machine through Cloudflare Tunnel (`cloudflared`).
 
 Prerequisites:
 

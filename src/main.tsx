@@ -3,57 +3,68 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 type Layout = 'side' | 'top';
+type OutputMode = 'text' | 'tree';
 type JsonValue = null | string | number | boolean | JsonValue[] | { [key: string]: JsonValue };
 
 type ParseResult =
-  | { ok: true; value: unknown; kind: string; pretty: string; minified: string; stats: string }
+  | { ok: true; value: unknown; kind: string; pretty: string; minified: string; stats: JsonStats }
   | { ok: false; error: string; line?: number; column?: number; position?: number };
 
+type JsonStats = {
+  objects: number;
+  arrays: number;
+  properties: number;
+  strings: number;
+  numbers: number;
+  booleans: number;
+  nulls: number;
+  characters: number;
+};
+
 const samples: Record<string, string> = {
-  'Jackson Jang Profile': JSON.stringify({
+  'Developer profile': JSON.stringify({
     name: 'Jackson Jang',
     project: 'LiveParse',
     role: 'Creator',
     github: 'https://github.com/JacksonJang',
-    domain: 'liveparse.com',
-    focus: ['JSON parsing', 'developer tools', 'local-first web apps'],
-    active: true
+    website: 'https://liveparse.com',
+    focus: ['JSON parser', 'developer tools', 'local-first web apps'],
+    privacy: 'JSON is parsed in the browser only',
+    active: true,
   }, null, 2),
-  'LiveParse Project': JSON.stringify({
-    repository: 'https://github.com/JacksonJang/liveparse',
-    owner: 'Jackson Jang',
+  'API response': JSON.stringify({
+    status: 'success',
+    tool: 'LiveParse',
+    generatedAt: '2026-07-02T05:54:00Z',
+    data: {
+      localFirst: true,
+      features: ['validate JSON', 'format JSON', 'tree view', 'minify JSON', 'syntax highlighting'],
+      limits: null,
+    },
+  }, null, 2),
+  'Nested product data': JSON.stringify({
     app: {
       name: 'LiveParse',
-      tagline: 'Local-first JSON parsing as you type',
-      deployment: 'Cloudflare Tunnel',
-      hostnames: ['liveparse.com', 'www.liveparse.com']
+      tagline: 'A fast online JSON parser that keeps your data local',
+      domain: 'liveparse.com',
     },
-    features: [
-      { name: 'Tree View', enabled: true },
-      { name: 'Syntax Colorizing', enabled: true },
-      { name: 'Minify JSON', enabled: true },
-      { name: 'Array Index Display', enabled: true }
-    ]
+    seo: {
+      primaryKeyword: 'JSON Parser',
+      supportingKeywords: ['JSON formatter', 'JSON validator', 'JSON tree viewer'],
+    },
+    deployment: {
+      platform: 'Cloudflare Tunnel',
+      hostnames: ['liveparse.com', 'www.liveparse.com'],
+    },
   }, null, 2),
-  'Jackson Jang Workspace': `{
-  "developer": "Jackson Jang",
-  "workspace": "/Users/jhw/Documents/GitHub/liveparse",
-  "tools": ["React", "Vite", "TypeScript", "Cloudflare Tunnel"],
-  "localOnlyParsing": true,
-  "release": {
-    "domain": "liveparse.com",
-    "status": "online"
-  }
-}`,
-  'Invalid Jackson Sample': `{
-  "developer": "Jackson Jang",
+  'Invalid JSON example': `{
   "project": "LiveParse",
-  "items": ["parser", "tree", "colorize",],
-  "fixed": false
+  "features": ["parser", "tree", "colorize",],
+  "valid": false
 }`,
 };
 
-const initialJson = samples['Jackson Jang Profile'];
+const initialJson = samples['Developer profile'];
 
 function getType(value: unknown): string {
   if (value === null) return 'null';
@@ -62,7 +73,7 @@ function getType(value: unknown): string {
 }
 
 function parseWithPosition(input: string, useEval: boolean): ParseResult {
-  if (!input.trim()) return { ok: false, error: 'Empty input: paste or type JSON on the left.' };
+  if (!input.trim()) return { ok: false, error: 'Empty input: paste or type JSON to begin.' };
   try {
     const value = useEval
       ? Function(`"use strict"; return (${input});`)()
@@ -74,7 +85,7 @@ function parseWithPosition(input: string, useEval: boolean): ParseResult {
       kind: getType(value),
       pretty: JSON.stringify(value, null, 2),
       minified: minified ?? String(value),
-      stats: buildStats(value),
+      stats: buildStats(value, input.length),
     };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -91,100 +102,159 @@ function positionToLineColumn(text: string, position: number) {
   return { line: lines.length, column: lines[lines.length - 1].length + 1 };
 }
 
-function buildStats(value: unknown): string {
-  let objects = 0, arrays = 0, strings = 0, numbers = 0, booleans = 0, nulls = 0, properties = 0;
+function buildStats(value: unknown, characters: number): JsonStats {
+  const stats: JsonStats = { objects: 0, arrays: 0, properties: 0, strings: 0, numbers: 0, booleans: 0, nulls: 0, characters };
   const walk = (v: unknown) => {
-    if (v === null) { nulls += 1; return; }
-    if (Array.isArray(v)) { arrays += 1; v.forEach(walk); return; }
+    if (v === null) { stats.nulls += 1; return; }
+    if (Array.isArray(v)) { stats.arrays += 1; v.forEach(walk); return; }
     if (typeof v === 'object') {
-      objects += 1;
-      Object.values(v as Record<string, unknown>).forEach((item) => { properties += 1; walk(item); });
+      stats.objects += 1;
+      Object.values(v as Record<string, unknown>).forEach((item) => { stats.properties += 1; walk(item); });
       return;
     }
-    if (typeof v === 'string') strings += 1;
-    if (typeof v === 'number') numbers += 1;
-    if (typeof v === 'boolean') booleans += 1;
+    if (typeof v === 'string') stats.strings += 1;
+    if (typeof v === 'number') stats.numbers += 1;
+    if (typeof v === 'boolean') stats.booleans += 1;
   };
   walk(value);
-  return `${objects} objects · ${arrays} arrays · ${properties} properties · ${strings} strings · ${numbers} numbers · ${booleans} booleans · ${nulls} nulls`;
+  return stats;
+}
+
+function statsSummary(stats: JsonStats): string {
+  return `${stats.objects} objects · ${stats.arrays} arrays · ${stats.properties} properties · ${stats.characters.toLocaleString()} chars`;
 }
 
 function App() {
   const [input, setInput] = useState(initialJson);
   const [layout, setLayout] = useState<Layout>('side');
+  const [outputMode, setOutputMode] = useState<OutputMode>('text');
   const [parseJson, setParseJson] = useState(true);
   const [evalJson, setEvalJson] = useState(false);
   const [minify, setMinify] = useState(false);
   const [colorize, setColorize] = useState(true);
   const [showTypes, setShowTypes] = useState(false);
   const [showIndex, setShowIndex] = useState(false);
-  const [sampleOpen, setSampleOpen] = useState(false);
-  const [optionOpen, setOptionOpen] = useState(false);
+  const [copyLabel, setCopyLabel] = useState('Copy output');
 
   const result = useMemo(() => parseWithPosition(input, evalJson && !parseJson), [input, parseJson, evalJson]);
   const outputText = result.ok ? (minify ? result.minified : result.pretty) : formatError(result);
+  const lineCount = input ? input.split('\n').length : 0;
+
+  const formatInput = () => {
+    if (result.ok) {
+      setInput(result.pretty);
+      setMinify(false);
+    }
+  };
+
+  const minifyInput = () => {
+    if (result.ok) {
+      setInput(result.minified);
+      setMinify(true);
+    }
+  };
+
+  const copyOutput = async () => {
+    try {
+      await navigator.clipboard.writeText(outputText);
+      setCopyLabel('Copied');
+      window.setTimeout(() => setCopyLabel('Copy output'), 1300);
+    } catch {
+      setCopyLabel('Copy failed');
+      window.setTimeout(() => setCopyLabel('Copy output'), 1300);
+    }
+  };
 
   return (
     <div className="app-shell">
-      <header className="header">
-        <b>LiveParse</b>
-        <nav className="toolbar" aria-label="Parser controls">
-          <a className="beta-link" href="https://github.com/JacksonJang/liveparse" target="_blank">LiveParse</a>
-          <Menu label="Samples" open={sampleOpen} setOpen={setSampleOpen}>
-            {Object.entries(samples).map(([name, value]) => (
-              <button key={name} className="menu-item" onClick={() => { setInput(value); setSampleOpen(false); }}>{name}</button>
-            ))}
-          </Menu>
-          <Menu label="Options" open={optionOpen} setOpen={setOptionOpen} alignRight>
-            <button className={`menu-item radio ${layout === 'side' ? 'on' : ''}`} onClick={() => setLayout('side')}>Side-by-side</button>
-            <button className={`menu-item radio ${layout === 'top' ? 'on' : ''}`} onClick={() => setLayout('top')}>Top-bottom</button>
-            <div className="separator" />
-            <button className={`menu-item check ${parseJson ? 'on' : ''}`} onClick={() => { setParseJson(true); setEvalJson(false); }}>Parse Json</button>
-            <button className={`menu-item check ${evalJson ? 'on' : ''}`} onClick={() => { setEvalJson(true); setParseJson(false); }}>Eval Json</button>
-            <div className="separator" />
-            <button className={`menu-item check ${minify ? 'on' : ''}`} onClick={() => setMinify((v) => !v)}>Minify</button>
-            <button className={`menu-item check ${colorize ? 'on' : ''}`} onClick={() => setColorize((v) => !v)}>Colorize</button>
-            <button className={`menu-item check ${showTypes ? 'on' : ''}`} onClick={() => setShowTypes((v) => !v)}>Show JS Types</button>
-            <button className={`menu-item check ${showIndex ? 'on' : ''}`} onClick={() => setShowIndex((v) => !v)}>Show Array Index</button>
-          </Menu>
-        </nav>
+      <header className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Private JSON parser for developers</p>
+          <h1>LiveParse JSON Parser</h1>
+          <p className="subtitle">Validate, format, minify, and explore JSON in a readable tree view. Everything runs locally in your browser.</p>
+        </div>
+        <div className="hero-actions" aria-label="Parser settings">
+          <label className="select-label">
+            Sample
+            <select onChange={(event) => setInput(samples[event.target.value])} defaultValue="Developer profile">
+              {Object.keys(samples).map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+          </label>
+          <Segmented label="Layout" value={layout} options={[['side', 'Side by side'], ['top', 'Stacked']]} onChange={(value) => setLayout(value as Layout)} />
+        </div>
       </header>
 
-      <main className={`split ${layout}`}>
-        <textarea
-          className="input-pane bordered mono"
-          spellCheck={false}
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          aria-label="JSON input"
-        />
-        <div className="splitter" aria-hidden />
-        <section className={`output-pane bordered ${result.ok ? '' : input.trim() ? 'json-error' : 'json-empty'} ${colorize ? 'color' : ''} ${showTypes ? 'show-types' : ''} ${showIndex ? 'show-index' : ''}`}>
-          <div className="status-bar">
-            <span>{result.ok ? `Valid ${result.kind}` : input.trim() ? 'JSON error' : 'Waiting for input'}</span>
-            <span>{result.ok ? result.stats : 'Processing is local in your browser'}</span>
+      <main className={`workspace ${layout}`}>
+        <section className="panel input-card" aria-labelledby="input-title">
+          <PanelHeader
+            title="JSON input"
+            meta={`${lineCount} lines · ${input.length.toLocaleString()} characters`}
+            actions={<>
+              <button type="button" className="ghost-button" onClick={formatInput} disabled={!result.ok}>Format</button>
+              <button type="button" className="ghost-button" onClick={minifyInput} disabled={!result.ok}>Minify</button>
+              <button type="button" className="ghost-button danger" onClick={() => setInput('')}>Clear</button>
+            </>}
+          />
+          <textarea
+            className="input-pane mono"
+            spellCheck={false}
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            aria-label="Paste JSON input"
+            placeholder="Paste JSON here. LiveParse validates and formats it instantly."
+          />
+        </section>
+
+        <section className={`panel output-card ${result.ok ? 'json-valid' : input.trim() ? 'json-error' : 'json-empty'} ${colorize ? 'color' : ''} ${showTypes ? 'show-types' : ''} ${showIndex ? 'show-index' : ''}`} aria-labelledby="output-title">
+          <PanelHeader
+            title="Parsed output"
+            meta={result.ok ? statsSummary(result.stats) : 'Processing stays local in your browser'}
+            actions={<>
+              <Segmented label="Output" value={outputMode} options={[['text', 'Text'], ['tree', 'Tree']]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
+              <button type="button" className="primary-button" onClick={copyOutput}>{copyLabel}</button>
+            </>}
+          />
+
+          <div className="status-strip" role="status">
+            <span className="status-pill">{result.ok ? `Valid ${result.kind}` : input.trim() ? 'JSON error' : 'Waiting for input'}</span>
+            <span>{result.ok ? `${result.stats.strings} strings · ${result.stats.numbers} numbers · ${result.stats.booleans} booleans · ${result.stats.nulls} nulls` : formatError(result)}</span>
           </div>
-          <div className="views">
-            <div className="text-view mono" aria-label="Formatted output">
-              {result.ok && colorize ? <HighlightedJson text={outputText} /> : <pre>{outputText}</pre>}
-            </div>
-            <div className="tree-view mono" aria-label="Tree output">
-              {result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}
-            </div>
+
+          <div className="option-row" aria-label="View options">
+            <Toggle checked={parseJson} onChange={() => { setParseJson(true); setEvalJson(false); }} label="Strict JSON" />
+            <Toggle checked={evalJson} onChange={() => { setEvalJson(true); setParseJson(false); }} label="Eval mode" />
+            <Toggle checked={minify} onChange={() => setMinify((v) => !v)} label="Minified output" />
+            <Toggle checked={colorize} onChange={() => setColorize((v) => !v)} label="Color" />
+            <Toggle checked={showTypes} onChange={() => setShowTypes((v) => !v)} label="Types" />
+            <Toggle checked={showIndex} onChange={() => setShowIndex((v) => !v)} label="Array indexes" />
+          </div>
+
+          <div className="output-views mono">
+            {outputMode === 'text'
+              ? <div className="text-view" aria-label="Formatted JSON output">{result.ok && colorize ? <HighlightedJson text={outputText} /> : <pre>{outputText}</pre>}</div>
+              : <div className="tree-view" aria-label="JSON tree output">{result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}</div>}
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        <span>LiveParse · Local-first JSON parser by Jackson Jang</span>
-        <a href="/">FAQ</a><a href="/">Privacy Policy</a><a href="/">Changelog</a><a href="https://github.com/JacksonJang/liveparse">GitHub</a>
+        <span>LiveParse · Online JSON parser, formatter, validator, minifier, and tree viewer by Jackson Jang</span>
+        <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">GitHub</a>
       </footer>
     </div>
   );
 }
 
-function Menu({ label, open, setOpen, alignRight = false, children }: { label: string; open: boolean; setOpen: (open: boolean) => void; alignRight?: boolean; children: React.ReactNode }) {
-  return <div className={`menu ${open ? 'open' : ''}`}><button className="menu-trigger" onClick={() => setOpen(!open)}>{label} <span>▼</span></button><div className={`menu-list ${alignRight ? 'right' : ''}`}>{children}</div></div>;
+function PanelHeader({ title, meta, actions }: { title: string; meta: string; actions?: React.ReactNode }) {
+  return <div className="panel-header"><div><h2 id={title === 'JSON input' ? 'input-title' : 'output-title'}>{title}</h2><p>{meta}</p></div>{actions && <div className="panel-actions">{actions}</div>}</div>;
+}
+
+function Segmented({ label, value, options, onChange, compact = false }: { label: string; value: string; options: [string, string][]; onChange: (value: string) => void; compact?: boolean }) {
+  return <div className={`segmented ${compact ? 'compact' : ''}`} aria-label={label}>{options.map(([optionValue, text]) => <button key={optionValue} type="button" className={value === optionValue ? 'active' : ''} onClick={() => onChange(optionValue)}>{text}</button>)}</div>;
+}
+
+function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
+  return <button type="button" className={`toggle-chip ${checked ? 'on' : ''}`} onClick={onChange} aria-pressed={checked}>{label}</button>;
 }
 
 function formatError(result: ParseResult): string {
@@ -197,11 +267,12 @@ function HighlightedJson({ text }: { text: string }) {
   const tokens = text.split(/("(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)/g);
   return <pre>{tokens.map((token, i) => {
     let cls = '';
-    if (/^".*"$/.test(token)) cls = token.match(/^"(?:\\.|[^"\\])*"(?=\s*$)/) ? 'string' : 'property';
+    const nextToken = tokens[i + 1] ?? '';
+    if (/^".*"$/.test(token)) cls = nextToken.trimStart().startsWith(':') ? 'property' : 'string';
     if (/^-?\d/.test(token)) cls = 'number';
     if (/^(true|false)$/.test(token)) cls = 'boolean';
     if (token === 'null') cls = 'null';
-    return cls ? <span key={i} className={cls}>{token}</span> : <React.Fragment key={i}>{token}</React.Fragment>;
+    return cls ? <span key={`${token}-${i}`} className={cls}>{token}</span> : <React.Fragment key={`${token}-${i}`}>{token}</React.Fragment>;
   })}</pre>;
 }
 
@@ -215,7 +286,7 @@ function TreeNode({ value, name, root = false, showIndex = false }: { value: Jso
   const open = Array.isArray(value) ? '[' : '{';
   const close = Array.isArray(value) ? ']' : '}';
   return <div className={`tree-node ${type} ${collapsed ? 'collapsed' : ''}`}>
-    <div className="tree-line"><button className="toggle" onClick={() => setCollapsed((v) => !v)}>{collapsed ? '+' : '-'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">… {entries.length} items</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
+    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((v) => !v)} aria-label={collapsed ? 'Expand node' : 'Collapse node'}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">… {entries.length} items</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
     {!collapsed && <ol>
       {entries.map(([key, val]) => <li key={key}>{Array.isArray(value) && showIndex && <span className="index">{key}</span>}<TreeNode value={val} name={key} showIndex={showIndex} /></li>)}
     </ol>}
