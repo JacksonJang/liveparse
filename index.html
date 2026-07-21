@@ -3,54 +3,228 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LiveParse JSON Parser | Online JSON Formatter, Validator & Tree Viewer</title>
-    <meta name="description" content="LiveParse is a fast online JSON parser, formatter, validator, minifier, and tree viewer that processes JSON locally in your browser." />
-    <meta name="keywords" content="JSON parser, JSON formatter, JSON validator, JSON minifier, JSON tree viewer, online JSON parser, LiveParse, Jackson Jang" />
+    <title>JSON Parser – Free Online Formatter &amp; Validator | LiveParse</title>
+    <meta name="description" content="Parse, validate, format, minify, and explore JSON online for free. LiveParse finds syntax errors and keeps your JSON private in your browser." />
     <meta name="author" content="Jackson Jang" />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/" />
-    <meta property="og:title" content="LiveParse JSON Parser" />
-    <meta property="og:description" content="Validate, format, minify, and explore JSON in a local-first online parser with syntax highlighting and tree view." />
+    <meta property="og:title" content="JSON Parser – Free Online Formatter &amp; Validator" />
+    <meta property="og:description" content="Parse JSON, find syntax errors, format or minify it, and explore nested data in a private browser-based tree viewer." />
     <meta property="og:site_name" content="LiveParse" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="LiveParse JSON Parser" />
-    <meta name="twitter:description" content="A private online JSON formatter, validator, minifier, and tree viewer by Jackson Jang." />
-    <meta name="theme-color" content="#0ea5b7" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON Parser – Free Online Formatter &amp; Validator" />
+    <meta name="twitter:description" content="A fast, private JSON parser with validation, formatting, minification, and an interactive tree view." />
+    <meta name="theme-color" content="#087487" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "LiveParse JSON Parser",
-        "url": "https://liveparse.com/",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Any",
-        "creator": {
-          "@type": "Person",
-          "name": "Jackson Jang",
-          "url": "https://github.com/JacksonJang"
-        },
-        "description": "A local-first online JSON parser, formatter, validator, minifier, and tree viewer.",
-        "featureList": [
-          "JSON validation",
-          "JSON formatting",
-          "JSON minification",
-          "JSON tree view",
-          "Syntax highlighting",
-          "Local browser processing"
-        ],
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        }
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for working with JSON.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/#json-parser",
+            "name": "LiveParse JSON Parser",
+            "url": "https://liveparse.com/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSON parser and formatter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "description": "A free online JSON parser, formatter, validator, minifier, and tree viewer that processes input locally in the browser.",
+            "featureList": [
+              "Strict JSON parsing and validation",
+              "Precise syntax error location",
+              "Two-space or four-space formatting",
+              "JSON minification",
+              "Interactive JSON tree view",
+              "Syntax highlighting",
+              "Local browser processing"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/#webpage",
+            "url": "https://liveparse.com/",
+            "name": "JSON Parser – Free Online Formatter & Validator",
+            "description": "Parse, validate, format, minify, and explore JSON online without uploading it.",
+            "dateModified": "2026-07-21",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/#json-parser" }
+          }
+        ]
       }
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript>LiveParse is an online JSON parser, formatter, validator, minifier, and tree viewer. Enable JavaScript to parse JSON locally in your browser.</noscript>
+    <a class="skip-link" href="#json-input">Skip to the JSON parser</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse JSON Parser home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="#parser">Parser</a>
+          <a href="#how-to-parse-json">How it works</a>
+          <a href="#common-json-errors">JSON errors</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · Private · No sign-up</p>
+          <h1>JSON Parser</h1>
+          <p class="hero-lead">Parse, validate, format, minify, and inspect JSON instantly. LiveParse turns raw JSON into readable text or a collapsible tree, with clear syntax errors and no data uploads.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#parser">Parse JSON now</a>
+            <span>Runs locally in your browser</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="JSON parser example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>response.json</strong></div>
+          <pre><code><span class="property">"status"</span>: <span class="string">"ok"</span>,
+<span class="property">"private"</span>: <span class="boolean">true</span>,
+<span class="property">"items"</span>: [<span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>]</code></pre>
+          <p><strong>Valid JSON</strong><span>Parsed in milliseconds</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="parser" aria-labelledby="parser-heading">
+        <div>
+          <p class="section-kicker">Online JSON tool</p>
+          <h2 id="parser-heading">Paste JSON to parse, format, and validate it</h2>
+        </div>
+        <p>LiveParse uses your browser's native JSON parser. Nothing you paste is submitted to a server, stored, or shared by this tool.</p>
+      </section>
+
+      <div id="root">
+        <section class="parser-fallback" aria-label="JSON parser loading">
+          <p><strong>Loading the interactive JSON parser…</strong></p>
+          <p>Enable JavaScript to use formatting, validation, minification, and the tree viewer.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="what-is-a-json-parser" aria-labelledby="what-heading">
+        <div class="section-heading">
+          <p class="section-kicker">The essentials</p>
+          <h2 id="what-heading">What is a JSON parser?</h2>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>A JSON parser reads text written in <strong>JavaScript Object Notation</strong>, checks whether the syntax is valid, and converts it into structured values such as objects, arrays, strings, numbers, booleans, and null. Developers use parsers to inspect API responses, debug webhooks, review configuration files, and understand unfamiliar payloads.</p>
+            <p>Parsing is different from formatting. A parser determines what the data means; a formatter changes valid JSON into a more readable layout. LiveParse performs both, then lets you inspect the same result as highlighted text or a collapsible tree.</p>
+            <a class="text-link" href="/guides/what-is-a-json-parser/">Read the complete JSON parser guide <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Parse</dt><dd>Turn JSON text into structured data.</dd></div>
+            <div><dt>Validate</dt><dd>Find invalid syntax and its location.</dd></div>
+            <div><dt>Format</dt><dd>Add indentation and line breaks for reading.</dd></div>
+            <div><dt>Minify</dt><dd>Remove unnecessary whitespace for transport.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="how-to-parse-json" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Three quick steps</p>
+          <h2 id="how-heading">How to parse JSON online</h2>
+          <p>You can move from a raw payload to a readable result without uploading a file or creating an account.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste your JSON</h3><p>Copy an API response, webhook body, or configuration object into the input panel. You can also load a built-in example.</p></li>
+          <li><span>2</span><h3>Check the result</h3><p>Valid input is parsed immediately. Invalid input shows the parser message plus a line and column when the browser provides a position.</p></li>
+          <li><span>3</span><h3>Format or explore</h3><p>Pretty-print with two or four spaces, minify for transport, copy the output, or open the tree to inspect nested values.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section" id="common-json-errors" aria-labelledby="errors-heading">
+        <div class="section-heading split-heading">
+          <div><p class="section-kicker">Debug faster</p><h2 id="errors-heading">Common JSON syntax errors</h2></div>
+          <a class="text-link" href="/guides/common-json-errors/">See examples and fixes <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="error-table" role="table" aria-label="Common JSON errors and fixes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Problem</span><span role="columnheader">Invalid</span><span role="columnheader">Fix</span></div>
+          <div class="error-row" role="row"><strong role="cell">Trailing comma</strong><code role="cell">{"ok": true,}</code><span role="cell">Remove the comma before <code>}</code> or <code>]</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Single quotes</strong><code role="cell">{'name': 'Ada'}</code><span role="cell">Use double quotes around keys and strings.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unquoted key</strong><code role="cell">{status: "ok"}</code><span role="cell">Write the key as <code>"status"</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Bad escape</strong><code role="cell">{"path": "C:\new"}</code><span role="cell">Escape a backslash as <code>\\</code>.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="why-heading">
+        <div class="section-heading"><p class="section-kicker">Built for real payloads</p><h2 id="why-heading">Why use LiveParse?</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Private by design</h3><p>Your input stays in the current browser tab. The parser does not send, save, or log the JSON you paste.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Strict and predictable</h3><p>LiveParse uses <code>JSON.parse()</code>, so it rejects JavaScript-only syntax such as comments, trailing commas, and single-quoted strings.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Text and tree views</h3><p>Read compact payloads as highlighted text or expand nested objects and arrays without losing their hierarchy.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Useful error context</h3><p>When an error position is available, LiveParse converts it to a line and column so you can locate the first syntax problem.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="use-cases-heading">
+        <div class="section-heading"><p class="section-kicker">Practical workflows</p><h2 id="use-cases-heading">When a JSON parser helps</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Debug an API response</h3><p>Confirm that the response is valid, inspect top-level keys, and follow nested data before changing application code.</p></article>
+          <article><h3>Inspect a webhook</h3><p>Explore event types, IDs, and nested objects while keeping customer or integration data on your own device.</p></article>
+          <article><h3>Review configuration</h3><p>Format minified config, spot missing delimiters, and verify the final structure before deployment.</p></article>
+          <article><h3>Prepare compact JSON</h3><p>Remove indentation and line breaks when you need a smaller payload for a request, fixture, or environment variable.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">JSON Parser FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Is this JSON parser free?</summary><p>Yes. LiveParse is free to use, with no account, usage meter, advertisements, or paid tier.</p></details>
+          <details><summary>Does LiveParse upload or store my JSON?</summary><p>No. Parsing, formatting, minification, and tree rendering happen locally in your browser. Your input is held in the page's memory for the current tab and is not submitted to LiveParse.</p></details>
+          <details><summary>What is the difference between a JSON parser, validator, and formatter?</summary><p>A parser turns JSON text into structured values. A validator checks whether the syntax is legal. A formatter rewrites valid JSON with consistent whitespace. LiveParse combines all three in one tool. For a detailed comparison, read <a href="/guides/json-parser-vs-formatter-validator/">JSON parser vs. formatter vs. validator</a>.</p></details>
+          <details><summary>Why are comments and trailing commas rejected?</summary><p>They are valid in some JavaScript contexts but not in standard JSON. LiveParse intentionally uses strict parsing so the result behaves like JSON consumed by browsers, APIs, and most programming languages.</p></details>
+          <details><summary>What happens when an object contains duplicate keys?</summary><p>JavaScript's native parser keeps the last value for a duplicated key. Because that can hide data unexpectedly, producers should emit unique object member names.</p></details>
+          <details><summary>Can I parse sensitive API data?</summary><p>Local processing reduces exposure, but you should still remove secrets when possible and follow your organization's data-handling rules. The page itself must load from the internet, but the JSON you paste is not transmitted by the tool.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and references</p><h2 id="references-heading">Learn from primary sources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: The JSON Data Interchange Format</a></li>
+          <li><a href="https://www.json.org/json-en.html" target="_blank" rel="noreferrer">Introducing JSON</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noreferrer">MDN: JSON.parse()</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>A private, browser-based JSON parser created by Jackson Jang.</p></div>
+      <div class="footer-links">
+        <a href="#parser">JSON Parser</a>
+        <a href="/guides/what-is-a-json-parser/">Guides</a>
+        <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">Source on GitHub</a>
+      </div>
+      <p class="footer-note">Last reviewed July 21, 2026 · No ads · No tracking · No JSON uploads</p>
+    </footer>
+
+    <noscript><p class="noscript-note">JavaScript is required to run the interactive parser. The JSON reference and guides remain available without it.</p></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

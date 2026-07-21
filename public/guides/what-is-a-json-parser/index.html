@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What Is a JSON Parser? How Parsing Works | LiveParse</title>
+    <meta name="description" content="Learn what a JSON parser does, how JSON text becomes usable data, what strict parsers reject, and where parsing ends and validation begins." />
+    <link rel="canonical" href="https://liveparse.com/guides/what-is-a-json-parser/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#0ea5b7" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:title" content="What Is a JSON Parser? How Parsing Works" />
+    <meta property="og:description" content="A practical explanation of JSON parsing, strict syntax, data types, limitations, and safe usage." />
+    <meta property="og:url" content="https://liveparse.com/guides/what-is-a-json-parser/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="What Is a JSON Parser? How Parsing Works" />
+    <meta name="twitter:description" content="See how JSON text becomes values your program can inspect and use." />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "What Is a JSON Parser? How Parsing Works",
+        "description": "Learn what a JSON parser does, how JSON text becomes usable data, what strict parsers reject, and where parsing ends and validation begins.",
+        "mainEntityOfPage": "https://liveparse.com/guides/what-is-a-json-parser/",
+        "url": "https://liveparse.com/guides/what-is-a-json-parser/",
+        "dateModified": "2026-07-21",
+        "author": {
+          "@type": "Person",
+          "name": "Jackson Jang",
+          "url": "https://github.com/JacksonJang"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "LiveParse",
+          "url": "https://liveparse.com/"
+        },
+        "articleSection": "JSON fundamentals",
+        "inLanguage": "en"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home">
+        <span class="brand-mark" aria-hidden="true">{ }</span>
+        <span>LiveParse</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="https://liveparse.com/#parser">Open JSON parser</a>
+        <a href="/guides/common-json-errors/">Fix JSON errors</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">JSON fundamentals</p>
+          <h1>What Is a JSON Parser? How Parsing Works</h1>
+          <p class="dek">A JSON parser reads JSON text, checks that the text follows JSON grammar, and turns it into values a program can work with. That sounds simple; the boundaries of the job are what matter.</p>
+          <p class="byline">
+            <span>Written by <strong>Jackson Jang</strong></span>
+            <span>Updated <time datetime="2026-07-21">July 21, 2026</time></span>
+            <span>8 minute read</span>
+          </p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>In one sentence:</strong> a JSON parser converts a serialized JSON value—such as an API response or configuration file—into an in-memory object, array, string, number, boolean, or null value while rejecting invalid JSON syntax.</p>
+            </div>
+
+            <h2 id="text-to-data">From JSON text to usable data</h2>
+            <p>JSON is a text format. Even when a network response looks like an object in a console, it arrives as characters before software interprets it. A parser provides that interpretation. Conceptually, it performs four jobs:</p>
+            <ol class="steps">
+              <li><strong>Read tokens.</strong> It recognizes punctuation, string literals, number literals, and the names <code>true</code>, <code>false</code>, and <code>null</code>.</li>
+              <li><strong>Check structure.</strong> It verifies that braces, brackets, commas, colons, and values occur in combinations allowed by the JSON grammar.</li>
+              <li><strong>Decode values.</strong> It resolves string escapes such as <code>\n</code> and <code>\u00e9</code>, and interprets number and boolean literals.</li>
+              <li><strong>Build a result.</strong> It creates the host language's corresponding value—often a map/object, list/array, string, number, boolean, or null.</li>
+            </ol>
+
+            <p>Consider this API response:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">JSON text</figcaption>
+              <pre><code>{
+  "requestId": "req_42",
+  "items": [
+    { "sku": "A-17", "quantity": 2 }
+  ],
+  "complete": false,
+  "nextPage": null
+}</code></pre>
+            </figure>
+            <p>After parsing, a program can access the first item's <code>sku</code>, count the entries in <code>items</code>, or test whether <code>complete</code> is false. The original text is no longer the useful abstraction; its data model is.</p>
+
+            <h2 id="valid-values">What counts as a JSON value?</h2>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259</a> defines a JSON text as a serialized value surrounded by optional whitespace. The value may be:</p>
+            <ul>
+              <li>an <strong>object</strong>, whose member names are strings;</li>
+              <li>an <strong>array</strong>, containing ordered values;</li>
+              <li>a <strong>string</strong> enclosed in double quotes;</li>
+              <li>a <strong>number</strong> using JSON's decimal number grammar;</li>
+              <li>the literal <strong>true</strong>, <strong>false</strong>, or <strong>null</strong>.</li>
+            </ul>
+            <p>A complete document does not have to begin with <code>{</code> or <code>[</code>. For example, <code>"ready"</code> and <code>42</code> are valid JSON texts under the current standard, although some older systems expect only an object or array at the top level.</p>
+
+            <div class="note">
+              <p><strong>Whitespace is limited but flexible.</strong> JSON permits spaces, tabs, line feeds, and carriage returns around structural characters. Formatting can improve readability without changing the parsed result.</p>
+            </div>
+
+            <h2 id="strict-json">What a strict parser rejects</h2>
+            <p>JSON resembles a JavaScript object literal, but the two are not interchangeable. A strict parser rejects several conveniences accepted by JavaScript source code or JSON-like configuration formats.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Not JSON</span></figcaption>
+                <pre><code>{
+  // labels are useful
+  label: 'draft',
+  "retries": 03,
+  "tags": ["new",]
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Valid JSON</span></figcaption>
+                <pre><code>{
+  "label": "draft",
+  "retries": 3,
+  "tags": ["new"]
+}</code></pre>
+              </figure>
+            </div>
+            <p>The first version contains four separate problems: a comment, an unquoted member name, a single-quoted string, a leading zero, and a trailing comma. JSON also has no literal for <code>undefined</code>, <code>NaN</code>, or infinity. When data crosses a system boundary, using the strict shared grammar avoids depending on a language-specific extension.</p>
+            <p>When a document fails to parse, work from the first reported position and inspect the token immediately before it. See the <a href="/guides/common-json-errors/">guide to common JSON errors</a> for paired broken-and-fixed examples.</p>
+
+            <h2 id="parser-output">A parser does not preserve presentation</h2>
+            <p>Whitespace, indentation, and insignificant line breaks are not data. Once parsed, these two texts produce the same result:</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Compact input</figcaption>
+                <pre><code>{"active":true,"roles":["editor","viewer"]}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Indented input</figcaption>
+                <pre><code>{
+  "active": true,
+  "roles": [
+    "editor",
+    "viewer"
+  ]
+}</code></pre>
+              </figure>
+            </div>
+            <p>A parser may also discard details that the receiving language cannot represent exactly. JavaScript, for example, normally parses JSON numbers into IEEE 754 double-precision values. Integers beyond JavaScript's safe integer range can lose precision, so identifiers and exact high-precision quantities are often transported as strings or handled by a specialized numeric strategy.</p>
+
+            <div class="warning">
+              <p><strong>Duplicate member names are risky.</strong> RFC 8259 says object names should be unique, but it documents differing receiver behavior when they are not. Some implementations keep only the last value, while others report every pair. Do not use duplicates when interoperability matters.</p>
+            </div>
+
+            <h2 id="parse-and-validate">Parsing versus validating meaning</h2>
+            <p>Successful parsing proves that the text is syntactically valid JSON. It does not prove that the data is correct for your application. This document parses successfully:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Valid syntax, questionable application data</figcaption>
+              <pre><code>{
+  "email": 17,
+  "quantity": -400,
+  "deliveryDate": "eventually"
+}</code></pre>
+            </figure>
+            <p>An order system may require <code>email</code> to be a string, <code>quantity</code> to be a positive integer, and <code>deliveryDate</code> to follow a date format. Those are semantic constraints. Application checks or a schema validator must apply them after parsing. The <a href="/guides/json-parser-vs-formatter-validator/">parser, formatter, and validator comparison</a> explains where each tool fits.</p>
+
+            <h2 id="javascript-example">A small JavaScript parsing example</h2>
+            <p>JavaScript provides the standard <code>JSON.parse()</code> method. Put parsing in a <code>try</code>/<code>catch</code> block when input may be malformed:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">JavaScript</figcaption>
+              <pre><code>const source = '{"mode":"preview","retries":2}';
+
+try {
+  const config = JSON.parse(source);
+  console.log(config.mode); // "preview"
+} catch (error) {
+  console.error("Invalid JSON", error);
+}</code></pre>
+            </figure>
+            <p>Do not replace a JSON parser with <code>eval()</code> or the <code>Function</code> constructor. Those mechanisms execute JavaScript source instead of applying JSON's data-only grammar. Parsing is only one part of handling untrusted data: the resulting strings and fields still need safe treatment before they are inserted into HTML, used in a query, or passed to another sensitive sink.</p>
+
+            <h2 id="use-online-parser">When an online parser is useful</h2>
+            <p>A browser-based parser is handy when you need to inspect a response without writing a temporary script. A useful workflow is to parse first, read the precise syntax error if parsing fails, then view the successful result as formatted text or a collapsible tree.</p>
+            <div class="tool-callout">
+              <p><strong>Try the example yourself.</strong> Paste any sample from this guide into LiveParse to check strict JSON syntax, format it, or inspect nested values.</p>
+              <a class="button" href="https://liveparse.com/#parser">Open the LiveParse JSON parser</a>
+            </div>
+
+            <h2 id="choose-parser">Choosing a parser in an application</h2>
+            <p>Start with the JSON implementation built into your language or platform. It is usually well tested and easy for teammates to recognize. Evaluate a specialized parser when you have a specific requirement such as streaming very large documents, arbitrary-precision numbers, duplicate-name detection, lossless source locations, or incremental parsing.</p>
+            <p>Whichever implementation you choose, decide how you will handle maximum input size, nesting depth, numerical precision, duplicate names, and error reporting. Those operational choices are not fully determined by JSON's grammar.</p>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Authoritative references</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format</a> — the Internet Standard definition of JSON syntax and interoperability guidance.</li>
+                <li><a href="https://www.json.org/json-en.html" rel="external">JSON.org: Introducing JSON</a> — compact syntax diagrams for objects, arrays, and values.</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" rel="external">MDN: JSON.parse()</a> — JavaScript behavior, parameters, return values, and examples.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Continue learning</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/common-json-errors/">
+                  <strong>Common JSON errors and how to fix them</strong>
+                  <span>Repair commas, quotes, escapes, numbers, and mismatched brackets with practical examples.</span>
+                </a>
+                <a class="related-card" href="/guides/json-parser-vs-formatter-validator/">
+                  <strong>JSON parser vs. formatter vs. validator</strong>
+                  <span>Choose the right operation and understand what each result actually proves.</span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#text-to-data">Text to data</a></li>
+              <li><a href="#valid-values">JSON values</a></li>
+              <li><a href="#strict-json">Strict syntax</a></li>
+              <li><a href="#parser-output">Parser output</a></li>
+              <li><a href="#parse-and-validate">Parsing vs. meaning</a></li>
+              <li><a href="#javascript-example">JavaScript example</a></li>
+              <li><a href="#choose-parser">Choosing a parser</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · A local-first JSON parser for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="https://liveparse.com/#parser">JSON parser</a></p>
+    </footer>
+  </body>
+</html>

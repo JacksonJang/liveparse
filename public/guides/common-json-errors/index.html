@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Common JSON Errors: Examples and Fixes | LiveParse</title>
+    <meta name="description" content="Fix invalid JSON with side-by-side examples for quotes, commas, escapes, numbers, comments, brackets, and misleading parser error positions." />
+    <link rel="canonical" href="https://liveparse.com/guides/common-json-errors/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#0ea5b7" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:title" content="Common JSON Errors: Examples and Fixes" />
+    <meta property="og:description" content="A practical repair manual for malformed JSON, from trailing commas to invalid escape sequences." />
+    <meta property="og:url" content="https://liveparse.com/guides/common-json-errors/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Common JSON Errors: Examples and Fixes" />
+    <meta name="twitter:description" content="Find and repair the syntax mistakes that make JSON parsing fail." />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Common JSON Errors: Examples and Fixes",
+        "description": "Fix invalid JSON with side-by-side examples for quotes, commas, escapes, numbers, comments, brackets, and misleading parser error positions.",
+        "mainEntityOfPage": "https://liveparse.com/guides/common-json-errors/",
+        "url": "https://liveparse.com/guides/common-json-errors/",
+        "dateModified": "2026-07-21",
+        "author": {
+          "@type": "Person",
+          "name": "Jackson Jang",
+          "url": "https://github.com/JacksonJang"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "LiveParse",
+          "url": "https://liveparse.com/"
+        },
+        "articleSection": "JSON troubleshooting",
+        "inLanguage": "en"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home">
+        <span class="brand-mark" aria-hidden="true">{ }</span>
+        <span>LiveParse</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="https://liveparse.com/#parser">Check JSON now</a>
+        <a href="/guides/what-is-a-json-parser/">Parsing explained</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">JSON troubleshooting</p>
+          <h1>Common JSON Errors: Examples and Fixes</h1>
+          <p class="dek">Most invalid JSON comes down to one character in the wrong place. Use these paired examples to identify the real cause, make the smallest repair, and avoid changing the data by accident.</p>
+          <p class="byline">
+            <span>Written by <strong>Jackson Jang</strong></span>
+            <span>Updated <time datetime="2026-07-21">July 21, 2026</time></span>
+            <span>11 minute read</span>
+          </p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Fastest diagnostic:</strong> go to the first location the parser reports, then inspect the character immediately before it. A parser often points to where the grammar became impossible, not to the earlier character that caused the problem.</p>
+            </div>
+
+            <h2 id="quick-workflow">A reliable repair workflow</h2>
+            <ol class="steps">
+              <li><strong>Preserve the original.</strong> Work on a copy, especially if the payload contains escaped text or large numbers.</li>
+              <li><strong>Confirm the input is actually JSON.</strong> An HTML error page, an empty response, or the word <code>undefined</code> cannot be repaired as JSON punctuation.</li>
+              <li><strong>Read the first error.</strong> Later errors are often consequences of the first missing quote, comma, colon, bracket, or brace.</li>
+              <li><strong>Make one small change.</strong> Parse again before editing another area so you know which change mattered.</li>
+              <li><strong>Format only after parsing succeeds.</strong> Indentation makes the repaired structure easier to audit, but formatting cannot infer the intended structure of invalid input.</li>
+            </ol>
+
+            <div class="tool-callout">
+              <p><strong>Need a precise starting point?</strong> Paste the text into LiveParse. It reports strict JSON failures and shows formatted or tree output after the syntax is valid.</p>
+              <a class="button" href="https://liveparse.com/#parser">Open the LiveParse JSON parser</a>
+            </div>
+
+            <h2 id="quotes">1. Single quotes or unquoted property names</h2>
+            <p>JSON strings and object member names must use double quotation marks. Single quotes are JavaScript syntax, not JSON syntax; bare names are not allowed either.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Invalid</span> — JavaScript-like object</figcaption>
+                <pre><code>{
+  status: 'ready',
+  owner: "Mina"
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Fixed</span> — double-quoted strings</figcaption>
+                <pre><code>{
+  "status": "ready",
+  "owner": "Mina"
+}</code></pre>
+              </figure>
+            </div>
+            <p>Do not blindly replace every apostrophe with a double quote. An apostrophe inside text—<code>"don't"</code>—is ordinary string content and should remain unchanged.</p>
+
+            <h2 id="commas-colons">2. Missing commas or colons</h2>
+            <p>A comma separates adjacent members in an object and adjacent values in an array. A colon separates an object member name from its value.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Invalid</span> — two separators missing</figcaption>
+                <pre><code>{
+  "name" "LiveParse",
+  "features": [
+    "format"
+    "inspect"
+  ]
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Fixed</span> — colon and comma added</figcaption>
+                <pre><code>{
+  "name": "LiveParse",
+  "features": [
+    "format",
+    "inspect"
+  ]
+}</code></pre>
+              </figure>
+            </div>
+            <p>If the parser highlights the opening quote of <code>"inspect"</code>, that quote may be perfectly valid. The missing comma at the end of the previous line is what prevented a new array value from beginning.</p>
+
+            <h2 id="trailing-commas">3. Trailing commas</h2>
+            <p>JSON does not permit a comma after the final object member or array item. This differs from many programming languages that allow trailing commas in source code.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Invalid</span> — final commas</figcaption>
+                <pre><code>{
+  "regions": [
+    "ap-northeast-2",
+    "us-east-1",
+  ],
+  "enabled": true,
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Fixed</span> — final commas removed</figcaption>
+                <pre><code>{
+  "regions": [
+    "ap-northeast-2",
+    "us-east-1"
+  ],
+  "enabled": true
+}</code></pre>
+              </figure>
+            </div>
+
+            <h2 id="brackets">4. Mismatched or missing brackets</h2>
+            <p>Objects open with <code>{</code> and close with <code>}</code>; arrays open with <code>[</code> and close with <code>]</code>. Deep nesting makes a missing closer hard to spot, which is why successful formatting is useful after the repair.</p>
+            <figure class="code-example">
+              <figcaption class="code-label"><span class="bad">Invalid</span> — array closed as an object</figcaption>
+              <pre><code>{
+  "builds": [
+    { "id": 101, "state": "passed" },
+    { "id": 102, "state": "running" }
+  }
+}</code></pre>
+            </figure>
+            <p>The first closing <code>}</code> after the second build belongs to that inner build object. The next closer must be <code>]</code> for the <code>builds</code> array. When the input is large, collapse or temporarily remove complete, known-good branches in a copy until the imbalance is isolated.</p>
+
+            <h2 id="escapes">5. Unescaped quotes, backslashes, or control characters</h2>
+            <p>A double quote inside a string must be written as <code>\"</code>. A literal backslash must be written as <code>\\</code>. Line breaks inside a string use escape sequences such as <code>\n</code>; an actual unescaped newline cannot occur inside a JSON string.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Invalid</span> — inner quotes end the string</figcaption>
+                <pre><code>{
+  "message": "Click "Save" now"
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Fixed</span> — inner quotes escaped</figcaption>
+                <pre><code>{
+  "message": "Click \"Save\" now"
+}</code></pre>
+              </figure>
+            </div>
+            <p>File paths are a common variation. <code>"C:\temp\logs"</code> contains escape-like sequences and an invalid <code>\l</code>. The JSON source must double its backslashes: <code>"C:\\temp\\logs"</code>. After parsing, the resulting string contains the intended single backslashes.</p>
+
+            <h2 id="numbers">6. Number formats JSON does not allow</h2>
+            <p>JSON numbers are deliberately narrower than the numeric syntax of many programming languages. A number cannot have a leading plus sign, an unnecessary leading zero, a missing integer before the decimal point, or a trailing decimal point. <code>NaN</code> and infinity are not JSON values.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Invalid token</th>
+                    <th scope="col">Why it fails</th>
+                    <th scope="col">Possible valid representation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>01</code></td><td>Leading zero</td><td><code>1</code> or the string <code>"01"</code> if the zero is meaningful</td></tr>
+                  <tr><td><code>+.5</code></td><td>Leading plus and missing integer part</td><td><code>0.5</code></td></tr>
+                  <tr><td><code>2.</code></td><td>Missing fraction digits</td><td><code>2</code> or <code>2.0</code></td></tr>
+                  <tr><td><code>NaN</code></td><td>No JSON literal for not-a-number</td><td><code>null</code> or a documented string, depending on the data contract</td></tr>
+                  <tr><td><code>Infinity</code></td><td>No JSON literal for infinity</td><td>A documented string or application-specific representation</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Choosing between a number, string, or null is a data-model decision, not merely a syntax fix. Confirm the producer and consumer contract before changing the representation.</p>
+
+            <h2 id="comments-literals">7. Comments and non-JSON literals</h2>
+            <p>Neither <code>// line comments</code> nor <code>/* block comments */</code> are part of JSON. The only lowercase literal names are <code>true</code>, <code>false</code>, and <code>null</code>. Their capitalization matters.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Invalid</span></figcaption>
+                <pre><code>{
+  "cache": True, // temporary
+  "expires": undefined
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Fixed syntax</span></figcaption>
+                <pre><code>{
+  "cache": true,
+  "expires": null
+}</code></pre>
+              </figure>
+            </div>
+            <p>The fixed example assumes <code>null</code> correctly means “no expiry value.” If <code>undefined</code> was meant to mean “field not supplied,” removing the <code>expires</code> member may be more accurate. Syntax tools cannot decide that semantic distinction.</p>
+
+            <h2 id="not-json">8. The response is not JSON at all</h2>
+            <p>An error such as “unexpected token <code>&lt;</code> at position 0” often means a server returned HTML—perhaps a login screen, proxy error, or 404 page—where the client expected JSON. Likewise, an empty response body cannot be passed directly to a JSON parser.</p>
+            <ol>
+              <li>Inspect the HTTP status and <code>Content-Type</code> header.</li>
+              <li>Look at the raw response before calling the parser.</li>
+              <li>Fix authentication, routing, or server behavior at the source instead of editing the response into JSON.</li>
+            </ol>
+            <p>A different surprise is <strong>double-encoded JSON</strong>: parsing succeeds, but the result is a string beginning with <code>{</code> rather than an object. That usually means a JSON string containing serialized JSON was encoded again. Correct the producer when possible; repeated parsing can hide a broken data contract.</p>
+
+            <h2 id="error-position">Why the reported position can look wrong</h2>
+            <p>Parser wording varies by browser, runtime, and library. One may report an absolute character position; another may report a line and column; another may name an unexpected token. Treat the location as the point where the parser could no longer continue—not a guaranteed identification of the root cause.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">The parser may flag line 5, but line 4 is missing a comma</figcaption>
+              <pre><code>{
+  "job": {
+    "id": 913,
+    "state": "queued"
+    "priority": 2
+  }
+}</code></pre>
+            </figure>
+            <p>Start at <code>"priority"</code>, scan left and upward, and ask what separator would be required before the next token. This “look one token back” habit resolves many misleading-looking messages.</p>
+
+            <h2 id="after-syntax">After the syntax is fixed</h2>
+            <p>Valid JSON can still contain the wrong type, missing required fields, out-of-range values, duplicate object names, or strings in an unexpected format. Once parsing succeeds, verify the data against application rules or a schema. The <a href="/guides/json-parser-vs-formatter-validator/">JSON parser, formatter, and validator comparison</a> shows which tool answers which question. For the mechanics behind syntax checks, read <a href="/guides/what-is-a-json-parser/">what a JSON parser does</a>.</p>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Authoritative references</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format</a> — grammar for strings, numbers, objects, arrays, and literals.</li>
+                <li><a href="https://www.json.org/json-en.html" rel="external">JSON.org: Introducing JSON</a> — visual syntax diagrams useful for checking legal transitions between tokens.</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/JSON_bad_parse" rel="external">MDN: SyntaxError — JSON.parse: bad parsing</a> — examples of common JavaScript parse failures and corrected forms.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/what-is-a-json-parser/">
+                  <strong>What is a JSON parser?</strong>
+                  <span>Understand how text becomes structured data and what parsing does not prove.</span>
+                </a>
+                <a class="related-card" href="/guides/json-parser-vs-formatter-validator/">
+                  <strong>Parser vs. formatter vs. validator</strong>
+                  <span>Separate syntax checking, presentation, and data-contract validation.</span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">Error index</h2>
+            <ol>
+              <li><a href="#quick-workflow">Repair workflow</a></li>
+              <li><a href="#quotes">Quotes and names</a></li>
+              <li><a href="#commas-colons">Commas and colons</a></li>
+              <li><a href="#trailing-commas">Trailing commas</a></li>
+              <li><a href="#brackets">Bracket matching</a></li>
+              <li><a href="#escapes">Escapes</a></li>
+              <li><a href="#numbers">Numbers</a></li>
+              <li><a href="#comments-literals">Comments and literals</a></li>
+              <li><a href="#not-json">Non-JSON responses</a></li>
+              <li><a href="#error-position">Error positions</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · A local-first JSON parser for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="https://liveparse.com/#parser">Check JSON</a></p>
+    </footer>
+  </body>
+</html>

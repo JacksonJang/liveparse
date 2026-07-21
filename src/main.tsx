@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -7,7 +7,7 @@ type OutputMode = 'text' | 'tree';
 type JsonValue = null | string | number | boolean | JsonValue[] | { [key: string]: JsonValue };
 
 type ParseResult =
-  | { ok: true; value: unknown; kind: string; pretty: string; minified: string; stats: JsonStats }
+  | { ok: true; value: unknown; kind: string; minified: string; stats: JsonStats }
   | { ok: false; error: string; line?: number; column?: number; position?: number };
 
 type JsonStats = {
@@ -35,7 +35,7 @@ const samples: Record<string, string> = {
   'API response': JSON.stringify({
     status: 'success',
     tool: 'LiveParse',
-    generatedAt: '2026-07-02T05:54:00Z',
+    generatedAt: '2026-07-21T00:00:00Z',
     data: {
       localFirst: true,
       features: ['validate JSON', 'format JSON', 'tree view', 'minify JSON', 'syntax highlighting'],
@@ -48,13 +48,13 @@ const samples: Record<string, string> = {
       tagline: 'A fast online JSON parser that keeps your data local',
       domain: 'liveparse.com',
     },
-    seo: {
-      primaryKeyword: 'JSON Parser',
-      supportingKeywords: ['JSON formatter', 'JSON validator', 'JSON tree viewer'],
+    workflow: {
+      input: 'Paste strict JSON',
+      output: ['formatted text', 'interactive tree'],
     },
-    deployment: {
-      platform: 'Cloudflare Tunnel',
-      hostnames: ['liveparse.com', 'www.liveparse.com'],
+    privacy: {
+      processing: 'local browser tab',
+      uploads: false,
     },
   }, null, 2),
   'Invalid JSON example': `{
@@ -72,18 +72,15 @@ function getType(value: unknown): string {
   return typeof value;
 }
 
-function parseWithPosition(input: string, useEval: boolean): ParseResult {
+function parseWithPosition(input: string): ParseResult {
   if (!input.trim()) return { ok: false, error: 'Empty input: paste or type JSON to begin.' };
   try {
-    const value = useEval
-      ? Function(`"use strict"; return (${input});`)()
-      : JSON.parse(input);
+    const value = JSON.parse(input);
     const minified = JSON.stringify(value);
     return {
       ok: true,
       value,
       kind: getType(value),
-      pretty: JSON.stringify(value, null, 2),
       minified: minified ?? String(value),
       stats: buildStats(value, input.length),
     };
@@ -128,21 +125,22 @@ function App() {
   const [input, setInput] = useState(initialJson);
   const [layout, setLayout] = useState<Layout>('side');
   const [outputMode, setOutputMode] = useState<OutputMode>('text');
-  const [parseJson, setParseJson] = useState(true);
-  const [evalJson, setEvalJson] = useState(false);
+  const [indent, setIndent] = useState<2 | 4>(2);
   const [minify, setMinify] = useState(false);
   const [colorize, setColorize] = useState(true);
   const [showTypes, setShowTypes] = useState(false);
   const [showIndex, setShowIndex] = useState(false);
   const [copyLabel, setCopyLabel] = useState('Copy output');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const result = useMemo(() => parseWithPosition(input, evalJson && !parseJson), [input, parseJson, evalJson]);
-  const outputText = result.ok ? (minify ? result.minified : result.pretty) : formatError(result);
+  const result = useMemo(() => parseWithPosition(input), [input]);
+  const formatted = result.ok ? JSON.stringify(result.value, null, indent) : '';
+  const outputText = result.ok ? (minify ? result.minified : formatted) : formatError(result);
   const lineCount = input ? input.split('\n').length : 0;
 
   const formatInput = () => {
     if (result.ok) {
-      setInput(result.pretty);
+      setInput(formatted);
       setMinify(false);
     }
   };
@@ -165,41 +163,65 @@ function App() {
     }
   };
 
+  const loadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setInput(await file.text());
+    setMinify(false);
+    event.target.value = '';
+  };
+
+  const downloadOutput = () => {
+    const blob = new Blob([outputText], { type: result.ok ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = result.ok ? 'parsed.json' : 'json-error.txt';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="app-shell">
-      <header className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">Private JSON parser for developers</p>
-          <h1>LiveParse JSON Parser</h1>
-          <p className="subtitle">Validate, format, minify, and explore JSON in a readable tree view. Everything runs locally in your browser.</p>
-        </div>
-        <div className="hero-actions" aria-label="Parser settings">
+    <section className="parser-app" aria-label="Interactive JSON parser">
+      <div className="tool-toolbar">
+        <div className="local-badge"><span aria-hidden="true"></span><strong>Local processing</strong><small>Your JSON never leaves this tab</small></div>
+        <div className="tool-settings" aria-label="Parser settings">
           <label className="select-label">
-            Sample
-            <select onChange={(event) => setInput(samples[event.target.value])} defaultValue="Developer profile">
+            Example
+            <select onChange={(event) => { setInput(samples[event.target.value]); setMinify(false); }} defaultValue="Developer profile">
               {Object.keys(samples).map((name) => <option key={name} value={name}>{name}</option>)}
             </select>
           </label>
-          <Segmented label="Layout" value={layout} options={[['side', 'Side by side'], ['top', 'Stacked']]} onChange={(value) => setLayout(value as Layout)} />
+          <Segmented label="Editor layout" value={layout} options={[["side", "Side by side"], ["top", "Stacked"]]} onChange={(value) => setLayout(value as Layout)} />
         </div>
-      </header>
+      </div>
 
-      <main className={`workspace ${layout}`}>
+      <div className={`workspace ${layout}`}>
         <section className="panel input-card" aria-labelledby="input-title">
           <PanelHeader
+            id="input-title"
             title="JSON input"
             meta={`${lineCount} lines · ${input.length.toLocaleString()} characters`}
             actions={<>
+              <input ref={fileInputRef} className="visually-hidden" type="file" accept=".json,application/json,text/json,text/plain" onChange={loadFile} tabIndex={-1} />
+              <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>Open file</button>
               <button type="button" className="ghost-button" onClick={formatInput} disabled={!result.ok}>Format</button>
               <button type="button" className="ghost-button" onClick={minifyInput} disabled={!result.ok}>Minify</button>
               <button type="button" className="ghost-button danger" onClick={() => setInput('')}>Clear</button>
             </>}
           />
           <textarea
+            id="json-input"
             className="input-pane mono"
             spellCheck={false}
             value={input}
             onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+                event.preventDefault();
+                formatInput();
+              }
+            }}
             aria-label="Paste JSON input"
             placeholder="Paste JSON here. LiveParse validates and formats it instantly."
           />
@@ -207,26 +229,33 @@ function App() {
 
         <section className={`panel output-card ${result.ok ? 'json-valid' : input.trim() ? 'json-error' : 'json-empty'} ${colorize ? 'color' : ''} ${showTypes ? 'show-types' : ''} ${showIndex ? 'show-index' : ''}`} aria-labelledby="output-title">
           <PanelHeader
+            id="output-title"
             title="Parsed output"
             meta={result.ok ? statsSummary(result.stats) : 'Processing stays local in your browser'}
             actions={<>
-              <Segmented label="Output" value={outputMode} options={[['text', 'Text'], ['tree', 'Tree']]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
+              <Segmented label="Output view" value={outputMode} options={[["text", "Text"], ["tree", "Tree"]]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
+              <button type="button" className="ghost-button" onClick={downloadOutput}>Download</button>
               <button type="button" className="primary-button" onClick={copyOutput}>{copyLabel}</button>
             </>}
           />
 
-          <div className="status-strip" role="status">
+          <div className="status-strip" role="status" aria-live="polite">
             <span className="status-pill">{result.ok ? `Valid ${result.kind}` : input.trim() ? 'JSON error' : 'Waiting for input'}</span>
             <span>{result.ok ? `${result.stats.strings} strings · ${result.stats.numbers} numbers · ${result.stats.booleans} booleans · ${result.stats.nulls} nulls` : formatError(result)}</span>
           </div>
 
           <div className="option-row" aria-label="View options">
-            <Toggle checked={parseJson} onChange={() => { setParseJson(true); setEvalJson(false); }} label="Strict JSON" />
-            <Toggle checked={evalJson} onChange={() => { setEvalJson(true); setParseJson(false); }} label="Eval mode" />
-            <Toggle checked={minify} onChange={() => setMinify((v) => !v)} label="Minified output" />
-            <Toggle checked={colorize} onChange={() => setColorize((v) => !v)} label="Color" />
-            <Toggle checked={showTypes} onChange={() => setShowTypes((v) => !v)} label="Types" />
-            <Toggle checked={showIndex} onChange={() => setShowIndex((v) => !v)} label="Array indexes" />
+            <span className="strict-badge">Strict JSON</span>
+            <label className="indent-label">Indent
+              <select value={indent} onChange={(event) => setIndent(Number(event.target.value) as 2 | 4)} aria-label="Formatting indentation">
+                <option value={2}>2 spaces</option>
+                <option value={4}>4 spaces</option>
+              </select>
+            </label>
+            <Toggle checked={minify} onChange={() => setMinify((value) => !value)} label="Minified output" />
+            <Toggle checked={colorize} onChange={() => setColorize((value) => !value)} label="Color" />
+            <Toggle checked={showTypes} onChange={() => setShowTypes((value) => !value)} label="Types" />
+            <Toggle checked={showIndex} onChange={() => setShowIndex((value) => !value)} label="Array indexes" />
           </div>
 
           <div className="output-views mono">
@@ -235,22 +264,17 @@ function App() {
               : <div className="tree-view" aria-label="JSON tree output">{result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}</div>}
           </div>
         </section>
-      </main>
-
-      <footer className="footer">
-        <span>LiveParse · Online JSON parser, formatter, validator, minifier, and tree viewer by Jackson Jang</span>
-        <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">GitHub</a>
-      </footer>
-    </div>
+      </div>
+    </section>
   );
 }
 
-function PanelHeader({ title, meta, actions }: { title: string; meta: string; actions?: React.ReactNode }) {
-  return <div className="panel-header"><div><h2 id={title === 'JSON input' ? 'input-title' : 'output-title'}>{title}</h2><p>{meta}</p></div>{actions && <div className="panel-actions">{actions}</div>}</div>;
+function PanelHeader({ id, title, meta, actions }: { id: string; title: string; meta: string; actions?: React.ReactNode }) {
+  return <div className="panel-header"><div><h3 id={id}>{title}</h3><p>{meta}</p></div>{actions && <div className="panel-actions">{actions}</div>}</div>;
 }
 
 function Segmented({ label, value, options, onChange, compact = false }: { label: string; value: string; options: [string, string][]; onChange: (value: string) => void; compact?: boolean }) {
-  return <div className={`segmented ${compact ? 'compact' : ''}`} aria-label={label}>{options.map(([optionValue, text]) => <button key={optionValue} type="button" className={value === optionValue ? 'active' : ''} onClick={() => onChange(optionValue)}>{text}</button>)}</div>;
+  return <div className={`segmented ${compact ? 'compact' : ''}`} role="group" aria-label={label}>{options.map(([optionValue, text]) => <button key={optionValue} type="button" className={value === optionValue ? 'active' : ''} aria-pressed={value === optionValue} onClick={() => onChange(optionValue)}>{text}</button>)}</div>;
 }
 
 function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
@@ -265,14 +289,14 @@ function formatError(result: ParseResult): string {
 
 function HighlightedJson({ text }: { text: string }) {
   const tokens = text.split(/("(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)/g);
-  return <pre>{tokens.map((token, i) => {
+  return <pre>{tokens.map((token, index) => {
     let cls = '';
-    const nextToken = tokens[i + 1] ?? '';
+    const nextToken = tokens[index + 1] ?? '';
     if (/^".*"$/.test(token)) cls = nextToken.trimStart().startsWith(':') ? 'property' : 'string';
     if (/^-?\d/.test(token)) cls = 'number';
     if (/^(true|false)$/.test(token)) cls = 'boolean';
     if (token === 'null') cls = 'null';
-    return cls ? <span key={`${token}-${i}`} className={cls}>{token}</span> : <React.Fragment key={`${token}-${i}`}>{token}</React.Fragment>;
+    return cls ? <span key={`${token}-${index}`} className={cls}>{token}</span> : <React.Fragment key={`${token}-${index}`}>{token}</React.Fragment>;
   })}</pre>;
 }
 
@@ -282,13 +306,13 @@ function TreeNode({ value, name, root = false, showIndex = false }: { value: Jso
   const isComplex = type === 'object' || type === 'array';
   const label = root ? '' : <><span className="property">{name}</span>: </>;
   if (!isComplex) return <div className={`tree-line ${type}`}>{label}<Scalar value={value} /></div>;
-  const entries = Array.isArray(value) ? value.map((v, i) => [String(i), v] as const) : Object.entries(value as Record<string, JsonValue>);
+  const entries = Array.isArray(value) ? value.map((item, index) => [String(index), item] as const) : Object.entries(value as Record<string, JsonValue>);
   const open = Array.isArray(value) ? '[' : '{';
   const close = Array.isArray(value) ? ']' : '}';
   return <div className={`tree-node ${type} ${collapsed ? 'collapsed' : ''}`}>
-    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((v) => !v)} aria-label={collapsed ? 'Expand node' : 'Collapse node'}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">… {entries.length} items</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
+    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? 'Expand node' : 'Collapse node'} aria-expanded={!collapsed}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">… {entries.length} items</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
     {!collapsed && <ol>
-      {entries.map(([key, val]) => <li key={key}>{Array.isArray(value) && showIndex && <span className="index">{key}</span>}<TreeNode value={val} name={key} showIndex={showIndex} /></li>)}
+      {entries.map(([key, child]) => <li key={key}>{Array.isArray(value) && showIndex && <span className="index">{key}</span>}<TreeNode value={child} name={key} showIndex={showIndex} /></li>)}
     </ol>}
     {!collapsed && <div className="tree-line"><span className="bracket">{close}</span></div>}
   </div>;
