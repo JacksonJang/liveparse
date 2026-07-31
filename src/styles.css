@@ -147,6 +147,13 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .show-types .tree-line .boolean::before { content: 'boolean'; background: #954507; }
 .show-types .tree-line .null::before { content: 'null'; background: #546e75; }
 
+.coupang-ad { margin-top: 32px; }
+.coupang-ad-label, .coupang-ad-disclosure { width: min(680px, 100%); margin-inline: auto; color: var(--muted); font-size: 11px; }
+.coupang-ad-label { margin-top: 0; margin-bottom: 7px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.coupang-ad-disclosure { margin-top: 7px; margin-bottom: 0; line-height: 1.5; }
+.coupang-ad-scroll { width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+.coupang-ad-slot { width: 680px; height: 140px; margin-inline: auto; }
+
 .content-section { margin-top: 96px; scroll-margin-top: 22px; }
 .content-section.alt { padding: clamp(28px, 5vw, 58px); border: 1px solid rgba(255,255,255,.8); border-radius: 32px; background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(223,247,251,.66)); box-shadow: 0 22px 58px rgba(7,78,96,.08); }
 .section-heading { max-width: 850px; margin-bottom: 32px; }

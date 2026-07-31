@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import './coupang-banner';
 import './styles.css';
 
 type Layout = 'side' | 'top';
@@ -64,6 +65,186 @@ const samples: Record<string, string> = {
 }`,
 };
 
+type SampleName = keyof typeof samples;
+type Locale = 'en' | 'ko';
+
+type UiText = {
+  sampleLabels: Record<SampleName, string>;
+  appAria: string;
+  localProcessing: string;
+  localPrivacy: string;
+  parserSettings: string;
+  example: string;
+  editorLayout: string;
+  sideBySide: string;
+  stacked: string;
+  inputTitle: string;
+  inputMeta: (lines: number, characters: string) => string;
+  openFile: string;
+  format: string;
+  minify: string;
+  clear: string;
+  inputAria: string;
+  inputPlaceholder: string;
+  outputTitle: string;
+  outputLocalMeta: string;
+  outputView: string;
+  textView: string;
+  treeView: string;
+  download: string;
+  copyOutput: string;
+  copied: string;
+  copyFailed: string;
+  validStatus: (kind: string) => string;
+  jsonError: string;
+  waitingForInput: string;
+  statsSummary: (stats: JsonStats) => string;
+  valueStats: (stats: JsonStats) => string;
+  viewOptions: string;
+  strictJson: string;
+  indent: string;
+  formattingIndentation: string;
+  twoSpaces: string;
+  fourSpaces: string;
+  minifiedOutput: string;
+  color: string;
+  types: string;
+  arrayIndexes: string;
+  formattedOutputAria: string;
+  treeOutputAria: string;
+  emptyInput: string;
+  errorLocation: (line: number, column?: number, position?: number) => string;
+  expandNode: string;
+  collapseNode: string;
+  itemCount: (count: number) => string;
+  kindNames: Record<string, string>;
+};
+
+const translations: Record<Locale, UiText> = {
+  en: {
+    sampleLabels: {
+      'Developer profile': 'Developer profile',
+      'API response': 'API response',
+      'Nested product data': 'Nested product data',
+      'Invalid JSON example': 'Invalid JSON example',
+    },
+    appAria: 'Interactive JSON parser',
+    localProcessing: 'Local processing',
+    localPrivacy: 'Your JSON never leaves this tab',
+    parserSettings: 'Parser settings',
+    example: 'Example',
+    editorLayout: 'Editor layout',
+    sideBySide: 'Side by side',
+    stacked: 'Stacked',
+    inputTitle: 'JSON input',
+    inputMeta: (lines, characters) => `${lines} lines · ${characters} characters`,
+    openFile: 'Open file',
+    format: 'Format',
+    minify: 'Minify',
+    clear: 'Clear',
+    inputAria: 'Paste JSON input',
+    inputPlaceholder: 'Paste JSON here. LiveParse validates and formats it instantly.',
+    outputTitle: 'Parsed output',
+    outputLocalMeta: 'Processing stays local in your browser',
+    outputView: 'Output view',
+    textView: 'Text',
+    treeView: 'Tree',
+    download: 'Download',
+    copyOutput: 'Copy output',
+    copied: 'Copied',
+    copyFailed: 'Copy failed',
+    validStatus: (kind) => `Valid ${kind}`,
+    jsonError: 'JSON error',
+    waitingForInput: 'Waiting for input',
+    statsSummary: (stats) => `${stats.objects} objects · ${stats.arrays} arrays · ${stats.properties} properties · ${stats.characters.toLocaleString()} chars`,
+    valueStats: (stats) => `${stats.strings} strings · ${stats.numbers} numbers · ${stats.booleans} booleans · ${stats.nulls} nulls`,
+    viewOptions: 'View options',
+    strictJson: 'Strict JSON',
+    indent: 'Indent',
+    formattingIndentation: 'Formatting indentation',
+    twoSpaces: '2 spaces',
+    fourSpaces: '4 spaces',
+    minifiedOutput: 'Minified output',
+    color: 'Color',
+    types: 'Types',
+    arrayIndexes: 'Array indexes',
+    formattedOutputAria: 'Formatted JSON output',
+    treeOutputAria: 'JSON tree output',
+    emptyInput: 'Empty input: paste or type JSON to begin.',
+    errorLocation: (line, column, position) => `\nLine ${line}, column ${column}${position !== undefined ? `, position ${position}` : ''}`,
+    expandNode: 'Expand node',
+    collapseNode: 'Collapse node',
+    itemCount: (count) => `… ${count} items`,
+    kindNames: {},
+  },
+  ko: {
+    sampleLabels: {
+      'Developer profile': '개발자 프로필',
+      'API response': 'API 응답',
+      'Nested product data': '중첩 상품 데이터',
+      'Invalid JSON example': '잘못된 JSON 예시',
+    },
+    appAria: '대화형 JSON 파서',
+    localProcessing: '로컬 처리',
+    localPrivacy: 'JSON 데이터는 이 탭 밖으로 나가지 않습니다',
+    parserSettings: '파서 설정',
+    example: '예시',
+    editorLayout: '편집기 배치',
+    sideBySide: '나란히',
+    stacked: '위아래',
+    inputTitle: 'JSON 입력',
+    inputMeta: (lines, characters) => `${lines}줄 · ${characters}자`,
+    openFile: '파일 열기',
+    format: '정렬',
+    minify: '압축',
+    clear: '지우기',
+    inputAria: 'JSON 입력 붙여넣기',
+    inputPlaceholder: '여기에 JSON을 붙여넣으세요. LiveParse가 즉시 검증하고 정렬합니다.',
+    outputTitle: '파싱 결과',
+    outputLocalMeta: '브라우저 안에서만 처리됩니다',
+    outputView: '결과 보기',
+    textView: '텍스트',
+    treeView: '트리',
+    download: '다운로드',
+    copyOutput: '결과 복사',
+    copied: '복사됨',
+    copyFailed: '복사 실패',
+    validStatus: (kind) => `유효한 ${kind}`,
+    jsonError: 'JSON 오류',
+    waitingForInput: '입력 대기 중',
+    statsSummary: (stats) => `객체 ${stats.objects}개 · 배열 ${stats.arrays}개 · 속성 ${stats.properties}개 · 문자 ${stats.characters.toLocaleString()}자`,
+    valueStats: (stats) => `문자열 ${stats.strings}개 · 숫자 ${stats.numbers}개 · 불리언 ${stats.booleans}개 · null ${stats.nulls}개`,
+    viewOptions: '보기 옵션',
+    strictJson: '엄격한 JSON',
+    indent: '들여쓰기',
+    formattingIndentation: '정렬 들여쓰기',
+    twoSpaces: '공백 2칸',
+    fourSpaces: '공백 4칸',
+    minifiedOutput: '압축 결과',
+    color: '색상',
+    types: '타입',
+    arrayIndexes: '배열 인덱스',
+    formattedOutputAria: '정렬된 JSON 결과',
+    treeOutputAria: 'JSON 트리 결과',
+    emptyInput: '입력이 비어 있습니다. JSON을 붙여넣거나 입력해 시작하세요.',
+    errorLocation: (line, column, position) => `\n${line}행, ${column}열${position !== undefined ? `, 위치 ${position}` : ''}`,
+    expandNode: '노드 펼치기',
+    collapseNode: '노드 접기',
+    itemCount: (count) => `… 항목 ${count}개`,
+    kindNames: {
+      object: '객체',
+      array: '배열',
+      string: '문자열',
+      number: '숫자',
+      boolean: '불리언',
+      null: 'null',
+    },
+  },
+};
+
+const locale: Locale = document.documentElement.lang === 'ko' ? 'ko' : 'en';
+const t = translations[locale];
+const sampleNames = Object.keys(samples) as SampleName[];
 const initialJson = samples['Developer profile'];
 
 function getType(value: unknown): string {
@@ -73,7 +254,7 @@ function getType(value: unknown): string {
 }
 
 function parseWithPosition(input: string): ParseResult {
-  if (!input.trim()) return { ok: false, error: 'Empty input: paste or type JSON to begin.' };
+  if (!input.trim()) return { ok: false, error: t.emptyInput };
   try {
     const value = JSON.parse(input);
     const minified = JSON.stringify(value);
@@ -118,19 +299,19 @@ function buildStats(value: unknown, characters: number): JsonStats {
 }
 
 function statsSummary(stats: JsonStats): string {
-  return `${stats.objects} objects · ${stats.arrays} arrays · ${stats.properties} properties · ${stats.characters.toLocaleString()} chars`;
+  return t.statsSummary(stats);
 }
 
 function App() {
   const [input, setInput] = useState(initialJson);
   const [layout, setLayout] = useState<Layout>('side');
-  const [outputMode, setOutputMode] = useState<OutputMode>('text');
+  const [outputMode, setOutputMode] = useState<OutputMode>('tree');
   const [indent, setIndent] = useState<2 | 4>(2);
   const [minify, setMinify] = useState(false);
   const [colorize, setColorize] = useState(true);
   const [showTypes, setShowTypes] = useState(false);
   const [showIndex, setShowIndex] = useState(false);
-  const [copyLabel, setCopyLabel] = useState('Copy output');
+  const [copyLabel, setCopyLabel] = useState<string>(t.copyOutput);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const result = useMemo(() => parseWithPosition(input), [input]);
@@ -155,11 +336,11 @@ function App() {
   const copyOutput = async () => {
     try {
       await navigator.clipboard.writeText(outputText);
-      setCopyLabel('Copied');
-      window.setTimeout(() => setCopyLabel('Copy output'), 1300);
+      setCopyLabel(t.copied);
+      window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
     } catch {
-      setCopyLabel('Copy failed');
-      window.setTimeout(() => setCopyLabel('Copy output'), 1300);
+      setCopyLabel(t.copyFailed);
+      window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
     }
   };
 
@@ -182,17 +363,17 @@ function App() {
   };
 
   return (
-    <section className="parser-app" aria-label="Interactive JSON parser">
+    <section className="parser-app" aria-label={t.appAria}>
       <div className="tool-toolbar">
-        <div className="local-badge"><span aria-hidden="true"></span><strong>Local processing</strong><small>Your JSON never leaves this tab</small></div>
-        <div className="tool-settings" aria-label="Parser settings">
+        <div className="local-badge"><span aria-hidden="true"></span><strong>{t.localProcessing}</strong><small>{t.localPrivacy}</small></div>
+        <div className="tool-settings" aria-label={t.parserSettings}>
           <label className="select-label">
-            Example
+            {t.example}
             <select onChange={(event) => { setInput(samples[event.target.value]); setMinify(false); }} defaultValue="Developer profile">
-              {Object.keys(samples).map((name) => <option key={name} value={name}>{name}</option>)}
+              {sampleNames.map((name) => <option key={name} value={name}>{t.sampleLabels[name]}</option>)}
             </select>
           </label>
-          <Segmented label="Editor layout" value={layout} options={[["side", "Side by side"], ["top", "Stacked"]]} onChange={(value) => setLayout(value as Layout)} />
+          <Segmented label={t.editorLayout} value={layout} options={[["side", t.sideBySide], ["top", t.stacked]]} onChange={(value) => setLayout(value as Layout)} />
         </div>
       </div>
 
@@ -200,14 +381,14 @@ function App() {
         <section className="panel input-card" aria-labelledby="input-title">
           <PanelHeader
             id="input-title"
-            title="JSON input"
-            meta={`${lineCount} lines · ${input.length.toLocaleString()} characters`}
+            title={t.inputTitle}
+            meta={t.inputMeta(lineCount, input.length.toLocaleString())}
             actions={<>
               <input ref={fileInputRef} className="visually-hidden" type="file" accept=".json,application/json,text/json,text/plain" onChange={loadFile} tabIndex={-1} />
-              <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>Open file</button>
-              <button type="button" className="ghost-button" onClick={formatInput} disabled={!result.ok}>Format</button>
-              <button type="button" className="ghost-button" onClick={minifyInput} disabled={!result.ok}>Minify</button>
-              <button type="button" className="ghost-button danger" onClick={() => setInput('')}>Clear</button>
+              <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>{t.openFile}</button>
+              <button type="button" className="ghost-button" onClick={formatInput} disabled={!result.ok}>{t.format}</button>
+              <button type="button" className="ghost-button" onClick={minifyInput} disabled={!result.ok}>{t.minify}</button>
+              <button type="button" className="ghost-button danger" onClick={() => setInput('')}>{t.clear}</button>
             </>}
           />
           <textarea
@@ -222,46 +403,46 @@ function App() {
                 formatInput();
               }
             }}
-            aria-label="Paste JSON input"
-            placeholder="Paste JSON here. LiveParse validates and formats it instantly."
+            aria-label={t.inputAria}
+            placeholder={t.inputPlaceholder}
           />
         </section>
 
         <section className={`panel output-card ${result.ok ? 'json-valid' : input.trim() ? 'json-error' : 'json-empty'} ${colorize ? 'color' : ''} ${showTypes ? 'show-types' : ''} ${showIndex ? 'show-index' : ''}`} aria-labelledby="output-title">
           <PanelHeader
             id="output-title"
-            title="Parsed output"
-            meta={result.ok ? statsSummary(result.stats) : 'Processing stays local in your browser'}
+            title={t.outputTitle}
+            meta={result.ok ? statsSummary(result.stats) : t.outputLocalMeta}
             actions={<>
-              <Segmented label="Output view" value={outputMode} options={[["text", "Text"], ["tree", "Tree"]]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
-              <button type="button" className="ghost-button" onClick={downloadOutput}>Download</button>
+              <Segmented label={t.outputView} value={outputMode} options={[["text", t.textView], ["tree", t.treeView]]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
+              <button type="button" className="ghost-button" onClick={downloadOutput}>{t.download}</button>
               <button type="button" className="primary-button" onClick={copyOutput}>{copyLabel}</button>
             </>}
           />
 
           <div className="status-strip" role="status" aria-live="polite">
-            <span className="status-pill">{result.ok ? `Valid ${result.kind}` : input.trim() ? 'JSON error' : 'Waiting for input'}</span>
-            <span>{result.ok ? `${result.stats.strings} strings · ${result.stats.numbers} numbers · ${result.stats.booleans} booleans · ${result.stats.nulls} nulls` : formatError(result)}</span>
+            <span className="status-pill">{result.ok ? t.validStatus(t.kindNames[result.kind] ?? result.kind) : input.trim() ? t.jsonError : t.waitingForInput}</span>
+            <span>{result.ok ? t.valueStats(result.stats) : formatError(result)}</span>
           </div>
 
-          <div className="option-row" aria-label="View options">
-            <span className="strict-badge">Strict JSON</span>
-            <label className="indent-label">Indent
-              <select value={indent} onChange={(event) => setIndent(Number(event.target.value) as 2 | 4)} aria-label="Formatting indentation">
-                <option value={2}>2 spaces</option>
-                <option value={4}>4 spaces</option>
+          <div className="option-row" aria-label={t.viewOptions}>
+            <span className="strict-badge">{t.strictJson}</span>
+            <label className="indent-label">{t.indent}
+              <select value={indent} onChange={(event) => setIndent(Number(event.target.value) as 2 | 4)} aria-label={t.formattingIndentation}>
+                <option value={2}>{t.twoSpaces}</option>
+                <option value={4}>{t.fourSpaces}</option>
               </select>
             </label>
-            <Toggle checked={minify} onChange={() => setMinify((value) => !value)} label="Minified output" />
-            <Toggle checked={colorize} onChange={() => setColorize((value) => !value)} label="Color" />
-            <Toggle checked={showTypes} onChange={() => setShowTypes((value) => !value)} label="Types" />
-            <Toggle checked={showIndex} onChange={() => setShowIndex((value) => !value)} label="Array indexes" />
+            <Toggle checked={minify} onChange={() => setMinify((value) => !value)} label={t.minifiedOutput} />
+            <Toggle checked={colorize} onChange={() => setColorize((value) => !value)} label={t.color} />
+            <Toggle checked={showTypes} onChange={() => setShowTypes((value) => !value)} label={t.types} />
+            <Toggle checked={showIndex} onChange={() => setShowIndex((value) => !value)} label={t.arrayIndexes} />
           </div>
 
           <div className="output-views mono">
             {outputMode === 'text'
-              ? <div className="text-view" aria-label="Formatted JSON output">{result.ok && colorize ? <HighlightedJson text={outputText} /> : <pre>{outputText}</pre>}</div>
-              : <div className="tree-view" aria-label="JSON tree output">{result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}</div>}
+              ? <div className="text-view" aria-label={t.formattedOutputAria}>{result.ok && colorize ? <HighlightedJson text={outputText} /> : <pre>{outputText}</pre>}</div>
+              : <div className="tree-view" aria-label={t.treeOutputAria}>{result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}</div>}
           </div>
         </section>
       </div>
@@ -283,7 +464,7 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () =
 
 function formatError(result: ParseResult): string {
   if (result.ok) return '';
-  const where = result.line ? `\nLine ${result.line}, column ${result.column}${result.position !== undefined ? `, position ${result.position}` : ''}` : '';
+  const where = result.line ? t.errorLocation(result.line, result.column, result.position) : '';
   return `${result.error}${where}`;
 }
 
@@ -310,7 +491,7 @@ function TreeNode({ value, name, root = false, showIndex = false }: { value: Jso
   const open = Array.isArray(value) ? '[' : '{';
   const close = Array.isArray(value) ? ']' : '}';
   return <div className={`tree-node ${type} ${collapsed ? 'collapsed' : ''}`}>
-    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? 'Expand node' : 'Collapse node'} aria-expanded={!collapsed}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">… {entries.length} items</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
+    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? t.expandNode : t.collapseNode} aria-expanded={!collapsed}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">{t.itemCount(entries.length)}</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
     {!collapsed && <ol>
       {entries.map(([key, child]) => <li key={key}>{Array.isArray(value) && showIndex && <span className="index">{key}</span>}<TreeNode value={child} name={key} showIndex={showIndex} /></li>)}
     </ol>}
