@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import './coupang-banner';
 import './styles.css';
 
 type Layout = 'side' | 'top';

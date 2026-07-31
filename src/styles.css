@@ -153,6 +153,7 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .coupang-ad-disclosure { margin-top: 7px; margin-bottom: 0; line-height: 1.5; }
 .coupang-ad-scroll { width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
 .coupang-ad-slot { width: 680px; height: 140px; margin-inline: auto; }
+.coupang-ad-slot iframe { display: block; }
 
 .content-section { margin-top: 96px; scroll-margin-top: 22px; }
 .content-section.alt { padding: clamp(28px, 5vw, 58px); border: 1px solid rgba(255,255,255,.8); border-radius: 32px; background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(223,247,251,.66)); box-shadow: 0 22px 58px rgba(7,78,96,.08); }
