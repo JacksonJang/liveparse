@@ -1,71 +1,60 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import VirtualJsonTree from './components/VirtualJsonTree';
+import type { JsonStats, JsonWarning } from './lib/lossless-json';
+import { useLosslessJsonWorker } from './useLosslessJsonWorker';
 import './styles.css';
 
 type Layout = 'side' | 'top';
 type OutputMode = 'text' | 'tree';
-type JsonValue = null | string | number | boolean | JsonValue[] | { [key: string]: JsonValue };
+type Locale = 'en' | 'ko';
 
-type ParseResult =
-  | { ok: true; value: unknown; kind: string; minified: string; stats: JsonStats }
-  | { ok: false; error: string; line?: number; column?: number; position?: number };
-
-type JsonStats = {
-  objects: number;
-  arrays: number;
-  properties: number;
-  strings: number;
-  numbers: number;
-  booleans: number;
-  nulls: number;
-  characters: number;
-};
-
-const samples: Record<string, string> = {
-  'Developer profile': JSON.stringify({
-    name: 'Jackson Jang',
-    project: 'LiveParse',
-    role: 'Creator',
-    github: 'https://github.com/JacksonJang',
-    website: 'https://liveparse.com',
-    focus: ['JSON parser', 'developer tools', 'local-first web apps'],
-    privacy: 'JSON is parsed in the browser only',
-    active: true,
-  }, null, 2),
-  'API response': JSON.stringify({
-    status: 'success',
-    tool: 'LiveParse',
-    generatedAt: '2026-07-21T00:00:00Z',
-    data: {
-      localFirst: true,
-      features: ['validate JSON', 'format JSON', 'tree view', 'minify JSON', 'syntax highlighting'],
-      limits: null,
-    },
-  }, null, 2),
-  'Nested product data': JSON.stringify({
-    app: {
-      name: 'LiveParse',
-      tagline: 'A fast online JSON parser that keeps your data local',
-      domain: 'liveparse.com',
-    },
-    workflow: {
-      input: 'Paste strict JSON',
-      output: ['formatted text', 'interactive tree'],
-    },
-    privacy: {
-      processing: 'local browser tab',
-      uploads: false,
-    },
-  }, null, 2),
+const samples = {
+  'Lossless safety checks': `{
+  "safeInteger": 9007199254740991,
+  "snowflakeId": 9007199254740993,
+  "largeExponent": 1e400,
+  "decimalToken": 1.2300,
+  "event": "created",
+  "event": "updated"
+}`,
+  'Developer profile': `{
+  "name": "Jackson Jang",
+  "project": "LiveParse",
+  "role": "Creator",
+  "github": "https://github.com/JacksonJang",
+  "focus": ["lossless JSON", "developer tools", "local-first web apps"],
+  "active": true
+}`,
+  'API response': `{
+  "status": "success",
+  "requestId": 7443251909984833537,
+  "data": {
+    "localFirst": true,
+    "features": ["validate", "format", "virtual tree", "warnings"],
+    "limits": null
+  }
+}`,
+  'Nested product data': `{
+  "app": {
+    "name": "LiveParse",
+    "tagline": "Lossless JSON tools that keep data local",
+    "domain": "liveparse.com"
+  },
+  "workflow": {
+    "input": "Paste strict JSON",
+    "output": ["formatted text", "virtualized tree"]
+  },
+  "privacy": { "processing": "browser worker", "uploads": false }
+}`,
   'Invalid JSON example': `{
   "project": "LiveParse",
-  "features": ["parser", "tree", "colorize",],
+  "features": ["parser", "tree", "warnings",],
   "valid": false
 }`,
-};
+} as const;
 
 type SampleName = keyof typeof samples;
-type Locale = 'en' | 'ko';
 
 type UiText = {
   sampleLabels: Record<SampleName, string>;
@@ -78,7 +67,7 @@ type UiText = {
   sideBySide: string;
   stacked: string;
   inputTitle: string;
-  inputMeta: (lines: number, characters: string) => string;
+  inputMeta: (lines: string, characters: string) => string;
   openFile: string;
   format: string;
   minify: string;
@@ -94,13 +83,16 @@ type UiText = {
   copyOutput: string;
   copied: string;
   copyFailed: string;
-  validStatus: (kind: string) => string;
+  validStatus: (kind: string, warnings: number) => string;
   jsonError: string;
+  parsing: string;
+  workerError: string;
   waitingForInput: string;
-  statsSummary: (stats: JsonStats) => string;
+  statsSummary: (stats: JsonStats, durationMs: number) => string;
   valueStats: (stats: JsonStats) => string;
+  warningSummary: (count: number) => string;
   viewOptions: string;
-  strictJson: string;
+  losslessStrictJson: string;
   indent: string;
   formattingIndentation: string;
   twoSpaces: string;
@@ -112,23 +104,29 @@ type UiText = {
   formattedOutputAria: string;
   treeOutputAria: string;
   emptyInput: string;
-  errorLocation: (line: number, column?: number, position?: number) => string;
-  expandNode: string;
-  collapseNode: string;
-  itemCount: (count: number) => string;
+  errorLocation: (line: number, column: number, position: number) => string;
+  warningsHeading: (count: number) => string;
+  moreWarnings: (count: number) => string;
+  warningAt: (line: number, column: number, path: string) => string;
+  warningUnsafe: (raw: string) => string;
+  warningOverflow: (raw: string) => string;
+  warningRepresentation: (raw: string, representation: string, changed: boolean) => string;
+  warningDuplicate: (key: string, occurrence: number) => string;
+  largeTextPlain: string;
   kindNames: Record<string, string>;
 };
 
 const translations: Record<Locale, UiText> = {
   en: {
     sampleLabels: {
+      'Lossless safety checks': '64-bit & duplicate key checks',
       'Developer profile': 'Developer profile',
-      'API response': 'API response',
+      'API response': 'API response with Snowflake ID',
       'Nested product data': 'Nested product data',
       'Invalid JSON example': 'Invalid JSON example',
     },
-    appAria: 'Interactive JSON parser',
-    localProcessing: 'Local processing',
+    appAria: 'Interactive lossless JSON parser',
+    localProcessing: 'Local worker',
     localPrivacy: 'Your JSON never leaves this tab',
     parserSettings: 'Parser settings',
     example: 'Example',
@@ -142,9 +140,9 @@ const translations: Record<Locale, UiText> = {
     minify: 'Minify',
     clear: 'Clear',
     inputAria: 'Paste JSON input',
-    inputPlaceholder: 'Paste JSON here. LiveParse validates and formats it instantly.',
-    outputTitle: 'Parsed output',
-    outputLocalMeta: 'Processing stays local in your browser',
+    inputPlaceholder: 'Paste JSON here. Number tokens and duplicate keys stay intact.',
+    outputTitle: 'Lossless output',
+    outputLocalMeta: 'Parsing and formatting stay in your browser',
     outputView: 'Output view',
     textView: 'Text',
     treeView: 'Tree',
@@ -152,13 +150,16 @@ const translations: Record<Locale, UiText> = {
     copyOutput: 'Copy output',
     copied: 'Copied',
     copyFailed: 'Copy failed',
-    validStatus: (kind) => `Valid ${kind}`,
+    validStatus: (kind, warnings) => warnings > 0 ? `Valid ${kind} · ${warnings} warning${warnings === 1 ? '' : 's'}` : `Valid ${kind} · lossless`,
     jsonError: 'JSON error',
+    parsing: 'Checking…',
+    workerError: 'Parser unavailable',
     waitingForInput: 'Waiting for input',
-    statsSummary: (stats) => `${stats.objects} objects · ${stats.arrays} arrays · ${stats.properties} properties · ${stats.characters.toLocaleString()} chars`,
+    statsSummary: (stats, durationMs) => `${stats.objects} objects · ${stats.arrays} arrays · ${stats.properties} properties · ${stats.characters.toLocaleString()} chars · ${Math.max(1, Math.round(durationMs))} ms worker`,
     valueStats: (stats) => `${stats.strings} strings · ${stats.numbers} numbers · ${stats.booleans} booleans · ${stats.nulls} nulls`,
+    warningSummary: (count) => `${count} data-integrity warning${count === 1 ? '' : 's'} — output still preserves the original tokens`,
     viewOptions: 'View options',
-    strictJson: 'Strict JSON',
+    losslessStrictJson: 'Lossless strict JSON',
     indent: 'Indent',
     formattingIndentation: 'Formatting indentation',
     twoSpaces: '2 spaces',
@@ -167,24 +168,32 @@ const translations: Record<Locale, UiText> = {
     color: 'Color',
     types: 'Types',
     arrayIndexes: 'Array indexes',
-    formattedOutputAria: 'Formatted JSON output',
-    treeOutputAria: 'JSON tree output',
+    formattedOutputAria: 'Losslessly formatted JSON output',
+    treeOutputAria: 'Virtualized JSON tree output',
     emptyInput: 'Empty input: paste or type JSON to begin.',
-    errorLocation: (line, column, position) => `\nLine ${line}, column ${column}${position !== undefined ? `, position ${position}` : ''}`,
-    expandNode: 'Expand node',
-    collapseNode: 'Collapse node',
-    itemCount: (count) => `… ${count} items`,
+    errorLocation: (line, column, position) => `Line ${line}, column ${column}, position ${position}`,
+    warningsHeading: (count) => `Data integrity warnings (${count})`,
+    moreWarnings: (count) => `${count} more warnings are not shown. Download or search the tree to inspect the complete document.`,
+    warningAt: (line, column, path) => `Line ${line}, column ${column} · ${path}`,
+    warningUnsafe: (raw) => `${raw} is outside JavaScript's safe integer range. LiveParse preserved it exactly.`,
+    warningOverflow: (raw) => `${raw} would overflow a JavaScript Number and stringify as null. LiveParse preserved the token.`,
+    warningRepresentation: (raw, representation, changed) => changed
+      ? `${raw} would become ${representation} after a JavaScript Number round-trip.`
+      : `${raw} would be rewritten as ${representation}; the numeric value is equivalent but its spelling would change.`,
+    warningDuplicate: (key, occurrence) => `Duplicate key ${JSON.stringify(key)} (occurrence ${occurrence}) was preserved instead of replacing an earlier value.`,
+    largeTextPlain: 'Syntax color is disabled above 100 KB to keep the page responsive.',
     kindNames: {},
   },
   ko: {
     sampleLabels: {
+      'Lossless safety checks': '64비트·중복 키 검사',
       'Developer profile': '개발자 프로필',
-      'API response': 'API 응답',
+      'API response': 'Snowflake ID가 있는 API 응답',
       'Nested product data': '중첩 상품 데이터',
       'Invalid JSON example': '잘못된 JSON 예시',
     },
-    appAria: '대화형 JSON 파서',
-    localProcessing: '로컬 처리',
+    appAria: '대화형 lossless JSON 파서',
+    localProcessing: '로컬 Worker',
     localPrivacy: 'JSON 데이터는 이 탭 밖으로 나가지 않습니다',
     parserSettings: '파서 설정',
     example: '예시',
@@ -198,9 +207,9 @@ const translations: Record<Locale, UiText> = {
     minify: '압축',
     clear: '지우기',
     inputAria: 'JSON 입력 붙여넣기',
-    inputPlaceholder: '여기에 JSON을 붙여넣으세요. LiveParse가 즉시 검증하고 정렬합니다.',
-    outputTitle: '파싱 결과',
-    outputLocalMeta: '브라우저 안에서만 처리됩니다',
+    inputPlaceholder: '여기에 JSON을 붙여넣으세요. 숫자 원문과 중복 키를 그대로 보존합니다.',
+    outputTitle: '손실 없는 결과',
+    outputLocalMeta: '파싱과 출력 생성은 브라우저 안에서만 실행됩니다',
     outputView: '결과 보기',
     textView: '텍스트',
     treeView: '트리',
@@ -208,13 +217,16 @@ const translations: Record<Locale, UiText> = {
     copyOutput: '결과 복사',
     copied: '복사됨',
     copyFailed: '복사 실패',
-    validStatus: (kind) => `유효한 ${kind}`,
+    validStatus: (kind, warnings) => warnings > 0 ? `유효한 ${kind} · 경고 ${warnings}개` : `유효한 ${kind} · 손실 없음`,
     jsonError: 'JSON 오류',
+    parsing: '검사 중…',
+    workerError: '파서를 실행할 수 없음',
     waitingForInput: '입력 대기 중',
-    statsSummary: (stats) => `객체 ${stats.objects}개 · 배열 ${stats.arrays}개 · 속성 ${stats.properties}개 · 문자 ${stats.characters.toLocaleString()}자`,
+    statsSummary: (stats, durationMs) => `객체 ${stats.objects}개 · 배열 ${stats.arrays}개 · 속성 ${stats.properties}개 · 문자 ${stats.characters.toLocaleString()}자 · Worker ${Math.max(1, Math.round(durationMs))}ms`,
     valueStats: (stats) => `문자열 ${stats.strings}개 · 숫자 ${stats.numbers}개 · 불리언 ${stats.booleans}개 · null ${stats.nulls}개`,
+    warningSummary: (count) => `데이터 무결성 경고 ${count}개 — 출력은 원래 토큰을 그대로 보존합니다`,
     viewOptions: '보기 옵션',
-    strictJson: '엄격한 JSON',
+    losslessStrictJson: '손실 없는 엄격한 JSON',
     indent: '들여쓰기',
     formattingIndentation: '정렬 들여쓰기',
     twoSpaces: '공백 2칸',
@@ -223,124 +235,103 @@ const translations: Record<Locale, UiText> = {
     color: '색상',
     types: '타입',
     arrayIndexes: '배열 인덱스',
-    formattedOutputAria: '정렬된 JSON 결과',
-    treeOutputAria: 'JSON 트리 결과',
+    formattedOutputAria: '손실 없이 정렬된 JSON 결과',
+    treeOutputAria: '가상화된 JSON 트리 결과',
     emptyInput: '입력이 비어 있습니다. JSON을 붙여넣거나 입력해 시작하세요.',
-    errorLocation: (line, column, position) => `\n${line}행, ${column}열${position !== undefined ? `, 위치 ${position}` : ''}`,
-    expandNode: '노드 펼치기',
-    collapseNode: '노드 접기',
-    itemCount: (count) => `… 항목 ${count}개`,
-    kindNames: {
-      object: '객체',
-      array: '배열',
-      string: '문자열',
-      number: '숫자',
-      boolean: '불리언',
-      null: 'null',
-    },
+    errorLocation: (line, column, position) => `${line}행, ${column}열, 위치 ${position}`,
+    warningsHeading: (count) => `데이터 무결성 경고 (${count})`,
+    moreWarnings: (count) => `경고 ${count}개를 더 표시하지 않았습니다. 전체 문서는 내려받거나 트리에서 검색해 확인하세요.`,
+    warningAt: (line, column, path) => `${line}행, ${column}열 · ${path}`,
+    warningUnsafe: (raw) => `${raw}은(는) JavaScript 안전 정수 범위를 벗어납니다. LiveParse는 원문을 그대로 보존했습니다.`,
+    warningOverflow: (raw) => `${raw}은(는) JavaScript Number에서 오버플로되어 null로 직렬화될 수 있습니다. 원래 토큰은 보존됐습니다.`,
+    warningRepresentation: (raw, representation, changed) => changed
+      ? `${raw}은(는) JavaScript Number 왕복 변환 후 ${representation}(으)로 바뀝니다.`
+      : `${raw}은(는) 값은 같지만 ${representation}(으)로 표기가 바뀔 수 있습니다.`,
+    warningDuplicate: (key, occurrence) => `중복 키 ${JSON.stringify(key)}의 ${occurrence}번째 값을 앞선 값과 교체하지 않고 그대로 보존했습니다.`,
+    largeTextPlain: '100KB가 넘는 결과는 화면 반응성을 위해 구문 색상을 생략합니다.',
+    kindNames: { object: '객체', array: '배열', string: '문자열', number: '숫자', boolean: '불리언', null: 'null' },
   },
 };
 
 const locale: Locale = document.documentElement.lang === 'ko' ? 'ko' : 'en';
 const t = translations[locale];
 const sampleNames = Object.keys(samples) as SampleName[];
-const initialJson = samples['Developer profile'];
+const initialSample: SampleName = 'Lossless safety checks';
+const initialJson = samples[initialSample];
+const MAX_HIGHLIGHT_CHARACTERS = 100_000;
+const MAX_VISIBLE_WARNINGS = 40;
 
-function getType(value: unknown): string {
-  if (value === null) return 'null';
-  if (Array.isArray(value)) return 'array';
-  return typeof value;
-}
-
-function parseWithPosition(input: string): ParseResult {
-  if (!input.trim()) return { ok: false, error: t.emptyInput };
-  try {
-    const value = JSON.parse(input);
-    const minified = JSON.stringify(value);
-    return {
-      ok: true,
-      value,
-      kind: getType(value),
-      minified: minified ?? String(value),
-      stats: buildStats(value, input.length),
-    };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    const match = message.match(/position (\d+)/i);
-    const position = match ? Number(match[1]) : undefined;
-    const loc = position === undefined ? {} : positionToLineColumn(input, position);
-    return { ok: false, error: message, position, ...loc };
+function warningMessage(warning: JsonWarning): string {
+  switch (warning.code) {
+    case 'unsafe-integer': return t.warningUnsafe(warning.raw);
+    case 'number-overflow': return t.warningOverflow(warning.raw);
+    case 'number-representation-change': return t.warningRepresentation(
+      warning.raw,
+      warning.javascriptRepresentation,
+      warning.valueChanged,
+    );
+    case 'duplicate-key': return t.warningDuplicate(warning.key, warning.occurrence);
   }
 }
 
-function positionToLineColumn(text: string, position: number) {
-  const before = text.slice(0, position);
-  const lines = before.split('\n');
-  return { line: lines.length, column: lines[lines.length - 1].length + 1 };
-}
-
-function buildStats(value: unknown, characters: number): JsonStats {
-  const stats: JsonStats = { objects: 0, arrays: 0, properties: 0, strings: 0, numbers: 0, booleans: 0, nulls: 0, characters };
-  const walk = (v: unknown) => {
-    if (v === null) { stats.nulls += 1; return; }
-    if (Array.isArray(v)) { stats.arrays += 1; v.forEach(walk); return; }
-    if (typeof v === 'object') {
-      stats.objects += 1;
-      Object.values(v as Record<string, unknown>).forEach((item) => { stats.properties += 1; walk(item); });
-      return;
-    }
-    if (typeof v === 'string') stats.strings += 1;
-    if (typeof v === 'number') stats.numbers += 1;
-    if (typeof v === 'boolean') stats.booleans += 1;
-  };
-  walk(value);
-  return stats;
-}
-
-function statsSummary(stats: JsonStats): string {
-  return t.statsSummary(stats);
-}
-
 function App() {
-  const [input, setInput] = useState(initialJson);
+  const [input, setInput] = useState<string>(initialJson);
   const [layout, setLayout] = useState<Layout>('side');
   const [outputMode, setOutputMode] = useState<OutputMode>('tree');
   const [indent, setIndent] = useState<2 | 4>(2);
   const [minify, setMinify] = useState(false);
   const [colorize, setColorize] = useState(true);
   const [showTypes, setShowTypes] = useState(false);
-  const [showIndex, setShowIndex] = useState(false);
-  const [copyLabel, setCopyLabel] = useState<string>(t.copyOutput);
+  const [showIndex, setShowIndex] = useState(true);
+  const [copyLabel, setCopyLabel] = useState(t.copyOutput);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const workerState = useLosslessJsonWorker(input);
 
-  const result = useMemo(() => parseWithPosition(input), [input]);
-  const formatted = result.ok ? JSON.stringify(result.value, null, indent) : '';
-  const outputText = result.ok ? (minify ? result.minified : formatted) : formatError(result);
-  const lineCount = input ? input.split('\n').length : 0;
+  const inputEmpty = !input.trim();
+  const stateMatchesInput = workerState.source === input;
+  const response = stateMatchesInput && workerState.status === 'ready' ? workerState.response : undefined;
+  const result = response?.result;
+  const jsonDocument = result?.ok ? result.document : undefined;
+  const formatted = indent === 2 ? response?.formatted2 ?? '' : response?.formatted4 ?? '';
+  const outputText = useMemo(() => {
+    if (inputEmpty) return t.emptyInput;
+    if (!stateMatchesInput) return t.parsing;
+    if (workerState.status === 'empty') return t.emptyInput;
+    if (workerState.status === 'pending') return t.parsing;
+    if (workerState.status === 'failed') return workerState.message;
+    if (!workerState.response.result.ok) {
+      const error = workerState.response.result.error;
+      return `${error.message}\n${t.errorLocation(error.location.line, error.location.column, error.location.offset)}`;
+    }
+    return minify ? workerState.response.minified ?? '' : indent === 2
+      ? workerState.response.formatted2 ?? ''
+      : workerState.response.formatted4 ?? '';
+  }, [indent, inputEmpty, minify, stateMatchesInput, workerState]);
+  const lineCount = response ? response.lineCount.toLocaleString() : input ? '…' : '0';
+  const isReady = stateMatchesInput && workerState.status === 'ready';
+  const isValid = jsonDocument !== undefined;
+  const warningCount = jsonDocument?.warnings.length ?? 0;
 
   const formatInput = () => {
-    if (result.ok) {
-      setInput(formatted);
-      setMinify(false);
-    }
+    if (!jsonDocument) return;
+    setInput(formatted);
+    setMinify(false);
   };
 
   const minifyInput = () => {
-    if (result.ok) {
-      setInput(result.minified);
-      setMinify(true);
-    }
+    if (!jsonDocument || !response?.minified) return;
+    setInput(response.minified);
+    setMinify(true);
   };
 
   const copyOutput = async () => {
     try {
       await navigator.clipboard.writeText(outputText);
       setCopyLabel(t.copied);
-      window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
     } catch {
       setCopyLabel(t.copyFailed);
-      window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
     }
+    window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
   };
 
   const loadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -352,23 +343,48 @@ function App() {
   };
 
   const downloadOutput = () => {
-    const blob = new Blob([outputText], { type: result.ok ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8' });
+    const blob = new Blob([outputText], { type: isValid ? 'application/json;charset=utf-8' : 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = result.ok ? 'parsed.json' : 'json-error.txt';
+    link.download = isValid ? 'liveparse-lossless.json' : 'json-error.txt';
     link.click();
     URL.revokeObjectURL(url);
   };
 
+  const isPending = !inputEmpty && (!stateMatchesInput || workerState.status === 'pending');
+  const statusClass = isPending
+    ? 'json-pending'
+    : jsonDocument
+      ? warningCount > 0 ? 'json-warning' : 'json-valid'
+      : inputEmpty ? 'json-empty' : 'json-error';
+  const statusLabel = isPending
+    ? t.parsing
+    : workerState.status === 'failed'
+      ? t.workerError
+      : jsonDocument
+        ? t.validStatus(t.kindNames[jsonDocument.root.type] ?? jsonDocument.root.type, warningCount)
+        : inputEmpty ? t.waitingForInput : t.jsonError;
+  const statusDetail = isPending
+    ? t.outputLocalMeta
+    : jsonDocument
+      ? warningCount > 0 ? t.warningSummary(warningCount) : t.valueStats(jsonDocument.stats)
+      : outputText;
+
   return (
     <section className="parser-app" aria-label={t.appAria}>
       <div className="tool-toolbar">
-        <div className="local-badge"><span aria-hidden="true"></span><strong>{t.localProcessing}</strong><small>{t.localPrivacy}</small></div>
+        <div className="local-badge"><span aria-hidden="true" /><strong>{t.localProcessing}</strong><small>{t.localPrivacy}</small></div>
         <div className="tool-settings" aria-label={t.parserSettings}>
           <label className="select-label">
             {t.example}
-            <select onChange={(event) => { setInput(samples[event.target.value]); setMinify(false); }} defaultValue="Developer profile">
+            <select
+              onChange={(event) => {
+                setInput(samples[event.target.value as SampleName]);
+                setMinify(false);
+              }}
+              defaultValue={initialSample}
+            >
               {sampleNames.map((name) => <option key={name} value={name}>{t.sampleLabels[name]}</option>)}
             </select>
           </label>
@@ -385,9 +401,9 @@ function App() {
             actions={<>
               <input ref={fileInputRef} className="visually-hidden" type="file" accept=".json,application/json,text/json,text/plain" onChange={loadFile} tabIndex={-1} />
               <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>{t.openFile}</button>
-              <button type="button" className="ghost-button" onClick={formatInput} disabled={!result.ok}>{t.format}</button>
-              <button type="button" className="ghost-button" onClick={minifyInput} disabled={!result.ok}>{t.minify}</button>
-              <button type="button" className="ghost-button danger" onClick={() => setInput('')}>{t.clear}</button>
+              <button type="button" className="ghost-button" onClick={formatInput} disabled={!isValid}>{t.format}</button>
+              <button type="button" className="ghost-button" onClick={minifyInput} disabled={!isValid}>{t.minify}</button>
+              <button type="button" className="ghost-button danger" onClick={() => { setInput(''); setMinify(false); }}>{t.clear}</button>
             </>}
           />
           <textarea
@@ -407,25 +423,29 @@ function App() {
           />
         </section>
 
-        <section className={`panel output-card ${result.ok ? 'json-valid' : input.trim() ? 'json-error' : 'json-empty'} ${colorize ? 'color' : ''} ${showTypes ? 'show-types' : ''} ${showIndex ? 'show-index' : ''}`} aria-labelledby="output-title">
+        <section className={`panel output-card ${statusClass} ${colorize ? 'color' : ''}`} aria-labelledby="output-title">
           <PanelHeader
             id="output-title"
             title={t.outputTitle}
-            meta={result.ok ? statsSummary(result.stats) : t.outputLocalMeta}
+            meta={jsonDocument && response ? t.statsSummary(jsonDocument.stats, response.durationMs) : t.outputLocalMeta}
             actions={<>
               <Segmented label={t.outputView} value={outputMode} options={[["text", t.textView], ["tree", t.treeView]]} onChange={(value) => setOutputMode(value as OutputMode)} compact />
-              <button type="button" className="ghost-button" onClick={downloadOutput}>{t.download}</button>
-              <button type="button" className="primary-button" onClick={copyOutput}>{copyLabel}</button>
+              <button type="button" className="ghost-button" onClick={downloadOutput} disabled={!isReady}>{t.download}</button>
+              <button type="button" className="primary-button" onClick={() => void copyOutput()} disabled={!isReady}>{copyLabel}</button>
             </>}
           />
 
           <div className="status-strip" role="status" aria-live="polite">
-            <span className="status-pill">{result.ok ? t.validStatus(t.kindNames[result.kind] ?? result.kind) : input.trim() ? t.jsonError : t.waitingForInput}</span>
-            <span>{result.ok ? t.valueStats(result.stats) : formatError(result)}</span>
+            <span className="status-pill">{statusLabel}</span>
+            <span>{statusDetail}</span>
           </div>
 
+          {jsonDocument && warningCount > 0 && (
+            <WarningPanel warnings={jsonDocument.warnings} />
+          )}
+
           <div className="option-row" aria-label={t.viewOptions}>
-            <span className="strict-badge">{t.strictJson}</span>
+            <span className="strict-badge">{t.losslessStrictJson}</span>
             <label className="indent-label">{t.indent}
               <select value={indent} onChange={(event) => setIndent(Number(event.target.value) as 2 | 4)} aria-label={t.formattingIndentation}>
                 <option value={2}>{t.twoSpaces}</option>
@@ -438,13 +458,42 @@ function App() {
             <Toggle checked={showIndex} onChange={() => setShowIndex((value) => !value)} label={t.arrayIndexes} />
           </div>
 
-          <div className="output-views mono">
-            {outputMode === 'text'
-              ? <div className="text-view" aria-label={t.formattedOutputAria}>{result.ok && colorize ? <HighlightedJson text={outputText} /> : <pre>{outputText}</pre>}</div>
-              : <div className="tree-view" aria-label={t.treeOutputAria}>{result.ok ? <TreeNode value={result.value as JsonValue} name="root" root showIndex={showIndex} /> : <pre className="error-block">{formatError(result)}</pre>}</div>}
+          <div className={`output-views ${outputMode === 'tree' ? 'tree-active' : ''} mono`}>
+            {outputMode === 'text' ? (
+              <div className="text-view" aria-label={t.formattedOutputAria}>
+                {isValid && outputText.length > MAX_HIGHLIGHT_CHARACTERS && colorize && <p className="large-output-note">{t.largeTextPlain}</p>}
+                {isValid && colorize && outputText.length <= MAX_HIGHLIGHT_CHARACTERS
+                  ? <HighlightedJson text={outputText} />
+                  : <pre>{outputText}</pre>}
+              </div>
+            ) : (
+              <div className="tree-view" aria-label={t.treeOutputAria}>
+                {jsonDocument
+                  ? <VirtualJsonTree document={jsonDocument} locale={locale} showTypes={showTypes} showArrayIndexes={showIndex} />
+                  : <pre className={isReady ? 'error-block' : 'pending-block'}>{outputText}</pre>}
+              </div>
+            )}
           </div>
         </section>
       </div>
+    </section>
+  );
+}
+
+function WarningPanel({ warnings }: { warnings: JsonWarning[] }) {
+  const visibleWarnings = warnings.slice(0, MAX_VISIBLE_WARNINGS);
+  return (
+    <section className="warning-panel" aria-labelledby="warning-heading">
+      <h4 id="warning-heading">{t.warningsHeading(warnings.length)}</h4>
+      <ol>
+        {visibleWarnings.map((warning, index) => (
+          <li key={`${warning.code}-${warning.range.start}-${index}`}>
+            <strong>{warningMessage(warning)}</strong>
+            <span>{t.warningAt(warning.location.line, warning.location.column, warning.pathText)}</span>
+          </li>
+        ))}
+      </ol>
+      {warnings.length > visibleWarnings.length && <p>{t.moreWarnings(warnings.length - visibleWarnings.length)}</p>}
     </section>
   );
 }
@@ -461,12 +510,6 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () =
   return <button type="button" className={`toggle-chip ${checked ? 'on' : ''}`} onClick={onChange} aria-pressed={checked}>{label}</button>;
 }
 
-function formatError(result: ParseResult): string {
-  if (result.ok) return '';
-  const where = result.line ? t.errorLocation(result.line, result.column, result.position) : '';
-  return `${result.error}${where}`;
-}
-
 function HighlightedJson({ text }: { text: string }) {
   const tokens = text.split(/("(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)/g);
   return <pre>{tokens.map((token, index) => {
@@ -476,33 +519,8 @@ function HighlightedJson({ text }: { text: string }) {
     if (/^-?\d/.test(token)) cls = 'number';
     if (/^(true|false)$/.test(token)) cls = 'boolean';
     if (token === 'null') cls = 'null';
-    return cls ? <span key={`${token}-${index}`} className={cls}>{token}</span> : <React.Fragment key={`${token}-${index}`}>{token}</React.Fragment>;
+    return cls ? <span key={index} className={cls}>{token}</span> : <React.Fragment key={index}>{token}</React.Fragment>;
   })}</pre>;
-}
-
-function TreeNode({ value, name, root = false, showIndex = false }: { value: JsonValue; name: string; root?: boolean; showIndex?: boolean }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const type = getType(value);
-  const isComplex = type === 'object' || type === 'array';
-  const label = root ? '' : <><span className="property">{name}</span>: </>;
-  if (!isComplex) return <div className={`tree-line ${type}`}>{label}<Scalar value={value} /></div>;
-  const entries = Array.isArray(value) ? value.map((item, index) => [String(index), item] as const) : Object.entries(value as Record<string, JsonValue>);
-  const open = Array.isArray(value) ? '[' : '{';
-  const close = Array.isArray(value) ? ']' : '}';
-  return <div className={`tree-node ${type} ${collapsed ? 'collapsed' : ''}`}>
-    <div className="tree-line"><button className="tree-toggle" type="button" onClick={() => setCollapsed((current) => !current)} aria-label={collapsed ? t.expandNode : t.collapseNode} aria-expanded={!collapsed}>{collapsed ? '+' : '−'}</button>{label}<span className="bracket">{open}</span>{collapsed && <span className="collapsed-count">{t.itemCount(entries.length)}</span>}<span className="bracket">{collapsed ? close : ''}</span></div>
-    {!collapsed && <ol>
-      {entries.map(([key, child]) => <li key={key}>{Array.isArray(value) && showIndex && <span className="index">{key}</span>}<TreeNode value={child} name={key} showIndex={showIndex} /></li>)}
-    </ol>}
-    {!collapsed && <div className="tree-line"><span className="bracket">{close}</span></div>}
-  </div>;
-}
-
-function Scalar({ value }: { value: JsonValue }) {
-  if (typeof value === 'string') return <span className="string">{JSON.stringify(value)}</span>;
-  if (typeof value === 'number') return <span className="number">{String(value)}</span>;
-  if (typeof value === 'boolean') return <span className="boolean">{String(value)}</span>;
-  return <span className="null">null</span>;
 }
 
 createRoot(document.getElementById('root')!).render(<App />);

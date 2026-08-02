@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSON Parser – 무료 온라인 JSON 파서·포맷터 | LiveParse</title>
-    <meta name="description" content="JSON을 브라우저에서 무료로 파싱, 검증, 정렬, 압축하고 트리로 확인하세요. LiveParse JSON 파서는 입력 데이터를 서버로 업로드하지 않습니다." />
+    <title>손실 없는 JSON Parser – 64비트 숫자 보존 | LiveParse</title>
+    <meta name="description" content="64비트 정수, 큰 지수, 중복 키를 손상시키지 않고 JSON을 파싱·검증·정렬하세요. LiveParse는 입력을 브라우저에서 로컬로 처리합니다." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/ko/json-parser/" />
@@ -13,14 +13,19 @@
     <link rel="alternate" hreflang="x-default" href="https://liveparse.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/ko/json-parser/" />
-    <meta property="og:title" content="JSON Parser – 무료 온라인 JSON 파서·포맷터" />
-    <meta property="og:description" content="JSON 구문 오류를 찾고, 보기 좋게 정렬하거나 압축하며, 중첩 데이터를 트리로 탐색하는 브라우저 기반 JSON 파서입니다." />
+    <meta property="og:title" content="손실 없는 JSON Parser – 64비트 숫자 보존" />
+    <meta property="og:description" content="숫자 원문과 중복 키를 보존하고 데이터 손상 위험을 경고하는 브라우저 기반 lossless JSON 파서입니다." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Lossless JSON — 64비트 숫자 보존" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JSON Parser – 무료 온라인 JSON 파서·포맷터" />
-    <meta name="twitter:description" content="서버 업로드 없이 JSON을 파싱, 검증, 정렬, 압축하고 트리로 살펴보세요." />
+    <meta name="twitter:title" content="손실 없는 JSON Parser – 64비트 숫자 보존" />
+    <meta name="twitter:description" content="64비트 ID와 숫자 표현, 중복 키를 보존하면서 JSON을 로컬에서 파싱하세요." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
     <meta name="theme-color" content="#087487" />
     <script type="application/ld+json">
       {
@@ -50,9 +55,12 @@
               "name": "Jackson Jang",
               "url": "https://github.com/JacksonJang"
             },
-            "description": "입력을 브라우저에서 로컬로 처리하는 무료 온라인 JSON 파서, 포맷터, 구문 검사기, 압축기 및 트리 뷰어",
+            "description": "숫자 원문과 중복 키를 보존하며 입력을 브라우저에서 로컬로 처리하는 무료 lossless JSON 파서",
             "featureList": [
-              "엄격한 JSON 파싱과 구문 검증",
+              "손실 없는 엄격한 JSON 파싱과 구문 검증",
+              "64비트 정수와 숫자 원문 보존",
+              "중복 객체 키 보존 및 경고",
+              "안전 정수 범위와 지수 오버플로 경고",
               "가능한 경우 오류의 줄과 열 표시",
               "2칸 또는 4칸 들여쓰기 정렬",
               "JSON 공백 제거와 압축",
@@ -70,9 +78,9 @@
             "@type": "WebPage",
             "@id": "https://liveparse.com/ko/json-parser/#webpage",
             "url": "https://liveparse.com/ko/json-parser/",
-            "name": "JSON Parser – 무료 온라인 JSON 파서·포맷터",
-            "description": "JSON을 업로드하지 않고 파싱, 검증, 정렬, 압축하고 트리로 탐색하는 한국어 안내 페이지",
-            "dateModified": "2026-07-21",
+            "name": "손실 없는 JSON Parser – 64비트 숫자 보존",
+            "description": "숫자나 중복 키를 바꾸지 않고 JSON을 파싱, 검증, 정렬, 압축하고 트리로 탐색하는 한국어 페이지",
+            "dateModified": "2026-08-02",
             "inLanguage": "ko",
             "author": {
               "@type": "Person",
@@ -92,6 +100,8 @@
         <a class="brand" href="/ko/json-parser/" aria-label="LiveParse 한국어 JSON Parser 홈"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="nav-links">
           <a href="#parser">파서</a>
+          <a href="/json-repair/">JSON 복구</a>
+          <a href="/jsonl-parser/">JSONL</a>
           <a href="#how-to-parse-json">사용법</a>
           <a href="#common-json-errors">오류 해결</a>
           <a href="#faq">자주 묻는 질문</a>
@@ -100,9 +110,9 @@
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
-          <p class="eyebrow">무료 · 회원가입 없음 · 브라우저 로컬 처리</p>
+          <p class="eyebrow">손실 없음 · 회원가입 없음 · 브라우저 로컬 처리</p>
           <h1>JSON Parser</h1>
-          <p class="hero-lead">원본 JSON을 즉시 파싱하고 구문을 검사한 뒤 읽기 좋은 형태로 정렬하거나 압축하세요. LiveParse JSON 파서는 중첩된 객체와 배열을 접고 펼칠 수 있는 트리로 보여 주며, 붙여 넣은 내용은 서버로 전송하지 않습니다.</p>
+          <p class="hero-lead">64비트 ID, 큰 지수, 중복 키를 조용히 바꾸지 않고 JSON을 파싱·검증·정렬하세요. LiveParse는 숫자 토큰의 원문을 그대로 보존하고 위험한 변환 가능성을 알려 주며, 입력 내용은 서버로 전송하지 않습니다.</p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#parser">지금 JSON 파싱하기</a>
             <span>현재 브라우저 탭 안에서 실행됩니다</span>
@@ -113,7 +123,7 @@
           <pre><code><span class="property">"status"</span>: <span class="string">"ok"</span>,
 <span class="property">"private"</span>: <span class="boolean">true</span>,
 <span class="property">"items"</span>: [<span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>]</code></pre>
-          <p><strong>유효한 JSON</strong><span>구조 분석 완료</span></p>
+          <p><strong>유효함 · 손실 없음</strong><span>위험한 값은 별도 경고</span></p>
         </div>
       </div>
     </header>
@@ -124,7 +134,7 @@
           <p class="section-kicker">온라인 JSON 도구</p>
           <h2 id="parser-heading">JSON을 붙여 넣고 파싱·정렬·검증하세요</h2>
         </div>
-        <p>아래 입력창은 브라우저의 기본 JSON 파서를 사용합니다. 입력한 텍스트와 불러온 파일 내용은 이 도구가 서버에 제출하거나 저장하지 않으며, 유효한 결과를 텍스트 또는 트리로 바로 확인할 수 있습니다.</p>
+        <p>아래 입력은 브라우저 Worker의 lossless 토큰 파서로 처리됩니다. 숫자와 중복 객체 멤버를 손실되는 JavaScript 값으로 바꾸지 않으며, 입력이나 파일 내용은 서버에 제출하지 않습니다.</p>
       </section>
 
       <div id="root">
@@ -188,10 +198,10 @@
       <section class="content-section alt" id="privacy" aria-labelledby="privacy-heading">
         <div class="section-heading"><p class="section-kicker">데이터를 다루는 방식</p><h2 id="privacy-heading">JSON 내용은 브라우저 안에서 처리됩니다</h2></div>
         <div class="benefit-grid">
-          <article><span aria-hidden="true">01</span><h3>서버 업로드 없는 파싱</h3><p>붙여 넣거나 파일에서 읽은 JSON은 현재 탭의 JavaScript에서 <code>JSON.parse()</code>로 처리됩니다. 이 도구는 입력 내용, 정렬 결과 또는 트리 데이터를 LiveParse 서버에 제출하지 않습니다.</p></article>
+          <article><span aria-hidden="true">01</span><h3>서버 업로드 없는 파싱</h3><p>붙여 넣거나 파일에서 읽은 JSON은 현재 탭의 Worker에서 lossless AST로 처리됩니다. 이 도구는 입력 내용, 정렬 결과 또는 트리 데이터를 LiveParse 서버에 제출하지 않습니다.</p></article>
           <article><span aria-hidden="true">02</span><h3>현재 탭에 머무는 입력</h3><p>입력은 도구를 사용하는 동안 페이지 메모리에 존재합니다. 페이지를 새로 고치거나 탭을 닫기 전에 필요한 결과를 복사하거나 내려받으세요. 브라우저의 일반적인 화면 공유, 확장 프로그램, 클립보드 위험은 별도로 고려해야 합니다.</p></article>
           <article><span aria-hidden="true">03</span><h3>민감 정보는 최소화</h3><p>로컬 처리는 외부 전송을 줄이지만 모든 보안 의무를 대신하지는 않습니다. 가능하면 API 키, 액세스 토큰, 비밀번호, 개인 식별 정보는 붙여 넣기 전에 가리고 회사의 데이터 처리 규칙을 따르세요.</p></article>
-          <article><span aria-hidden="true">04</span><h3>예측 가능한 엄격한 검사</h3><p>주석이나 후행 쉼표를 임의로 허용하지 않고 브라우저의 표준 파서 결과를 그대로 사용합니다. 오류 위치는 브라우저가 위치 정보를 제공할 때 줄과 열로 표시되므로 환경에 따라 메시지 형식은 달라질 수 있습니다.</p></article>
+          <article><span aria-hidden="true">04</span><h3>예측 가능한 엄격한 검사</h3><p>주석이나 후행 쉼표를 임의로 허용하지 않고 JSON 문법을 직접 검사합니다. 문법 오류와 데이터 손상 위험 모두 정확한 줄과 열로 표시하며, 유효한 숫자 토큰과 반복 멤버는 원문 그대로 남깁니다.</p></article>
         </div>
       </section>
 
@@ -212,9 +222,9 @@
           <details><summary>붙여 넣은 JSON이 서버에 업로드되거나 저장되나요?</summary><p>아니요. 파싱과 출력 생성은 현재 브라우저 탭에서 실행되며 도구가 JSON 내용을 LiveParse에 전송하거나 저장하지 않습니다. 다만 웹페이지 자체를 내려받으려면 인터넷 연결이 필요하고, 운영체제의 클립보드 기록이나 설치된 브라우저 확장 프로그램은 이 도구의 제어 범위가 아닙니다.</p></details>
           <details><summary>JSON 파서, 검증기, 포맷터의 차이는 무엇인가요?</summary><p>파서는 텍스트를 구조화된 값으로 해석합니다. 검증기는 입력이 JSON 문법을 지키는지 확인하고, 포맷터는 유효한 결과의 공백과 들여쓰기를 일관되게 바꿉니다. LiveParse는 이 세 작업과 압축, 트리 탐색을 한 화면에서 제공합니다. 더 자세한 비교는 <a href="/guides/json-parser-vs-formatter-validator/" lang="en" hreflang="en">영문 파서·포맷터·검증기 비교 가이드</a>에서 확인할 수 있습니다.</p></details>
           <details><summary>주석, 작은따옴표, 후행 쉼표는 왜 오류인가요?</summary><p>일부 JavaScript 코드나 JSON5 같은 확장 형식에서는 허용되지만 RFC 8259와 ECMA-404가 정의한 JSON 문법에는 포함되지 않습니다. LiveParse는 일반적인 API와 프로그래밍 언어가 받는 표준 JSON을 확인할 수 있도록 확장 문법을 허용하지 않습니다.</p></details>
-          <details><summary>같은 객체에 중복된 키가 있으면 어떻게 되나요?</summary><p>JavaScript의 기본 <code>JSON.parse()</code>는 동일한 이름의 속성이 반복되면 뒤에 나온 값을 남깁니다. 오류로 표시되지 않더라도 앞의 값이 조용히 사라질 수 있고 다른 구현의 동작도 상호 운용성이 떨어질 수 있으므로, 데이터를 만드는 쪽에서 객체 키를 고유하게 유지하세요.</p></details>
-          <details><summary>아주 큰 정수를 그대로 확인할 수 있나요?</summary><p>주의가 필요합니다. 이 도구는 JSON 숫자를 JavaScript <code>number</code>로 파싱하므로 안전한 정수 범위를 넘는 값은 정밀도가 손실될 수 있습니다. 긴 주문 번호, 계정 ID, 64비트 정수가 정확히 보존되어야 한다면 생산 단계에서 숫자가 아니라 문자열로 인코딩하는 방법을 검토하세요.</p></details>
-          <details><summary>오류의 줄과 열이 항상 표시되나요?</summary><p>항상 그렇지는 않습니다. 브라우저의 파서 오류 메시지에 문자 위치가 포함된 경우 LiveParse가 그 위치를 줄과 열로 환산합니다. 브라우저가 위치를 제공하지 않으면 원래 오류 메시지만 보일 수 있습니다. 표시 지점 직전의 쉼표, 따옴표, 괄호도 함께 살펴보는 것이 좋습니다.</p></details>
+          <details><summary>같은 객체에 중복된 키가 있으면 어떻게 되나요?</summary><p>LiveParse는 반복된 멤버를 모두 lossless 트리와 정렬 결과에 남기고 중복 위치를 경고합니다. 표준 JSON Pointer와 JSONPath는 같은 이름의 반복 횟수를 구별할 수 없으므로, 복사한 경로가 모호할 때도 함께 표시합니다.</p></details>
+          <details><summary>아주 큰 정수를 그대로 확인할 수 있나요?</summary><p>네. <code>9007199254740993</code>, <code>1e400</code> 같은 숫자는 출력용 JavaScript <code>number</code>로 바꾸지 않고 원래 토큰으로 저장·복사합니다. 안전 정수 범위 초과, 지수 오버플로, 기본 재직렬화 시 표현 변경 가능성도 각각 경고합니다.</p></details>
+          <details><summary>오류와 경고의 줄과 열이 항상 표시되나요?</summary><p>네. LiveParse의 토큰 파서가 문법 오류와 데이터 무결성 경고의 문자 위치를 직접 기록하므로 줄과 열을 일관되게 표시합니다. 구문 오류가 있다면 표시 지점 직전의 쉼표, 따옴표, 괄호도 함께 살펴보세요.</p></details>
           <details><summary>JSON 스키마나 API 필드 규칙도 검증하나요?</summary><p>아니요. LiveParse가 확인하는 것은 JSON 문법과 파싱 가능한 구조입니다. 필수 필드 존재 여부, 날짜 형식, 허용 범위, JSON Schema 적합성, API별 비즈니스 규칙은 검사하지 않습니다. 문법 검사를 통과한 뒤 해당 API 문서나 전용 스키마 검증기를 사용하세요.</p></details>
         </div>
       </section>
@@ -234,11 +244,14 @@
       <div><a class="brand" href="/ko/json-parser/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Jackson Jang이 만든 브라우저 기반 JSON 파서입니다.</p></div>
       <div class="footer-links">
         <a href="#parser">JSON Parser</a>
+        <a href="/json-repair/">JSON 복구</a>
+        <a href="/jsonl-parser/">JSONL 파서</a>
         <a href="/" lang="en" hreflang="en">English home</a>
         <a href="/guides/what-is-a-json-parser/" lang="en" hreflang="en">영문 가이드</a>
+        <a href="/privacy/">개인정보·쿠키</a>
         <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">GitHub 소스</a>
       </div>
-      <p class="footer-note">최종 검토: 2026-07-21 · 작성자: Jackson Jang · JSON 입력은 서버에 업로드되지 않습니다</p>
+      <p class="footer-note">최종 검토: 2026-08-02 · JSON 입력은 서버에 업로드되지 않음 · 광고·분석 쿠키 없음</p>
     </footer>
 
     <noscript><p class="noscript-note">대화형 파서를 실행하려면 JavaScript가 필요합니다. JavaScript가 꺼져 있어도 이 페이지의 JSON 설명과 참고 자료는 읽을 수 있습니다.</p></noscript>

@@ -11,6 +11,15 @@ const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(PROJECT_ROOT, 'dist');
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parsePort(process.env.PORT || '4173');
+const DIRECTORY_ROUTES = new Set([
+  '/ko/json-parser',
+  '/json-repair',
+  '/jsonl-parser',
+  '/privacy',
+  '/guides/what-is-a-json-parser',
+  '/guides/common-json-errors',
+  '/guides/json-parser-vs-formatter-validator',
+]);
 
 const MIME_TYPES = new Map([
   ['.avif', 'image/avif'],
@@ -45,12 +54,14 @@ const SECURITY_HEADERS = Object.freeze({
     "connect-src 'self'",
     "font-src 'self'",
     "form-action 'self'",
-    "frame-src https://ads-partners.coupang.com",
+    "frame-src 'none'",
     "frame-ancestors 'none'",
     "img-src 'self' data:",
+    "manifest-src 'self'",
     "object-src 'none'",
-    "script-src 'self' https://pagead2.googlesyndication.com",
-    "style-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "worker-src 'self'",
     'upgrade-insecure-requests',
   ].join('; '),
   'Cross-Origin-Opener-Policy': 'same-origin',
@@ -122,6 +133,16 @@ function redirectToCanonical(request, response) {
   response.statusCode = 308;
   setSecurityHeaders(response);
   response.setHeader('Location', `${CANONICAL_ORIGIN}${requestPathAndQuery(request)}`);
+  response.setHeader('Cache-Control', 'public, max-age=3600');
+  response.setHeader('Content-Length', '0');
+  response.end();
+}
+
+function redirectToTrailingSlash(request, response, pathname) {
+  const parsed = new URL(request.url || '/', 'http://request.invalid');
+  response.statusCode = 308;
+  setSecurityHeaders(response);
+  response.setHeader('Location', `${pathname}/${parsed.search}`);
   response.setHeader('Cache-Control', 'public, max-age=3600');
   response.setHeader('Content-Length', '0');
   response.end();
@@ -223,6 +244,10 @@ async function handleRequest(distRoot, request, response) {
   const requestPath = decodedRequestPath(request);
   if (requestPath === null) {
     sendText(request, response, 400, 'Bad Request');
+    return;
+  }
+  if (DIRECTORY_ROUTES.has(requestPath)) {
+    redirectToTrailingSlash(request, response, requestPath);
     return;
   }
 

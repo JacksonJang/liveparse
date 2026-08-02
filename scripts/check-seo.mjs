@@ -8,6 +8,12 @@ const CANONICAL_ORIGIN = 'https://liveparse.com';
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(process.argv[2] || process.env.DIST_DIR || join(PROJECT_ROOT, 'dist'));
 const failures = [];
+const requiredPages = [
+  { relativePath: 'ko/json-parser/index.html', canonical: `${CANONICAL_ORIGIN}/ko/json-parser/`, label: 'Korean JSON parser' },
+  { relativePath: 'json-repair/index.html', canonical: `${CANONICAL_ORIGIN}/json-repair/`, label: 'JSON Repair tool' },
+  { relativePath: 'jsonl-parser/index.html', canonical: `${CANONICAL_ORIGIN}/jsonl-parser/`, label: 'JSONL Parser tool' },
+  { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
+];
 
 function fail(message) {
   failures.push(message);
@@ -130,18 +136,18 @@ function validateJsonLd(html, label, required = false) {
   });
 }
 
-function validatePageBasics(html, label, expectedCanonical, { minimumCharacters = 200 } = {}) {
+function validatePageBasics(html, label, expectedCanonical, { minimumCharacters = 200, requireJson = true, requireParsing = true } = {}) {
   const titles = titleValues(html);
   if (titles.length !== 1) fail(`${label}: expected exactly one non-empty <title>, found ${titles.length}`);
   else {
-    if (!/json/i.test(titles[0])) fail(`${label}: title must mention JSON`);
+    if (requireJson && !/json/i.test(titles[0])) fail(`${label}: title must mention JSON`);
     if (titles[0].length < 15 || titles[0].length > 90) fail(`${label}: title should be 15-90 characters`);
   }
 
   const descriptions = descriptionValues(html);
   if (descriptions.length !== 1) fail(`${label}: expected exactly one meta description, found ${descriptions.length}`);
   else {
-    if (!/json/i.test(descriptions[0])) fail(`${label}: meta description must mention JSON`);
+    if (requireJson && !/json/i.test(descriptions[0])) fail(`${label}: meta description must mention JSON`);
     if (descriptions[0].length < 50 || descriptions[0].length > 200) {
       fail(`${label}: meta description should be 50-200 characters`);
     }
@@ -162,16 +168,15 @@ function validatePageBasics(html, label, expectedCanonical, { minimumCharacters 
 
   const headings = h1Values(html);
   if (headings.length !== 1) fail(`${label}: expected exactly one non-empty H1, found ${headings.length}`);
-  else if (!/json/i.test(headings[0])) fail(`${label}: H1 must mention JSON`);
+  else if (requireJson && !/json/i.test(headings[0])) fail(`${label}: H1 must mention JSON`);
 
   const text = visibleText(html);
   const words = text.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) || [];
   if (text.length < minimumCharacters || words.length < 30) {
     fail(`${label}: visible static copy is too thin (${text.length} characters, ${words.length} words)`);
   }
-  if (!/json/i.test(text) || !/pars(?:e|er|ing)/i.test(text)) {
-    fail(`${label}: visible static copy must explain JSON parsing`);
-  }
+  if (requireJson && !/json/i.test(text)) fail(`${label}: visible static copy must discuss JSON`);
+  if (requireParsing && !/pars(?:e|er|ing)/i.test(text)) fail(`${label}: visible static copy must explain JSON parsing`);
 
 }
 
@@ -339,6 +344,18 @@ async function main() {
       }
     }
     if (!sitemapUrlSet.has(`${CANONICAL_ORIGIN}/`)) fail('sitemap.xml: homepage URL is missing');
+  }
+
+  for (const requirement of requiredPages) {
+    const pagePath = join(distRoot, requirement.relativePath);
+    const page = htmlByPath.get(pagePath) ?? (await readRequired(pagePath, requirement.label));
+    if (page === null) continue;
+    validatePageBasics(page, requirement.label, requirement.canonical, {
+      requireJson: requirement.requireJson ?? true,
+      requireParsing: requirement.requireParsing ?? true,
+    });
+    validateJsonLd(page, requirement.label, requirement.requireJson ?? true);
+    if (!sitemapUrlSet.has(requirement.canonical)) fail(`${requirement.label}: missing from sitemap.xml`);
   }
 
   const guideFiles = htmlFiles.filter((path) => isGuideHtml(relative(distRoot, path)));

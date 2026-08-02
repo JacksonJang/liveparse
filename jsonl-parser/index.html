@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSONL Parser &amp; NDJSON to CSV Converter | LiveParse</title>
+    <meta name="description" content="Parse, validate, filter, and convert JSONL or NDJSON to safe CSV locally. Find line errors and preserve 64-bit numbers and duplicate keys." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/jsonl-parser/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/jsonl-parser/" />
+    <meta property="og:title" content="JSONL Parser &amp; NDJSON to CSV Converter" />
+    <meta property="og:description" content="Inspect JSON Lines record by record, locate exact line errors, filter a virtualized table, and export formula-safe CSV without changing large numbers." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse lossless JSON tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSONL Parser &amp; NDJSON to CSV Converter" />
+    <meta name="twitter:description" content="Private line-by-line JSONL validation, filtering, tables, and safe CSV export." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#6e4cc9" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for working with JSON.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/jsonl-parser/#app",
+            "name": "LiveParse JSONL Parser",
+            "alternateName": "LiveParse NDJSON Parser",
+            "url": "https://liveparse.com/jsonl-parser/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSONL and NDJSON parser",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser with Web Worker support",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "description": "A private lossless JSON Lines and NDJSON validator, table viewer, filter, and formula-safe CSV converter.",
+            "featureList": [
+              "JSONL and NDJSON auto-detection",
+              "Line-by-line strict JSON validation",
+              "Exact line and column diagnostics",
+              "64-bit integer and numeric lexeme preservation",
+              "Duplicate object key detection and preservation",
+              "Key and value filtering",
+              "Virtualized record table",
+              "RFC-style CSV quoting",
+              "Spreadsheet formula injection protection",
+              "Local Web Worker processing"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/jsonl-parser/#webpage",
+            "url": "https://liveparse.com/jsonl-parser/",
+            "name": "JSONL Parser & NDJSON to CSV Converter",
+            "description": "Parse JSON Lines locally, inspect line errors, filter records, and export safe CSV without altering large numbers.",
+            "dateModified": "2026-08-02",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/jsonl-parser/#app" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="jsonl-skip-link" href="#jsonl-input">Skip to the JSONL parser</a>
+    <header class="jsonl-site-header">
+      <nav class="jsonl-nav" aria-label="Primary navigation">
+        <a class="jsonl-brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="jsonl-nav-links">
+          <a href="/">JSON Parser</a>
+          <a href="/json-repair/">JSON Repair</a>
+          <a href="/jsonl-parser/" aria-current="page">JSONL Parser</a>
+          <a href="#how-jsonl-works">How it works</a>
+          <a href="#jsonl-faq">FAQ</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+
+      <div class="jsonl-hero">
+        <div class="jsonl-hero-copy">
+          <p class="jsonl-eyebrow">One record per line · Local · Lossless</p>
+          <h1>JSONL Parser <span>&amp; NDJSON to CSV</span></h1>
+          <p class="jsonl-hero-lead">Validate JSON Lines record by record, jump to exact line errors, search keys and values, and export a spreadsheet-safe CSV. LiveParse keeps 64-bit IDs, overflowing exponents, and repeated object members intact.</p>
+          <div class="jsonl-hero-actions">
+            <a class="jsonl-hero-cta" href="#jsonl-tool">Parse JSONL now</a>
+            <span>No upload, account, or server-side parsing</span>
+          </div>
+        </div>
+        <div class="jsonl-hero-example" aria-label="Example JSON Lines file">
+          <div class="jsonl-example-bar"><i></i><i></i><i></i><strong>events.ndjson</strong></div>
+          <pre><code>{<span class="key">"event"</span>:<span class="value">"created"</span>,<span class="key">"id"</span>:<span class="number">9007199254740993</span>}
+{<span class="key">"event"</span>:<span class="value">"paid"</span>,<span class="key">"id"</span>:<span class="number">9007199254740993</span>}
+{<span class="key">"event"</span>:<span class="value">"shipped"</span>,<span class="key">"id"</span>:<span class="number">9007199254740993</span>}</code></pre>
+          <p><strong>3 valid records</strong><span>Large ID preserved</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main class="jsonl-main">
+      <section class="jsonl-tool-intro" id="jsonl-tool" aria-labelledby="jsonl-tool-heading">
+        <div><p class="jsonl-kicker">Interactive JSON Lines tool</p><h2 id="jsonl-tool-heading">Paste JSONL to validate, filter, and convert it</h2></div>
+        <p>Each non-empty physical line is parsed independently in a Web Worker. Valid records remain available even when another line is broken, so one malformed log entry does not hide the rest of the file.</p>
+      </section>
+
+      <div id="jsonl-root">
+        <section class="jsonl-fallback" aria-label="JSONL parser loading">
+          <p><strong>Loading the interactive JSONL parser…</strong></p>
+          <p>Enable JavaScript to validate records, filter the table, and export CSV.</p>
+        </section>
+      </div>
+
+      <section class="jsonl-content" id="what-is-jsonl" aria-labelledby="what-jsonl-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">The format in plain language</p>
+          <h2 id="what-jsonl-heading">What are JSONL and NDJSON?</h2>
+        </div>
+        <div class="jsonl-prose-grid">
+          <div>
+            <p><strong>JSON Lines</strong>, often saved as <code>.jsonl</code>, stores a complete JSON value on each line. <strong>Newline-delimited JSON</strong>, commonly saved as <code>.ndjson</code>, describes the same practical layout. A file can be processed one record at a time instead of loading one enormous outer array.</p>
+            <p>This shape works well for application logs, analytics events, database exports, machine-learning datasets, and streaming APIs. Appending one new event is easy, command-line tools can read a line at a time, and a bad record has a clear physical location.</p>
+            <p>JSONL is not a different JSON grammar. Every non-empty line must still be a complete strict JSON value: double-quoted strings, no comments, no trailing commas, and no Python <code>True</code>, <code>False</code>, or <code>None</code> literals. LiveParse skips visibly blank JSON-whitespace lines but reports them in the totals.</p>
+          </div>
+          <dl class="jsonl-definition-list">
+            <div><dt>JSONL</dt><dd>One complete JSON value per line; usually uses the <code>.jsonl</code> extension.</dd></div>
+            <div><dt>NDJSON</dt><dd>Newline-delimited JSON; usually uses <code>.ndjson</code>. The record model is equivalent.</dd></div>
+            <div><dt>Record</dt><dd>A single line containing an object, array, string, number, boolean, or null.</dd></div>
+            <div><dt>Delimiter</dt><dd>A line ending—LF or CRLF—separates one independent record from the next.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="jsonl-content alt" id="how-jsonl-works" aria-labelledby="how-jsonl-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">A reliable three-step workflow</p>
+          <h2 id="how-jsonl-heading">How to inspect a JSONL file online</h2>
+          <p>Use the parser as a first-pass data quality check before importing logs, events, or generated training records into another system.</p>
+        </div>
+        <ol class="jsonl-step-grid">
+          <li><span>1</span><h3>Paste or open a file</h3><p>Load <code>.jsonl</code>, <code>.ndjson</code>, JSON, or plain text. The text stays in your tab and is handed directly to a local worker.</p></li>
+          <li><span>2</span><h3>Review lines and warnings</h3><p>Check valid, error, blank, and warning totals. Every syntax error includes its physical line, UTF-16 column, parser code, and a source preview.</p></li>
+          <li><span>3</span><h3>Filter or export</h3><p>Search decoded keys and values, inspect the virtual table, copy formula-safe CSV, or download only the valid records as normalized JSONL.</p></li>
+        </ol>
+      </section>
+
+      <section class="jsonl-content" aria-labelledby="compare-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">Choose the right structure</p>
+          <h2 id="compare-heading">JSONL versus a JSON array</h2>
+          <p>Both can represent the same records, but their operational tradeoffs differ. The right choice depends on how the data is produced and consumed.</p>
+        </div>
+        <div class="jsonl-compare" role="table" aria-label="JSONL and JSON array comparison">
+          <div class="jsonl-compare-row head" role="row"><span role="columnheader">Concern</span><span role="columnheader">JSONL / NDJSON</span><span role="columnheader">JSON array</span></div>
+          <div class="jsonl-compare-row" role="row"><strong role="cell">Shape</strong><span role="cell">One independent JSON value per line.</span><span role="cell">One document containing an outer <code>[ ]</code> array.</span></div>
+          <div class="jsonl-compare-row" role="row"><strong role="cell">Streaming</strong><span role="cell">A consumer can process and discard each completed line.</span><span role="cell">A parser often waits for the closing bracket or uses a streaming JSON parser.</span></div>
+          <div class="jsonl-compare-row" role="row"><strong role="cell">Appending</strong><span role="cell">Append a line without rewriting earlier records.</span><span role="cell">The closing bracket and commas must remain valid.</span></div>
+          <div class="jsonl-compare-row" role="row"><strong role="cell">Errors</strong><span role="cell">A bad line can be isolated while other lines remain usable.</span><span role="cell">One syntax error invalidates the containing document.</span></div>
+          <div class="jsonl-compare-row" role="row"><strong role="cell">Human review</strong><span role="cell">Line numbers map directly to records but nested values stay compact.</span><span role="cell">Pretty indentation is easier for deeply nested manual reading.</span></div>
+        </div>
+      </section>
+
+      <section class="jsonl-content alt" aria-labelledby="integrity-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">Data integrity first</p>
+          <h2 id="integrity-heading">Why lossless JSONL parsing matters</h2>
+          <p>Log pipelines and export files often contain identifiers and measurements that are valid JSON numbers but cannot be represented safely by a JavaScript <code>number</code>.</p>
+        </div>
+        <div class="jsonl-benefit-grid">
+          <article><h3>64-bit IDs stay exact</h3><p>A token such as <code>9007199254740993</code> is retained as written. It is never rounded to <code>9007199254740992</code> for the table, filtered JSONL, or CSV.</p></article>
+          <article><h3>Overflow never becomes null</h3><p>A valid token such as <code>1e400</code> remains <code>1e400</code>. LiveParse warns that native JavaScript conversion would overflow instead of silently exporting <code>null</code>.</p></article>
+          <article><h3>Repeated keys remain visible</h3><p>For <code>{"tag":1,"tag":2}</code>, both members are retained and the table uses separate <code>tag</code> and <code>tag #2</code> columns. A duplicate warning points to the later occurrence.</p></article>
+        </div>
+      </section>
+
+      <section class="jsonl-content" aria-labelledby="csv-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">Safer spreadsheet handoff</p>
+          <h2 id="csv-heading">How JSONL to CSV conversion works</h2>
+          <p>Objects become rows and decoded top-level property names become columns in first-seen order. Missing properties produce empty cells. Arrays, nested objects, and repeated members remain compact lossless JSON inside one CSV field rather than being flattened unpredictably.</p>
+        </div>
+        <div class="jsonl-prose-grid">
+          <div>
+            <p>CSV fields containing a comma, quote, carriage return, or newline are enclosed in double quotes, and embedded quotes are doubled. Output uses CRLF line endings by default, following the conventional CSV record style described by RFC 4180.</p>
+            <p>Spreadsheet applications can interpret text beginning with <code>=</code>, <code>+</code>, <code>-</code>, or <code>@</code> as a formula. LiveParse prefixes those cells—including dangerous characters after leading whitespace—with an apostrophe before quoting. This favors safe inspection over automatic numeric typing. Review any CSV before importing it into a trusted operational workbook.</p>
+            <p>When a key/value filter is active, Copy CSV and Download CSV export the matching valid records. Clear the filter to export every valid line. Error lines are never invented or repaired during conversion; use <a href="/json-repair/">JSON Repair</a> when you intentionally want suggested fixes.</p>
+          </div>
+          <div class="jsonl-code-card">
+            <h3>Nested JSONL record</h3>
+            <pre><code>{"id":9007199254740993,
+ "labels":["paid","priority"],
+ "customer":{"region":"APAC"}}</code></pre>
+            <p>The ID remains exact. The labels array and customer object are serialized compactly into quoted CSV cells, with their original numeric tokens and repeated members preserved.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="jsonl-content alt" aria-labelledby="large-heading">
+        <div class="jsonl-section-heading">
+          <p class="jsonl-kicker">Designed for larger files</p>
+          <h2 id="large-heading">Worker parsing and a virtual record table</h2>
+          <p>The parser, key/value filter, row extraction, and export generation run away from the main page in a Web Worker. The table requests a small overscanned window instead of mounting every record as a DOM row.</p>
+        </div>
+        <div class="jsonl-benefit-grid">
+          <article><h3>Bounded browser rendering</h3><p>Only the visible neighborhood is rendered. Interactive browsing is capped at the first 100,000 matching records and 32 discovered columns so a highly irregular file cannot create millions of page elements.</p></article>
+          <article><h3>Full filtered export</h3><p>The browsing cap does not truncate exports. CSV column discovery and valid-JSONL downloads use the complete filtered record set held in the worker.</p></article>
+          <article><h3>Local does not mean unlimited</h3><p>Your device still needs memory for the input, parsed records, and requested export. For multi-gigabyte streams, a command-line streaming pipeline remains the more appropriate tool.</p></article>
+        </div>
+      </section>
+
+      <section class="jsonl-content" id="jsonl-faq" aria-labelledby="faq-heading">
+        <div class="jsonl-section-heading"><p class="jsonl-kicker">Questions answered</p><h2 id="faq-heading">JSONL parser FAQ</h2></div>
+        <div class="jsonl-faq">
+          <details open><summary>Are JSONL and NDJSON the same thing?</summary><p>For most tools, yes: both mean one complete JSON value per line. Naming and media-type conventions vary, but the line-oriented data model is the same. LiveParse accepts both <code>.jsonl</code> and <code>.ndjson</code> files.</p></details>
+          <details><summary>Does each line need to be a JSON object?</summary><p>No. A strict JSON string, array, number, boolean, or null can also be a record. Objects produce property columns; non-object records appear in a <code>$value</code> column.</p></details>
+          <details><summary>Can one record span several lines?</summary><p>No. JSONL uses the physical line ending as the record delimiter. If you paste one pretty-printed JSON document, LiveParse detects that case and directs you to the regular <a href="/">JSON Parser</a>.</p></details>
+          <details><summary>What happens to invalid lines during CSV export?</summary><p>They are excluded. The error list keeps their physical line, column, parser code, and preview visible, while valid records remain filterable and exportable. LiveParse does not guess a repair during conversion.</p></details>
+          <details><summary>Are large integers converted to scientific notation?</summary><p>No. Every JSON number remains an original text token. CSV cells use that exact token, including 64-bit IDs, decimal spelling, exponent notation, and negative zero.</p></details>
+          <details><summary>How are nested objects and arrays converted to CSV?</summary><p>They stay as compact JSON inside one CSV field. This avoids lossy flattening rules and preserves duplicate object members and exact number lexemes.</p></details>
+          <details><summary>Does the tool upload my log or dataset?</summary><p>No. File reading, parsing, filtering, table paging, and export generation happen in your browser. Read the <a href="/privacy/">privacy and cookie notice</a> for the site-wide policy and practical browser considerations.</p></details>
+        </div>
+      </section>
+
+      <aside class="jsonl-references" aria-labelledby="references-heading">
+        <div><p class="jsonl-kicker">Standards and references</p><h2 id="references-heading">Verify the underlying formats</h2></div>
+        <ul>
+          <li><a href="https://jsonlines.org/" target="_blank" rel="noreferrer">JSON Lines format</a></li>
+          <li><a href="https://github.com/ndjson/ndjson-spec" target="_blank" rel="noreferrer">NDJSON specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc4180" target="_blank" rel="noreferrer">RFC 4180: CSV</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="jsonl-site-footer">
+      <div><a class="jsonl-brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, lossless browser tools for JSON data.</p></div>
+      <div class="jsonl-footer-links">
+        <a href="/">JSON Parser</a>
+        <a href="/json-repair/">JSON Repair</a>
+        <a href="/jsonl-parser/">JSONL Parser</a>
+        <a href="/privacy/">Privacy &amp; cookies</a>
+        <a href="https://github.com/JacksonJang" target="_blank" rel="noreferrer">Creator profile</a>
+      </div>
+      <p class="jsonl-footer-note">Last reviewed August 2, 2026 · No JSONL uploads · No advertising or analytics cookies</p>
+    </footer>
+
+    <noscript><p class="jsonl-noscript">JavaScript is required for local JSONL parsing, table filtering, and CSV export. The reference content remains readable without it.</p></noscript>
+    <script type="module" src="/src/jsonl.tsx"></script>
+  </body>
+</html>

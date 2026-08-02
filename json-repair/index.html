@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Repair – Fix Invalid &amp; Truncated JSON Online | LiveParse</title>
+    <meta name="description" content="Repair trailing commas, single quotes, comments, Python literals, fenced output, and truncated LLM JSON locally. Review every change in a real diff." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/json-repair/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/json-repair/" />
+    <meta property="og:title" content="JSON Repair – Fix Invalid and Truncated JSON" />
+    <meta property="og:description" content="Repair common JSON mistakes locally, then inspect confidence, assumptions, data warnings, and a before-and-after diff." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Lossless JSON — 64-bit numbers preserved" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON Repair – Fix Invalid and Truncated JSON" />
+    <meta name="twitter:description" content="A local JSON repair tool with an explicit change list and lossless number warnings." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/json-repair/#application",
+            "name": "LiveParse JSON Repair",
+            "url": "https://liveparse.com/json-repair/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSON repair and validation tool",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "description": "A browser-based tool that repairs selected malformed JSON syntax, validates the repaired text without coercing number tokens, and presents confidence, assumptions, a structured change list, and a before-and-after diff.",
+            "featureList": [
+              "Trailing comma removal",
+              "Single-quoted key and string conversion",
+              "Line and block comment removal",
+              "Python True, False, and None conversion",
+              "Markdown fence and surrounding prose extraction",
+              "Truncated string and container completion",
+              "Lossless number and duplicate-key validation",
+              "Structured repair audit trail",
+              "Before-and-after JSON diff",
+              "Local browser processing"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/json-repair/#webpage",
+            "url": "https://liveparse.com/json-repair/",
+            "name": "JSON Repair – Fix Invalid and Truncated JSON Online",
+            "description": "Repair common malformed JSON patterns locally and review every automatic edit before using the result.",
+            "dateModified": "2026-08-02",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/json-repair/#application" }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#repair-input">Skip to the JSON repair input</a>
+
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Parser</a>
+          <a href="/json-repair/" aria-current="page">JSON Repair</a>
+          <a href="/jsonl-parser/">JSONL Parser</a>
+          <a href="#how-repair-works">How it works</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+
+      <div class="repair-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Local JSON repair · Explicit assumptions · Lossless validation</p>
+          <h1>Repair JSON without hiding the edits</h1>
+          <p class="hero-lead">Fix common JSON mistakes from LLM responses, logs, Python output, and hand-edited configuration. LiveParse keeps the source in your browser, preserves large number tokens and duplicate keys, and shows exactly what changed before you copy the result.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#repair-tool">Repair JSON now</a>
+            <span>No upload · No account · No <code>eval()</code></span>
+          </div>
+        </div>
+        <div class="hero-proof" aria-label="Example of a JSON repair audit">
+          <div class="proof-bar"><i></i><i></i><i></i><strong>assistant-output.txt</strong></div>
+          <pre><code>{
+  <span class="proof-change">'ready'</span>: <span class="proof-change">True</span>,
+  "event_id": <span class="proof-safe">9007199254740993</span>,
+  "items": [1, 2<span class="proof-change">,</span>]
+}</code></pre>
+          <p class="proof-footer"><strong>3 explicit repairs</strong><span>64-bit ID preserved as written</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-shell">
+      <section class="tool-intro" id="repair-tool" aria-labelledby="tool-intro-heading">
+        <div>
+          <p class="section-kicker">Interactive repair workspace</p>
+          <h2 id="tool-intro-heading">Paste broken JSON and review the proposed fix</h2>
+        </div>
+        <p>Repair happens after a short typing pause. A successful result has passed strict, lossless JSON validation, but low-confidence repairs can still represent the wrong intent. Read the assumptions and diff before using repaired data in production.</p>
+      </section>
+
+      <div id="repair-root">
+        <section class="repair-workbench" aria-label="JSON repair tool loading">
+          <div class="analysis-placeholder"><strong>Loading the local JSON repair tool…</strong><br />JavaScript is required for interactive repair, change tracking, and diff generation.</div>
+        </section>
+      </div>
+
+      <section class="content-section" id="what-json-repair-fixes" aria-labelledby="fixes-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Supported repairs</p>
+          <h2 id="fixes-heading">What this JSON repair tool fixes</h2>
+          <p>LiveParse targets a deliberately limited set of mistakes that appear frequently when JSON is copied from code, generated by a language model, or cut off during streaming. It does not run the input as JavaScript and it does not silently invent complex object structures.</p>
+        </div>
+        <div class="repair-type-grid">
+          <article><code>{"ok": true,}</code><h3>Trailing commas</h3><p>Removes a comma immediately before <code>}</code> or <code>]</code>. A comma stranded at the end of truncated input is marked as an assumption because a missing value may have followed it.</p></article>
+          <article><code>{'name': 'Ada'}</code><h3>Single quotes</h3><p>Converts single-quoted keys and strings into strict JSON double quotes. Internal apostrophes and unusual escapes trigger an assumption so that human review is not skipped.</p></article>
+          <article><code>// note</code><h3>Line and block comments</h3><p>Removes <code>//</code> and <code>/* … */</code> comments only when they occur outside strings. Text such as <code>https://</code> inside a quoted URL remains untouched.</p></article>
+          <article><code>True · False · None</code><h3>Python literals</h3><p>Changes Python booleans and null-like values to JSON <code>true</code>, <code>false</code>, and <code>null</code>. Matching words inside strings are preserved as normal text.</p></article>
+          <article><code>```json … ```</code><h3>Fences and surrounding prose</h3><p>Extracts a JSON-looking value from a Markdown code fence or an explanatory LLM response. Because selecting a payload from prose involves intent, the extraction is disclosed as an assumption.</p></article>
+          <article><code>{"items":[1,2</code><h3>Truncated output</h3><p>Closes a cut-off quoted string, array, or object when the remaining structure is unambiguous enough to validate. Missing property values may become <code>null</code>, always with low confidence.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="how-repair-works" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Repair you can audit</p>
+          <h2 id="how-heading">How LiveParse repairs JSON safely</h2>
+          <p>The result is more than a green “valid” badge. Four separate checks help you decide whether the repaired text is appropriate for your API, log pipeline, test fixture, or configuration file.</p>
+        </div>
+        <div class="principle-grid">
+          <article><span>01 · TEXT FIRST</span><h3>Edits stay at the token level</h3><p>The repair engine rewrites text directly. It never calls <code>eval()</code>, <code>Function()</code>, or a JavaScript expression parser, so pasted code cannot execute as part of repair.</p></article>
+          <article><span>02 · LOSSLESS</span><h3>Numbers are not coerced</h3><p>The repaired text is validated with an AST parser that retains each raw number token. Values such as <code>9007199254740993</code> and <code>1e400</code> are not routed through JavaScript <code>number</code>.</p></article>
+          <article><span>03 · DUPLICATES VISIBLE</span><h3>Repeated keys remain present</h3><p>Object members stay ordered in the lossless syntax tree. If a key appears twice, both occurrences remain in the repaired output and a warning identifies the duplicate instead of silently keeping only the last value.</p></article>
+          <article><span>04 · EXPLAINED</span><h3>Every change has an audit trail</h3><p>Direct transformations and assumptions are labeled separately. Source location, a compact before-and-after value, confidence score, and line diff make a risky guess easy to spot.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" id="repair-confidence" aria-labelledby="confidence-copy-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Confidence is not correctness</p>
+          <h2 id="confidence-copy-heading">What high, medium, and low confidence mean</h2>
+        </div>
+        <div class="limitations-grid">
+          <div>
+            <h3>A valid repair can still be semantically wrong</h3>
+            <p>Syntax repair can prove that the output follows the JSON grammar. It cannot know whether a missing amount should be <code>null</code> or zero, whether a truncated array omitted more records, or which duplicate key your application intended. Confidence describes the kind of edits made; it is not a probability that the business data is correct.</p>
+            <p>Keep the original input, compare the complete diff, and validate the result against your application rules or JSON Schema before replacing production data.</p>
+          </div>
+          <ul>
+            <li><strong>High confidence</strong>Only direct syntax conversions, such as a trailing comma or a complete Python literal, were required.</li>
+            <li><strong>Medium confidence</strong>The tool made a contextual choice, such as extracting a likely JSON value from surrounding text.</li>
+            <li><strong>Low confidence</strong>The source was truncated or required an invented delimiter or placeholder value. Manual review is essential.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="repair-limits" aria-labelledby="limits-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Know when to stop</p>
+          <h2 id="limits-heading">What the repair tool intentionally does not guess</h2>
+          <p>Automatic repair stops when the remaining syntax has several plausible meanings. Examples include a missing comma between two complete values, an unquoted expression, mismatched closing brackets, or prose with no identifiable JSON value. Stopping is safer than returning convincing but fabricated data.</p>
+        </div>
+        <div class="principle-grid">
+          <article><span>MANUAL REVIEW</span><h3>Business meaning and schemas</h3><p>LiveParse does not infer required fields, choose a currency, correct an ID, enforce an enum, or decide which duplicate property wins. Use domain checks or a schema validator after repair.</p></article>
+          <article><span>SECURITY BOUNDARY</span><h3>JavaScript and template expressions</h3><p>Functions, arithmetic, environment references, template literals, and executable expressions are rejected. This protects the local-only workflow and avoids turning data repair into code execution.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Common questions</p>
+          <h2 id="faq-heading">JSON Repair FAQ</h2>
+        </div>
+        <div class="faq-list">
+          <details open><summary>Does LiveParse upload the JSON I paste?</summary><p>No. Repair, lossless validation, warnings, and diff generation run in the current browser tab. The tool does not submit the JSON input to a LiveParse server. See the <a href="/privacy/">privacy page</a> for information about loading the website itself and any third-party services.</p></details>
+          <details><summary>Will a 64-bit integer change during repair?</summary><p>The repair pipeline keeps numeric tokens as text and validates them in a lossless AST. It does not use <code>JSON.parse()</code> followed by <code>JSON.stringify()</code>. Unsafe integers, exponent overflow, and number spellings that JavaScript would rewrite are warned about while the original numeric lexeme remains intact.</p></details>
+          <details><summary>What happens to duplicate object keys?</summary><p>Both members remain in their original order, and the lossless validator reports a duplicate-key warning. Different JSON consumers handle duplicate names differently, so resolve the duplication deliberately before sending the data to another system.</p></details>
+          <details><summary>Can I repair JSONL or NDJSON here?</summary><p>This page repairs one JSON value. Use the dedicated <a href="/jsonl-parser/">JSONL Parser</a> for newline-delimited records, line-specific errors, filtering, table inspection, and CSV export.</p></details>
+          <details><summary>Should repaired LLM JSON be trusted automatically?</summary><p>No. A model response may be syntactically repairable while still containing invented fields, omitted records, or incorrect values. Use the change list to understand syntax edits, then verify the actual data against the prompt, source material, and expected schema.</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Browser-based JSON tools that keep raw data local and make risky values visible.</p></div>
+      <div class="footer-links">
+        <a href="/">JSON Parser</a>
+        <a href="/json-repair/" aria-current="page">JSON Repair</a>
+        <a href="/jsonl-parser/">JSONL Parser</a>
+        <a href="/privacy/">Privacy &amp; cookies</a>
+        <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">GitHub source</a>
+      </div>
+      <p class="footer-note">Last reviewed August 2, 2026 · Automatic repair can change meaning · Review assumptions and the complete diff</p>
+    </footer>
+
+    <noscript><p class="noscript-note">JavaScript is required to run JSON repair and generate the change audit. The explanation of supported repairs, safety boundaries, and confidence levels remains available without it.</p></noscript>
+    <script type="module" src="/src/repair.tsx"></script>
+  </body>
+</html>

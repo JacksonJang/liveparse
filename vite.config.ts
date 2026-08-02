@@ -12,6 +12,8 @@ export default defineConfig({
       input: {
         main: resolve(projectRoot, 'index.html'),
         koJsonParser: resolve(projectRoot, 'ko/json-parser/index.html'),
+        jsonRepair: resolve(projectRoot, 'json-repair/index.html'),
+        jsonlParser: resolve(projectRoot, 'jsonl-parser/index.html'),
       },
     },
   },

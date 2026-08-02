@@ -1,19 +1,24 @@
 # LiveParse
 
-LiveParse is a local-first JSON parser for validating, formatting, minifying, and exploring JSON directly in the browser. The production site is available at [liveparse.com](https://liveparse.com/).
+LiveParse is a local-first, lossless JSON toolkit for validating, formatting, repairing, and exploring data directly in the browser. Unlike a `JSON.parse()`/`JSON.stringify()` pipeline, it preserves the original numeric lexemes and duplicate object members instead of silently changing them. The production site is available at [liveparse.com](https://liveparse.com/).
 
 ## Features
 
-- JSON parsing as you type in the browser
-- Strict JSON validation with line and column context when available
+- Lossless AST parsing that preserves 64-bit IDs, exponent notation, trailing zeroes, member order, and duplicate keys
+- Strict JSON validation with line and column context
+- Warnings for unsafe JavaScript integers, exponent overflow, number representation changes, and duplicate keys
+- Debounced Web Worker parsing so large inputs stay off the main UI thread
 - Side-by-side and top-bottom layouts
 - Two-space or four-space formatting and minified output
-- Syntax highlighting and text/tree output modes
-- Tree view with collapsible objects/arrays
+- Syntax highlighting and a virtualized tree for large documents
+- Key/value search, expand/collapse all, selected-node copy, JSONPath copy, and JSON Pointer copy
+- A dedicated JSON Repair tool with before/after diff, confidence, assumptions, and a detailed change log
+- A dedicated JSONL/NDJSON parser with line-level diagnostics, filtering, a paged table, and safe CSV export
 - Local file input, output copying, and JSON download
 - Optional type labels, array indexes, and sample payloads
 - No server-side JSON processing; pasted data remains local to the browser
-- Crawlable JSON reference content and three in-depth guides
+- No advertising, affiliate widgets, analytics, or optional third-party cookies in the current build
+- Crawlable, independent tool pages, a privacy notice, and three in-depth guides
 
 ## Local run
 
@@ -23,6 +28,14 @@ npm run dev
 ```
 
 Open `http://localhost:5173`.
+
+The main routes are `/`, `/ko/json-parser/`, `/json-repair/`, `/jsonl-parser/`, and `/privacy/`.
+
+Run the parser and UI utility tests with:
+
+```bash
+npm test
+```
 
 ## Production preview
 
