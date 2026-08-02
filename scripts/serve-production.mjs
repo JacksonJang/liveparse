@@ -49,7 +49,7 @@ const SECURITY_HEADERS = Object.freeze({
     "frame-ancestors 'none'",
     "img-src 'self' data:",
     "object-src 'none'",
-    "script-src 'self'",
+    "script-src 'self' https://pagead2.googlesyndication.com",
     "style-src 'self'",
     'upgrade-insecure-requests',
   ].join('; '),
