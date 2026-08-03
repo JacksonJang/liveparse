@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON to CSV Converter – Flatten Nested JSON Online | LiveParse</title>
+    <meta name="description" content="Convert JSON to CSV online with nested-object flattening, exact 64-bit number preservation, spreadsheet-safe cells, local file opening, and download." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/json-to-csv/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/json-to-csv/" />
+    <meta property="og:title" content="JSON to CSV Converter – Flatten Nested JSON Online" />
+    <meta property="og:description" content="Turn JSON arrays and objects into spreadsheet-ready CSV without uploading your data or rounding large numbers." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON data tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON to CSV Converter – Flatten Nested JSON" />
+    <meta name="twitter:description" content="Private, lossless JSON to CSV conversion with nested fields and spreadsheet-safe output." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for JSON and tabular data.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/json-to-csv/#application",
+            "name": "LiveParse JSON to CSV Converter",
+            "url": "https://liveparse.com/json-to-csv/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSON to CSV converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A free local JSON to CSV converter with nested-object flattening, lossless number tokens, duplicate-key columns, and spreadsheet formula protection.",
+            "featureList": [
+              "Convert a JSON array or single object to CSV",
+              "Flatten nested object keys into dot-path columns",
+              "Preserve exact 64-bit integer and decimal tokens",
+              "Keep duplicate JSON keys in separate columns",
+              "Protect CSV cells from spreadsheet formulas",
+              "Choose comma, semicolon, tab, or pipe delimiters",
+              "Open JSON files and download CSV locally"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/json-to-csv/#webpage",
+            "url": "https://liveparse.com/json-to-csv/",
+            "name": "JSON to CSV Converter – Flatten Nested JSON Online",
+            "description": "Convert JSON arrays and objects into safe, downloadable CSV in the browser.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/json-to-csv/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/json-to-csv/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/json-to-csv/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "JSON to CSV Converter", "item": "https://liveparse.com/json-to-csv/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="converter-page" data-converter="json-to-csv">
+    <a class="skip-link" href="#converter">Skip to the JSON to CSV converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Formatter</a>
+          <a href="/csv-to-json/">CSV to JSON</a>
+          <a href="/jsonl-parser/">JSONL Parser</a>
+          <a href="/json-repair/">JSON Repair</a>
+          <a href="#how-to-convert">How it works</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · Private · Spreadsheet-safe</p>
+          <h1>JSON to CSV Converter</h1>
+          <p class="hero-lead">Convert a JSON array or object to CSV online. Flatten nested fields, preserve 64-bit IDs and decimal tokens exactly, and protect spreadsheet cells from formula injection—all without uploading your data.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#converter">Convert JSON to CSV</a>
+            <span>No sign-up · Runs in your browser</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="JSON to CSV example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>customers.csv</strong></div>
+          <pre><code>id,name,address.city
+9007199254740993,Ada,London
+9007199254740995,Grace,New York</code></pre>
+          <p><strong>2 rows · 3 columns</strong><span>Exact IDs preserved</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="converter" aria-labelledby="converter-heading">
+        <div><p class="section-kicker">Online data converter</p><h2 id="converter-heading">Paste JSON and download clean CSV</h2></div>
+        <p>LiveParse parses strict JSON with its lossless engine, discovers every column across the records, and creates RFC 4180-style delimited output locally.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="JSON to CSV converter loading">
+          <p><strong>Loading the JSON to CSV converter…</strong></p>
+          <p>Enable JavaScript to convert, copy, and download CSV.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-convert" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Three quick steps</p>
+          <h2 id="how-heading">How to convert JSON to CSV online</h2>
+          <p>The converter accepts a JSON array of records, a single JSON object, or an array of primitive values. It does not send your input to an API.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste or open JSON</h3><p>Use an API response, database export, analytics payload, or local <code>.json</code> file. Strict syntax errors include a line and column.</p></li>
+          <li><span>2</span><h3>Choose the table shape</h3><p>Keep nested objects compact or flatten them into columns such as <code>address.city</code>. Select comma, semicolon, tab, or pipe output.</p></li>
+          <li><span>3</span><h3>Copy or download CSV</h3><p>Review the generated row and column totals, then copy the result or save a <code>.csv</code> file for Excel, Sheets, a database, or a script.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="nested-heading">
+        <div class="section-heading"><p class="section-kicker">Predictable flattening</p><h2 id="nested-heading">How nested JSON becomes a CSV table</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>CSV is a two-dimensional format, while JSON can contain objects and arrays at any depth. With <strong>Flatten nested objects</strong> enabled, LiveParse turns each nested object path into a column. For example, <code>{"address":{"city":"Seoul"}}</code> becomes an <code>address.city</code> column.</p>
+            <p>Nested arrays stay as compact JSON inside one correctly quoted cell. This avoids silently multiplying rows or losing the relationship between array items. Turn flattening off when another system expects the original nested object in a single cell.</p>
+            <p>Column headers are the union of keys found across all records, so later records can introduce fields without being discarded. Missing values become empty cells. Repeated JSON keys receive separate headers such as <code>status #2</code> instead of overwriting an earlier value.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Object</dt><dd>One row for a single object; multiple rows for an array of objects.</dd></div>
+            <div><dt>Nested object</dt><dd>Flattened to escaped dot-path columns, or kept as compact JSON.</dd></div>
+            <div><dt>Nested array</dt><dd>Serialized as compact JSON in one CSV cell.</dd></div>
+            <div><dt>Missing field</dt><dd>Written as an empty cell while the shared header remains.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="safety-heading">
+        <div class="section-heading"><p class="section-kicker">Data integrity first</p><h2 id="safety-heading">CSV output designed for real production data</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>64-bit numbers stay exact</h3><p>Large IDs such as <code>9007199254740993</code>, long decimals, and exponent notation are copied from the original JSON token instead of passing through a JavaScript number.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Spreadsheet formulas are neutralized</h3><p>Text beginning with <code>=</code>, <code>+</code>, <code>-</code>, or <code>@</code> receives a leading apostrophe so opening untrusted CSV is less likely to execute a formula.</p></article>
+          <article><span aria-hidden="true">03</span><h3>CSV quoting is automatic</h3><p>Commas, selected delimiters, quotes, and line breaks are escaped automatically. A quote inside a field is doubled before the entire field is quoted.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Your data stays local</h3><p>Parsing and conversion happen in the current browser tab. LiveParse does not upload, store, or log the JSON or CSV content you provide.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Common workflows</p><h2 id="uses-heading">When to convert JSON to CSV</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Analyze an API response</h3><p>Turn an array returned by a REST or GraphQL endpoint into columns that analysts can filter, sort, chart, or join.</p></article>
+          <article><h3>Open data in Excel or Sheets</h3><p>Export predictable CSV without first writing a conversion script or pasting sensitive records into a remote service.</p></article>
+          <article><h3>Prepare a database import</h3><p>Choose a delimiter required by a warehouse or relational database while keeping absent fields explicit and nested arrays intact.</p></article>
+          <article><h3>Convert logs and exports</h3><p>Move JSON records from browser storage, a NoSQL database, or an observability tool into a portable tabular file.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">JSON to CSV FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Is this JSON to CSV converter free?</summary><p>Yes. It is free to use without an account, quota, or paid tier.</p></details>
+          <details><summary>Can it convert nested JSON to CSV?</summary><p>Yes. Nested objects can be flattened into dot-path columns. Nested arrays remain compact JSON in one cell so the converter does not invent extra rows.</p></details>
+          <details><summary>Will large JSON numbers be rounded?</summary><p>No. LiveParse keeps the original JSON number token when creating CSV, including integers beyond JavaScript's safe range and decimals with trailing zeros.</p></details>
+          <details><summary>Does it support JSON with different keys in each record?</summary><p>Yes. Headers are collected from all records, not only the first one. A record without a particular key gets an empty cell in that column.</p></details>
+          <details><summary>Can I use semicolon, tab, or pipe delimiters?</summary><p>Yes. Choose comma, semicolon, tab, or pipe before converting. Fields containing the chosen delimiter are quoted automatically.</p></details>
+          <details><summary>How do I convert CSV back to JSON?</summary><p>Use the <a href="/csv-to-json/">CSV to JSON converter</a>. It supports headers, quoted fields, multiline values, optional type inference, and JSON downloads.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and references</p><h2 id="references-heading">Built around open formats</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc4180" target="_blank" rel="noreferrer">RFC 4180: CSV</a></li>
+          <li><a href="https://owasp.org/www-community/attacks/CSV_Injection" target="_blank" rel="noreferrer">OWASP: CSV Injection</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based JSON and data conversion tools.</p></div>
+      <div class="footer-links">
+        <a href="/">JSON Formatter</a><a href="/csv-to-json/">CSV to JSON</a><a href="/jsonl-parser/">JSONL Parser</a><a href="/json-repair/">JSON Repair</a><a href="/privacy/">Privacy</a>
+      </div>
+      <p class="footer-note">© 2026 Jackson Jang. Input is processed locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive JSON to CSV converter. The explanatory content remains available without it.</p></noscript>
+    <script type="module" src="/src/data-converter.tsx"></script>
+  </body>
+</html>

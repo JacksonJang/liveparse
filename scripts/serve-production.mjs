@@ -15,10 +15,21 @@ const DIRECTORY_ROUTES = new Set([
   '/ko/json-parser',
   '/json-repair',
   '/jsonl-parser',
+  '/json-to-csv',
+  '/csv-to-json',
+  '/json-compare',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
   '/guides/json-parser-vs-formatter-validator',
+  '/guides/compare-api-responses',
+  '/guides/compare-json-ignore-order',
+]);
+const ROUTE_REDIRECTS = new Map([
+  ['/json-diff', '/json-compare/'],
+  ['/json-diff/', '/json-compare/'],
+  ['/json-diff-checker', '/json-compare/'],
+  ['/json-diff-checker/', '/json-compare/'],
 ]);
 
 const MIME_TYPES = new Map([
@@ -103,13 +114,12 @@ function requestHostname(request) {
   }
 }
 
-function requestPathAndQuery(request) {
-  try {
-    const parsed = new URL(request.url || '/', 'http://request.invalid');
-    return `${parsed.pathname}${parsed.search}`;
-  } catch {
-    return '/';
-  }
+function normalizeKnownRoutePath(pathname) {
+  if (ROUTE_REDIRECTS.has(pathname)) return ROUTE_REDIRECTS.get(pathname);
+  if (DIRECTORY_ROUTES.has(pathname)) return `${pathname}/`;
+  if (pathname === '/index.html') return '/';
+  if (pathname.endsWith('/index.html')) return pathname.slice(0, -'index.html'.length);
+  return pathname;
 }
 
 function setSecurityHeaders(response) {
@@ -130,9 +140,15 @@ function sendText(request, response, statusCode, message, extraHeaders = {}) {
 }
 
 function redirectToCanonical(request, response) {
+  let parsed;
+  try {
+    parsed = new URL(request.url || '/', 'http://request.invalid');
+  } catch {
+    parsed = new URL('/', 'http://request.invalid');
+  }
   response.statusCode = 308;
   setSecurityHeaders(response);
-  response.setHeader('Location', `${CANONICAL_ORIGIN}${requestPathAndQuery(request)}`);
+  response.setHeader('Location', `${CANONICAL_ORIGIN}${normalizeKnownRoutePath(parsed.pathname)}${parsed.search}`);
   response.setHeader('Cache-Control', 'public, max-age=3600');
   response.setHeader('Content-Length', '0');
   response.end();
@@ -143,6 +159,27 @@ function redirectToTrailingSlash(request, response, pathname) {
   response.statusCode = 308;
   setSecurityHeaders(response);
   response.setHeader('Location', `${pathname}/${parsed.search}`);
+  response.setHeader('Cache-Control', 'public, max-age=3600');
+  response.setHeader('Content-Length', '0');
+  response.end();
+}
+
+function redirectFromIndexHtml(request, response, pathname) {
+  const parsed = new URL(request.url || '/', 'http://request.invalid');
+  const canonicalPath = pathname === '/index.html' ? '/' : pathname.slice(0, -'index.html'.length);
+  response.statusCode = 308;
+  setSecurityHeaders(response);
+  response.setHeader('Location', `${canonicalPath}${parsed.search}`);
+  response.setHeader('Cache-Control', 'public, max-age=3600');
+  response.setHeader('Content-Length', '0');
+  response.end();
+}
+
+function redirectToRoute(request, response, pathname) {
+  const parsed = new URL(request.url || '/', 'http://request.invalid');
+  response.statusCode = 308;
+  setSecurityHeaders(response);
+  response.setHeader('Location', `${pathname}${parsed.search}`);
   response.setHeader('Cache-Control', 'public, max-age=3600');
   response.setHeader('Content-Length', '0');
   response.end();
@@ -246,8 +283,16 @@ async function handleRequest(distRoot, request, response) {
     sendText(request, response, 400, 'Bad Request');
     return;
   }
+  if (ROUTE_REDIRECTS.has(requestPath)) {
+    redirectToRoute(request, response, ROUTE_REDIRECTS.get(requestPath));
+    return;
+  }
   if (DIRECTORY_ROUTES.has(requestPath)) {
     redirectToTrailingSlash(request, response, requestPath);
+    return;
+  }
+  if (requestPath === '/index.html' || requestPath.endsWith('/index.html')) {
+    redirectFromIndexHtml(request, response, requestPath);
     return;
   }
 

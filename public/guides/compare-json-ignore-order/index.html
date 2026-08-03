@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compare JSON Ignoring Order: Objects, Arrays &amp; Duplicates | LiveParse</title>
+    <meta name="description" content="Learn how to compare JSON while ignoring object or array order safely, with multiset rules, duplicate values, record IDs, number tokens, and examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/compare-json-ignore-order/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Compare JSON Ignoring Order: Objects, Arrays &amp; Duplicates" />
+    <meta property="og:description" content="Choose the right equality rule for reordered JSON objects and arrays, including duplicates, record IDs, and exact number tokens." />
+    <meta property="og:url" content="https://liveparse.com/guides/compare-json-ignore-order/" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON data tools" />
+    <meta property="article:published_time" content="2026-08-03" />
+    <meta property="article:modified_time" content="2026-08-03" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Compare JSON Ignoring Order" />
+    <meta name="twitter:description" content="A practical guide to object order, unordered arrays, duplicate values, ID matching, and JSON number equality." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/compare-json-ignore-order/#article",
+            "headline": "How to Compare JSON Ignoring Order (Without Hiding Changes)",
+            "description": "Learn how to compare JSON while ignoring object or array order safely, with multiset rules, duplicate values, record IDs, number tokens, and examples.",
+            "url": "https://liveparse.com/guides/compare-json-ignore-order/",
+            "mainEntityOfPage": "https://liveparse.com/guides/compare-json-ignore-order/",
+            "image": "https://liveparse.com/og.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "articleSection": "JSON comparison",
+            "inLanguage": "en",
+            "breadcrumb": {
+              "@id": "https://liveparse.com/guides/compare-json-ignore-order/#breadcrumb"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/compare-json-ignore-order/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "LiveParse",
+                "item": "https://liveparse.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Compare JSON Ignoring Order",
+                "item": "https://liveparse.com/guides/compare-json-ignore-order/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="LiveParse home">
+        <span class="brand-mark" aria-hidden="true">{ }</span>
+        <span>LiveParse</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/json-compare/">Compare JSON</a>
+        <a href="/json-repair/">Repair JSON</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav aria-label="Breadcrumb">
+            <p class="eyebrow"><a href="/">LiveParse</a> <span aria-hidden="true">›</span> JSON guides <span aria-hidden="true">›</span> Compare JSON ignoring order</p>
+          </nav>
+          <h1>How to Compare JSON Ignoring Order (Without Hiding Changes)</h1>
+          <p class="dek">“Ignore order” sounds like one checkbox, but JSON has two different kinds of order. Object members are unordered; array elements are ordered. A useful comparison changes only the rule your data model actually permits.</p>
+          <p class="byline">
+            <span>Written by <strong>Jackson Jang</strong></span>
+            <span>Published <time datetime="2026-08-03">August 3, 2026</time></span>
+            <span>Updated <time datetime="2026-08-03">August 3, 2026</time></span>
+            <span>13 minute read</span>
+          </p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> compare object members by name, not by the order in which they appear. Compare arrays by position unless the application contract says the array is set-like. If you ignore array order, use multiset semantics so duplicate counts still matter.</p>
+            </div>
+
+            <p>Reordered JSON appears everywhere: an API serializer emits fields in a new sequence, a configuration generator sorts keys, or a service returns tags in a different order. A text diff reports all of those movements. A semantic JSON comparison can remove the noise, but only after you define what “equal” means for the data.</p>
+            <p>The dangerous shortcut is to sort everything recursively. Sorting object names is often harmless for comparison. Sorting every array can change the meaning of ranked results, coordinates, workflow steps, queues, and any other sequence. The goal is not to produce the fewest differences; it is to report every difference that matters and suppress only presentation changes.</p>
+
+            <div class="tool-callout">
+              <p><strong>Compare a pair now:</strong> LiveParse compares parsed JSON by path, ignores object-member order, and lets you choose positional or unordered array matching. You can also decide whether number tokens such as <code>1</code> and <code>1.0</code> are distinct.</p>
+              <a class="button" href="/json-compare/">Open JSON Compare</a>
+            </div>
+
+            <h2 id="two-orders">Object order and array order are not the same</h2>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc8259#section-4" rel="external">RFC 8259, Section 4</a> defines a JSON object as an unordered collection of name/value pairs. These two documents therefore have the same members and values even though their source text differs:</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Object A</figcaption>
+                <pre><code>{
+  "id": 42,
+  "status": "ready",
+  "active": true
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Object B — same object data</figcaption>
+                <pre><code>{
+  "active": true,
+  "id": 42,
+  "status": "ready"
+}</code></pre>
+              </figure>
+            </div>
+            <p>A semantic comparator groups object members by their decoded names and compares the associated values. It does not treat moving <code>"active"</code> to the first line as a data change. A text diff still should report that movement when exact serialization, review history, or a signed byte sequence is the thing being checked.</p>
+
+            <p><a href="https://www.rfc-editor.org/rfc/rfc8259#section-5" rel="external">RFC 8259, Section 5</a>, in contrast, defines an array as an ordered sequence of values. The index is part of how an item is addressed. The following arrays contain the same three strings, but they are not normally equal:</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Expected ranking</figcaption>
+                <pre><code>["gold", "silver", "bronze"]</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Changed ranking</figcaption>
+                <pre><code>["silver", "gold", "bronze"]</code></pre>
+              </figure>
+            </div>
+            <p>At index <code>0</code>, the expected value is <code>"gold"</code> and the changed value is <code>"silver"</code>. At index <code>1</code>, the reverse is true. Ignoring that movement would hide a real ranking change. The same warning applies to latitude/longitude pairs, RGB channels, command arguments, pipeline stages, and chronological events.</p>
+
+            <h2 id="choose-semantics">Choose positional, set, or multiset semantics</h2>
+            <p>An application can impose a set-like interpretation on an array even though JSON itself keeps the array ordered. Tags, enabled feature names, or a list of permissions are common candidates. Write that rule into the application contract or test description instead of assuming it from the shape alone.</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Comparison rule</th>
+                    <th scope="col">What counts as equal</th>
+                    <th scope="col">Good fit</th>
+                    <th scope="col">Main risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Positional sequence</strong></td>
+                    <td>Same length and an equal value at every index</td>
+                    <td>Rankings, steps, coordinates, logs, queues</td>
+                    <td>Reports reorderings even when the domain does not care</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Set</strong></td>
+                    <td>Same distinct values, regardless of order or repetition</td>
+                    <td>A domain that explicitly forbids or discards duplicates</td>
+                    <td>Can hide duplicate-count changes</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Multiset</strong></td>
+                    <td>Same values with the same number of occurrences, regardless of order</td>
+                    <td>Order-insensitive data where repetition remains meaningful</td>
+                    <td>Still unsuitable when position conveys meaning</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>LiveParse's unordered option uses the multiset interpretation. That is a safer general definition of “ignore array order” because it does not silently erase repetitions. It matches equivalent whole values in any position while preserving how many copies occur.</p>
+
+            <h2 id="duplicates">Duplicate values still count</h2>
+            <p>Consider an inventory batch in which each string represents one physical item. Reordering the scan does not matter, but quantity does:</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Left array</figcaption>
+                <pre><code>["A", "A", "B"]</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Right array</figcaption>
+                <pre><code>["B", "A", "B"]</code></pre>
+              </figure>
+            </div>
+            <p>A set-only comparison reduces both sides to <code>{A, B}</code> and incorrectly calls them equal. A multiset comparison reports that one <code>"A"</code> was removed and one <code>"B"</code> was added. The same principle applies to repeated numbers, strings, objects, arrays, booleans, and null values.</p>
+            <p>Do not confuse duplicate <em>array values</em> with duplicate <em>object member names</em>. RFC 8259 says names within an object should be unique for interoperability, but its grammar does not make repetition a syntax error. Parsers differ in how they expose repeated names. Treat a document such as <code>{"role":"reader","role":"admin"}</code> as an input-quality problem, not as an ordinary ordering question.</p>
+
+            <h2 id="nested-data">Be careful with nested and mixed-purpose arrays</h2>
+            <p>An “ignore array order” switch often applies recursively. That produces the expected result when every relevant array is set-like, including nested collections. It is unsafe when one payload mixes unordered tags with an ordered history:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">One object, two different array contracts</figcaption>
+              <pre><code>{
+  "tags": ["sale", "new"],
+  "checkoutSteps": ["address", "payment", "confirm"]
+}</code></pre>
+            </figure>
+            <p>You may legitimately ignore order for <code>tags</code>, but not for <code>checkoutSteps</code>. LiveParse's array-order choice applies to the comparison as a whole. If the document mixes contracts, compare the relevant sub-array separately, keep positional comparison for the complete payload, or use a domain-specific test that applies a rule to selected JSON paths. Avoid globally sorting a production payload merely to make a test pass.</p>
+
+            <h2 id="match-by-id">When records should be matched by ID</h2>
+            <p>Arrays of objects introduce a third practical question: are records identified by position, by their entire value, or by a stable field? Suppose an API returns:</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Before</figcaption>
+                <pre><code>[
+  { "id": "u1", "name": "Ana", "role": "reader" },
+  { "id": "u2", "name": "Bo", "role": "editor" }
+]</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">After</figcaption>
+                <pre><code>[
+  { "id": "u2", "name": "Bo", "role": "admin" },
+  { "id": "u1", "name": "Ana", "role": "reader" }
+]</code></pre>
+              </figure>
+            </div>
+            <p>A positional diff produces changes at both indices. A whole-value unordered comparison matches Ana's unchanged record, but Bo's changed record appears as one removed object and one added object. A domain-aware comparator that matches by <code>id</code> can instead report the focused change <code>u2.role: "editor" → "admin"</code>.</p>
+            <p>Match-by-ID is powerful, but it requires rules a generic JSON comparator cannot safely invent:</p>
+            <ul>
+              <li>Every compared record needs the chosen identity field, or the missing-ID behavior must be defined.</li>
+              <li>IDs must be unique within each collection, or duplicate-ID matching becomes ambiguous.</li>
+              <li>The ID type matters: the number <code>7</code> and string <code>"7"</code> are different JSON values.</li>
+              <li>An ID change may mean “record renamed” or “old record removed and new record added”; only the domain can decide.</li>
+              <li>Matching by ID intentionally hides record movement, so do not use it when display or processing order is significant.</li>
+            </ul>
+            <p>LiveParse offers positional or whole-value unordered array matching; it does not ask you to nominate an ID field. For an automated domain test, validate identity first and then build maps explicitly:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">JavaScript sketch — validate before mapping</figcaption>
+              <pre><code>function indexUniqueRecords(records) {
+  const byId = new Map();
+
+  for (const record of records) {
+    if (!Object.hasOwn(record, "id")) throw new Error("Missing id");
+    const key = `${typeof record.id}:${String(record.id)}`;
+    if (byId.has(key)) throw new Error(`Duplicate id: ${key}`);
+    byId.set(key, record);
+  }
+
+  return byId;
+}</code></pre>
+            </figure>
+            <p>This sketch solves only identity indexing. The subsequent deep comparison still needs deliberate rules for numbers, nested arrays, missing fields, and duplicate object names.</p>
+
+            <h2 id="numbers">Number lexeme versus numeric value</h2>
+            <p>Even after you settle order, numbers need their own equality rule. A <em>lexeme</em> is the exact token written in the JSON source. The tokens <code>1</code>, <code>1.0</code>, and <code>1e0</code> are different character sequences, yet they denote the same mathematical value. Likewise, <code>-0</code> and <code>0</code> can be treated as the same numerical quantity while remaining different source tokens.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Token A</figcaption>
+                <pre><code>{ "threshold": 1.0 }</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Token B</figcaption>
+                <pre><code>{ "threshold": 1e0 }</code></pre>
+              </figure>
+            </div>
+            <p>Choose numeric-value comparison when the consumer cares only about the quantity. Choose exact-token comparison for serialization tests or contracts in which scale and spelling are evidence. Exact tokens are also useful when reviewing very large integers and long decimals: <a href="https://www.rfc-editor.org/rfc/rfc8259#section-6" rel="external">RFC 8259, Section 6</a> notes that implementations may impose limits on number range and precision, and describes the interoperability expectations associated with binary64 implementations.</p>
+            <p>A comparison tool should not round both inputs through a host-language number type before deciding equality if the original digits matter. LiveParse's <strong>Exact number tokens</strong> option keeps the source spelling visible. Turn it off when numerically equivalent JSON number forms should compare equal. Apply the choice consistently during unordered matching too: otherwise the number rule could change which array elements are paired.</p>
+
+            <h2 id="workflow">Step by step: compare JSON while ignoring order</h2>
+            <ol class="steps">
+              <li><strong>State the contract first.</strong> Write down which arrays are sequences, which are set-like, whether duplicates matter, and whether numbers compare by token or mathematical value. If you cannot answer, keep arrays positional; it preserves more evidence.</li>
+              <li><strong>Make both inputs valid JSON.</strong> A semantic diff requires two parseable documents. If a trailing comma, comment, or unquoted name blocks parsing, fix the producer or use <a href="/json-repair/">JSON Repair</a> on a copy, then verify every proposed change.</li>
+              <li><strong>Open <a href="/json-compare/">LiveParse JSON Compare</a>.</strong> Paste or open the earlier/expected document in <strong>Left JSON</strong> and the newer/actual document in <strong>Right JSON</strong>.</li>
+              <li><strong>Choose number behavior.</strong> Leave <strong>Exact number tokens</strong> enabled when <code>1</code> and <code>1.0</code> must differ. Disable it when equal mathematical JSON numbers should match despite notation.</li>
+              <li><strong>Choose array behavior.</strong> Leave <strong>Ignore array order</strong> off for normal positional comparison. Enable it only when every array being assessed can safely use duplicate-preserving, unordered matching. For a mixed payload, extract the set-like branch rather than weakening the rule globally.</li>
+              <li><strong>Select Compare JSON.</strong> You can also use <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd>. The result summarizes additions, removals, changed values, and type changes, with paths back to the affected data.</li>
+              <li><strong>Review unmatched values, not just the total.</strong> In unordered mode, a modified object may appear as a removal plus an addition because the entire value no longer matches. If records have stable identity, follow up with an ID-aware application test.</li>
+              <li><strong>Record the chosen rules.</strong> A result is meaningful only with its options. In a bug report or test, say “object order ignored; arrays compared as multisets; exact number tokens enabled” rather than merely “JSON equal.”</li>
+            </ol>
+
+            <h2 id="common-mistakes">Common approaches that give the wrong answer</h2>
+            <h3>Sorting serialized JSON strings</h3>
+            <p>Line sorting is not structural comparison. It loses nesting context, mishandles multi-line values, and can confuse identical text appearing at different paths. Parse first, then compare values using the intended rules.</p>
+
+            <h3>Recursively sorting every array</h3>
+            <p>This makes sequence changes disappear and requires an arbitrary ordering for mixed JSON types and objects. It may also mutate the data being tested. Use unordered matching without rewriting the originals, and scope it to the contract that permits it.</p>
+
+            <h3>Converting arrays to sets</h3>
+            <p>A set erases multiplicity. That is correct only if the domain explicitly treats duplicates as meaningless or invalid. Multiset matching is the safer default for an order-insensitive comparison.</p>
+
+            <h3>Using <code>JSON.stringify</code> equality</h3>
+            <p>Comparing two serialized strings can report unequal solely because object members were inserted in a different order. Parse-and-reserialize normalization may also discard source distinctions, including number spellings, and ordinary object parsing may not preserve duplicate member names as separate evidence.</p>
+
+            <h3>Assuming “no diff” proves a valid business object</h3>
+            <p>Equality says the two inputs match under selected rules. It does not prove required fields exist, values fall within allowed ranges, IDs are unique, or the payload satisfies a schema. Comparison and validation answer different questions.</p>
+
+            <h2 id="faq">Frequently asked questions</h2>
+            <h3>Does JSON key order matter?</h3>
+            <p>For the JSON data model, an object is unordered, so semantic comparison normally ignores member order. Source order can still matter to a text-level workflow, human review, or software that exposes ordering. Depending on it reduces interoperability, so distinguish exact serialization from object equality.</p>
+
+            <h3>Does JSON array order matter?</h3>
+            <p>Yes by default. An array is an ordered sequence under RFC 8259. Ignore its order only when an external application rule says the values form a set-like collection.</p>
+
+            <h3>Are <code>[1, 1, 2]</code> and <code>[2, 1, 1]</code> equal when order is ignored?</h3>
+            <p>They are equal under multiset semantics because each value occurs the same number of times. They are unequal positionally. Under exact-number comparison, a replacement of one <code>1</code> with <code>1.0</code> would also make the multisets different.</p>
+
+            <h3>Are <code>[1, 1, 2]</code> and <code>[1, 2, 2]</code> equal as sets?</h3>
+            <p>Their distinct-value sets are both <code>{1, 2}</code>, but their multisets differ. If duplicates represent quantity or repeated events, set comparison would hide one removed <code>1</code> and one added <code>2</code>.</p>
+
+            <h3>Should I sort arrays before comparing JSON?</h3>
+            <p>Only if sorting is itself a documented normalization for that particular field and you can define a stable comparator. Unordered matching is usually clearer because it leaves the source untouched. Never sort arrays whose indices carry meaning.</p>
+
+            <h3>Why does an unordered diff show an object as removed and added?</h3>
+            <p>Whole-value multiset matching pairs equal objects. Once a property inside a record changes, the old and new objects are no longer equal, so they remain unmatched. Match-by-ID can create a more focused field diff, but only when the domain guarantees a suitable identity field.</p>
+
+            <h3>Can I compare JSONL or NDJSON the same way?</h3>
+            <p><a href="/jsonl-parser/">JSONL and NDJSON</a> contain one JSON value per physical line rather than one surrounding JSON array. Decide first whether line order is meaningful, then compare records with an identity or multiset rule appropriate to the dataset. Use the JSONL parser to inspect validity and records before applying a domain-specific comparison.</p>
+
+            <h3>What if one side is invalid JSON?</h3>
+            <p>Fix validity before deciding semantic equality. Preserve the original, make the smallest justified change, and do not let an automatic repair guess silently. LiveParse's <a href="/json-repair/">JSON Repair</a> shows proposed changes for review.</p>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary reference</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format</a>.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259#section-4" rel="external">RFC 8259, Section 4: Objects</a> — object ordering and the interoperability guidance for member-name uniqueness.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259#section-5" rel="external">RFC 8259, Section 5: Arrays</a> — arrays as ordered sequences.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259#section-6" rel="external">RFC 8259, Section 6: Numbers</a> — JSON number grammar and implementation interoperability considerations.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Continue with the right JSON tool</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/json-compare/">
+                  <strong>JSON Compare</strong>
+                  <span>Compare two valid documents with positional or unordered arrays and exact number controls.</span>
+                </a>
+                <a class="related-card" href="/json-repair/">
+                  <strong>JSON Repair</strong>
+                  <span>Review proposed fixes when malformed syntax prevents a semantic comparison.</span>
+                </a>
+                <a class="related-card" href="/jsonl-parser/">
+                  <strong>JSONL Parser</strong>
+                  <span>Inspect line-delimited JSON records, errors, and tabular output.</span>
+                </a>
+                <a class="related-card" href="/">
+                  <strong>LiveParse home</strong>
+                  <span>Parse, format, inspect, and search a JSON document in your browser.</span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">In this guide</h2>
+            <ol>
+              <li><a href="#two-orders">Objects vs. arrays</a></li>
+              <li><a href="#choose-semantics">Three equality rules</a></li>
+              <li><a href="#duplicates">Duplicate values</a></li>
+              <li><a href="#nested-data">Nested arrays</a></li>
+              <li><a href="#match-by-id">Match by ID</a></li>
+              <li><a href="#numbers">Number equality</a></li>
+              <li><a href="#workflow">Tool workflow</a></li>
+              <li><a href="#common-mistakes">Common mistakes</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private browser-based JSON tools</p>
+      <p><a href="/">Home</a> · <a href="/json-compare/">JSON Compare</a> · <a href="/json-repair/">JSON Repair</a> · <a href="/jsonl-parser/">JSONL Parser</a></p>
+    </footer>
+  </body>
+</html>

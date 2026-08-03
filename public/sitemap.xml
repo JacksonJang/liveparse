@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://liveparse.com/</loc>
-    <lastmod>2026-08-02</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/ko/json-parser/</loc>
@@ -17,19 +17,39 @@
     <lastmod>2026-08-02</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/json-compare/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/json-to-csv/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/csv-to-json/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-02</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/guides/what-is-a-json-parser/</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/guides/common-json-errors/</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/guides/json-parser-vs-formatter-validator/</loc>
-    <lastmod>2026-07-21</lastmod>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/compare-api-responses/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/compare-json-ignore-order/</loc>
+    <lastmod>2026-08-03</lastmod>
   </url>
 </urlset>

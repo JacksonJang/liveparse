@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Compare API Responses with a JSON Diff | LiveParse</title>
+    <meta name="description" content="Compare API responses with a repeatable JSON diff workflow. Handle timestamps, array order, 64-bit numbers, duplicate keys, secrets, and contract tests." />
+    <link rel="canonical" href="https://liveparse.com/guides/compare-api-responses/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="How to Compare API Responses with a JSON Diff" />
+    <meta property="og:description" content="A practical baseline-versus-current workflow for finding meaningful JSON API changes without being misled by volatile data or formatting." />
+    <meta property="og:url" content="https://liveparse.com/guides/compare-api-responses/" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON data tools" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to Compare API Responses with a JSON Diff" />
+    <meta name="twitter:description" content="Compare baseline and current JSON API responses while accounting for volatile fields, ordering, precision, and contract boundaries." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/compare-api-responses/#article",
+            "headline": "How to Compare API Responses with a JSON Diff",
+            "description": "Compare API responses with a repeatable JSON diff workflow. Handle timestamps, array order, 64-bit numbers, duplicate keys, secrets, and contract tests.",
+            "mainEntityOfPage": "https://liveparse.com/guides/compare-api-responses/",
+            "url": "https://liveparse.com/guides/compare-api-responses/",
+            "image": "https://liveparse.com/og.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "articleSection": "API testing",
+            "inLanguage": "en",
+            "breadcrumb": { "@id": "https://liveparse.com/guides/compare-api-responses/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/compare-api-responses/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "LiveParse",
+                "item": "https://liveparse.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Compare API Responses",
+                "item": "https://liveparse.com/guides/compare-api-responses/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home">
+        <span class="brand-mark" aria-hidden="true">{ }</span>
+        <span>LiveParse</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/json-compare/">Compare JSON</a>
+        <a href="/guides/common-json-errors/">Troubleshoot JSON</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb">
+            <a href="https://liveparse.com/">Home</a>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">Compare API responses</span>
+          </nav>
+          <p class="eyebrow">API testing workflow</p>
+          <h1>How to Compare API Responses with a JSON Diff</h1>
+          <p class="dek">A useful API diff separates contract changes from harmless noise. This guide shows how to capture a trustworthy baseline, prepare a current response, choose JSON comparison rules, and investigate every meaningful difference.</p>
+          <p class="byline">
+            <span>Written by <strong>Jackson Jang</strong></span>
+            <span>Published <time datetime="2026-08-03">August 3, 2026</time></span>
+            <span>14 minute read</span>
+          </p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> capture one known-good response as the baseline, reproduce the same request for the current response, redact secrets, normalize only documented volatile values in copies, and compare the parsed JSON. Review object and array order separately, preserve exact large numbers, then use schema and behavior tests to decide whether each difference breaks the API contract.</p>
+            </div>
+
+            <h2 id="what-comparison-proves">What comparing API responses can—and cannot—prove</h2>
+            <p>An API response comparison answers a concrete question: under the comparison rules you selected, where does the current JSON differ from a chosen baseline? It can quickly expose a removed property, a new nested value, a type change from number to string, an array item that moved, or a response containing an unexpected error shape.</p>
+            <p>A diff is evidence, not a complete compatibility verdict. The baseline might be incomplete or already wrong. A newly added optional property may be backward-compatible even though it appears in the diff. Two identical bodies can still arrive with different HTTP status codes, media types, cache headers, timing, authorization behavior, or side effects. Keep the status line and relevant headers beside each body, and treat the JSON comparison as one layer of a broader API test.</p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Comparison layer</th>
+                    <th scope="col">Example question</th>
+                    <th scope="col">Best check</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Transport</td><td>Did the response remain <code>200</code> and <code>application/json</code>?</td><td>HTTP assertion</td></tr>
+                  <tr><td>Structure</td><td>Which JSON paths were added, removed, or changed?</td><td>Semantic JSON diff</td></tr>
+                  <tr><td>Contract</td><td>Are required fields, types, and allowed values still valid?</td><td>JSON Schema or explicit assertions</td></tr>
+                  <tr><td>Behavior</td><td>Did permissions, state changes, pagination, and errors still work?</td><td>Scenario-based integration tests</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="baseline-current">Build a fair baseline-versus-current pair</h2>
+            <p>The <strong>baseline</strong> is a response you have reviewed and intentionally accepted: for example, the production response before a release, a fixture approved with an API version, or an output from the last passing build. The <strong>current response</strong> is produced by the candidate version or environment under test. “Yesterday versus today” is only meaningful when the requests and data conditions are comparable.</p>
+            <ol class="steps">
+              <li><strong>Record the request.</strong> Save the HTTP method, full path, query parameters, relevant headers, API version, authenticated role, locale, and request body. A different page size or role can create a legitimate but misleading diff.</li>
+              <li><strong>Control the data.</strong> Prefer a seeded test account or synthetic fixture. If a live database keeps changing, identify which changes are expected before comparing responses.</li>
+              <li><strong>Capture raw evidence.</strong> Save the status, selected headers, and body before formatting or editing. Keep this immutable copy for diagnosis.</li>
+              <li><strong>Create safe working copies.</strong> Redact credentials and personal information. Apply the same documented normalization to both copies, without modifying the evidence files.</li>
+              <li><strong>Compare, classify, and verify.</strong> Run the JSON diff, label each change as expected, breaking, suspicious, or noise, and confirm the result with contract and behavior tests.</li>
+            </ol>
+
+            <h3>A representative example</h3>
+            <p>Suppose a catalogue endpoint returns the following known-good baseline and current payload. They differ in more than indentation: the request metadata is volatile, a 64-bit order identifier changed, the item order moved, one stock value changed type, and a new optional field appeared.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">Baseline response</figcaption>
+                <pre><code>{
+  "meta": {
+    "requestId": "req-a81",
+    "generatedAt": "2026-08-03T01:00:02Z"
+  },
+  "orderId": 9223372036854775806,
+  "items": [
+    { "sku": "A-10", "stock": 4 },
+    { "sku": "B-20", "stock": 0 }
+  ]
+}</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Current response</figcaption>
+                <pre><code>{
+  "orderId": 9223372036854775807,
+  "meta": {
+    "requestId": "req-f42",
+    "generatedAt": "2026-08-03T01:04:51Z"
+  },
+  "items": [
+    { "sku": "B-20", "stock": "0" },
+    { "sku": "A-10", "stock": 4 }
+  ],
+  "currency": "USD"
+}</code></pre>
+              </figure>
+            </div>
+            <p>Do not reduce this to “five changed lines.” Object member movement is normally irrelevant to parsed JSON, but array movement is meaningful by default. The large identifier must not be rounded. The string <code>"0"</code> is a type change even if an application later coerces it to zero. Whether <code>currency</code> is compatible depends on the published contract and consumer behavior.</p>
+
+            <h2 id="use-liveparse">Step by step: compare responses in LiveParse</h2>
+            <ol class="steps">
+              <li><strong>Open the <a href="/json-compare/">LiveParse JSON Compare tool</a>.</strong> Use redacted working copies, not the only copies of the original responses.</li>
+              <li><strong>Put the baseline on the left.</strong> Paste its body into “Left JSON” or open a local file. Give the file a clear name such as <code>catalog-v1-baseline.json</code>.</li>
+              <li><strong>Put the current response on the right.</strong> Paste or open the response produced by the candidate build, deployment, or API version.</li>
+              <li><strong>Choose number behavior.</strong> Leave <em>Exact number tokens</em> on when an integer, decimal scale, exponent spelling, or negative zero must be preserved. Turn it off only when mathematically equal JSON number spellings should compare as equal.</li>
+              <li><strong>Choose array behavior.</strong> Leave <em>Ignore array order</em> off for ranked results, coordinates, steps, pages, queues, and any contract where indices matter. Turn it on only when the whole array is explicitly set-like.</li>
+              <li><strong>Select Compare JSON.</strong> Both inputs must be strict JSON. If one is invalid, repair the producer or inspect it with the <a href="/json-repair/">JSON Repair tool</a> before relying on a semantic comparison.</li>
+              <li><strong>Read the summary, then the paths.</strong> Filter added, removed, changed, and type-changed results. Inspect the left and right snippets at every path; do not approve a response from the total count alone.</li>
+              <li><strong>Save a review artifact.</strong> Copy the summary or download the diff JSON, then record the chosen array and number options with the request details. The downloaded diff deliberately does not include the original documents.</li>
+            </ol>
+            <div class="tool-callout">
+              <p><strong>Ready to compare?</strong> LiveParse performs the comparison in the current browser tab and reports parsed, path-based differences without treating indentation as a data change.</p>
+              <a class="button" href="/json-compare/">Compare two JSON responses</a>
+            </div>
+
+            <h2 id="volatile-fields">Handle timestamps, IDs, and other volatile fields</h2>
+            <p>Request IDs, trace IDs, timestamps, nonce values, signed URLs, pagination cursors, processing durations, randomized recommendations, and generated object-storage keys commonly change on every call. Letting them dominate the result hides genuine regressions. Ignoring all of them blindly is also unsafe: the presence, type, format, monotonicity, or expiry of a volatile value may itself be part of the contract.</p>
+            <p>Start with a written list of paths and a reason for each normalization. Prefer replacing a value with a stable, type-preserving placeholder over deleting the member. For example, map both <code>$.meta.requestId</code> strings to <code>"&lt;request-id&gt;"</code> and both <code>$.meta.generatedAt</code> strings to <code>"&lt;timestamp&gt;"</code>. This keeps the property visible and still exposes a missing field or a type change.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Normalized working copy—not the raw evidence</figcaption>
+              <pre><code>{
+  "meta": {
+    "requestId": "&lt;request-id&gt;",
+    "generatedAt": "&lt;timestamp&gt;"
+  },
+  "orderId": 9223372036854775807
+}</code></pre>
+            </figure>
+            <div class="warning">
+              <p><strong>LiveParse does not currently implement per-path ignore rules.</strong> Prepare normalized copies before pasting them, or use a reviewed preprocessing step in your test code. Do not assume that the comparison tool silently ignores timestamps, IDs, or any other path—it compares the JSON you provide under only the displayed number and array-order options.</p>
+            </div>
+            <p>For automated tests, make normalization deterministic and version-controlled. Match exact paths, not broad text patterns that could alter legitimate values elsewhere. Test the normalizer itself, retain raw responses for debugging, and validate excluded fields separately—for example, assert that <code>generatedAt</code> is a valid timestamp even if its exact instant is not compared.</p>
+
+            <h2 id="ordering">Treat object order and array order differently</h2>
+            <p>RFC 8259 defines an object as an unordered collection of name/value pairs and an array as an ordered sequence. Therefore, moving <code>"orderId"</code> before <code>"meta"</code> should not create a semantic object change. A text diff will show movement because the bytes changed; a semantic JSON diff matches object members by name.</p>
+            <p>Array order is data by default. The arrays <code>["gold", "silver"]</code> and <code>["silver", "gold"]</code> contain the same strings but assign them different indices. Ignore order only when the API contract says the collection is set-like. Permissions and tags may qualify; search rankings, route points, event histories, and priority lists usually do not.</p>
+            <p>Unordered comparison also raises a duplicate question. <code>["read", "read", "write"]</code> is not the same multiset as <code>["read", "write"]</code>. LiveParse’s unordered mode preserves duplicate counts, but a business domain may instead prohibit duplicates entirely. For arrays of objects, a domain-specific test that matches records by a stable <code>id</code> can explain changes more clearly than globally ignoring position.</p>
+
+            <h2 id="numbers-duplicates">Protect exact 64-bit numbers and duplicate keys</h2>
+            <p>JSON’s number grammar does not impose JavaScript’s safe-integer limit. However, many programs convert JSON numbers to IEEE 754 binary64 values; consecutive integers above <code>9007199254740991</code> cannot all be represented exactly. A naïve <code>JSON.parse()</code>-then-compare workflow can therefore collapse distinct 64-bit identifiers such as <code>9223372036854775806</code> and <code>9223372036854775807</code>.</p>
+            <p>LiveParse parses and compares number tokens without first rounding them through native JavaScript numbers. With <em>Exact number tokens</em> selected, <code>1</code>, <code>1.0</code>, and <code>1e0</code> remain different. Without it, mathematically equivalent spellings compare as equal while genuinely different large integers remain distinguishable. For interoperable APIs, consider encoding opaque 64-bit identifiers as strings and documenting that decision; do not silently change an established public contract just to accommodate one client.</p>
+            <p>Duplicate object names are another lossy-parser trap. The JSON grammar allows an object to contain repeated names, although RFC 8259 says names <em>should</em> be unique for predictable interoperability. Given <code>{"role":"user","role":"admin"}</code>, libraries may keep the first value, keep the last, preserve both, or reject the input. LiveParse preserves occurrences and uses duplicate-aware paths such as <code>#2</code> in results. Treat any duplicate as an ambiguity to fix at the producer, especially for authorization, pricing, or signature-related data.</p>
+
+            <h2 id="interpret">Classify the diff instead of chasing zero changes</h2>
+            <p>A zero-difference result can be reassuring, but forcing every test toward zero changes encourages over-normalization. Classify each observed change according to its effect:</p>
+            <ul>
+              <li><strong>Expected:</strong> a documented optional field was added in the candidate version and tolerant consumers accept it.</li>
+              <li><strong>Breaking:</strong> a required property disappeared, a type changed, an enum value left the published set, or an ordered sequence changed unexpectedly.</li>
+              <li><strong>Suspicious:</strong> a price, permission, count, pagination link, or error detail changed without a matching scenario change.</li>
+              <li><strong>Volatile but validated elsewhere:</strong> a trace ID or timestamp differs, while separate assertions still check its presence, type, and format.</li>
+              <li><strong>Representation-only:</strong> whitespace, object member placement, or a number spelling changed where the contract explicitly cares only about parsed values.</li>
+            </ul>
+            <p>Record the decision beside the path and link it to a specification, change request, or test. That review history prevents the same difference from being rediscovered and dismissed by intuition in every release.</p>
+
+            <h2 id="contract-boundaries">Know the boundaries of contract testing</h2>
+            <p>Snapshot comparison is strongest when paired with focused assertions. A baseline shows one observed example; it does not prove that all required fields are always present, that every enum is handled, or that error responses follow the same contract. Use <a href="https://json-schema.org/draft/2020-12" rel="external">JSON Schema Draft 2020-12</a> or equivalent application checks to express reusable structural rules, and read the <a href="/guides/json-parser-vs-formatter-validator/">parser, formatter, and validator comparison</a> to understand what each successful check guarantees.</p>
+            <p>Add assertions outside the body for status codes, <code>Content-Type</code>, caching, deprecation and version headers, rate-limit behavior, and authentication challenges. Exercise representative success, validation-error, permission-error, empty-result, pagination, and partial-failure scenarios. Test side effects separately: identical response JSON does not prove that a database write, message publication, or idempotency guarantee behaved correctly.</p>
+            <p>Finally, apply compatibility rules from the actual consumer contract. An added property is often safe for clients that ignore unknown members, but it can break strict deserializers. Removing a nullable field may differ from returning it as <code>null</code>. Reordering a set-like array may be harmless, while reordering ranked search results is observable behavior. The diff locates the change; the contract decides its meaning.</p>
+
+            <h2 id="secrets">Compare responses without exposing secrets</h2>
+            <p>API payloads can contain bearer tokens, session cookies, API keys, password-reset links, private URLs, customer records, email addresses, addresses, and internal identifiers. Prefer synthetic or dedicated test data. Remove sensitive request headers before saving examples, and redact response secrets in both working copies with consistent placeholders.</p>
+            <p>The LiveParse comparison runs locally in the current browser tab rather than requiring your JSON to be sent to a comparison API. That reduces exposure, but it does not make sensitive material risk-free. Clipboard history, browser extensions, screen sharing, crash reports, downloaded diff files, and screenshots may still retain data. Follow your organization’s handling policy, use an approved browser profile and device, and never paste production credentials merely because a tool is local. See the site’s <a href="/privacy/">privacy explanation</a> for the product’s data-handling scope.</p>
+
+            <h2 id="checklist">Release-review checklist</h2>
+            <ul>
+              <li>The baseline was intentionally approved and its request context is recorded.</li>
+              <li>The current response used the same method, route, inputs, role, locale, version, and controlled dataset.</li>
+              <li>Raw status, headers, and bodies were retained separately from normalized copies.</li>
+              <li>Secrets and personal data were replaced with safe, consistent placeholders.</li>
+              <li>Every ignored or normalized path is documented and validated elsewhere.</li>
+              <li>Array order and exact-number options match the endpoint contract.</li>
+              <li>Large integers and duplicate names were reviewed without lossy parsing.</li>
+              <li>Every remaining diff is classified and backed by a contract or change decision.</li>
+              <li>Schema, HTTP, authorization, behavior, and side-effect tests cover what a body diff cannot.</li>
+            </ul>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>What is the best way to compare two API responses?</h3>
+              <p>Reproduce the same request against a known-good baseline and the current system, preserve raw responses, prepare redacted and consistently normalized copies, then use a semantic JSON diff. Review HTTP metadata and run schema and behavior assertions alongside the body comparison.</p>
+
+              <h3>Should I ignore timestamps when comparing JSON?</h3>
+              <p>Ignore only the exact timestamp value when the instant is expected to vary. Continue checking that the property exists, is a string, follows the required format, and meets any freshness or ordering rule. A stable placeholder in a working copy preserves more contract evidence than deleting the property.</p>
+
+              <h3>Why does a text diff report changes when the JSON is equivalent?</h3>
+              <p>A text diff sees indentation, line endings, escape spelling, and object member movement. A semantic JSON diff parses both documents and compares values under JSON-aware rules. Use text comparison when exact serialization matters; use semantic comparison when the parsed data is the subject.</p>
+
+              <h3>Can I ignore one JSON path in LiveParse?</h3>
+              <p>Not currently. LiveParse offers number-token and whole-array ordering options, but no per-path ignore list. Normalize reviewed paths in copies before comparison, or implement explicit preprocessing in your automated test suite and validate those excluded fields separately.</p>
+
+              <h3>Are 64-bit JSON integers safe in JavaScript?</h3>
+              <p>Not always as native <code>Number</code> values. Integers above <code>9007199254740991</code> may lose precision. Use a lossless parser, preserve the source token, or define opaque identifiers as strings in a contract designed for broad interoperability.</p>
+
+              <h3>Does matching JSON mean the API has not changed?</h3>
+              <p>No. It means the two supplied bodies matched under selected rules. Status codes, headers, latency, authorization, side effects, undocumented scenarios, and values absent from both examples may still differ. A diff complements contract and integration tests; it does not replace them.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary standards and specifications</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format</a> — JSON objects, arrays, numbers, duplicate-name interoperability, and parser behavior.</li>
+                <li><a href="https://ecma-international.org/publications-and-standards/standards/ecma-404/" rel="external">ECMA-404: The JSON Data Interchange Syntax</a> — the concise JSON syntax specification.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc6901" rel="external">RFC 6901: JavaScript Object Notation (JSON) Pointer</a> — a standard syntax for identifying values within a JSON document.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="external">RFC 9110: HTTP Semantics</a> — response status, field, representation, and request-method semantics beyond the JSON body.</li>
+                <li><a href="https://json-schema.org/draft/2020-12" rel="external">JSON Schema Draft 2020-12</a> — schema core and validation vocabularies for reusable data-contract checks.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Continue working with JSON</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/json-compare/">
+                  <strong>JSON Compare &amp; Diff</strong>
+                  <span>Compare two strict JSON documents by path with lossless number handling.</span>
+                </a>
+                <a class="related-card" href="/guides/what-is-a-json-parser/">
+                  <strong>What is a JSON parser?</strong>
+                  <span>Learn how source text becomes structured data and where information can be lost.</span>
+                </a>
+                <a class="related-card" href="/guides/common-json-errors/">
+                  <strong>Common JSON errors</strong>
+                  <span>Repair malformed quotes, commas, escapes, numbers, and response bodies.</span>
+                </a>
+                <a class="related-card" href="/json-to-csv/">
+                  <strong>JSON to CSV</strong>
+                  <span>Convert reviewed record-shaped JSON into a tabular file.</span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#what-comparison-proves">What a diff proves</a></li>
+              <li><a href="#baseline-current">Baseline and current</a></li>
+              <li><a href="#use-liveparse">Use LiveParse</a></li>
+              <li><a href="#volatile-fields">Volatile fields</a></li>
+              <li><a href="#ordering">Object and array order</a></li>
+              <li><a href="#numbers-duplicates">Numbers and duplicates</a></li>
+              <li><a href="#interpret">Classify changes</a></li>
+              <li><a href="#contract-boundaries">Contract boundaries</a></li>
+              <li><a href="#secrets">Handle secrets</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based JSON tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/json-compare/">JSON Compare</a> · <a href="/json-repair/">JSON Repair</a> · <a href="/jsonl-parser/">JSONL Parser</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSONL Parser &amp; NDJSON to CSV Converter | LiveParse</title>
-    <meta name="description" content="Parse, validate, filter, and convert JSONL or NDJSON to safe CSV locally. Find line errors and preserve 64-bit numbers and duplicate keys." />
+    <title>JSONL Validator &amp; NDJSON Viewer – Convert to CSV | LiveParse</title>
+    <meta name="description" content="Validate and view JSONL or NDJSON online, find the exact invalid line, filter records, and convert to safe CSV without changing 64-bit numbers." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/jsonl-parser/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/jsonl-parser/" />
-    <meta property="og:title" content="JSONL Parser &amp; NDJSON to CSV Converter" />
+    <meta property="og:title" content="JSONL Validator &amp; NDJSON Viewer – Convert to CSV" />
     <meta property="og:description" content="Inspect JSON Lines record by record, locate exact line errors, filter a virtualized table, and export formula-safe CSV without changing large numbers." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
@@ -19,7 +19,7 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="LiveParse lossless JSON tools" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="JSONL Parser &amp; NDJSON to CSV Converter" />
+    <meta name="twitter:title" content="JSONL Validator &amp; NDJSON Viewer" />
     <meta name="twitter:description" content="Private line-by-line JSONL validation, filtering, tables, and safe CSV export." />
     <meta name="twitter:image" content="https://liveparse.com/og.png" />
     <meta name="theme-color" content="#6e4cc9" />
@@ -38,8 +38,8 @@
           {
             "@type": "WebApplication",
             "@id": "https://liveparse.com/jsonl-parser/#app",
-            "name": "LiveParse JSONL Parser",
-            "alternateName": "LiveParse NDJSON Parser",
+            "name": "LiveParse JSONL Validator and NDJSON Viewer",
+            "alternateName": ["LiveParse JSONL Parser", "LiveParse NDJSON Parser"],
             "url": "https://liveparse.com/jsonl-parser/",
             "applicationCategory": "DeveloperApplication",
             "applicationSubCategory": "JSONL and NDJSON parser",
@@ -71,9 +71,9 @@
             "@type": "WebPage",
             "@id": "https://liveparse.com/jsonl-parser/#webpage",
             "url": "https://liveparse.com/jsonl-parser/",
-            "name": "JSONL Parser & NDJSON to CSV Converter",
+            "name": "JSONL Validator and NDJSON Viewer – Convert to CSV",
             "description": "Parse JSON Lines locally, inspect line errors, filter records, and export safe CSV without altering large numbers.",
-            "dateModified": "2026-08-02",
+            "dateModified": "2026-08-03",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/jsonl-parser/#app" }
@@ -88,7 +88,9 @@
       <nav class="jsonl-nav" aria-label="Primary navigation">
         <a class="jsonl-brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="jsonl-nav-links">
-          <a href="/">JSON Parser</a>
+          <a href="/">JSON Formatter</a>
+          <a href="/json-compare/">JSON Compare</a>
+          <a href="/json-to-csv/">JSON to CSV</a>
           <a href="/json-repair/">JSON Repair</a>
           <a href="/jsonl-parser/" aria-current="page">JSONL Parser</a>
           <a href="#how-jsonl-works">How it works</a>
@@ -100,7 +102,7 @@
       <div class="jsonl-hero">
         <div class="jsonl-hero-copy">
           <p class="jsonl-eyebrow">One record per line · Local · Lossless</p>
-          <h1>JSONL Parser <span>&amp; NDJSON to CSV</span></h1>
+          <h1>JSONL Validator <span>&amp; NDJSON Viewer to CSV</span></h1>
           <p class="jsonl-hero-lead">Validate JSON Lines record by record, jump to exact line errors, search keys and values, and export a spreadsheet-safe CSV. LiveParse keeps 64-bit IDs, overflowing exponents, and repeated object members intact.</p>
           <div class="jsonl-hero-actions">
             <a class="jsonl-hero-cta" href="#jsonl-tool">Parse JSONL now</a>
@@ -254,13 +256,15 @@
     <footer class="jsonl-site-footer">
       <div><a class="jsonl-brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, lossless browser tools for JSON data.</p></div>
       <div class="jsonl-footer-links">
-        <a href="/">JSON Parser</a>
+        <a href="/">JSON Formatter</a>
+        <a href="/json-compare/">JSON Compare</a>
+        <a href="/json-to-csv/">JSON to CSV</a>
         <a href="/json-repair/">JSON Repair</a>
         <a href="/jsonl-parser/">JSONL Parser</a>
         <a href="/privacy/">Privacy &amp; cookies</a>
         <a href="https://github.com/JacksonJang" target="_blank" rel="noreferrer">Creator profile</a>
       </div>
-      <p class="jsonl-footer-note">Last reviewed August 2, 2026 · No JSONL uploads · No advertising or analytics cookies</p>
+      <p class="jsonl-footer-note">Last reviewed August 3, 2026 · No JSONL uploads · No advertising or analytics cookies</p>
     </footer>
 
     <noscript><p class="jsonl-noscript">JavaScript is required for local JSONL parsing, table filtering, and CSV export. The reference content remains readable without it.</p></noscript>

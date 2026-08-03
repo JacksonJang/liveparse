@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSV to JSON Converter – Free Online &amp; Private | LiveParse</title>
+    <meta name="description" content="Convert CSV to JSON online with headers, quoted and multiline fields, optional type inference, exact numeric tokens, local file opening, and JSON download." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/csv-to-json/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/csv-to-json/" />
+    <meta property="og:title" content="CSV to JSON Converter – Free Online and Private" />
+    <meta property="og:description" content="Turn CSV rows into clean JSON objects in your browser, with robust quoting and explicit type controls." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON data tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CSV to JSON Converter – Free Online" />
+    <meta name="twitter:description" content="Convert quoted CSV and local files into readable JSON without uploading your data." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for JSON and tabular data.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/csv-to-json/#application",
+            "name": "LiveParse CSV to JSON Converter",
+            "url": "https://liveparse.com/csv-to-json/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "CSV to JSON converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A free local CSV to JSON converter with header normalization, quoted multiline fields, delimiter controls, type inference, and JSON downloads.",
+            "featureList": [
+              "Convert CSV records into JSON objects",
+              "Parse quoted commas, escaped quotes, and multiline fields",
+              "Normalize blank and duplicate column headers",
+              "Keep values as strings by default",
+              "Optionally infer JSON numbers, booleans, and null",
+              "Choose comma, semicolon, tab, or pipe delimiters",
+              "Open CSV files and download JSON locally"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/csv-to-json/#webpage",
+            "url": "https://liveparse.com/csv-to-json/",
+            "name": "CSV to JSON Converter – Free Online and Private",
+            "description": "Convert CSV rows and files into readable, downloadable JSON in the browser.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/csv-to-json/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/csv-to-json/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/csv-to-json/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "CSV to JSON Converter", "item": "https://liveparse.com/csv-to-json/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="converter-page" data-converter="csv-to-json">
+    <a class="skip-link" href="#converter">Skip to the CSV to JSON converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Formatter</a>
+          <a href="/json-to-csv/">JSON to CSV</a>
+          <a href="/jsonl-parser/">JSONL Parser</a>
+          <a href="/json-repair/">JSON Repair</a>
+          <a href="#how-to-convert">How it works</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · Private · No sign-up</p>
+          <h1>CSV to JSON Converter</h1>
+          <p class="hero-lead">Convert CSV to a JSON array online. Correctly parse quoted commas, escaped quotes, multiline cells, duplicate headers, and alternate delimiters while keeping your file inside the browser.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#converter">Convert CSV to JSON</a>
+            <span>Local file processing · Instant download</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="CSV to JSON example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>customers.json</strong></div>
+          <pre><code>[
+  {
+    "id": "9007199254740993",
+    "name": "Ada Lovelace"
+  }
+]</code></pre>
+          <p><strong>Valid JSON array</strong><span>Values preserved as strings</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="converter" aria-labelledby="converter-heading">
+        <div><p class="section-kicker">Online data converter</p><h2 id="converter-heading">Paste CSV and download valid JSON</h2></div>
+        <p>LiveParse reads the first row as property names, handles standard CSV quoting, and produces a JSON object for each data row—all without a server upload.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="CSV to JSON converter loading">
+          <p><strong>Loading the CSV to JSON converter…</strong></p>
+          <p>Enable JavaScript to convert, copy, and download JSON.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-convert" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Three quick steps</p>
+          <h2 id="how-heading">How to convert CSV to JSON online</h2>
+          <p>Use pasted spreadsheet data, a downloaded report, or a local <code>.csv</code> file. The converter understands quoted fields rather than simply splitting each line at commas.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste or open CSV</h3><p>Include a header row followed by the records. Commas, quotes, and physical line breaks inside quoted cells are read as part of the value.</p></li>
+          <li><span>2</span><h3>Choose delimiter and types</h3><p>Select comma, semicolon, tab, or pipe input. Keep every value as a string, or infer JSON numbers, booleans, and <code>null</code>.</p></li>
+          <li><span>3</span><h3>Copy or download JSON</h3><p>Convert to a readable JSON array, review the row and column totals, then copy the output or save a <code>.json</code> file.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="mapping-heading">
+        <div class="section-heading"><p class="section-kicker">Clear mapping rules</p><h2 id="mapping-heading">How CSV rows map to JSON objects</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>CSV does not define data types or object property names by itself. LiveParse treats the first non-empty row as headers and converts every later row into one JSON object. A header such as <code>customer_id</code> becomes a JSON property with the same name.</p>
+            <p>Blank headers are replaced with names such as <code>column_3</code>. Repeated headers remain separate by receiving a suffix, for example <code>status</code> and <code>status_2</code>. Short rows get empty-string values for missing cells, so every object has the same predictable set of properties.</p>
+            <p>String mode is the safe default because CSV cannot tell whether <code>00123</code> is a number, postal code, or identifier. Enable type inference only when values such as <code>true</code>, <code>null</code>, and numeric tokens should become JSON literals instead of quoted strings.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Header row</dt><dd>Becomes the property names on every JSON object.</dd></div>
+            <div><dt>Data row</dt><dd>Becomes one object in the output JSON array.</dd></div>
+            <div><dt>Empty cell</dt><dd>Becomes an empty string instead of disappearing.</dd></div>
+            <div><dt>Quoted cell</dt><dd>Can contain delimiters, doubled quotes, and line breaks.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="types-heading">
+        <div class="section-heading"><p class="section-kicker">Explicit type control</p><h2 id="types-heading">Prevent accidental data changes during conversion</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Strings are the safe default</h3><p>Leading zeros, account numbers, postal codes, date-like values, and long IDs remain quoted unless you deliberately enable inference.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Inferred number tokens stay exact</h3><p>When inference is enabled, a valid JSON number token is written directly to the output instead of being rounded through a JavaScript number first.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Malformed CSV gets a location</h3><p>An unclosed quote or an unexpected character after a quoted field returns a line and column so you can repair the source record.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Everything runs locally</h3><p>The browser reads the selected file and creates the JSON in memory. LiveParse does not transmit or retain the CSV contents.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Common workflows</p><h2 id="uses-heading">When to convert CSV to JSON</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Prepare API request data</h3><p>Turn a spreadsheet-managed list into a JSON array before posting records to a REST endpoint or loading a development fixture.</p></article>
+          <article><h3>Move a report into JavaScript</h3><p>Convert an analytics, CRM, ecommerce, or finance export into objects that frontend and Node.js code can read directly.</p></article>
+          <article><h3>Create test fixtures</h3><p>Transform rows maintained by non-developers into readable JSON for unit tests, demos, seed data, and local prototypes.</p></article>
+          <article><h3>Inspect tricky CSV quoting</h3><p>Verify how embedded commas, escaped double quotes, and multiline notes are interpreted before importing them into another system.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">CSV to JSON FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Is this CSV to JSON converter free?</summary><p>Yes. It is free to use without an account, upload limit, or paid tier.</p></details>
+          <details><summary>Does it support commas inside a CSV value?</summary><p>Yes. A comma inside a double-quoted field stays in that field. Two consecutive quotes inside a quoted field become one literal quote.</p></details>
+          <details><summary>Can a CSV field contain a line break?</summary><p>Yes. Physical line breaks inside a properly quoted field are preserved as newline characters in the JSON string.</p></details>
+          <details><summary>Why are numbers quoted in the default JSON output?</summary><p>CSV has no reliable type information. Keeping values as strings prevents leading zeros, IDs, postal codes, and long numbers from changing. Enable type inference when numeric JSON values are required.</p></details>
+          <details><summary>Can I convert tab-separated or semicolon-separated data?</summary><p>Yes. Choose tab, semicolon, or pipe in the delimiter setting before converting.</p></details>
+          <details><summary>How do I turn the JSON back into CSV?</summary><p>Use the <a href="/json-to-csv/">JSON to CSV converter</a> to flatten nested objects, collect headers across records, and download spreadsheet-safe CSV.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and references</p><h2 id="references-heading">Built around open formats</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc4180" target="_blank" rel="noreferrer">RFC 4180: CSV</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON" target="_blank" rel="noreferrer">MDN: JSON</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based JSON and data conversion tools.</p></div>
+      <div class="footer-links">
+        <a href="/">JSON Formatter</a><a href="/json-to-csv/">JSON to CSV</a><a href="/jsonl-parser/">JSONL Parser</a><a href="/json-repair/">JSON Repair</a><a href="/privacy/">Privacy</a>
+      </div>
+      <p class="footer-note">© 2026 Jackson Jang. Input is processed locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive CSV to JSON converter. The explanatory content remains available without it.</p></noscript>
+    <script type="module" src="/src/data-converter.tsx"></script>
+  </body>
+</html>

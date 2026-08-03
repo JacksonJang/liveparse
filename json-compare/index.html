@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Compare Online – JSON Diff Checker | LiveParse</title>
+    <meta name="description" content="Compare two JSON documents online with a semantic JSON diff checker. Find object and array changes, preserve exact number tokens, and detect duplicate keys locally." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/json-compare/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/json-compare/" />
+    <meta property="og:title" content="JSON Compare Online – Semantic JSON Diff Checker" />
+    <meta property="og:description" content="Compare two JSON documents by parsed meaning. Review changed paths, optional unordered arrays, exact number tokens, and duplicate keys in your browser." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON data tools" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON Compare Online – JSON Diff Checker" />
+    <meta name="twitter:description" content="Find meaningful changes between two JSON documents without confusing formatting with data." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#087487" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for JSON and tabular data.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/json-compare/#application",
+            "name": "LiveParse JSON Compare Online",
+            "url": "https://liveparse.com/json-compare/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSON comparison and diff checker",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A browser-based semantic JSON diff checker with positional or unordered array comparison, exact number token controls, duplicate-aware paths, and local processing.",
+            "featureList": [
+              "Compare two JSON documents side by side",
+              "Semantic path-based JSON diff",
+              "Positional and optional unordered array comparison",
+              "Exact JSON number token comparison",
+              "Duplicate object-key detection",
+              "Local browser processing"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/json-compare/#webpage",
+            "url": "https://liveparse.com/json-compare/",
+            "name": "JSON Compare Online – JSON Diff Checker",
+            "description": "Compare two JSON documents semantically and interpret object order, array order, number tokens, and duplicate keys correctly.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/json-compare/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/json-compare/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/json-compare/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "LiveParse",
+                "item": "https://liveparse.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "JSON Compare Online",
+                "item": "https://liveparse.com/json-compare/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+
+  <body class="json-compare-page">
+    <a class="skip-link" href="#root">Skip to the JSON comparison tool</a>
+
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Parser</a>
+          <a href="/json-compare/" aria-current="page">JSON Diff</a>
+          <a href="/json-repair/">JSON Repair</a>
+          <a href="/jsonl-parser/">JSONL Parser</a>
+          <a href="/json-to-csv/">JSON to CSV</a>
+          <a href="#how-to-compare">How it works</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+
+      <section class="tool-intro" aria-labelledby="page-heading">
+        <div>
+          <p class="section-kicker">Semantic JSON diff · Duplicate-aware paths · Runs locally</p>
+          <h1 id="page-heading">JSON Compare Online</h1>
+        </div>
+        <p>Paste two JSON documents into the diff checker to find added, removed, and changed values. Compare parsed data by path, keep arrays positional or treat them as unordered, and require exact number tokens when spelling matters.</p>
+      </section>
+    </header>
+
+    <main>
+      <div id="root">
+        <section class="parser-fallback" aria-label="JSON compare tool loading">
+          <p><strong>Loading the JSON diff checker…</strong></p>
+          <p>Enable JavaScript to compare two JSON documents in your browser.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-compare" aria-labelledby="how-to-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Three clear steps</p>
+          <h2 id="how-to-heading">How to compare two JSON files online</h2>
+          <p>Use the online JSON compare tool for API responses, configuration files, test fixtures, webhook payloads, or any other pair of strict JSON documents. It performs a data comparison; if the source serialization itself is the deliverable, read the semantic-versus-text distinction below.</p>
+        </div>
+        <ol class="steps-grid">
+          <li>
+            <span>1</span>
+            <h3>Paste the original and changed JSON</h3>
+            <p>Put the expected or earlier document on the left and the actual or newer document on the right. Remove credentials, access tokens, and personal data before working with any diagnostic example.</p>
+          </li>
+          <li>
+            <span>2</span>
+            <h3>Choose the comparison rules</h3>
+            <p>Keep arrays positional for standard JSON behavior, or select unordered comparison for set-like data. Turn on exact number tokens when <code>1</code>, <code>1.0</code>, and <code>1e0</code> must remain different.</p>
+          </li>
+          <li>
+            <span>3</span>
+            <h3>Review each changed path</h3>
+            <p>Check additions, removals, type changes, and modified values in context. Confirm the array-order rule and inspect any duplicate-key warning before treating the documents as equivalent.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="semantic-vs-text" aria-labelledby="semantic-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Choose the right definition of “different”</p>
+          <h2 id="semantic-heading">Semantic JSON diff versus text diff</h2>
+          <p>Two files can contain the same JSON data while looking very different, and two similar-looking files can represent different data. The correct comparison depends on the question you are trying to answer.</p>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>A <strong>semantic JSON diff</strong> parses both inputs before comparing them. Whitespace outside strings does not become a change, and object member placement can be ignored because a JSON object is defined as an unordered collection. This is the comparison LiveParse performs, and it is usually the useful view for API regression checks, configuration reviews, and tests that care about values rather than formatting.</p>
+            <p>A <strong>text diff</strong> compares the source representation. Reindentation, line-ending changes, escaped characters, property movement, and number spellings such as <code>1</code>, <code>1.0</code>, and <code>1e0</code> can remain visible. Use this view when reviewing a generated artifact, a version-controlled file, a signature-sensitive payload, or an exact serialization contract.</p>
+            <p>Neither approach is universally better. Semantic comparison deliberately removes some source-level detail; text comparison deliberately reports changes that may not alter the parsed value. LiveParse keeps exact number spelling available as a semantic comparison option, but it does not present a raw line-by-line text diff. Use a version-control or text-diff tool as a complementary check when the entire serialization is the artifact under review.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Semantic</dt><dd>Compares parsed types, paths, members, array items, and values under the selected rules.</dd></div>
+            <div><dt>Text</dt><dd>Compares the written representation, including layout and token spelling.</dd></div>
+            <div><dt>Path</dt><dd>Identifies where a change occurs inside nested objects and arrays.</dd></div>
+            <div><dt>Type</dt><dd>Distinguishes a JSON string, number, object, array, boolean, and null.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="order-rules" aria-labelledby="order-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Order changes the answer</p>
+          <h2 id="order-heading">Object order and array order in a JSON diff</h2>
+          <p>JSON objects and arrays have different ordering semantics. Treating them with one blanket rule creates noisy results or, worse, hides a real change.</p>
+        </div>
+        <div class="benefit-grid">
+          <article>
+            <span aria-hidden="true">OBJECTS</span>
+            <h3>Object member order is not data order</h3>
+            <p>RFC 8259 describes an object as an unordered collection of name/value pairs. Moving <code>"name"</code> above <code>"id"</code> normally changes the source text but not the object’s meaning. A semantic comparison should match members by name, not by line position.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">ARRAYS</span>
+            <h3>Array position is meaningful by default</h3>
+            <p>An array is an ordered sequence. Swapping the first and second items changes their indices even when the same values remain present. Ordered comparison is the standards-aligned default for queues, ranked results, coordinate pairs, and step sequences.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">SETS</span>
+            <h3>Unordered arrays need an explicit rule</h3>
+            <p>Some APIs use arrays to carry set-like tags, permissions, or feature names. Ignoring order can reduce noise for those fields, but JSON itself does not declare an array to be a set. Confirm whether duplicates and repeated objects are significant before using an unordered rule, then follow the <a class="text-link" href="/guides/compare-json-ignore-order/">guide to comparing JSON while ignoring array order</a>.</p>
+          </article>
+          <article>
+            <span aria-hidden="true">MATCHING</span>
+            <h3>Objects inside arrays need domain context</h3>
+            <p>A list of records may be matched by position, or an application may choose a stable key such as <code>id</code>. A generic JSON diff cannot safely invent that identity rule. If order is unstable, verify records and repeated IDs before accepting the comparison.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="exact-data" aria-labelledby="exact-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Preserve the evidence in the source</p>
+          <h2 id="exact-heading">Exact JSON number tokens and duplicate keys</h2>
+          <p>Numbers and repeated member names expose differences that ordinary <code>JSON.parse()</code>-based comparison can erase. They deserve an explicit review when data integrity matters.</p>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>JSON defines a number grammar, but it does not require every implementation to preserve arbitrary precision or the original token spelling. Large integer identifiers may exceed JavaScript’s exact integer range, and long decimals may be rounded when converted to a binary floating-point value. Even when they represent the same mathematical quantity, <code>1</code>, <code>1.0</code>, and <code>1e0</code> are different source tokens.</p>
+            <p>An exact-token comparison is useful for 64-bit IDs, monetary decimals, scientific measurements, negative zero, and serialization tests. A value-oriented comparison may intentionally consider numerically equivalent forms equal; a source-oriented comparison should keep the distinction visible. Choose the rule that matches the downstream consumer.</p>
+            <p>Object names <em>should</em> be unique for interoperable JSON, yet the grammar does not make repeated names a syntax error. Many parsers keep only the last value, so <code>{"role":"user","role":"admin"}</code> can lose evidence during ordinary parsing. Inspect every duplicate-key warning and repair the producer rather than guessing which occurrence was intended.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>64-bit ID</dt><dd>May be rounded if a parser converts it to an IEEE 754 double.</dd></div>
+            <div><dt>Decimal</dt><dd>May need its original scale, including trailing zeros, for a business rule.</dd></div>
+            <div><dt>Exponent</dt><dd>Can be numerically equal to another spelling while remaining textually different.</dd></div>
+            <div><dt>Duplicate</dt><dd>Can be overwritten, rejected, or preserved depending on the receiving parser.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="api-use-cases" aria-labelledby="uses-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Practical comparison workflows</p>
+          <h2 id="uses-heading">JSON diff checker use cases for API responses</h2>
+          <p>A useful comparison starts with a focused question: which contract, record, or environment changed? Keep the smallest representative payload that still demonstrates the behavior.</p>
+        </div>
+        <div class="use-case-grid">
+          <article>
+            <h3>Compare expected and actual test output</h3>
+            <p>Place a fixture or snapshot on the left and the failing response on the right. A semantic diff can reveal a missing property, a string-to-number type change, a changed nested value, or an array item that moved. Use the <a class="text-link" href="/guides/compare-api-responses/">API response comparison workflow</a> to redact volatile fields and verify contract changes.</p>
+          </article>
+          <article>
+            <h3>Review API versions before a release</h3>
+            <p>Compare representative responses from two versions or deployments. Pay attention to renamed fields, new nullable values, pagination metadata, error shapes, and order-sensitive collections that clients may depend on.</p>
+          </article>
+          <article>
+            <h3>Check staging against production</h3>
+            <p>Normalize environment-specific IDs, timestamps, and URLs in a safe copy, then compare the remaining structure. Do not paste secrets or live customer records; use redacted or synthetic examples whenever possible.</p>
+          </article>
+          <article>
+            <h3>Investigate webhook and event changes</h3>
+            <p>Compare a working event with a rejected one to isolate schema drift, absent fields, changed enum values, or a different item sequence. Preserve exact numbers when event IDs and monetary values must not be rounded.</p>
+          </article>
+          <article>
+            <h3>Audit generated configuration</h3>
+            <p>Use this semantic checker to ignore harmless reformatting, then add a separate version-control or text diff when stable serialization is part of a code review. A moved object member and a moved array item should not be interpreted as the same kind of change.</p>
+          </article>
+          <article>
+            <h3>Prepare data for another format</h3>
+            <p>Confirm the source JSON first, then use the <a class="text-link" href="/json-to-csv/">JSON to CSV converter</a> when the records need a spreadsheet-ready table. For one-record-per-line data, use the <a class="text-link" href="/jsonl-parser/">JSONL parser</a>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Questions answered</p>
+          <h2 id="faq-heading">JSON compare and diff checker FAQ</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary>What is a JSON diff?</summary>
+            <p>A JSON diff describes differences between two JSON documents. A semantic diff reports changes to parsed values and paths, while a text diff reports changes to the written source. The results can differ because whitespace and object member placement do not necessarily change the data.</p>
+          </details>
+          <details>
+            <summary>Is JSON object key order important?</summary>
+            <p>Not to the JSON data model: an object is an unordered collection of name/value pairs. Object order may still matter to a source-text review, a human-readable convention, or a nonstandard downstream system, so use text diff when placement itself is under review.</p>
+          </details>
+          <details>
+            <summary>Is JSON array order important?</summary>
+            <p>Yes. JSON arrays are ordered, and an item’s index is part of its position in the document. Treat an array as unordered only when your application explicitly defines it as a set-like collection and you understand how repeated values should be handled.</p>
+          </details>
+          <details>
+            <summary>Why can two equal-looking JSON numbers compare differently?</summary>
+            <p>The tokens <code>1</code>, <code>1.0</code>, and <code>1e0</code> can represent the same mathematical value but have different source spellings. Large integers and long decimals can also be rounded by parsers. Use exact token comparison when spelling or precision is part of the contract.</p>
+          </details>
+          <details>
+            <summary>What happens when a JSON object has duplicate keys?</summary>
+            <p>Behavior varies by implementation: a parser may keep the first value, keep the last value, preserve every occurrence, or reject the document. RFC 8259 says object member names should be unique for interoperability. Treat a duplicate-key finding as an ambiguity to fix, not as a harmless formatting detail.</p>
+          </details>
+          <details>
+            <summary>Is a JSON diff the same as JSON Patch?</summary>
+            <p>No. A diff is a description of observed differences. JSON Patch, standardized in RFC 6902, is a specific array of operations such as <code>add</code>, <code>remove</code>, and <code>replace</code> that a compatible system can apply to a document. Not every visual diff is a safe or complete patch.</p>
+          </details>
+          <details>
+            <summary>Can I compare invalid JSON?</summary>
+            <p>A semantic comparison requires both sides to parse as JSON. Text comparison can still show source differences, but it cannot establish JSON-level equivalence. If an input has comments, trailing commas, single quotes, or truncation, inspect it with <a href="/json-repair/">JSON Repair</a> before comparing the repaired result.</p>
+          </details>
+          <details>
+            <summary>Does the JSON comparison upload my documents?</summary>
+            <p>The interactive comparison runs in the current browser tab. Your pasted documents are not required to be sent to a comparison API. You should still remove passwords, tokens, private keys, and personal data before placing any sensitive diagnostic payload in a browser tool.</p>
+          </details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div>
+          <p class="section-kicker">Primary standards</p>
+          <h2 id="references-heading">JSON specifications and change formats</h2>
+        </div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="https://ecma-international.org/publications-and-standards/standards/ecma-404/" target="_blank" rel="noreferrer">ECMA-404: JSON Syntax</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc6901" target="_blank" rel="noreferrer">RFC 6901: JSON Pointer</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc6902" target="_blank" rel="noreferrer">RFC 6902: JSON Patch</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <p>Private, browser-based tools for comparing, validating, repairing, and converting JSON data.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/">JSON Parser</a>
+        <a href="/json-compare/" aria-current="page">JSON Compare</a>
+        <a href="/json-repair/">JSON Repair</a>
+        <a href="/jsonl-parser/">JSONL Parser</a>
+        <a href="/json-to-csv/">JSON to CSV</a>
+        <a href="/privacy/">Privacy</a>
+      </div>
+      <p class="footer-note">© 2026 Jackson Jang. Compare JSON locally and verify important changes against the systems that consume them.</p>
+    </footer>
+
+    <noscript><p class="noscript-note">JavaScript is required for the interactive JSON comparison tool. The explanatory content and standards references remain available without it.</p></noscript>
+    <script type="module" src="/src/json-compare.tsx"></script>
+  </body>
+</html>

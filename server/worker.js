@@ -3,11 +3,30 @@ const DIRECTORY_ROUTES = new Set([
   '/ko/json-parser',
   '/json-repair',
   '/jsonl-parser',
+  '/json-to-csv',
+  '/csv-to-json',
+  '/json-compare',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
   '/guides/json-parser-vs-formatter-validator',
+  '/guides/compare-api-responses',
+  '/guides/compare-json-ignore-order',
 ]);
+const ROUTE_REDIRECTS = new Map([
+  ['/json-diff', '/json-compare/'],
+  ['/json-diff/', '/json-compare/'],
+  ['/json-diff-checker', '/json-compare/'],
+  ['/json-diff-checker/', '/json-compare/'],
+]);
+
+function normalizeKnownRoutePath(pathname) {
+  if (ROUTE_REDIRECTS.has(pathname)) return ROUTE_REDIRECTS.get(pathname);
+  if (DIRECTORY_ROUTES.has(pathname)) return `${pathname}/`;
+  if (pathname === '/index.html') return '/';
+  if (pathname.endsWith('/index.html')) return pathname.slice(0, -'index.html'.length);
+  return pathname;
+}
 
 function securityHeaders(headers) {
   headers.set('Content-Security-Policy', [
@@ -40,7 +59,11 @@ export default {
     const url = new URL(request.url);
 
     if (url.hostname === 'www.liveparse.com' || (url.hostname === 'liveparse.com' && url.protocol !== 'https:')) {
-      return Response.redirect(`${CANONICAL_ORIGIN}${url.pathname}${url.search}`, 308);
+      return Response.redirect(`${CANONICAL_ORIGIN}${normalizeKnownRoutePath(url.pathname)}${url.search}`, 308);
+    }
+    if (ROUTE_REDIRECTS.has(url.pathname)) {
+      url.pathname = ROUTE_REDIRECTS.get(url.pathname);
+      return Response.redirect(url.toString(), 308);
     }
     if (DIRECTORY_ROUTES.has(url.pathname)) {
       // Keep private/preview Sites hosts on their current origin while still
@@ -48,9 +71,17 @@ export default {
       url.pathname = `${url.pathname}/`;
       return Response.redirect(url.toString(), 308);
     }
+    if (url.pathname === '/index.html' || url.pathname.endsWith('/index.html')) {
+      url.pathname = url.pathname === '/index.html' ? '/' : url.pathname.slice(0, -'index.html'.length);
+      return Response.redirect(url.toString(), 308);
+    }
 
     const assetResponse = await env.ASSETS.fetch(request);
     const headers = securityHeaders(new Headers(assetResponse.headers));
+
+    if (url.hostname !== 'liveparse.com' && url.hostname !== 'www.liveparse.com') {
+      headers.set('X-Robots-Tag', 'noindex, nofollow');
+    }
 
     if (url.pathname.startsWith('/assets/') && /-[A-Za-z0-9_-]{8,}\.[^/]+$/.test(url.pathname)) {
       headers.set('Cache-Control', 'public, max-age=31536000, immutable');

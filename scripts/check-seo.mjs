@@ -12,6 +12,9 @@ const requiredPages = [
   { relativePath: 'ko/json-parser/index.html', canonical: `${CANONICAL_ORIGIN}/ko/json-parser/`, label: 'Korean JSON parser' },
   { relativePath: 'json-repair/index.html', canonical: `${CANONICAL_ORIGIN}/json-repair/`, label: 'JSON Repair tool' },
   { relativePath: 'jsonl-parser/index.html', canonical: `${CANONICAL_ORIGIN}/jsonl-parser/`, label: 'JSONL Parser tool' },
+  { relativePath: 'json-compare/index.html', canonical: `${CANONICAL_ORIGIN}/json-compare/`, label: 'JSON Compare tool' },
+  { relativePath: 'json-to-csv/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-csv/`, label: 'JSON to CSV tool' },
+  { relativePath: 'csv-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/csv-to-json/`, label: 'CSV to JSON tool', requireParsing: false },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -281,8 +284,8 @@ async function main() {
     validatePageBasics(homepage, 'homepage', `${CANONICAL_ORIGIN}/`);
     const homepageTitle = titleValues(homepage)[0] || '';
     const homepageH1 = h1Values(homepage)[0] || '';
-    if (!/\bjson\s+parser\b/i.test(homepageTitle)) fail('homepage: title must target the phrase "JSON Parser"');
-    if (!/\bjson\s+parser\b/i.test(homepageH1)) fail('homepage: H1 must target the phrase "JSON Parser"');
+    if (!/\bjson\s+formatter\b/i.test(homepageTitle)) fail('homepage: title must target the phrase "JSON Formatter"');
+    if (!/\bjson\s+formatter\b/i.test(homepageH1)) fail('homepage: H1 must target the phrase "JSON Formatter"');
   }
 
   const robotsPath = join(distRoot, 'robots.txt');

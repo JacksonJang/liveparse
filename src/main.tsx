@@ -11,8 +11,8 @@ type Locale = 'en' | 'ko';
 
 const samples = {
   'SEO metadata': `{
-  "title": "Lossless JSON Parser & Formatter | LiveParse",
-  "description": "Parse, validate, format, minify, and explore JSON locally in your browser while preserving 64-bit numbers and duplicate keys.",
+  "title": "JSON Formatter & Validator – Free Online Tool | LiveParse",
+  "description": "Format, validate, beautify, minify, and explore JSON locally while preserving 64-bit numbers and duplicate keys.",
   "canonicalUrl": "https://liveparse.com/",
   "robots": {
     "index": true,
@@ -27,7 +27,7 @@ const samples = {
   "openGraph": {
     "type": "website",
     "siteName": "LiveParse",
-    "title": "Lossless JSON Parser & Formatter",
+    "title": "JSON Formatter & Validator",
     "description": "A private browser-based JSON tool that preserves the original data.",
     "url": "https://liveparse.com/",
     "image": "https://liveparse.com/og.png",
@@ -42,7 +42,7 @@ const samples = {
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "LiveParse JSON Parser",
+    "name": "LiveParse JSON Formatter and Validator",
     "url": "https://liveparse.com/",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
@@ -165,7 +165,7 @@ const translations: Record<Locale, UiText> = {
       'Nested product data': 'Nested product data',
       'Invalid JSON example': 'Invalid JSON example',
     },
-    appAria: 'Interactive lossless JSON parser',
+    appAria: 'Interactive JSON formatter and validator',
     localProcessing: 'Local worker',
     localPrivacy: 'Your JSON never leaves this tab',
     parserSettings: 'Parser settings',
