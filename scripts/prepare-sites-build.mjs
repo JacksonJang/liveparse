@@ -10,9 +10,14 @@ const source = resolve(projectRoot, 'server/worker.js');
 const serverDirectory = resolve(distDirectory, 'server');
 const destination = resolve(serverDirectory, 'index.js');
 const clientDirectory = resolve(distDirectory, 'client');
+const hostingSource = resolve(projectRoot, '.openai/hosting.json');
+const hostingDirectory = resolve(distDirectory, '.openai');
+const hostingDestination = resolve(hostingDirectory, 'hosting.json');
 
 await mkdir(serverDirectory, { recursive: true });
 await copyFile(source, destination);
+await mkdir(hostingDirectory, { recursive: true });
+await copyFile(hostingSource, hostingDestination);
 await rm(clientDirectory, { recursive: true, force: true });
 await mkdir(clientDirectory, { recursive: true });
 
