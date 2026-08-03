@@ -354,6 +354,10 @@ export default {
     const assetResponse = await env.ASSETS.fetch(request);
     const headers = securityHeaders(new Headers(assetResponse.headers));
 
+    if (url.pathname === '/feed.xml') {
+      headers.set('Content-Type', 'application/atom+xml; charset=utf-8');
+    }
+
     if (url.hostname !== 'liveparse.com' && url.hostname !== 'www.liveparse.com') {
       headers.set('X-Robots-Tag', 'noindex, nofollow');
     }

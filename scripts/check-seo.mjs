@@ -3,8 +3,16 @@
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseXml } from '@rgrove/parse-xml';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
+const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
+const ATOM_FEED_URL = `${CANONICAL_ORIGIN}/feed.xml`;
+const ATOM_FEED_TITLE = 'LiveParse Developer Tool Updates';
+const ATOM_HUB_URL = 'https://pubsubhubbub.appspot.com/';
+const XML_SITEMAP_URL = `${CANONICAL_ORIGIN}/sitemap.xml`;
+const EXPECTED_ROBOTS_SITEMAPS = new Set([XML_SITEMAP_URL, ATOM_FEED_URL]);
+const RFC3339_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(process.argv[2] || process.env.DIST_DIR || join(PROJECT_ROOT, 'dist'));
 const failures = [];
@@ -612,6 +620,251 @@ async function readRequired(path, label) {
   }
 }
 
+function directXmlElements(node, name) {
+  return node.children.filter((child) => child.type === 'element' && (name === undefined || child.name === name));
+}
+
+function singleXmlElement(parent, name, label) {
+  const elements = directXmlElements(parent, name);
+  if (elements.length !== 1) {
+    fail(`${label}: expected exactly one <${name}> element, found ${elements.length}`);
+  }
+  return elements[0] ?? null;
+}
+
+function singleXmlText(parent, name, label) {
+  const element = singleXmlElement(parent, name, label);
+  if (!element) return '';
+  if (directXmlElements(element).length > 0) {
+    fail(`${label}: <${name}> must contain text only`);
+  }
+  const value = element.text.trim();
+  if (!value) fail(`${label}: <${name}> must not be empty`);
+  return value;
+}
+
+function isLeapYear(year) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+}
+
+function parseRfc3339(value, label) {
+  const match = RFC3339_PATTERN.exec(value);
+  if (!match) {
+    fail(`${label}: must be an RFC 3339 date-time with seconds and a time-zone offset (${JSON.stringify(value)})`);
+    return null;
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const daysInMonth = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1]) {
+    fail(`${label}: contains an invalid calendar date (${JSON.stringify(value)})`);
+    return null;
+  }
+
+  const timestamp = Date.parse(value);
+  if (!Number.isFinite(timestamp)) {
+    fail(`${label}: is not a parseable RFC 3339 date-time (${JSON.stringify(value)})`);
+    return null;
+  }
+  return timestamp;
+}
+
+function validateAtomNamespace(element, inheritedNamespace = null) {
+  const namespace = Object.hasOwn(element.attributes, 'xmlns') ? element.attributes.xmlns : inheritedNamespace;
+  if (namespace !== ATOM_NAMESPACE) {
+    fail(`feed.xml: <${element.name}> must be in the Atom 1.0 namespace ${ATOM_NAMESPACE}`);
+  }
+  if (element.name.includes(':')) fail(`feed.xml: unexpected prefixed element <${element.name}>`);
+  for (const child of directXmlElements(element)) validateAtomNamespace(child, namespace);
+}
+
+function validateExactAtomLink(parent, rel, expectedHref, expectedType, label) {
+  const matches = directXmlElements(parent, 'link').filter((link) => link.attributes.rel?.trim() === rel);
+  if (matches.length !== 1) {
+    fail(`${label}: expected exactly one <link rel=${JSON.stringify(rel)}> element, found ${matches.length}`);
+  }
+  const link = matches[0] ?? null;
+  if (!link) return null;
+  const href = link.attributes.href?.trim() ?? '';
+  if (href !== expectedHref) fail(`${label}: rel=${JSON.stringify(rel)} href must be ${expectedHref}`);
+  if (expectedType !== undefined && (link.attributes.type?.trim() ?? '') !== expectedType) {
+    fail(`${label}: rel=${JSON.stringify(rel)} type must be ${expectedType}`);
+  }
+  return link;
+}
+
+function parseCanonicalAtomUrl(value, label) {
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    fail(`${label}: invalid absolute URL ${JSON.stringify(value)}`);
+    return null;
+  }
+  if (url.protocol !== 'https:' || url.origin !== CANONICAL_ORIGIN || url.username || url.password) {
+    fail(`${label}: URL must use the canonical ${CANONICAL_ORIGIN} HTTPS origin without credentials (${url.href})`);
+  }
+  if (url.search || url.hash) fail(`${label}: URL must not contain a query or fragment (${url.href})`);
+  if (url.href !== value) fail(`${label}: URL is not in canonical serialized form (${JSON.stringify(value)})`);
+  return url;
+}
+
+function validateAtomAutodiscovery(html, label) {
+  const candidates = openingTags(html, 'link').filter((attributes) => {
+    const type = attributes.get('type')?.trim().toLowerCase() ?? '';
+    const href = attributes.get('href')?.trim() ?? '';
+    return type === 'application/atom+xml' || href === ATOM_FEED_URL;
+  });
+  if (candidates.length !== 1) {
+    fail(`${label}: expected exactly one Atom autodiscovery link, found ${candidates.length}`);
+  }
+  const link = candidates[0];
+  if (!link) return;
+  if ((link.get('rel')?.trim() ?? '') !== 'alternate') {
+    fail(`${label}: Atom autodiscovery link rel must be alternate`);
+  }
+  if ((link.get('type')?.trim() ?? '') !== 'application/atom+xml') {
+    fail(`${label}: Atom autodiscovery link type must be application/atom+xml`);
+  }
+  if ((link.get('title')?.trim() ?? '') !== ATOM_FEED_TITLE) {
+    fail(`${label}: Atom autodiscovery link title must be ${JSON.stringify(ATOM_FEED_TITLE)}`);
+  }
+  if ((link.get('href')?.trim() ?? '') !== ATOM_FEED_URL) {
+    fail(`${label}: Atom autodiscovery link href must be ${ATOM_FEED_URL}`);
+  }
+}
+
+async function validateAtomFeed(source, distRoot, htmlByPath, sitemapUrlSet) {
+  let document;
+  try {
+    document = parseXml(source, {
+      ignoreUndefinedEntities: false,
+      preserveCdata: true,
+      preserveComments: true,
+      preserveDocumentType: true,
+      preserveXmlDeclaration: true,
+    });
+  } catch (error) {
+    fail(`feed.xml: malformed XML (${error.message.split(/\r?\n/, 1)[0]})`);
+    return 0;
+  }
+
+  if (document.children.some((child) => child.type === 'doctype')) {
+    fail('feed.xml: document type declarations are not allowed');
+  }
+  const root = document.root;
+  if (!root || root.name !== 'feed') {
+    fail(`feed.xml: root element must be <feed>, found ${root ? `<${root.name}>` : 'none'}`);
+    return 0;
+  }
+  validateAtomNamespace(root);
+
+  const feedId = singleXmlText(root, 'id', 'feed.xml');
+  if (feedId !== ATOM_FEED_URL) fail(`feed.xml: feed <id> must be ${ATOM_FEED_URL}`);
+  singleXmlText(root, 'title', 'feed.xml');
+  validateExactAtomLink(root, 'self', ATOM_FEED_URL, 'application/atom+xml', 'feed.xml');
+  validateExactAtomLink(root, 'alternate', `${CANONICAL_ORIGIN}/`, 'text/html', 'feed.xml');
+  validateExactAtomLink(root, 'hub', ATOM_HUB_URL, undefined, 'feed.xml');
+
+  const feedLinks = directXmlElements(root, 'link');
+  const expectedFeedLinkRels = new Set(['self', 'alternate', 'hub']);
+  for (const link of feedLinks) {
+    const rel = link.attributes.rel?.trim() ?? '';
+    if (!expectedFeedLinkRels.has(rel)) fail(`feed.xml: unexpected feed-level link relation ${JSON.stringify(rel)}`);
+  }
+  if (feedLinks.length !== expectedFeedLinkRels.size) {
+    fail(`feed.xml: expected exactly ${expectedFeedLinkRels.size} feed-level links, found ${feedLinks.length}`);
+  }
+
+  const authors = directXmlElements(root, 'author');
+  if (authors.length !== 1) fail(`feed.xml: expected exactly one <author> element, found ${authors.length}`);
+  if (authors[0]) singleXmlText(authors[0], 'name', 'feed.xml author');
+
+  const feedUpdatedValue = singleXmlText(root, 'updated', 'feed.xml');
+  const feedUpdated = parseRfc3339(feedUpdatedValue, 'feed.xml <updated>');
+  const entries = directXmlElements(root, 'entry');
+  if (entries.length < 1 || entries.length > 50) {
+    fail(`feed.xml: must contain between 1 and 50 recent entries, found ${entries.length}`);
+  }
+
+  const entryIds = new Set();
+  const entryLinks = new Set();
+  let previousUpdated = Number.POSITIVE_INFINITY;
+  let maximumUpdated = Number.NEGATIVE_INFINITY;
+
+  for (const [index, entry] of entries.entries()) {
+    const entryLabel = `feed.xml entry ${index + 1}`;
+    const id = singleXmlText(entry, 'id', entryLabel);
+    singleXmlText(entry, 'title', entryLabel);
+    singleXmlText(entry, 'summary', entryLabel);
+    const categories = directXmlElements(entry, 'category');
+    if (categories.length !== 1) {
+      fail(`${entryLabel}: expected exactly one <category> element, found ${categories.length}`);
+    }
+    if (categories[0] && !(categories[0].attributes.term?.trim())) {
+      fail(`${entryLabel}: <category> must have a non-empty term attribute`);
+    }
+    const idUrl = parseCanonicalAtomUrl(id, `${entryLabel} <id>`);
+    if (entryIds.has(id)) fail(`${entryLabel}: duplicate <id> ${id}`);
+    entryIds.add(id);
+
+    const links = directXmlElements(entry, 'link');
+    if (links.length !== 1) fail(`${entryLabel}: expected exactly one <link> element, found ${links.length}`);
+    const alternateLinks = links.filter((link) => link.attributes.rel?.trim() === 'alternate');
+    if (alternateLinks.length !== 1) {
+      fail(`${entryLabel}: expected exactly one <link rel="alternate"> element, found ${alternateLinks.length}`);
+    }
+    const alternateLink = alternateLinks[0] ?? null;
+    const href = alternateLink?.attributes.href?.trim() ?? '';
+    const hrefUrl = href ? parseCanonicalAtomUrl(href, `${entryLabel} alternate link`) : null;
+    if (alternateLink && (alternateLink.attributes.type?.trim() ?? '') !== 'text/html') {
+      fail(`${entryLabel}: alternate link type must be text/html`);
+    }
+    if (href !== id) fail(`${entryLabel}: <id> and alternate link href must be identical`);
+    if (entryLinks.has(href)) fail(`${entryLabel}: duplicate alternate link ${href}`);
+    entryLinks.add(href);
+
+    const publishedValue = singleXmlText(entry, 'published', entryLabel);
+    const updatedValue = singleXmlText(entry, 'updated', entryLabel);
+    const published = parseRfc3339(publishedValue, `${entryLabel} <published>`);
+    const updated = parseRfc3339(updatedValue, `${entryLabel} <updated>`);
+    if (published !== null && updated !== null && updated < published) {
+      fail(`${entryLabel}: <updated> must not be earlier than <published>`);
+    }
+    if (updated !== null) {
+      if (updated > previousUpdated) fail(`${entryLabel}: entries must be ordered by nonincreasing <updated> time`);
+      previousUpdated = updated;
+      maximumUpdated = Math.max(maximumUpdated, updated);
+    }
+
+    const canonicalHref = hrefUrl?.href ?? idUrl?.href ?? '';
+    if (!canonicalHref) continue;
+    if (!sitemapUrlSet.has(canonicalHref)) fail(`${entryLabel}: ${canonicalHref} is missing from sitemap.xml`);
+    const staticFile = await staticFileForUrl(distRoot, hrefUrl ?? idUrl);
+    if (!staticFile || !staticFile.toLowerCase().endsWith('.html')) {
+      fail(`${entryLabel}: ${canonicalHref} has no corresponding static HTML page`);
+      continue;
+    }
+    const page = htmlByPath.get(staticFile) ?? (await readFile(staticFile, 'utf8'));
+    const canonicals = canonicalValues(page);
+    if (canonicals.length !== 1) {
+      fail(`${entryLabel}: corresponding page must have exactly one canonical link, found ${canonicals.length}`);
+    } else {
+      const canonical = normalizeUrl(canonicals[0], CANONICAL_ORIGIN, entryLabel);
+      if (canonical?.href !== canonicalHref) {
+        fail(`${entryLabel}: ${canonicalHref} does not match its page canonical ${canonicals[0]}`);
+      }
+    }
+  }
+
+  if (feedUpdated !== null && Number.isFinite(maximumUpdated) && feedUpdated !== maximumUpdated) {
+    fail('feed.xml: feed <updated> must equal the maximum entry <updated> time');
+  }
+  return entries.length;
+}
+
 async function main() {
   let distRoot;
   try {
@@ -633,31 +886,52 @@ async function main() {
   const homepage = htmlByPath.get(homepagePath) ?? (await readRequired(homepagePath, 'homepage'));
   if (homepage !== null) {
     validatePageBasics(homepage, 'homepage', `${CANONICAL_ORIGIN}/`);
+    validateAtomAutodiscovery(homepage, 'homepage');
     const homepageTitle = titleValues(homepage)[0] || '';
     const homepageH1 = h1Values(homepage)[0] || '';
     if (!/\bjson\s+formatter\b/i.test(homepageTitle)) fail('homepage: title must target the phrase "JSON Formatter"');
     if (!/\bjson\s+formatter\b/i.test(homepageH1)) fail('homepage: H1 must target the phrase "JSON Formatter"');
   }
 
+  const guidesIndexPath = join(distRoot, 'guides', 'index.html');
+  const guidesIndex = htmlByPath.get(guidesIndexPath) ?? (await readRequired(guidesIndexPath, 'guides hub'));
+  if (guidesIndex !== null) validateAtomAutodiscovery(guidesIndex, 'guides hub');
+
   const robotsPath = join(distRoot, 'robots.txt');
   const sitemapPath = join(distRoot, 'sitemap.xml');
-  const [robots, sitemap] = await Promise.all([
+  const feedPath = join(distRoot, 'feed.xml');
+  const [robots, sitemap, feed] = await Promise.all([
     readRequired(robotsPath, 'robots.txt'),
     readRequired(sitemapPath, 'sitemap.xml'),
+    readRequired(feedPath, 'feed.xml'),
   ]);
 
-  const expectedSitemapUrl = `${CANONICAL_ORIGIN}/sitemap.xml`;
   if (robots !== null) {
     if (!/^\s*user-agent\s*:/im.test(robots)) fail('robots.txt: missing User-agent directive');
     if (/^\s*disallow\s*:\s*\/\s*(?:#.*)?$/im.test(robots)) fail('robots.txt: the entire site is disallowed');
     const declaredSitemaps = [...robots.matchAll(/^\s*sitemap\s*:\s*(\S+)\s*$/gim)].map((match) => match[1]);
-    if (!declaredSitemaps.includes(expectedSitemapUrl)) {
-      fail(`robots.txt: must declare ${expectedSitemapUrl}`);
+    if (declaredSitemaps.length !== EXPECTED_ROBOTS_SITEMAPS.size) {
+      fail(`robots.txt: expected exactly ${EXPECTED_ROBOTS_SITEMAPS.size} Sitemap declarations, found ${declaredSitemaps.length}`);
     }
+    const uniqueDeclarations = new Set();
     for (const declaredSitemap of declaredSitemaps) {
-      if (declaredSitemap !== expectedSitemapUrl) {
+      let url;
+      try {
+        url = new URL(declaredSitemap);
+      } catch {
+        fail(`robots.txt: invalid sitemap declaration ${declaredSitemap}`);
+        continue;
+      }
+      if (url.protocol !== 'https:' || url.origin !== CANONICAL_ORIGIN || url.search || url.hash) {
         fail(`robots.txt: non-canonical sitemap declaration ${declaredSitemap}`);
       }
+      if (url.href !== declaredSitemap) fail(`robots.txt: sitemap URL is not in canonical serialized form (${declaredSitemap})`);
+      if (uniqueDeclarations.has(url.href)) fail(`robots.txt: duplicate sitemap declaration ${url.href}`);
+      uniqueDeclarations.add(url.href);
+      if (!EXPECTED_ROBOTS_SITEMAPS.has(url.href)) fail(`robots.txt: unexpected sitemap declaration ${url.href}`);
+    }
+    for (const expectedUrl of EXPECTED_ROBOTS_SITEMAPS) {
+      if (!uniqueDeclarations.has(expectedUrl)) fail(`robots.txt: must declare ${expectedUrl}`);
     }
   }
 
@@ -699,6 +973,8 @@ async function main() {
     }
     if (!sitemapUrlSet.has(`${CANONICAL_ORIGIN}/`)) fail('sitemap.xml: homepage URL is missing');
   }
+
+  const feedEntryCount = feed === null ? 0 : await validateAtomFeed(feed, distRoot, htmlByPath, sitemapUrlSet);
 
   for (const requirement of requiredPages) {
     const pagePath = join(distRoot, requirement.relativePath);
@@ -835,6 +1111,7 @@ async function main() {
   console.log(
     `SEO smoke check passed: ${htmlFiles.length} HTML file${htmlFiles.length === 1 ? '' : 's'}, ` +
       `${sitemapUrls.length} sitemap URL${sitemapUrls.length === 1 ? '' : 's'}, ` +
+      `${feedEntryCount} Atom feed entr${feedEntryCount === 1 ? 'y' : 'ies'}, ` +
       `${guideFiles.length} guide page${guideFiles.length === 1 ? '' : 's'}, ` +
       `${uniqueInternalEdges.size} unique canonical edge${uniqueInternalEdges.size === 1 ? '' : 's'}, ` +
       `${internalLinkCount} internal link${internalLinkCount === 1 ? '' : 's'}.`,

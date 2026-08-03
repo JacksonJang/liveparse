@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://liveparse.com/sitemap.xml
+Sitemap: https://liveparse.com/feed.xml

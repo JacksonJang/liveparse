@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <id>https://liveparse.com/feed.xml</id>
+  <title>LiveParse Developer Tool Updates</title>
+  <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
+  <updated>2026-08-04T06:56:03+09:00</updated>
+  <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
+  <link rel="alternate" type="text/html" href="https://liveparse.com/" />
+  <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
+  <author>
+    <name>Jackson Jang</name>
+    <uri>https://github.com/JacksonJang</uri>
+  </author>
+  <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/url-encoder/</id>
+    <title>URL Encoder</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/url-encoder/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL encoding" />
+    <summary>Percent-encode a component, stricter RFC 3986 component, complete URI, or form field locally.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/url-decoder/</id>
+    <title>URL Decoder</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/url-decoder/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL decoding" />
+    <summary>Strictly decode one intentional percent-encoding round with component, full-URI, or form rules.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/url-parser/</id>
+    <title>URL Parser</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/url-parser/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL parsing" />
+    <summary>Inspect strictly validated WHATWG URL components and resolve relative references without fetching an address.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/query-string-parser/</id>
+    <title>Query String Parser</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/query-string-parser/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="Query strings" />
+    <summary>Preserve ordered duplicate and blank form-query fields with raw pair metadata and canonical rebuilt output.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/url-percent-encoding/</id>
+    <title>URL Percent-Encoding: Reserved vs Unreserved Characters</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/url-percent-encoding/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL guides" />
+    <summary>Understand UTF-8 byte escapes, reserved delimiters, unreserved characters, and component boundaries.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/</id>
+    <title>encodeURI vs encodeURIComponent</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL guides" />
+    <summary>Choose between JavaScript whole-URI and component encoding and understand their RFC 3986 differences.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/percent20-vs-plus/</id>
+    <title>%20 vs Plus in URL Encoding</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/percent20-vs-plus/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL guides" />
+    <summary>Learn when space is percent-encoded as %20, when form parsing uses plus, and how to retain a literal plus.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/double-url-encoding/</id>
+    <title>Double URL Encoding and Single-Round Decoding</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/double-url-encoding/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-08-04T06:56:03+09:00</updated>
+    <category term="URL guides" />
+    <summary>Recognize repeated percent-encoding and avoid unsafe decode-until-stable behavior across protocol boundaries.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/hash-generator/</id>
+    <title>Hash Generator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/hash-generator/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing" />
+    <summary>Calculate SHA-256, SHA-384, SHA-512, or legacy MD5 for UTF-8 text and local file bytes.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/sha256-generator/</id>
+    <title>SHA-256 Generator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/sha256-generator/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing" />
+    <summary>Create SHA-256 digests in hexadecimal or Base64 and inspect exact UTF-8 input diagnostics.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/md5-generator/</id>
+    <title>MD5 Generator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/md5-generator/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing" />
+    <summary>Reproduce legacy MD5 checksums locally with clear collision-resistance and security warnings.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/file-checksum/</id>
+    <title>File Checksum Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/file-checksum/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Checksums" />
+    <summary>Hash exact local file bytes and compare a declared hexadecimal or Base64 checksum without uploading the file.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/sha256-vs-md5/</id>
+    <title>SHA-256 vs MD5</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/sha256-vs-md5/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing guides" />
+    <summary>Compare digest sizes, collision resistance, compatibility uses, and the security limits of MD5 and SHA-256.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/hash-vs-encryption/</id>
+    <title>Hashing vs Encryption</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/hash-vs-encryption/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing guides" />
+    <summary>Distinguish one-way digests from reversible encryption, authentication codes, signatures, and password hashing.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/how-to-verify-file-checksum/</id>
+    <title>How to Verify a File Checksum</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/how-to-verify-file-checksum/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Checksum guides" />
+    <summary>Compare exact file bytes with a trusted publisher digest and understand what a checksum match does not prove.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/hashing-utf8-newlines/</id>
+    <title>UTF-8 and Newline Hashing Pitfalls</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/hashing-utf8-newlines/" />
+    <published>2026-08-04T06:15:45+09:00</published>
+    <updated>2026-08-04T06:15:45+09:00</updated>
+    <category term="Hashing guides" />
+    <summary>Explain why Unicode normalization, text encoding, line endings, and trailing newlines change a digest.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/uuid-v4-generator/</id>
+    <title>UUID v4 Generator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/uuid-v4-generator/" />
+    <published>2026-08-04T05:37:22+09:00</published>
+    <updated>2026-08-04T05:37:22+09:00</updated>
+    <category term="UUID" />
+    <summary>Generate RFC 9562 UUID v4 values with browser cryptography, bulk export, and explicit formatting options.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/uuid-decoder/</id>
+    <title>UUID Decoder</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/uuid-decoder/" />
+    <published>2026-08-04T05:37:22+09:00</published>
+    <updated>2026-08-04T05:37:22+09:00</updated>
+    <category term="UUID" />
+    <summary>Inspect UUID version, variant, bytes, and the standard timestamp fields defined for versions 1, 6, and 7.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/uuid-versions-explained/</id>
+    <title>UUID Versions Explained</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/uuid-versions-explained/" />
+    <published>2026-08-04T05:37:22+09:00</published>
+    <updated>2026-08-04T05:37:22+09:00</updated>
+    <category term="UUID guides" />
+    <summary>Compare UUID versions 1 through 8, their layouts, ordering properties, privacy tradeoffs, and intended uses.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/uuid-collision-probability/</id>
+    <title>UUID Collision Probability</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/uuid-collision-probability/" />
+    <published>2026-08-04T05:37:22+09:00</published>
+    <updated>2026-08-04T05:37:22+09:00</updated>
+    <category term="UUID guides" />
+    <summary>Estimate UUID collision risk with the birthday bound and separate random-space math from generator quality.</summary>
+  </entry>
+</feed>

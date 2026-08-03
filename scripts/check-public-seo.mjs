@@ -3,6 +3,7 @@
 import { Buffer } from 'node:buffer';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseXml } from '@rgrove/parse-xml';
 
 export const DEFAULT_BASE_URL = 'https://liveparse.com';
 export const NORMAL_USER_AGENT =
@@ -17,7 +18,13 @@ const DEFAULT_TIMEOUT_MS = 10_000;
 const DEFAULT_CONCURRENCY = 4;
 const MAX_ROBOTS_BYTES = 1_000_000;
 const MAX_SITEMAP_BYTES = 10_000_000;
+const MAX_ATOM_BYTES = 2_000_000;
 const MAX_HTML_BYTES = 5_000_000;
+const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
+const ATOM_MEDIA_TYPE = 'application/atom+xml';
+const EXPECTED_WEBSUB_HUB = 'https://pubsubhubbub.appspot.com/';
+const MAX_ATOM_ENTRIES = 50;
+const MAX_FUTURE_SKEW_MS = 5 * 60 * 1_000;
 
 export class PublicSeoCheckError extends Error {
   constructor(failures, counts) {
@@ -245,7 +252,24 @@ function validateRobots(source, canonicalOrigin, failures) {
       failures.push(`robots.txt: Sitemap must use canonical origin ${canonicalOrigin} (${url.href})`);
     }
   }
-  return sitemapUrls;
+  const expectedSitemap = `${canonicalOrigin}/sitemap.xml`;
+  const expectedFeed = `${canonicalOrigin}/feed.xml`;
+  for (const expected of [expectedSitemap, expectedFeed]) {
+    if (!seen.has(expected)) failures.push(`robots.txt: missing Sitemap directive (${expected})`);
+  }
+  for (const url of sitemapUrls) {
+    if (url.href !== expectedSitemap && url.href !== expectedFeed) {
+      failures.push(`robots.txt: unexpected Sitemap directive (${url.href})`);
+    }
+  }
+  if (sitemapUrls.length !== 2) {
+    failures.push(`robots.txt: expected exactly 2 Sitemap directives, found ${sitemapUrls.length}`);
+  }
+
+  return {
+    feedUrl: sitemapUrls.find((url) => url.href === expectedFeed) ?? null,
+    sitemapUrl: sitemapUrls.find((url) => url.href === expectedSitemap) ?? null,
+  };
 }
 
 function extractXmlElementContents(source, name) {
@@ -314,6 +338,230 @@ function parseSitemap(source, sitemapUrl, canonicalOrigin, failures) {
     urls.push(url);
   });
   return urls;
+}
+
+function directXmlElements(node, name) {
+  return (node?.children || []).filter((child) => child.type === 'element' && child.name === name);
+}
+
+function atomText(parent, name, label, failures) {
+  const elements = directXmlElements(parent, name);
+  if (elements.length !== 1) {
+    failures.push(`${label}: expected exactly one <${name}>, found ${elements.length}`);
+    return '';
+  }
+  const element = elements[0];
+  if ((element.attributes?.type || 'text').toLowerCase() !== 'text') {
+    failures.push(`${label}: <${name}> must use plain text`);
+  }
+  if ((element.children || []).some((child) => child.type === 'element')) {
+    failures.push(`${label}: <${name}> must not contain child elements`);
+  }
+  const value = (element.children || [])
+    .filter((child) => child.type === 'text' || child.type === 'cdata')
+    .map((child) => child.text || '')
+    .join('')
+    .trim();
+  if (!value) failures.push(`${label}: <${name}> must not be empty`);
+  return value;
+}
+
+function atomLinks(parent, relation) {
+  return directXmlElements(parent, 'link').filter((link) =>
+    (link.attributes?.rel || 'alternate').trim().toLowerCase() === relation,
+  );
+}
+
+function oneAtomLink(parent, relation, label, failures) {
+  const links = atomLinks(parent, relation);
+  if (links.length !== 1) {
+    failures.push(`${label}: expected exactly one rel=${JSON.stringify(relation)} link, found ${links.length}`);
+    return null;
+  }
+  const href = (links[0].attributes?.href || '').trim();
+  if (!href) {
+    failures.push(`${label}: rel=${JSON.stringify(relation)} link must have a non-empty href`);
+    return null;
+  }
+  const url = parseAbsoluteHttpUrl(href, `${label} rel=${JSON.stringify(relation)} link`, failures);
+  return url ? { element: links[0], url } : null;
+}
+
+function parseAtomTimestamp(value, label, failures) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/.exec(value);
+  if (!match) {
+    failures.push(`${label}: expected an RFC 3339 timestamp with a timezone, received ${JSON.stringify(value)}`);
+    return null;
+  }
+
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText, , offsetHourText, offsetMinuteText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  const second = Number(secondText);
+  const offsetHour = offsetHourText === undefined ? 0 : Number(offsetHourText);
+  const offsetMinute = offsetMinuteText === undefined ? 0 : Number(offsetMinuteText);
+  const daysInMonth = month >= 1 && month <= 12 ? new Date(Date.UTC(year, month, 0)).getUTCDate() : 0;
+  if (
+    day < 1 || day > daysInMonth || hour > 23 || minute > 59 || second > 59 ||
+    offsetHour > 23 || offsetMinute > 59
+  ) {
+    failures.push(`${label}: timestamp has an out-of-range calendar or clock field (${JSON.stringify(value)})`);
+    return null;
+  }
+
+  const timestamp = Date.parse(value);
+  if (!Number.isFinite(timestamp)) {
+    failures.push(`${label}: timestamp cannot be parsed (${JSON.stringify(value)})`);
+    return null;
+  }
+  return timestamp;
+}
+
+function validateAtomFeed(source, feedUrl, canonicalOrigin, authoritativeUrls, failures, nowMs) {
+  const label = feedUrl.href;
+  const clean = source.replace(/^\uFEFF/, '');
+  if (/<!DOCTYPE\b/i.test(clean)) failures.push(`${label}: document type declarations are not allowed`);
+
+  let document;
+  try {
+    document = parseXml(clean);
+  } catch (error) {
+    failures.push(`${label}: malformed XML (${error.message})`);
+    return [];
+  }
+
+  const roots = (document.children || []).filter((child) => child.type === 'element');
+  if (roots.length !== 1 || roots[0].name !== 'feed') {
+    failures.push(`${label}: expected exactly one unprefixed <feed> root`);
+    return [];
+  }
+  const feed = roots[0];
+  if (feed.attributes?.xmlns !== ATOM_NAMESPACE) {
+    failures.push(`${label}: <feed> must declare the Atom 1.0 namespace ${ATOM_NAMESPACE}`);
+  }
+  if ((feed.attributes?.['xml:lang'] || '').toLowerCase() !== 'en') {
+    failures.push(`${label}: <feed> must declare xml:lang="en"`);
+  }
+
+  const feedId = atomText(feed, 'id', label, failures);
+  atomText(feed, 'title', label, failures);
+  const feedUpdatedValue = atomText(feed, 'updated', label, failures);
+  const feedUpdated = feedUpdatedValue ? parseAtomTimestamp(feedUpdatedValue, `${label} <updated>`, failures) : null;
+  if (feedId && feedId !== feedUrl.href) failures.push(`${label}: <id> must equal the feed URL ${feedUrl.href}`);
+
+  const selfLink = oneAtomLink(feed, 'self', label, failures);
+  if (selfLink) {
+    if (selfLink.url.href !== feedUrl.href) failures.push(`${label}: rel="self" must point to ${feedUrl.href}`);
+    if ((selfLink.element.attributes?.type || '').toLowerCase() !== ATOM_MEDIA_TYPE) {
+      failures.push(`${label}: rel="self" must declare type=${JSON.stringify(ATOM_MEDIA_TYPE)}`);
+    }
+  }
+
+  const alternateLink = oneAtomLink(feed, 'alternate', label, failures);
+  if (alternateLink) {
+    const expectedAlternate = `${canonicalOrigin}/`;
+    if (alternateLink.url.href !== expectedAlternate) {
+      failures.push(`${label}: feed rel="alternate" must point to ${expectedAlternate}`);
+    }
+    if ((alternateLink.element.attributes?.type || '').toLowerCase() !== 'text/html') {
+      failures.push(`${label}: feed rel="alternate" must declare type="text/html"`);
+    }
+  }
+
+  const hubLink = oneAtomLink(feed, 'hub', label, failures);
+  if (hubLink && hubLink.url.href !== EXPECTED_WEBSUB_HUB) {
+    failures.push(`${label}: rel="hub" must point to ${EXPECTED_WEBSUB_HUB}`);
+  }
+
+  const authors = directXmlElements(feed, 'author');
+  if (authors.length !== 1) {
+    failures.push(`${label}: expected exactly one feed-level <author>, found ${authors.length}`);
+  } else {
+    atomText(authors[0], 'name', `${label} <author>`, failures);
+    const authorUri = atomText(authors[0], 'uri', `${label} <author>`, failures);
+    if (authorUri) {
+      const parsedAuthorUri = parseAbsoluteHttpUrl(authorUri, `${label} <author> <uri>`, failures);
+      if (parsedAuthorUri?.protocol !== 'https:') failures.push(`${label}: author URI must use HTTPS`);
+    }
+  }
+
+  const entries = directXmlElements(feed, 'entry');
+  if (entries.length === 0) failures.push(`${label}: feed must contain at least one <entry>`);
+  if (entries.length > MAX_ATOM_ENTRIES) {
+    failures.push(`${label}: recent feed must contain at most ${MAX_ATOM_ENTRIES} entries, found ${entries.length}`);
+  }
+
+  const seenIds = new Set();
+  const seenUrls = new Set();
+  const entryTimes = [];
+  entries.forEach((entry, index) => {
+    const entryLabel = `${label} entry ${index + 1}`;
+    const id = atomText(entry, 'id', entryLabel, failures);
+    atomText(entry, 'title', entryLabel, failures);
+    const publishedValue = atomText(entry, 'published', entryLabel, failures);
+    const updatedValue = atomText(entry, 'updated', entryLabel, failures);
+    atomText(entry, 'summary', entryLabel, failures);
+    const published = publishedValue ? parseAtomTimestamp(publishedValue, `${entryLabel} <published>`, failures) : null;
+    const updated = updatedValue ? parseAtomTimestamp(updatedValue, `${entryLabel} <updated>`, failures) : null;
+
+    if (published !== null && published > nowMs + MAX_FUTURE_SKEW_MS) {
+      failures.push(`${entryLabel}: <published> is in the future`);
+    }
+    if (updated !== null && updated > nowMs + MAX_FUTURE_SKEW_MS) {
+      failures.push(`${entryLabel}: <updated> is in the future`);
+    }
+    if (published !== null && updated !== null && published > updated) {
+      failures.push(`${entryLabel}: <published> must not be later than <updated>`);
+    }
+    if (updated !== null) entryTimes.push({ index, timestamp: updated });
+
+    if (id) {
+      if (seenIds.has(id)) failures.push(`${entryLabel}: duplicate <id> ${JSON.stringify(id)}`);
+      seenIds.add(id);
+    }
+
+    const alternate = oneAtomLink(entry, 'alternate', entryLabel, failures);
+    if (!alternate) return;
+    if ((alternate.element.attributes?.type || '').toLowerCase() !== 'text/html') {
+      failures.push(`${entryLabel}: rel="alternate" must declare type="text/html"`);
+    }
+    if (alternate.url.origin !== canonicalOrigin) {
+      failures.push(`${entryLabel}: alternate URL must use canonical origin ${canonicalOrigin} (${alternate.url.href})`);
+    }
+    if (alternate.url.search || alternate.url.hash) {
+      failures.push(`${entryLabel}: alternate URL must not contain a query or fragment (${alternate.url.href})`);
+    }
+    if (!authoritativeUrls.has(alternate.url.href)) {
+      failures.push(`${entryLabel}: alternate URL is not present in the authoritative URL-set sitemap (${alternate.url.href})`);
+    }
+    if (seenUrls.has(alternate.url.href)) {
+      failures.push(`${entryLabel}: duplicate alternate URL ${alternate.url.href}`);
+    }
+    seenUrls.add(alternate.url.href);
+    if (id && id !== alternate.url.href) {
+      failures.push(`${entryLabel}: <id> must equal its canonical alternate URL ${alternate.url.href}`);
+    }
+  });
+
+  for (let index = 1; index < entryTimes.length; index += 1) {
+    if (entryTimes[index - 1].timestamp < entryTimes[index].timestamp) {
+      failures.push(`${label}: entries must be ordered by non-increasing <updated>; entry ${entryTimes[index].index + 1} is newer than its predecessor`);
+    }
+  }
+  if (entryTimes.length > 0) {
+    const newest = Math.max(...entryTimes.map(({ timestamp }) => timestamp));
+    if (feedUpdated !== null && feedUpdated !== newest) {
+      failures.push(`${label}: feed <updated> must equal the newest entry <updated>`);
+    }
+  }
+  if (feedUpdated !== null && feedUpdated > nowMs + MAX_FUTURE_SKEW_MS) {
+    failures.push(`${label}: feed <updated> is in the future`);
+  }
+
+  return entries;
 }
 
 function parseAttributes(source) {
@@ -487,6 +735,8 @@ function throwIfFailed(failures, counts) {
 
 export function formatCounts(counts) {
   return `${counts.robots} robots.txt, ${counts.sitemaps} sitemap${counts.sitemaps === 1 ? '' : 's'}, ` +
+    `${counts.feeds} Atom feed${counts.feeds === 1 ? '' : 's'}, ` +
+    `${counts.feedEntries} recent feed entr${counts.feedEntries === 1 ? 'y' : 'ies'}, ` +
     `${counts.urls} URL${counts.urls === 1 ? '' : 's'}, ${counts.pageVariants} page variants`;
 }
 
@@ -495,6 +745,7 @@ export async function runPublicSeoCheck({
   canonicalOrigin = DEFAULT_BASE_URL,
   concurrency = DEFAULT_CONCURRENCY,
   fetchImpl = globalThis.fetch,
+  now = new Date(),
   timeoutMs = DEFAULT_TIMEOUT_MS,
 } = {}) {
   const base = normalizeBaseUrl(baseUrl);
@@ -509,9 +760,11 @@ export async function runPublicSeoCheck({
     throw new TypeError('Concurrency must be an integer from 1 to 32.');
   }
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1) throw new TypeError('Timeout must be a positive integer.');
+  const nowMs = now instanceof Date ? now.getTime() : Number(now);
+  if (!Number.isFinite(nowMs)) throw new TypeError('now must be a valid Date or timestamp.');
 
   const failures = [];
-  const counts = { pageVariants: 0, robots: 0, sitemaps: 0, urls: 0 };
+  const counts = { feedEntries: 0, feeds: 0, pageVariants: 0, robots: 0, sitemaps: 0, urls: 0 };
   const robotsUrl = new URL('/robots.txt', base);
   let robots;
   try {
@@ -530,40 +783,75 @@ export async function runPublicSeoCheck({
   if (robots.status < 200 || robots.status >= 300) {
     failures.push(`robots.txt: expected a successful response, received HTTP ${robots.status}`);
   }
-  const sitemapUrls = validateRobots(robots.body.toString('utf8'), expectedCanonicalOrigin, failures);
+  const { feedUrl, sitemapUrl } = validateRobots(
+    robots.body.toString('utf8'),
+    expectedCanonicalOrigin,
+    failures,
+  );
   throwIfFailed(failures, counts);
 
-  const sitemapResults = await mapConcurrent(sitemapUrls, Math.min(concurrency, 4), async (sitemapUrl) => {
-    try {
-      const result = await fetchResource(fetchImpl, transportUrl(sitemapUrl, base), {
-        accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1',
-        maximumBytes: MAX_SITEMAP_BYTES,
-        timeoutMs,
-        transportHeaders,
-        userAgent: GOOGLEBOT_SMARTPHONE_USER_AGENT,
-      });
-      const localFailures = [];
-      if (result.status < 200 || result.status >= 300) {
-        localFailures.push(`${sitemapUrl.href}: expected a successful response, received HTTP ${result.status}`);
-        return { failures: localFailures, urls: [] };
-      }
-      return {
+  let sitemapResult;
+  try {
+    const result = await fetchResource(fetchImpl, transportUrl(sitemapUrl, base), {
+      accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1',
+      maximumBytes: MAX_SITEMAP_BYTES,
+      timeoutMs,
+      transportHeaders,
+      userAgent: GOOGLEBOT_SMARTPHONE_USER_AGENT,
+    });
+    const localFailures = [];
+    if (result.status < 200 || result.status >= 300) {
+      localFailures.push(`${sitemapUrl.href}: expected a successful response, received HTTP ${result.status}`);
+      sitemapResult = { failures: localFailures, urls: [] };
+    } else {
+      sitemapResult = {
         failures: localFailures,
         urls: parseSitemap(result.body.toString('utf8'), sitemapUrl, expectedCanonicalOrigin, localFailures),
       };
-    } catch (error) {
-      return { failures: [`${sitemapUrl.href}: request failed (${error.message})`], urls: [] };
     }
-  });
-  counts.sitemaps = sitemapResults.length;
-  failures.push(...sitemapResults.flatMap((result) => result.failures));
-  const pageUrls = sitemapResults.flatMap((result) => result.urls);
+  } catch (error) {
+    sitemapResult = { failures: [`${sitemapUrl.href}: request failed (${error.message})`], urls: [] };
+  }
+  counts.sitemaps = 1;
+  failures.push(...sitemapResult.failures);
+  const pageUrls = sitemapResult.urls;
   const seenPageUrls = new Set();
   for (const url of pageUrls) {
     if (seenPageUrls.has(url.href)) failures.push(`sitemap: duplicate <loc> URL (${url.href})`);
     seenPageUrls.add(url.href);
   }
   counts.urls = pageUrls.length;
+  throwIfFailed(failures, counts);
+
+  try {
+    const result = await fetchResource(fetchImpl, transportUrl(feedUrl, base), {
+      accept: `${ATOM_MEDIA_TYPE},application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.1`,
+      maximumBytes: MAX_ATOM_BYTES,
+      timeoutMs,
+      transportHeaders,
+      userAgent: GOOGLEBOT_SMARTPHONE_USER_AGENT,
+    });
+    counts.feeds = 1;
+    if (result.status < 200 || result.status >= 300) {
+      failures.push(`${feedUrl.href}: expected a successful response, received HTTP ${result.status}`);
+    } else {
+      const contentType = (result.headers.get('content-type') || '').split(';', 1)[0].trim().toLowerCase();
+      if (contentType !== ATOM_MEDIA_TYPE) {
+        failures.push(`${feedUrl.href}: expected Content-Type ${ATOM_MEDIA_TYPE}, received ${JSON.stringify(contentType || null)}`);
+      }
+      const entries = validateAtomFeed(
+        result.body.toString('utf8'),
+        feedUrl,
+        expectedCanonicalOrigin,
+        seenPageUrls,
+        failures,
+        nowMs,
+      );
+      counts.feedEntries = entries.length;
+    }
+  } catch (error) {
+    failures.push(`${feedUrl.href}: request failed (${error.message})`);
+  }
   throwIfFailed(failures, counts);
 
   const pageResults = await mapConcurrent(pageUrls, concurrency, async (canonicalUrl) => {

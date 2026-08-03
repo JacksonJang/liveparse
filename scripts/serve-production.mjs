@@ -586,7 +586,12 @@ async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCoun
   const etag = etagFor(fileStat);
   response.statusCode = 200;
   setSecurityHeaders(response);
-  response.setHeader('Content-Type', MIME_TYPES.get(extname(filePath).toLowerCase()) || 'application/octet-stream');
+  response.setHeader(
+    'Content-Type',
+    requestPath === '/feed.xml'
+      ? 'application/atom+xml; charset=utf-8'
+      : MIME_TYPES.get(extname(filePath).toLowerCase()) || 'application/octet-stream',
+  );
   response.setHeader('Content-Length', fileStat.size);
   response.setHeader('Cache-Control', cacheControl(requestPath, filePath));
   response.setHeader('ETag', etag);
