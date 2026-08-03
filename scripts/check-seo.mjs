@@ -8,6 +8,13 @@ const CANONICAL_ORIGIN = 'https://liveparse.com';
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(process.argv[2] || process.env.DIST_DIR || join(PROJECT_ROOT, 'dist'));
 const failures = [];
+const FAQ_PARITY_PATHS = new Set([
+  '/yaml-to-json/',
+  '/guides/yaml-1-1-vs-1-2/',
+  '/guides/yaml-to-json-types/',
+  '/guides/yaml-anchors-aliases-merge-keys/',
+  '/guides/common-yaml-errors/',
+]);
 const requiredPages = [
   { relativePath: 'ko/json-parser/index.html', canonical: `${CANONICAL_ORIGIN}/ko/json-parser/`, label: 'Korean JSON parser' },
   { relativePath: 'json-repair/index.html', canonical: `${CANONICAL_ORIGIN}/json-repair/`, label: 'JSON Repair tool' },
@@ -32,6 +39,11 @@ const requiredPages = [
   { relativePath: 'xml-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/xml-formatter/`, label: 'XML Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:format(?:ter|ting)?|beautif(?:y|ier)|pretty[-\s]?print(?:er|ing)?)\b)/i, topicLabel: 'XML formatting', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
   { relativePath: 'xml-validator/index.html', canonical: `${CANONICAL_ORIGIN}/xml-validator/`, label: 'XML Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:valid(?:ate|ator|ation)|well[-\s]?formed(?:ness)?(?:\s+(?:check(?:er|ing)?))?)\b)/i, topicLabel: 'XML well-formedness validation', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
   { relativePath: 'xml-viewer/index.html', canonical: `${CANONICAL_ORIGIN}/xml-viewer/`, label: 'XML Viewer tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:view(?:er|ing)?|tree|explor(?:e|er|ing))\b)/i, topicLabel: 'XML viewing', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
+  { relativePath: 'yaml-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-formatter/`, label: 'YAML Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\byaml\b)(?=.*\b(?:format(?:ter|ting)?|beautif(?:y|ier)|pretty[-\s]?print(?:er|ing)?)\b)/i, topicLabel: 'YAML formatting' },
+  { relativePath: 'yaml-validator/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-validator/`, label: 'YAML Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\byaml\b)(?=.*\b(?:valid(?:ate|ator|ation)|syntax\s+check(?:er|ing)?)\b)/i, topicLabel: 'YAML syntax validation', forbiddenHeadingPattern: /\byaml\s+(?:schema|lint(?:er|ing)?|fixer)\b|\b(?:schema|lint(?:er|ing)?|fixer)\s+(?:for\s+)?yaml\b/i, forbiddenHeadingLabel: 'schema validation, linting, or automatic fixing' },
+  { relativePath: 'yaml-viewer/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-viewer/`, label: 'YAML Viewer tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\byaml\b)(?=.*\b(?:view(?:er|ing)?|tree|explor(?:e|er|ing))\b)/i, topicLabel: 'YAML viewing' },
+  { relativePath: 'yaml-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-to-json/`, label: 'YAML to JSON tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\byaml\b)(?=.*\bjson\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'YAML to JSON conversion' },
+  { relativePath: 'json-to-yaml/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-yaml/`, label: 'JSON to YAML tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\bjson\b)(?=.*\byaml\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'JSON to YAML conversion' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -156,6 +168,81 @@ function validateJsonLd(html, label, required = false) {
   });
 }
 
+function collectJsonLdNodes(value, nodes = []) {
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectJsonLdNodes(item, nodes));
+  } else if (value && typeof value === 'object') {
+    nodes.push(value);
+    Object.values(value).forEach((item) => collectJsonLdNodes(item, nodes));
+  }
+  return nodes;
+}
+
+function normalizeFaqText(value) {
+  return value.replace(/\s+/g, ' ').trim().replace(/\s+([,.;:!?/])/g, '$1').replace(/\/\s+/g, '/');
+}
+
+function visibleFaqPairs(html) {
+  const sections = [];
+  const sectionPattern = /<section\b([^>]*)>([\s\S]*?)<\/section\s*>/gi;
+  let sectionMatch;
+  while ((sectionMatch = sectionPattern.exec(html))) {
+    const attributes = parseAttributes(sectionMatch[1]);
+    if (attributes.get('id') === 'faq' || attributes.get('aria-labelledby') === 'faq-title') sections.push(sectionMatch[2]);
+  }
+  const pairs = [];
+  for (const section of sections) {
+    const details = elementContents(section, 'details');
+    if (details.length) {
+      for (const detail of details) {
+        const question = elementContents(detail, 'summary').map((value) => normalizeFaqText(plainText(value))).find(Boolean);
+        const answer = elementContents(detail, 'p').map((value) => normalizeFaqText(plainText(value))).find(Boolean);
+        if (question && answer) pairs.push({ question, answer });
+      }
+      continue;
+    }
+    const pairPattern = /<h3\b[^>]*>([\s\S]*?)<\/h3\s*>\s*<p\b[^>]*>([\s\S]*?)<\/p\s*>/gi;
+    let pairMatch;
+    while ((pairMatch = pairPattern.exec(section))) {
+      pairs.push({ question: normalizeFaqText(plainText(pairMatch[1])), answer: normalizeFaqText(plainText(pairMatch[2])) });
+    }
+  }
+  return pairs;
+}
+
+function validateFaqParity(html, label) {
+  const faqNodes = [];
+  for (const block of jsonLdBlocks(html)) {
+    try {
+      const parsed = JSON.parse(block);
+      faqNodes.push(...collectJsonLdNodes(parsed).filter((node) => node['@type'] === 'FAQPage'));
+    } catch {
+      return;
+    }
+  }
+  if (faqNodes.length !== 1) {
+    fail(`${label}: expected exactly one FAQPage JSON-LD node, found ${faqNodes.length}`);
+    return;
+  }
+  const structuredPairs = Array.isArray(faqNodes[0].mainEntity)
+    ? faqNodes[0].mainEntity.map((entity) => ({
+      question: typeof entity?.name === 'string' ? normalizeFaqText(entity.name) : '',
+      answer: typeof entity?.acceptedAnswer?.text === 'string' ? normalizeFaqText(entity.acceptedAnswer.text) : '',
+    }))
+    : [];
+  const visiblePairs = visibleFaqPairs(html);
+  if (structuredPairs.length !== visiblePairs.length) {
+    fail(`${label}: FAQPage has ${structuredPairs.length} question-answer pairs but visible FAQ has ${visiblePairs.length}`);
+    return;
+  }
+  structuredPairs.forEach((pair, index) => {
+    const visible = visiblePairs[index];
+    if (pair.question !== visible.question || pair.answer !== visible.answer) {
+      fail(`${label}: FAQ pair ${index + 1} does not exactly match the visible question and answer`);
+    }
+  });
+}
+
 function validatePageBasics(html, label, expectedCanonical, { minimumCharacters = 200, requireJson = true, requireParsing = true } = {}) {
   const titles = titleValues(html);
   if (titles.length !== 1) fail(`${label}: expected exactly one non-empty <title>, found ${titles.length}`);
@@ -233,6 +320,42 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('yaml-1-1-vs-1-2')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\byaml\b)(?=.*\b1\.1\b)(?=.*\b1\.2\b)/i,
+      topicLabel: 'YAML 1.1 and YAML 1.2',
+    };
+  }
+  if (normalized.includes('yaml-to-json-types')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\byaml\b)(?=.*\bjson\b)(?=.*\btypes?\b)/i,
+      topicLabel: 'YAML to JSON types',
+    };
+  }
+  if (normalized.includes('yaml-anchors-aliases-merge-keys')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\byaml\b)(?=.*\banchors?\b)(?=.*\balias(?:es)?\b)(?=.*\bmerge\s+keys?\b)/i,
+      topicLabel: 'YAML anchors, aliases, and merge keys',
+    };
+  }
+  if (normalized.includes('common-yaml-errors')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\byaml\b)(?=.*\b(?:errors?|mistakes?|problems?)\b)/i,
+      topicLabel: 'common YAML errors',
+    };
+  }
   if (normalized.includes('xml-well-formed-vs-valid')) {
     return {
       requireJson: false,
@@ -485,7 +608,7 @@ async function main() {
       ];
       for (const [field, value] of claimFields) {
         if (requirement.forbiddenHeadingPattern.test(value)) {
-          fail(`${requirement.label}: ${field} must not claim XSD or XML Schema validation`);
+          fail(`${requirement.label}: ${field} must not claim ${requirement.forbiddenHeadingLabel ?? 'XSD or XML Schema validation'}`);
         }
       }
     }
@@ -522,6 +645,7 @@ async function main() {
   for (const [path, html] of htmlByPath) {
     const sourcePublicPath = publicPathForHtml(relative(distRoot, path));
     const sourceUrl = new URL(sourcePublicPath, CANONICAL_ORIGIN);
+    if (FAQ_PARITY_PATHS.has(sourcePublicPath)) validateFaqParity(html, `page ${sourcePublicPath}`);
     for (const href of extractLinks(html)) {
       if (/^(?:#|mailto:|tel:|javascript:|data:)/i.test(href)) continue;
       const target = normalizeUrl(href, sourceUrl, `page ${sourcePublicPath}`);

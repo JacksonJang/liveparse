@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML Formatter Online – Pretty Print YAML Locally | LiveParse</title>
+    <meta name="description" content="Format and pretty-print YAML online with YAML 1.2 Core Schema or optional YAML 1.1 parsing. Multi-document input stays in a local browser worker." />
+    <link rel="canonical" href="https://liveparse.com/yaml-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML Formatter &amp; Pretty Printer Online" />
+    <meta property="og:description" content="Parse and reserialize YAML in a local worker with explicit schema and indentation choices." />
+    <meta property="og:url" content="https://liveparse.com/yaml-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private browser-based YAML formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML Formatter &amp; Pretty Printer Online" />
+    <meta name="twitter:description" content="Pretty-print YAML locally and review the presentation changes before replacing source." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/yaml-formatter/#app",
+            "name": "LiveParse YAML Formatter",
+            "url": "https://liveparse.com/yaml-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A browser-based YAML formatter using yaml 2.9.0 with YAML 1.2 Core Schema by default and optional YAML 1.1 parsing.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/yaml-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML Formatter", "item": "https://liveparse.com/yaml-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/yaml-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the YAML formatter preserve the original presentation?", "acceptedAnswer": { "@type": "Answer", "text": "No. It parses and reserializes the document, so indentation, quoting, scalar style, flow style, spacing, and comment placement can change. Review a diff and test the consumer before replacing source." } },
+              { "@type": "Question", "name": "Which YAML versions does the formatter support?", "acceptedAnswer": { "@type": "Answer", "text": "It uses yaml 2.9.0 with YAML 1.2 Core Schema by default and offers YAML 1.1 as an explicit compatibility option. Merge-key expansion remains disabled." } },
+              { "@type": "Question", "name": "Does the YAML formatter upload configuration files?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing and formatting run in a local Web Worker. Input is limited to 200,000 UTF-16 code units and is not sent to a formatting API." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="yaml-page" data-yaml-mode="format">
+    <a class="skip-link" href="#formatter">Skip to the YAML formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="#formatter">YAML Formatter</a>
+          <a href="/yaml-validator/">YAML Validator</a>
+          <a href="/yaml-viewer/">YAML Viewer</a>
+          <a href="/yaml-to-json/">YAML to JSON</a>
+          <a href="/json-to-yaml/">JSON to YAML</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">YAML 1.2 by default · Local worker · Reviewable output</p>
+          <h1>YAML Formatter &amp; Pretty Printer Online</h1>
+          <p class="hero-lead">Turn compact or inconsistently indented YAML into a readable serialization. Choose the schema deliberately, keep multi-document streams together, and inspect every presentation change before using the result.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format YAML now</a><span>Free · No upload · 200,000-code-unit limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="Formatted YAML example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>service.yaml</strong></div>
+          <pre><code><span class="property">service:</span>
+  <span class="property">name:</span> <span class="string">liveparse</span>
+  <span class="property">ports:</span>
+    - <span class="number">4173</span>
+  <span class="property">private:</span> <span class="boolean">true</span></code></pre>
+          <p><strong>Consistent serialization</strong><span>Meaning still needs application tests</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">Parse, serialize, then review</p><h2 id="formatter-heading">Pretty-print YAML in your browser</h2></div>
+        <p>The formatter uses <code>yaml</code> version <code>2.9.0</code> in a local worker. YAML 1.2 Core Schema is the default; YAML 1.1 is an explicit compatibility choice. Multi-document streams, anchors, aliases, and block scalars are supported, while merge-key expansion remains disabled.</p>
+      </section>
+      <div id="yaml-root">
+        <section class="parser-fallback" aria-label="YAML formatter loading"><p><strong>Loading the private YAML formatter…</strong></p><p>Enable JavaScript to format YAML locally. The workflow, version boundary, and review guidance below remain available without it.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-format" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A deliberate formatting workflow</p><h2 id="how-heading">How to format YAML online without hiding changes</h2><p>Pretty printing is a source transformation, not a promise that the original text will be reproduced token for token.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste YAML or open a local file</h3><p>Use one document or a stream separated by <code>---</code>. Input is capped at 200,000 UTF-16 code units so an unexpectedly large configuration cannot monopolize the tab.</p></li>
+          <li><span>2</span><h3>Choose schema and indentation</h3><p>Keep YAML 1.2 Core unless the consuming system specifically requires YAML 1.1 behavior. Values such as <code>yes</code>, <code>no</code>, <code>on</code>, and <code>off</code> can resolve differently between those choices.</p></li>
+          <li><span>3</span><h3>Compare and test the output</h3><p>The formatter parses and reserializes. Review a source diff, then run the target application's parser and tests before committing a Kubernetes manifest, CI workflow, Compose file, or deployment configuration.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="presentation" aria-labelledby="presentation-heading">
+        <div class="section-heading"><p class="section-kicker">Readable is not byte-identical</p><h2 id="presentation-heading">What YAML formatting can change</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>YAML has both a data model and many presentation choices. The same scalar can be written plainly, quoted, or as a block scalar. Collections can use block or flow style. Blank lines, indentation, comments, directives, and document markers also shape the source a person reviews. A parser-backed formatter constructs documents and serializes them again, so it does not promise to retain every original spelling or position.</p>
+            <p>Expect indentation, whitespace, quote choice, flow-versus-block style, scalar presentation, equivalent numeric spelling, document markers, and comment placement to change when the serializer decides another representation is appropriate. LiveParse stops formatting before runtime rounding, underflow, overflow, or non-zero sub-millisecond timestamp truncation would change a value. Anchors and aliases remain YAML concepts, but their placement can be presented differently. Formatting does not expand the optional merge key: a <code>&lt;&lt;</code> entry is not silently turned into copied mapping pairs.</p>
+            <p>A valid-looking output can still be wrong for a particular tool. Kubernetes, Docker Compose, GitHub Actions, Ansible, and application configuration loaders apply schemas and conventions beyond YAML syntax. Use the <a href="/yaml-validator/">YAML Validator</a> for a focused syntax, alias-order, and duplicate-scalar-key result, then use the authoritative application validator for domain rules.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Default schema</dt><dd>YAML 1.2 Core Schema, selected explicitly by the page.</dd></div>
+            <div><dt>Compatibility</dt><dd>YAML 1.1 is available only when an older consumer requires it.</dd></div>
+            <div><dt>Merge keys</dt><dd>Expansion is disabled; formatting does not manufacture merged pairs.</dd></div>
+            <div><dt>Output meaning</dt><dd>Syntax can be parsed, but application schemas and business rules remain separate.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="features" aria-labelledby="features-heading">
+        <div class="section-heading"><p class="section-kicker">Modern YAML document features</p><h2 id="features-heading">Multi-document streams, block scalars, anchors, and aliases</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Multiple documents</h3><p>A stream can contain several documents separated by <code>---</code>. The formatter keeps them as a stream instead of pretending every input is one mapping.</p></article>
+          <article><h3>Block scalars</h3><p>Literal <code>|</code> and folded <code>&gt;</code> scalars have chomping and indentation rules. Review rendered scalar values as well as the changed source presentation.</p></article>
+          <article><h3>Anchors and aliases</h3><p>An anchor names a node and an alias refers to it. They are not simple text substitution, and downstream loaders can impose their own alias limits.</p></article>
+          <article><h3>Schema-sensitive scalars</h3><p>A plain scalar's resolved type depends on the selected schema. Do not switch between YAML 1.2 and 1.1 merely to make an unexpected value appear acceptable.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Configuration stays in this tab</p><h2 id="privacy-heading">Private YAML formatting with bounded work</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Configuration files can contain internal hostnames, account names, image registries, environment identifiers, or secrets. LiveParse sends the YAML operation to a Web Worker created by the page; it does not post the document to a formatting service. Copying, downloading, browser extensions, clipboard history, screen sharing, and other device software remain outside that boundary.</p>
+            <p>The page accepts at most 200,000 UTF-16 code units and performs parsing away from the interface thread. Those limits protect an interactive browser tool; they do not certify an arbitrary YAML document as safe for every downstream loader. Alias handling, custom tags, executable constructors, and schema choices must also be reviewed wherever the file is ultimately consumed.</p>
+          </div>
+          <div class="callout-card"><strong>Need another representation?</strong><p>Inspect nodes without expanding aliases in the tree viewer, or convert supported YAML values to strict JSON with explicit loss warnings.</p><a href="/yaml-viewer/">Open the YAML Viewer →</a><br /><a href="/yaml-to-json/">Convert YAML to JSON →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Formatting boundaries</p><h2 id="faq-heading">YAML formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the YAML formatter preserve the original presentation?</summary><p>No. It parses and reserializes the document, so indentation, quoting, scalar style, flow style, spacing, document markers, and comment placement can change. Review a diff and test the consumer before replacing source.</p></details>
+          <details><summary>Which YAML versions does the formatter support?</summary><p>It uses <code>yaml</code> version <code>2.9.0</code> with YAML 1.2 Core Schema by default and offers YAML 1.1 as an explicit compatibility option. Merge-key expansion remains disabled.</p></details>
+          <details><summary>Does the YAML formatter upload configuration files?</summary><p>No. Parsing and formatting run in a local Web Worker. Input is limited to 200,000 UTF-16 code units and is not sent to a formatting API.</p></details>
+          <details><summary>Does formatted YAML pass Kubernetes or Docker Compose validation?</summary><p>Not necessarily. Formatting proves neither a Kubernetes resource schema nor a Compose specification. Run the platform's authoritative validation after reviewing the formatted source.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Format and data-model references</p><h2 id="references-heading">YAML formatter resources</h2></div>
+        <ul>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noreferrer">YAML 1.2.2 specification</a></li>
+          <li><a href="https://eemeli.org/yaml/" target="_blank" rel="noreferrer">yaml 2.9 documentation</a></li>
+          <li><a href="/guides/yaml-1-1-vs-1-2/">YAML 1.1 vs YAML 1.2</a></li>
+          <li><a href="/guides/yaml-anchors-aliases-merge-keys/">YAML anchors, aliases, and merge keys</a></li>
+          <li><a href="/" >JSON Parser &amp; Formatter</a></li>
+          <li><a href="/xml-formatter/">XML Formatter</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Parser-backed formatting · Review presentation changes</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive YAML formatting. The schema, presentation, privacy, and review guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/yaml.tsx"></script>
+  </body>
+</html>

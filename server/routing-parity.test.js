@@ -132,4 +132,61 @@ describe('production routing parity', () => {
     const routeNames = [...directories, ...redirects.keys()];
     expect(routeNames.some((route) => /(?:xsd|xml-(?:schema|dtd)|(?:schema|dtd)-xml)/i.test(route))).toBe(false);
   });
+
+  it('includes the YAML tools and guides with only syntax, viewing, and conversion aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/yaml-formatter/',
+      '/yaml-validator/',
+      '/yaml-viewer/',
+      '/yaml-to-json/',
+      '/json-to-yaml/',
+    ]);
+    const expectedAliases = new Map([
+      ['/yaml-beautifier', '/yaml-formatter/'],
+      ['/yaml-prettify', '/yaml-formatter/'],
+      ['/format-yaml', '/yaml-formatter/'],
+      ['/yml-formatter', '/yaml-formatter/'],
+      ['/yml-validator', '/yaml-validator/'],
+      ['/validate-yaml', '/yaml-validator/'],
+      ['/yaml-checker', '/yaml-validator/'],
+      ['/yaml-parser', '/yaml-viewer/'],
+      ['/yaml-tree-viewer', '/yaml-viewer/'],
+      ['/view-yaml', '/yaml-viewer/'],
+      ['/convert-yaml-to-json', '/yaml-to-json/'],
+      ['/yml-to-json', '/yaml-to-json/'],
+      ['/convert-json-to-yaml', '/json-to-yaml/'],
+      ['/json-to-yml', '/json-to-yaml/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/yaml-formatter',
+      '/yaml-validator',
+      '/yaml-viewer',
+      '/yaml-to-json',
+      '/json-to-yaml',
+      '/guides/yaml-1-1-vs-1-2',
+      '/guides/yaml-to-json-types',
+      '/guides/yaml-anchors-aliases-merge-keys',
+      '/guides/common-yaml-errors',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualYamlAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualYamlAliases).toEqual(completeExpectedAliases);
+
+    const routeNames = [...directories, ...redirects.keys()];
+    expect(routeNames.some((route) => /yaml-(?:schema|linter|lint|fixer)|(?:schema|lint|linter|fixer)-yaml/i.test(route))).toBe(false);
+  });
 });

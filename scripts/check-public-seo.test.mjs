@@ -73,6 +73,31 @@ describe('public SEO deployment guard', () => {
     }
   });
 
+  it('compares decoded Cloudflare email-protection tokens instead of their randomized ciphertext', async () => {
+    let origin;
+    const encode = (value, key) => {
+      const bytes = Buffer.from(value);
+      return key.toString(16).padStart(2, '0') + [...bytes].map((byte) => (byte ^ key).toString(16).padStart(2, '0')).join('');
+    };
+    const baseUrl = await startServer((request, response) => {
+      if (request.url === '/robots.txt') {
+        response.end(`User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
+        return;
+      }
+      if (request.url === '/sitemap.xml') {
+        response.end(`<urlset><url><loc>${origin}/</loc></url></urlset>`);
+        return;
+      }
+      const isBot = (request.headers['user-agent'] || '').includes('Googlebot/2.1');
+      const token = encode('yaml@2.9.0', isBot ? 0x4a : 0x25);
+      response.setHeader('Content-Type', 'text/html; charset=utf-8');
+      response.end(htmlPage(`${origin}/`, `<h1>Useful public tool</h1><a data-cfemail="${token}" href="/cdn-cgi/l/email-protection">protected</a>`));
+    });
+    origin = baseUrl;
+
+    await expect(runPublicSeoCheck({ baseUrl, canonicalOrigin: baseUrl, timeoutMs: 2_000 })).resolves.toMatchObject({ urls: 1 });
+  });
+
   it('rejects an effective Googlebot blanket block even when the wildcard group allows crawling', async () => {
     const baseUrl = await startServer((request, response) => {
       response.setHeader('Content-Type', 'text/plain');

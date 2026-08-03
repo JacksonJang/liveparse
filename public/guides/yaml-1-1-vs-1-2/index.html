@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML 1.1 vs 1.2: Booleans, Numbers, Dates | LiveParse</title>
+    <meta name="description" content="Compare YAML 1.1 and 1.2 scalar resolution for yes, on, dates, octal numbers, tags, and merge keys, with safe migration examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/yaml-1-1-vs-1-2/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML 1.1 vs 1.2: The Values That Change Type" />
+    <meta property="og:description" content="See how schema choice changes booleans, numbers, dates, tags, and legacy merge behavior before migrating a configuration." />
+    <meta property="og:url" content="https://liveparse.com/guides/yaml-1-1-vs-1-2/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="YAML 1.1 and YAML 1.2 type comparison guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML 1.1 vs 1.2" />
+    <meta name="twitter:description" content="Compare boolean, numeric, date, tag, and merge behavior under YAML 1.1 and the YAML 1.2 core schema." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/yaml-1-1-vs-1-2/#article",
+            "headline": "YAML 1.1 vs 1.2: Booleans, Numbers, Dates, and Migration",
+            "description": "Compare YAML 1.1 and 1.2 scalar resolution for booleans, dates, octal numbers, tags, and merge keys.",
+            "mainEntityOfPage": "https://liveparse.com/guides/yaml-1-1-vs-1-2/",
+            "url": "https://liveparse.com/guides/yaml-1-1-vs-1-2/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "YAML versions",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/yaml-1-1-vs-1-2/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML 1.1 vs 1.2", "item": "https://liveparse.com/guides/yaml-1-1-vs-1-2/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/yaml-1-1-vs-1-2/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Is yes a boolean in YAML?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on the schema. YAML 1.1 commonly resolves yes as true. The recommended YAML 1.2 core schema resolves it as a string. Use true for a boolean and quote \"yes\" when the word itself is data." } },
+              { "@type": "Question", "name": "Is an unquoted date a date in YAML 1.2?", "acceptedAnswer": { "@type": "Answer", "text": "Not under the YAML 1.2 core schema, which has no standard timestamp tag. YAML 1.1 schemas and application-specific schemas may construct a date or timestamp. Quoting and explicit application parsing provide a clearer contract." } },
+              { "@type": "Question", "name": "Does a YAML directive make every parser use that version?", "acceptedAnswer": { "@type": "Answer", "text": "No. It declares a version to a processor that supports and honors it. Parser defaults, schema options, compatibility modes, and application restrictions still matter. Verify the actual consumer and version." } },
+              { "@type": "Question", "name": "Which version should a new configuration use?", "acceptedAnswer": { "@type": "Answer", "text": "Prefer YAML 1.2 core unless the target platform documents another requirement. Keep ambiguous domain strings quoted and avoid optional legacy features that the consumer does not explicitly support." } },
+              { "@type": "Question", "name": "Does LiveParse validate Kubernetes or Compose schemas?", "acceptedAnswer": { "@type": "Answer", "text": "No. It checks YAML syntax under the selected YAML schema. Kubernetes resource fields, API versions, and admission rules require Kubernetes-aware validation. Compose services, networks, volumes, and field constraints require a Compose-aware validator." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the YAML version guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/yaml-formatter/">Format YAML</a>
+        <a href="/yaml-validator/">Validate YAML</a>
+        <a href="/yaml-to-json/">YAML to JSON</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">YAML version compatibility</p>
+          <h1>YAML 1.1 vs 1.2: The Values That Change Type</h1>
+          <p class="dek">The same plain scalar can become a boolean, number, date, or string depending on the selected YAML version and schema. Learn the differences that break configuration migrations, then make intent explicit before a parser guesses for you.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> YAML 1.2 made the recommended core schema much less surprising than the YAML 1.1 type library. Under YAML 1.2 core, plain <code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>, and date-shaped text are strings. Under common YAML 1.1 resolution, those spellings may become booleans or timestamps. Quote ambiguous text, select a schema deliberately, and verify with the exact application that will consume the file.</p>
+            </div>
+
+            <h2 id="version-and-schema">Version and schema are related, not interchangeable</h2>
+            <p>A YAML document is not just indentation plus key-value pairs. The <a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> describes a presentation stream, a serialization tree, a representation graph, and construction into native application values. Syntax determines whether the character stream can be parsed. A schema supplies tags and rules for resolving plain, untagged scalars such as <code>true</code>, <code>42</code>, or <code>2026-08-04</code>.</p>
+            <p>YAML 1.2 recommends the core schema as the default. It extends the JSON schema with more readable forms of the same basic null, boolean, integer, floating-point, string, sequence, and mapping types. YAML 1.1 predates that simplification and ships a broader type library. That broader resolution is the source of famous cases where a country code such as <code>NO</code>, a feature switch such as <code>on</code>, or a date-looking identifier silently becomes a value of another type.</p>
+            <p>A parser option named “version” often selects a default schema, but implementations can expose those choices separately. Applications may also restrict YAML to a smaller subset or attach their own domain schema after parsing. Therefore, “this is valid YAML 1.2” and “this configuration is accepted by my deployment tool” are different claims.</p>
+
+            <h2 id="comparison">YAML 1.1 and YAML 1.2 core comparison</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Plain scalar or feature</th><th>Typical YAML 1.1 result</th><th>YAML 1.2 core result</th><th>Portable choice</th></tr></thead>
+                <tbody>
+                  <tr><td><code>yes</code>, <code>Yes</code>, <code>YES</code></td><td>Boolean true</td><td>String</td><td>Write <code>true</code> for a boolean or quote <code>"yes"</code> for text.</td></tr>
+                  <tr><td><code>no</code>, <code>on</code>, <code>off</code></td><td>Boolean values</td><td>Strings</td><td>Use <code>true</code>/<code>false</code>; quote words.</td></tr>
+                  <tr><td><code>true</code>, <code>false</code></td><td>Booleans</td><td>Booleans, with accepted case variants</td><td>Lowercase is clearest across tools.</td></tr>
+                  <tr><td><code>010</code></td><td>Often octal eight</td><td>Decimal ten under core resolution</td><td>Use <code>0o10</code> for octal in 1.2 or quote an identifier.</td></tr>
+                  <tr><td><code>3:25:45</code></td><td>Sexagesimal integer in the 1.1 type library</td><td>String</td><td>Use an ordinary integer or a quoted time-like string.</td></tr>
+                  <tr><td><code>2001-12-15</code></td><td>Date/timestamp type in common 1.1 schemas</td><td>String in the 1.2 core schema</td><td>Quote identifiers; parse dates explicitly in application code.</td></tr>
+                  <tr><td><code>.inf</code>, <code>-.inf</code>, <code>.nan</code></td><td>Floating-point special values</td><td>Floating-point special values</td><td>Do not send them to JSON, which has no non-finite numbers.</td></tr>
+                  <tr><td><code>&lt;&lt;</code> merge key</td><td>Legacy 1.1 type supported by some processors</td><td>Not part of the YAML 1.2 specification</td><td>Use only when the exact consumer documents it.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The word “typical” matters in the YAML 1.1 column. Implementations differ in completeness, compatibility modes, and native types. A parser might construct a language-specific date object, preserve a tagged scalar node, or leave it as text. Portability comes from declaring intent rather than relying on the most permissive behavior you can find.</p>
+
+            <h2 id="boolean-trap">The boolean trap: yes, no, on, and off</h2>
+            <p>Consider a service list keyed by two-letter region identifiers. Under a YAML 1.1 schema, an unquoted key named <code>NO</code> may resolve to boolean false. That can collide with another spelling that resolves to the same boolean, or it can produce a non-string mapping key that downstream JSON tools must coerce or reject. The file may look reasonable during review while its constructed data no longer contains the key the author intended.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Quote text that resembles a YAML 1.1 boolean</figcaption>
+              <pre><code>regions:
+  "NO": Norway
+features:
+  notifications: true
+  display_label: "on"</code></pre>
+            </figure>
+            <p>YAML 1.2 core intentionally limits implicit boolean resolution to <code>true</code> and <code>false</code> spellings. That does not mean every application has migrated. Older libraries, compatibility modes, and tools configured for 1.1 still exist. If data crosses systems, quoting is a small cost for a large reduction in ambiguity.</p>
+
+            <h2 id="numbers-and-dates">Numbers, leading zeros, and date-shaped strings</h2>
+            <p>YAML 1.1's leading-zero octal notation can turn a code such as <code>010</code> into the integer eight. YAML 1.2 uses the explicit <code>0o</code> prefix for octal and interprets ordinary decimal forms more predictably. Values such as postal codes, account codes, semantic versions, and identifiers should generally be strings even when they contain only digits. Quote them to preserve leading zeros and prevent arithmetic interpretation.</p>
+            <p>Date resolution is another compatibility boundary. The YAML 1.1 schema supported timestamps as a distinct tag. The YAML 1.2 core schema does not include a timestamp tag, so a plain ISO-looking date remains a string under that schema. An application may still convert the string later. Separating YAML resolution from application-level date parsing makes time zones, accepted formats, invalid dates, and serialization rules explicit.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Make identifiers and date policy explicit</figcaption>
+              <pre><code>release_code: "010"
+scheduled_date: "2026-08-04"
+retry_count: 10
+enabled: false</code></pre>
+            </figure>
+            <p>Non-finite floats are valid under YAML core resolution but cannot be represented by the JSON grammar in <a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259</a>. A successful YAML parse therefore does not imply lossless YAML-to-JSON conversion.</p>
+
+            <h2 id="directives">What the %YAML directive does—and does not do</h2>
+            <p>A version directive appears before a document and must be followed by a document start marker. It communicates the document's YAML version to a processor that recognizes it.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">A YAML 1.1 directive</figcaption>
+              <pre><code>%YAML 1.1
+---
+switch: on
+release_date: 2026-08-04</code></pre>
+            </figure>
+            <p>The directive is not a universal compatibility switch. A consumer may reject unsupported versions, apply its configured schema, warn about compatibility, or process only a documented subset. A multi-document stream can also have directives associated with individual documents. Test the complete stream rather than assuming a directive at the top governs every downstream library in the same way.</p>
+            <p>Explicit tags can disambiguate standard values, for example <code>!!str 010</code>. Custom tags such as <code>!Duration 5m</code> require an application that knows their meaning. They are not portable simply because a YAML parser can preserve their spelling.</p>
+
+            <h2 id="merge-keys">Merge keys are not a YAML 1.2 inheritance system</h2>
+            <p>The special <code>&lt;&lt;</code> merge key was published as a YAML 1.1 language-independent type. It is not part of the YAML 1.2 specification. Some libraries enable it, some make it optional, and some treat <code>&lt;&lt;</code> as an ordinary mapping key. An anchor and alias are core YAML graph features; a merge key is separate, legacy processing layered on top of them.</p>
+            <p>LiveParse deliberately does not apply merge-key expansion. Do not use its syntax result as evidence that a Kubernetes manifest, Compose file, CI configuration, or another consumer will merge the same mappings. Read the dedicated <a href="/guides/yaml-anchors-aliases-merge-keys/">anchors, aliases, and merge keys guide</a>, then validate with the target application's own tooling.</p>
+
+            <h2 id="liveparse-behavior">How LiveParse labels its behavior</h2>
+            <p>The <a href="/yaml-validator/">LiveParse YAML Validator</a> defaults to YAML 1.2 with the core schema and offers YAML 1.1 as an explicit compatibility selection. It performs a strict local syntax check, rejects unresolved aliases, and detects duplicate scalar mapping keys. It does not deeply compare complex collection keys or load a Kubernetes OpenAPI schema, the Compose Specification, a CI vendor's schema, or application business rules.</p>
+            <p>The <a href="/yaml-formatter/">YAML Formatter</a> parses and reserializes content. Formatting may change quoting, scalar style, flow versus block style, equivalent numeric spelling, comments, and whitespace. It stops before a precision-losing number or timestamp would change value, but it is still not a source-preserving fixer. The <a href="/yaml-viewer/">YAML Viewer</a> exposes resolved scalar types, anchors, aliases, tags, non-string keys, and document boundaries so version differences are visible before conversion.</p>
+            <p>When using <a href="/yaml-to-json/">YAML to JSON</a>, remember that JSON has fewer representational features. LiveParse stops on alias or complex mapping keys, <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, custom or unresolved tags, non-finite values, and precision-losing numbers or timestamps. It uses a maximum alias count of 50 per YAML document, rejects cycles, converts a multi-document stream to a top-level JSON array, and reports presentation loss such as dropped comments. Under YAML 1.1, an unquoted <code>&lt;&lt;</code> merge-tag key stops conversion; quoted YAML 1.1 <code>"&lt;&lt;"</code> and literal YAML 1.2 Core <code>&lt;&lt;</code> remain ordinary keys. The reverse <a href="/json-to-yaml/">JSON to YAML</a> path emits a YAML 1.2-compatible representation and preserves exact JSON number tokens in text, while warning that some later JavaScript consumers may still lose numeric precision.</p>
+            <p>After conversion, inspect generated data with the <a href="/">JSON Formatter and Validator</a>. For a useful contrast, the <a href="/xml-validator/">XML Validator</a> also separates basic syntax from grammar validity: different formats, same rule that parser success is not application-schema proof.</p>
+
+            <h2 id="migration">A safe YAML 1.1 to 1.2 migration checklist</h2>
+            <ol>
+              <li><strong>Inventory actual consumers.</strong> Record each parser library, version, schema setting, and application that reads the file.</li>
+              <li><strong>Parse under both schemas.</strong> Compare node types and mapping keys, not only formatted text. Pay special attention to boolean-like words, dates, leading-zero numbers, sexagesimal forms, and explicit tags.</li>
+              <li><strong>Quote domain strings.</strong> Region codes, modes, dates kept as identifiers, version numbers, phone fragments, and labels should not depend on implicit resolution.</li>
+              <li><strong>Normalize booleans and numbers.</strong> Prefer lowercase <code>true</code>/<code>false</code>, ordinary decimal notation, and the explicit <code>0o</code> prefix only when octal is truly intended.</li>
+              <li><strong>Audit merge keys.</strong> Replace undocumented inheritance with explicit mappings or a target-supported configuration feature. Test precedence if the consumer still requires merge behavior.</li>
+              <li><strong>Test domain schemas separately.</strong> Run Kubernetes server-side or schema-aware validation, Compose validation, and vendor-specific checks after YAML syntax succeeds.</li>
+              <li><strong>Diff constructed data.</strong> Compare the values delivered to the application before and after migration. A text diff cannot reveal every type change.</li>
+            </ol>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Is yes a boolean in YAML?</h3>
+              <p>It depends on the schema. YAML 1.1 commonly resolves <code>yes</code> as true. The recommended YAML 1.2 core schema resolves it as a string. Use <code>true</code> for a boolean and quote <code>"yes"</code> when the word itself is data.</p>
+              <h3>Is an unquoted date a date in YAML 1.2?</h3>
+              <p>Not under the YAML 1.2 core schema, which has no standard timestamp tag. YAML 1.1 schemas and application-specific schemas may construct a date or timestamp. Quoting and explicit application parsing provide a clearer contract.</p>
+              <h3>Does a YAML directive make every parser use that version?</h3>
+              <p>No. It declares a version to a processor that supports and honors it. Parser defaults, schema options, compatibility modes, and application restrictions still matter. Verify the actual consumer and version.</p>
+              <h3>Which version should a new configuration use?</h3>
+              <p>Prefer YAML 1.2 core unless the target platform documents another requirement. Keep ambiguous domain strings quoted and avoid optional legacy features that the consumer does not explicitly support.</p>
+              <h3>Does LiveParse validate Kubernetes or Compose schemas?</h3>
+              <p>No. It checks YAML syntax under the selected YAML schema. Kubernetes resource fields, API versions, and admission rules require Kubernetes-aware validation. Compose services, networks, volumes, and field constraints require a Compose-aware validator.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> — information models, directives, tags, recommended schemas, and version history.</li>
+                <li><a href="https://eemeli.org/yaml/" rel="external">yaml library documentation</a> — core and YAML 1.1 schema options, version differences, merge controls, and alias limits.</li>
+                <li><a href="https://yaml.org/type/merge.html" rel="external">YAML 1.1 merge key type</a> — the legacy <code>&lt;&lt;</code> type and precedence description.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: JSON</a> — the JSON grammar used when evaluating conversion compatibility.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Try the five YAML tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/yaml-formatter/"><strong>YAML Formatter</strong><span>Reserialize YAML with 2- or 4-space indentation and review presentation changes.</span></a>
+                <a class="related-card" href="/yaml-validator/"><strong>YAML Validator</strong><span>Check strict syntax using YAML 1.2 core or explicit 1.1 compatibility.</span></a>
+                <a class="related-card" href="/yaml-viewer/"><strong>YAML Viewer</strong><span>Inspect documents, mappings, sequences, scalar types, anchors, aliases, and tags.</span></a>
+                <a class="related-card" href="/yaml-to-json/"><strong>YAML to JSON</strong><span>Convert the supported data model with explicit warnings and safety limits.</span></a>
+                <a class="related-card" href="/json-to-yaml/"><strong>JSON to YAML</strong><span>Turn strict JSON into a checked YAML 1.2-compatible representation.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#version-and-schema">Version and schema</a></li>
+              <li><a href="#comparison">Comparison table</a></li>
+              <li><a href="#boolean-trap">Boolean trap</a></li>
+              <li><a href="#numbers-and-dates">Numbers and dates</a></li>
+              <li><a href="#directives">Version directives</a></li>
+              <li><a href="#merge-keys">Merge keys</a></li>
+              <li><a href="#liveparse-behavior">LiveParse behavior</a></li>
+              <li><a href="#migration">Migration checklist</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">JSON Tools</a> · <a href="/yaml-validator/">YAML Validator</a> · <a href="/yaml-formatter/">YAML Formatter</a> · <a href="/yaml-to-json/">YAML to JSON</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

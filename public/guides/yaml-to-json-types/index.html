@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML to JSON Types: Conversion and Data Loss | LiveParse</title>
+    <meta name="description" content="Understand YAML to JSON types and how mappings, sequences, scalars, comments, tags, aliases, complex keys, and document streams convert." />
+    <link rel="canonical" href="https://liveparse.com/guides/yaml-to-json-types/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML to JSON Types: What Converts and What Is Lost" />
+    <meta property="og:description" content="Map YAML's richer graph and presentation features to JSON without hiding comments, tags, aliases, key, or document-stream loss." />
+    <meta property="og:url" content="https://liveparse.com/guides/yaml-to-json-types/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="YAML to JSON data type conversion guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML to JSON Types" />
+    <meta name="twitter:description" content="Understand safe mappings and unavoidable loss across YAML and JSON data models." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/yaml-to-json-types/#article",
+            "headline": "YAML to JSON Types: What Converts and What Is Lost",
+            "description": "Learn how YAML mappings, sequences, scalars, comments, tags, anchors, aliases, complex keys, and document streams convert to JSON.",
+            "mainEntityOfPage": "https://liveparse.com/guides/yaml-to-json-types/",
+            "url": "https://liveparse.com/guides/yaml-to-json-types/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "YAML conversion",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/yaml-to-json-types/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML to JSON Types", "item": "https://liveparse.com/guides/yaml-to-json-types/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/yaml-to-json-types/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Is every valid YAML document valid JSON?", "acceptedAnswer": { "@type": "Answer", "text": "No. YAML has comments, tags, anchors, aliases, complex keys, multiple documents, non-finite floats, and other features with no direct JSON representation. Only a compatible subset maps naturally." } },
+              { "@type": "Question", "name": "What happens to YAML comments?", "acceptedAnswer": { "@type": "Answer", "text": "Ordinary JSON cannot represent comments. LiveParse omits them and emits a warning. Preserve the source YAML when comments carry information humans still need." } },
+              { "@type": "Question", "name": "Are YAML aliases preserved in JSON?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse expands aliases into ordinary JSON values with a maximum alias count of 50 per YAML document. The resulting JSON loses shared-node identity, anchor names, and any cycle that would require references." } },
+              { "@type": "Question", "name": "Can YAML maps with numeric keys become JSON objects?", "acceptedAnswer": { "@type": "Answer", "text": "LiveParse converts supported scalar keys to strings and warns; it rejects collisions and complex keys. An application may reasonably choose a stricter policy and reject every non-string key." } },
+              { "@type": "Question", "name": "How are multiple YAML documents converted?", "acceptedAnswer": { "@type": "Answer", "text": "LiveParse turns multiple documents into one top-level JSON array in document order and emits a diagnostic. A single document remains a single JSON value." } },
+              { "@type": "Question", "name": "Does conversion prove a Kubernetes or Compose file is correct?", "acceptedAnswer": { "@type": "Answer", "text": "No. It proves only that supported YAML data could be represented under the converter's JSON policy. Target fields, types, versions, references, and business rules require application-aware validation." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the YAML to JSON guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/yaml-to-json/">YAML to JSON</a>
+        <a href="/json-to-yaml/">JSON to YAML</a>
+        <a href="/yaml-viewer/">View YAML</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">Data model conversion</p>
+          <h1>YAML to JSON Types: What Converts and What Is Lost</h1>
+          <p class="dek">YAML can describe a graph with tagged nodes, aliases, comments, complex keys, and multiple documents. JSON describes a tree made from objects, arrays, strings, numbers, booleans, and null. A trustworthy converter must disclose how it crosses that gap.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>13 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> ordinary YAML mappings with string keys become JSON objects, sequences become arrays, and compatible scalars become JSON strings, numbers, booleans, or null. Comments, anchor names, alias identity, scalar style, and most tag information have no direct JSON form. Non-finite numbers and complex mapping keys cannot be represented. State every conversion policy instead of calling the operation universally lossless.</p>
+            </div>
+
+            <h2 id="models">YAML and JSON do not have the same information model</h2>
+            <p>The <a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> separates presentation, serialization, representation, and native construction. Presentation includes indentation, comments, scalar styles, directives, and anchor spelling. The representation model is a rooted, connected, directed graph of tagged nodes. A node may appear in more than one collection, and cycles are possible.</p>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259</a> defines a JSON value as an object, array, number, string, boolean, or null. An object is a collection of name/value pairs, and a name is a string. JSON text has no syntax for comments, tags, anchors, aliases, typed timestamps, binary scalars, complex object keys, or several documents in one stream.</p>
+            <p>YAML 1.2 was designed so that JSON syntax can be accepted as YAML, but that subset relationship goes from JSON text into YAML—not from every YAML feature into JSON. Converting richer YAML requires either rejecting unsupported input, transforming it under a documented policy, or silently losing information. Rejection and explicit warnings are safer than silent guessing.</p>
+
+            <h2 id="type-table">YAML to JSON type mapping</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>YAML value or feature</th><th>JSON result</th><th>Important condition</th></tr></thead>
+                <tbody>
+                  <tr><td>Mapping with unique string keys</td><td>Object</td><td>Every key must remain a distinct JSON property name.</td></tr>
+                  <tr><td>Sequence</td><td>Array</td><td>Item order is retained.</td></tr>
+                  <tr><td>String</td><td>String</td><td>Scalar style and original escape spelling are not data in JSON.</td></tr>
+                  <tr><td>Boolean</td><td><code>true</code> or <code>false</code></td><td>Resolved type depends on the YAML schema.</td></tr>
+                  <tr><td>Null</td><td><code>null</code></td><td>Different YAML null spellings normalize to one JSON token.</td></tr>
+                  <tr><td>Finite integer or float</td><td>Number</td><td>Exact big integers are emitted as number tokens. Finite decimals convert only when runtime resolution preserves the written value; rounding, underflow, and overflow stop conversion.</td></tr>
+                  <tr><td><code>.inf</code>, <code>-.inf</code>, <code>.nan</code></td><td>No JSON value</td><td>Reject or apply an explicit application policy.</td></tr>
+                  <tr><td>Comments</td><td>No representation</td><td>Omit with a warning or use a different target format.</td></tr>
+                  <tr><td>Anchor and alias</td><td>Expanded values</td><td>Shared identity is lost and expansion must be bounded.</td></tr>
+                  <tr><td>Unsupported tag</td><td>No general mapping</td><td><code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, custom, and unresolved tags stop conversion.</td></tr>
+                  <tr><td>Multiple YAML documents</td><td>Policy-dependent</td><td>LiveParse wraps them in one top-level array.</td></tr>
+                  <tr><td>Complex mapping key</td><td>No JSON object name</td><td>LiveParse rejects it.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="simple-example">A conversion that fits the common subset</h2>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label">YAML input</figcaption>
+                <pre><code>service: catalog
+enabled: true
+retries: 3
+regions:
+  - us-east
+  - eu-west
+limits:
+  timeout_ms: 2500</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label">Equivalent JSON data</figcaption>
+                <pre><code>{
+  "service": "catalog",
+  "enabled": true,
+  "retries": 3,
+  "regions": ["us-east", "eu-west"],
+  "limits": { "timeout_ms": 2500 }
+}</code></pre>
+              </figure>
+            </div>
+            <p>This example uses a single document, string mapping keys, a sequence, nested mappings, and scalar values common to both models. Layout differs, but the intended data tree is straightforward. Even here, the selected YAML schema matters: under YAML 1.1, plain words such as <code>on</code> and <code>no</code> could resolve as booleans rather than strings. Review the <a href="/guides/yaml-1-1-vs-1-2/">YAML 1.1 vs 1.2 guide</a> before converting legacy files.</p>
+
+            <h2 id="comments-style">Comments, quotes, block style, and ordering</h2>
+            <p>YAML comments are presentation details intended for human maintainers. JSON has no comment grammar. If a comment records an operational warning, approval requirement, unit, or provenance fact, plain JSON cannot carry it unless you remodel it as an ordinary property. Automatically turning comments into properties is also dangerous because it changes application data. LiveParse omits comments and reports <code>COMMENTS_DROPPED</code>.</p>
+            <p>Single quotes, double quotes, plain scalars, literal blocks, and folded blocks are YAML presentation choices. Conversion keeps the resolved string value, not the original style. A literal block and a quoted string may serialize to the same JSON string once line folding, chomping, and escapes are resolved. If source fidelity matters, keep the original YAML alongside the converted artifact.</p>
+            <p>YAML's representation model treats mapping key order as a serialization detail. JSON objects are also semantically collections of names and values; consumers differ in how they expose order. Use a sequence when order is application data. Do not turn an ordered procedure into a mapping and expect formatter or converter output order to serve as a contract.</p>
+
+            <h2 id="keys">String keys, scalar coercion, and complex keys</h2>
+            <p>JSON object names are strings. YAML mapping keys can be scalar nodes of other types and can even be sequences or mappings. A converter therefore needs a key policy. LiveParse leaves string keys unchanged. Null, finite number, bigint, and boolean keys are converted to their string spellings with a <code>NON_STRING_KEY_COERCED</code> warning. If two distinct YAML keys become the same JSON string, conversion stops with a collision error.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Scalar keys can collide after string conversion</figcaption>
+              <pre><code>1: numeric key
+"1": string key</code></pre>
+            </figure>
+            <p>Both entries would need the JSON property name <code>"1"</code>. Choosing one silently would discard data, so rejection is the honest result. A sequence, mapping, or alias used as a YAML key is more fundamental: alias resolution can collapse identity, while collections have no single JSON property-name equivalent. LiveParse rejects alias and complex collection keys rather than inventing a serialization.</p>
+
+            <h2 id="tags">Tags and application-specific types</h2>
+            <p>A YAML tag identifies a node's type. The recommended core schema resolves familiar scalar types, while YAML 1.1 and custom schemas can add timestamps, binary values, ordered mappings, sets, or application-defined types. A tag such as <code>!Duration 5m</code> might construct a duration object in one application and be unknown in another.</p>
+            <p>Stripping a tag and keeping only its content can change meaning without an error. LiveParse stops YAML-to-JSON conversion for <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, unresolved tags, and application-specific custom tags. Convert such data only after defining a trusted, testable mapping in the system that owns the type.</p>
+            <p>Date-shaped scalars demonstrate why schema identity matters. Under YAML 1.2 core, <code>2026-08-04</code> is a string. Under a YAML 1.1 schema it may construct a date value; LiveParse serializes a valid constructed date as an ISO 8601 JSON string and emits a timestamp conversion diagnostic. Invalid ranges are rejected, and non-zero digits beyond milliseconds stop conversion rather than being truncated. The resulting JSON string no longer carries a native YAML timestamp tag.</p>
+
+            <h2 id="aliases">Anchors, aliases, cycles, and expansion limits</h2>
+            <p>An anchor labels a node for later aliases. The alias refers to the same node in YAML's representation graph; it is not merely text substitution. JSON text has no reference identity, so conversion normally expands each occurrence into an ordinary object, array, or scalar. The values may look equal afterward, but the fact that two paths shared one node is gone.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Alias identity becomes repeated JSON structure</figcaption>
+              <pre><code>defaults: &amp;defaults
+  retries: 3
+primary: *defaults
+secondary: *defaults</code></pre>
+            </figure>
+            <p>Nested aliases can multiply the constructed output, and YAML graphs can contain cycles that a JSON tree cannot express. LiveParse bounds alias construction with a maximum alias count of 50 per YAML document and rejects cyclic aliases during JSON serialization. Learn why in the <a href="/guides/yaml-anchors-aliases-merge-keys/">anchors, aliases, and merge keys guide</a>.</p>
+            <p>The legacy <code>&lt;&lt;</code> merge key is separate from core anchor and alias syntax. Under YAML 1.1, an unquoted <code>&lt;&lt;</code> receives the legacy merge tag and stops LiveParse conversion because merge expansion is disabled. A quoted <code>"&lt;&lt;"</code> key in YAML 1.1 or a literal <code>&lt;&lt;</code> key under YAML 1.2 Core remains an ordinary string key. Do not assume a target application shares that policy.</p>
+
+            <h2 id="documents">Multiple documents need an explicit container policy</h2>
+            <p>A YAML presentation stream can contain several documents separated by <code>---</code>. One JSON text contains one top-level JSON value. There is no universal rule saying multiple YAML documents should become newline-delimited JSON, an array, an object, or several output files.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Two YAML documents</figcaption>
+              <pre><code>---
+name: first
+---
+name: second</code></pre>
+            </figure>
+            <p>LiveParse converts this stream to <code>[{"name":"first"},{"name":"second"}]</code>, formatted with the chosen indentation, and emits <code>DOCUMENT_STREAM_TO_ARRAY</code>. That policy preserves document order and produces one valid JSON value, but it changes the top-level shape. Confirm that an array is acceptable to the receiving API before using the result.</p>
+
+            <h2 id="numbers">Number syntax and interoperability</h2>
+            <p>JSON's grammar allows decimal numbers but excludes NaN and infinity. RFC 8259 notes that implementations commonly use IEEE 754 binary64 and that exact interoperability for integers is strongest in the range from negative <code>2^53 + 1</code> through positive <code>2^53 - 1</code>. JSON text can contain a larger integer token, yet a JavaScript <code>Number</code> consumer may round it.</p>
+            <p>LiveParse parses YAML integers as big integers and can emit their exact decimal token into JSON. For finite decimals, it stops before runtime rounding, underflow, or overflow would change the value; an equivalent spelling may still normalize. These policies preserve the supported token through this conversion step but do not make every later parser lossless. When an identifier exceeds a consumer's safe integer range, use a quoted string or a documented arbitrary-precision pipeline.</p>
+
+            <h2 id="workflow">A defensible conversion workflow</h2>
+            <ol>
+              <li><strong>Validate syntax under the intended YAML schema.</strong> Do not let an accidental 1.1/1.2 default determine booleans and dates.</li>
+              <li><strong>Inspect the graph.</strong> Review documents, anchors, aliases, tags, comments, and non-string keys with the <a href="/yaml-viewer/">YAML Viewer</a>.</li>
+              <li><strong>Define loss policy.</strong> Decide whether comments may be omitted, aliases may be expanded, timestamps may become strings, and multiple documents may become an array.</li>
+              <li><strong>Reject unsupported meaning.</strong> Stop on alias or complex keys, key collisions, unsupported tags, YAML 1.1 merge-tag keys, cycles, non-finite values, precision-losing decimals or timestamps, and resource limits.</li>
+              <li><strong>Validate generated JSON.</strong> Open the result in the <a href="/">JSON Formatter and Validator</a> and test it with the actual receiving API or schema.</li>
+              <li><strong>Compare application values.</strong> Use the <a href="/json-compare/">JSON Compare tool</a> for compatible snapshots, while remembering that comments and alias identity have already left the model.</li>
+            </ol>
+            <p>This layered workflow parallels XML conversion: an <a href="/xml-viewer/">XML Viewer</a> can expose a parsed tree, but transforming attributes, namespaces, comments, mixed content, and ordered children into JSON still requires an application-specific mapping. Syntax alone never invents the right domain model.</p>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Is every valid YAML document valid JSON?</h3>
+              <p>No. YAML has comments, tags, anchors, aliases, complex keys, multiple documents, non-finite floats, and other features with no direct JSON representation. Only a compatible subset maps naturally.</p>
+              <h3>What happens to YAML comments?</h3>
+              <p>Ordinary JSON cannot represent comments. LiveParse omits them and emits a warning. Preserve the source YAML when comments carry information humans still need.</p>
+              <h3>Are YAML aliases preserved in JSON?</h3>
+              <p>No. LiveParse expands aliases into ordinary JSON values with a maximum alias count of 50 per YAML document. The resulting JSON loses shared-node identity, anchor names, and any cycle that would require references.</p>
+              <h3>Can YAML maps with numeric keys become JSON objects?</h3>
+              <p>LiveParse converts supported scalar keys to strings and warns; it rejects collisions and complex keys. An application may reasonably choose a stricter policy and reject every non-string key.</p>
+              <h3>How are multiple YAML documents converted?</h3>
+              <p>LiveParse turns multiple documents into one top-level JSON array in document order and emits a diagnostic. A single document remains a single JSON value.</p>
+              <h3>Does conversion prove a Kubernetes or Compose file is correct?</h3>
+              <p>No. It proves only that supported YAML data could be represented under the converter's JSON policy. Target fields, types, versions, references, and business rules require application-aware validation.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> — representation graphs, mappings, sequences, tags, anchors, aliases, comments, and document streams.</li>
+                <li><a href="https://eemeli.org/yaml/" rel="external">yaml library documentation</a> — document APIs, schema choices, conversion options, merge behavior, and <code>maxAliasCount</code>.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: The JavaScript Object Notation Data Interchange Format</a> — JSON values, object names, number grammar, and interoperability guidance.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Use the five YAML tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/yaml-formatter/"><strong>YAML Formatter</strong><span>Reserialize supported YAML and review presentation changes before replacing source.</span></a>
+                <a class="related-card" href="/yaml-validator/"><strong>YAML Validator</strong><span>Check strict YAML syntax under the selected 1.2 or 1.1 schema.</span></a>
+                <a class="related-card" href="/yaml-viewer/"><strong>YAML Viewer</strong><span>Inspect resolved types, keys, documents, tags, anchors, and aliases.</span></a>
+                <a class="related-card" href="/yaml-to-json/"><strong>YAML to JSON</strong><span>Convert with explicit limits, rejections, and loss diagnostics.</span></a>
+                <a class="related-card" href="/json-to-yaml/"><strong>JSON to YAML</strong><span>Convert strict JSON into a checked YAML 1.2-compatible representation.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#models">Information models</a></li>
+              <li><a href="#type-table">Type mapping table</a></li>
+              <li><a href="#simple-example">Common subset</a></li>
+              <li><a href="#comments-style">Presentation loss</a></li>
+              <li><a href="#keys">Mapping keys</a></li>
+              <li><a href="#tags">Tags</a></li>
+              <li><a href="#aliases">Aliases and limits</a></li>
+              <li><a href="#documents">Multiple documents</a></li>
+              <li><a href="#numbers">Number safety</a></li>
+              <li><a href="#workflow">Conversion workflow</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">JSON Tools</a> · <a href="/yaml-to-json/">YAML to JSON</a> · <a href="/json-to-yaml/">JSON to YAML</a> · <a href="/yaml-viewer/">YAML Viewer</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

@@ -452,6 +452,21 @@ function firstDifferentByte(left, right) {
   return left.length === right.length ? -1 : sharedLength;
 }
 
+function comparableHtmlBody(body) {
+  const source = body.toString('utf8').replace(/data-cfemail=(["'])([0-9a-f]{4,})\1/gi, (attribute, quote, token) => {
+    if (token.length % 2 !== 0) return attribute;
+    const key = Number.parseInt(token.slice(0, 2), 16);
+    const decoded = [];
+    for (let index = 2; index < token.length; index += 2) {
+      const byte = Number.parseInt(token.slice(index, index + 2), 16);
+      if (!Number.isInteger(byte)) return attribute;
+      decoded.push(byte ^ key);
+    }
+    return `data-cfemail=${quote}decoded-${Buffer.from(decoded).toString('hex')}${quote}`;
+  });
+  return Buffer.from(source);
+}
+
 async function mapConcurrent(items, concurrency, mapper) {
   const results = new Array(items.length);
   let nextIndex = 0;
@@ -580,11 +595,12 @@ export async function runPublicSeoCheck({
       localFailures.push(...validateHtml(result.value.body, result.value.headers, canonicalUrl, variantLabel));
     });
 
-    if (responses[0] && responses[1] && !responses[0].body.equals(responses[1].body)) {
-      const offset = firstDifferentByte(responses[0].body, responses[1].body);
+    const comparableBodies = responses.map((response) => response && comparableHtmlBody(response.body));
+    if (comparableBodies[0] && comparableBodies[1] && !comparableBodies[0].equals(comparableBodies[1])) {
+      const offset = firstDifferentByte(comparableBodies[0], comparableBodies[1]);
       localFailures.push(
         `${canonicalUrl.href}: body differs between normal and Googlebot smartphone at byte ${offset} ` +
-        `(${responses[0].body.length} vs ${responses[1].body.length} bytes)`,
+        `(${comparableBodies[0].length} vs ${comparableBodies[1].length} comparable bytes)`,
       );
     }
     return localFailures;

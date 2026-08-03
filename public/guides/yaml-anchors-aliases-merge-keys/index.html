@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML Anchors, Aliases, Merge Keys, and Limits | LiveParse</title>
+    <meta name="description" content="Understand YAML anchors and aliases, how legacy merge keys differ, precedence rules, shared-node identity, cycles, and safe expansion limits." />
+    <link rel="canonical" href="https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML Anchors, Aliases, and Merge Keys" />
+    <meta property="og:description" content="Separate core graph references from legacy merge behavior, then bound alias expansion before constructing application data." />
+    <meta property="og:url" content="https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="YAML anchors aliases and merge keys guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML Anchors, Aliases, and Merge Keys" />
+    <meta name="twitter:description" content="Learn reference identity, merge precedence, compatibility limits, and safe alias expansion." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/#article",
+            "headline": "YAML Anchors, Aliases, Merge Keys, and Safe Expansion Limits",
+            "description": "Understand YAML anchors and aliases, legacy merge keys, precedence, shared identity, cycles, and expansion limits.",
+            "mainEntityOfPage": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/",
+            "url": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "YAML anchors and aliases",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML Anchors, Aliases, and Merge Keys", "item": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the difference between an anchor and an alias?", "acceptedAnswer": { "@type": "Answer", "text": "An anchor names a node at a serialized occurrence. A later alias refers to the most recent previous node with that anchor name. Use &name for the anchor and *name for the alias." } },
+              { "@type": "Question", "name": "Are merge keys part of YAML 1.2?", "acceptedAnswer": { "@type": "Answer", "text": "No. The merge key is a YAML 1.1 language-independent type, not part of the YAML 1.2 specification. Library and application support varies." } },
+              { "@type": "Question", "name": "Does the last mapping in a merge sequence win?", "acceptedAnswer": { "@type": "Answer", "text": "Not under the published merge type. Earlier mappings in the sequence take precedence over later mappings, while keys explicitly written in the containing mapping override merged values. Test the exact consumer." } },
+              { "@type": "Question", "name": "Why limit alias expansion?", "acceptedAnswer": { "@type": "Answer", "text": "Nested reuse can make a small source construct a much larger value and exhaust memory or CPU. Use alias, node, depth, input, output, and time limits together." } },
+              { "@type": "Question", "name": "Does LiveParse expand merge keys?", "acceptedAnswer": { "@type": "Answer", "text": "No. YAML-to-JSON stops on an unquoted YAML 1.1 << merge-tag key; quoted YAML 1.1 \"<<\" and literal YAML 1.2 Core << remain ordinary keys. Supported ordinary aliases expand within a maximum alias count of 50 per YAML document." } },
+              { "@type": "Question", "name": "Can an alias cross a YAML document boundary?", "acceptedAnswer": { "@type": "Answer", "text": "No portable workflow should assume it can. Anchors and aliases compose a document representation; define shared application data explicitly across document boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the YAML anchors guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/yaml-viewer/">View YAML</a>
+        <a href="/yaml-validator/">Validate YAML</a>
+        <a href="/yaml-to-json/">YAML to JSON</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">YAML graph references</p>
+          <h1>YAML Anchors, Aliases, Merge Keys, and Safe Expansion</h1>
+          <p class="dek">Anchors and aliases are part of YAML's serialization of a graph. Merge keys are a separate legacy type that some processors interpret as mapping composition. Treating all three as “copy and paste” hides identity, precedence, portability, and resource risks.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>13 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> <code>&amp;name</code> attaches an anchor name to a YAML node, while a later <code>*name</code> alias refers back to that node. The special <code>&lt;&lt;</code> merge key is not an alias and is not part of YAML 1.2; it is an optional YAML 1.1 type recognized by some processors. Bound alias construction, reject cycles when the target cannot represent them, and never assume merge behavior without target-specific documentation.</p>
+            </div>
+
+            <h2 id="graph-model">Why YAML needs anchors and aliases</h2>
+            <p>The <a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> defines a representation graph, not merely a JSON-shaped tree. A node can have more than one incoming edge, which means the same mapping, sequence, or scalar node can appear at multiple paths. A graph can also contain cycles. The serialization tree must express those relationships in a linear character stream.</p>
+            <p>On the first serialized occurrence, an anchor names the node. Later alias events refer to that anchor. Anchor names are a serialization detail: a composer can discard the spelling after it has reconstructed the graph. Code must not use an anchor name itself as application data. If a stable identifier matters to the domain, store it as an ordinary mapping value.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">One anchored mapping referenced twice</figcaption>
+              <pre><code>contact: &amp;support
+  email: support@example.test
+  timezone: UTC
+primary_contact: *support
+after_hours_contact: *support</code></pre>
+            </figure>
+            <p>The two aliases refer to the anchored mapping node. A native constructor might expose shared object identity. Another API might expand aliases into equal but independent objects. A formatter may preserve anchor and alias syntax without constructing application objects. Name the processing layer before claiming that values are “the same object” or “copies.”</p>
+
+            <h2 id="rules">Anchor and alias rules that matter in debugging</h2>
+            <ul>
+              <li><strong>An alias points backward.</strong> A successful composition requires an alias to refer to a previous node identified by that anchor. A forward alias is unidentified at the point it is read.</li>
+              <li><strong>The alias is a node reference.</strong> It cannot contain a second mapping or sequence body that modifies the referenced node.</li>
+              <li><strong>An anchor may be unused.</strong> Giving a node an anchor does not require a later alias.</li>
+              <li><strong>Anchor spelling is not content.</strong> A processor need not preserve the anchor name after composing the representation graph.</li>
+              <li><strong>Names may be reused.</strong> The specification says an alias refers to the most recent previous serialized event with that anchor name. Reuse is legal but confusing and should be avoided in human-maintained configuration.</li>
+              <li><strong>Scope is a document concern.</strong> Do not expect an anchor defined in one document of a YAML stream to be available in a later document.</li>
+            </ul>
+            <figure class="code-example">
+              <figcaption class="code-label"><span class="bad">Invalid: the alias appears before its anchor</span></figcaption>
+              <pre><code>service: *defaults
+defaults: &amp;defaults
+  retries: 3</code></pre>
+            </figure>
+
+            <h2 id="merge-difference">Aliases and merge keys are different features</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Feature</th><th>Syntax</th><th>Meaning</th><th>YAML 1.2 status</th></tr></thead>
+                <tbody>
+                  <tr><td>Anchor</td><td><code>&amp;defaults</code></td><td>Names the serialized occurrence of a node for later reference.</td><td>Core syntax</td></tr>
+                  <tr><td>Alias</td><td><code>*defaults</code></td><td>Refers to the most recent prior node with that anchor name.</td><td>Core syntax</td></tr>
+                  <tr><td>Merge key</td><td><code>&lt;&lt;: *defaults</code></td><td>Requests mapping entries be inserted under a legacy type's rules.</td><td>Not in the YAML 1.2 specification</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The <a href="https://yaml.org/type/merge.html" rel="external">merge key document</a> published <code>tag:yaml.org,2002:merge</code> as a YAML 1.1 language-independent type. The key is normally written <code>&lt;&lt;</code>. Its value is a mapping, an alias to a mapping, or a sequence of mappings or aliases. A processor that enables this type inserts keys into the containing mapping.</p>
+            <p>The <a href="https://eemeli.org/yaml/" rel="external">yaml library documentation</a> describes merge support as a YAML 1.1 feature and an option, with merge disabled by default for YAML 1.2. Other libraries and applications make different choices. A document can therefore be syntactically accepted while one consumer merges it, another retains an ordinary property named <code>&lt;&lt;</code>, and another rejects it under an application schema.</p>
+
+            <h2 id="merge-precedence">Merge precedence is easy to misread</h2>
+            <figure class="code-example">
+              <figcaption class="code-label">Legacy merge example; behavior depends on the consumer</figcaption>
+              <pre><code>base: &amp;base
+  color: blue
+  retries: 2
+regional: &amp;regional
+  retries: 4
+  timezone: UTC
+service:
+  &lt;&lt;: [*base, *regional]
+  color: green</code></pre>
+            </figure>
+            <p>Under the published merge type, keys explicitly present in <code>service</code> override merged entries. When a sequence supplies several mappings, keys in earlier mappings override matching keys in later mappings. In the example, an enabled implementation would select explicit <code>color: green</code> and take <code>retries</code> from <code>*base</code>, not from <code>*regional</code>. Many readers expect the last entry to win because that is common in command-line overlays, so the sequence deserves tests even when every tool supports merge keys.</p>
+            <p>A merge does not mean an alias node is being modified. It is a mapping construction rule. Nested mappings are not recursively deep-merged unless a particular application adds another rule. Arrays are not concatenated by the YAML merge type. Describing <code>&lt;&lt;</code> as inheritance or a universal deep merge creates expectations the type does not promise.</p>
+
+            <h2 id="liveparse-policy">LiveParse disables merge expansion</h2>
+            <p>LiveParse does not apply merge-key expansion and does not claim to predict how Kubernetes tooling, Docker Compose, CI systems, template engines, or framework-specific configuration loaders will process it. In YAML-to-JSON mode, an unquoted YAML 1.1 <code>&lt;&lt;</code> receives the legacy merge tag and stops conversion; quoted YAML 1.1 <code>"&lt;&lt;"</code> and literal YAML 1.2 Core <code>&lt;&lt;</code> remain ordinary keys. The <a href="/yaml-validator/">YAML Validator</a> checks supported YAML syntax and composition; it is not an application-schema or configuration-semantics validator.</p>
+            <p>The <a href="/yaml-formatter/">YAML Formatter</a> parses and reserializes the presentation. It can preserve ordinary anchor and alias relationships, but formatting is not a proof that a target will honor legacy merge behavior. The <a href="/yaml-viewer/">YAML Viewer</a> labels anchors and alias rows so you can audit references without automatically flattening them.</p>
+            <div class="warning">
+              <p><strong>Never use a generic formatter as merge evidence.</strong> Run the target application's own parser or schema-aware command in a safe environment. Syntax success only proves that the generic YAML layer accepted the document under its selected options.</p>
+            </div>
+
+            <h2 id="expansion-risk">Why alias construction needs a resource limit</h2>
+            <p>Aliases reduce source repetition, but they can also make constructed data much larger than the input text. An anchored sequence can be referenced many times; a second anchored structure can contain many aliases to the first; later structures can repeat the second. Each layer multiplies the materialized value if a constructor expands every reference into fresh arrays and objects.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Small source, potentially large constructed output</figcaption>
+              <pre><code>unit: &amp;unit [a, b, c, d, e]
+row: &amp;row [*unit, *unit, *unit, *unit, *unit]
+grid: [*row, *row, *row, *row, *row]</code></pre>
+            </figure>
+            <p>This example is intentionally modest. The same pattern with more aliases and levels can consume substantial memory or CPU. Counting only literal alias tokens is not always enough; a library may estimate how much aliased data will be constructed. The yaml library exposes <code>maxAliasCount</code> for this purpose and warns that disabling the check can permit exponential expansion attacks.</p>
+            <p>LiveParse's <a href="/yaml-to-json/">YAML to JSON converter</a> uses a maximum alias count of 50 per YAML document. It reports that aliases were expanded because JSON has no anchor or reference syntax. It also limits input length, node count, depth, and output length, and it rejects a cycle that JSON cannot represent. These limits reduce risk; they do not certify arbitrary YAML as safe for another parser with different features.</p>
+
+            <h2 id="cycles">Cycles fit a graph but not ordinary JSON</h2>
+            <p>YAML's representation graph can be cyclic. Some constructors can create a native object that refers to itself. Ordinary JSON serialization cannot finish that traversal because JSON has no reference marker. A converter must reject the cycle, replace references according to an application protocol, or use a different graph serialization format.</p>
+            <p>Do not silently replace a cycle with <code>null</code> or omit the property: either choice changes data. LiveParse stops with a cyclic-alias error during YAML-to-JSON conversion. For acyclic aliases, it expands values within the configured limit and makes the identity loss explicit.</p>
+
+            <h2 id="conversion">What survives YAML-to-JSON conversion</h2>
+            <p>When an alias points to an ordinary acyclic mapping or sequence, JSON can contain repeated equivalent structures. What does not survive is the fact that those structures shared one YAML node, the anchor's name, and any mutation semantics a native object graph might have. Comments and scalar styles are also absent. Read the complete <a href="/guides/yaml-to-json-types/">YAML-to-JSON type conversion guide</a> before treating output as equivalent.</p>
+            <p>LiveParse rejects alias mapping keys and complex collection keys because JSON object property names must be strings and alias resolution can collapse identity. It stops on <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, unresolved tags, and application-specific custom tags rather than stripping semantics. Multiple YAML documents become one top-level JSON array. Non-finite values and finite decimals or timestamps that would lose precision stop conversion before output.</p>
+
+            <h2 id="application-schemas">Kubernetes and Compose add separate rules</h2>
+            <p>YAML libraries answer language questions. Kubernetes answers resource questions such as whether <code>apiVersion</code>, <code>kind</code>, <code>metadata</code>, and <code>spec</code> describe a supported API object and whether admission permits it. The official <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/" rel="external">Kubernetes object documentation</a> describes that model. A YAML alias or merge policy in a preprocessing tool does not substitute for API-server or schema-aware validation.</p>
+            <p>Docker Compose similarly defines services, networks, volumes, configs, secrets, and their field rules in the <a href="https://compose-spec.io/" rel="external">Compose Specification</a>. A generic YAML parser cannot decide whether a Compose field is misspelled, unavailable in a runtime, or semantically incompatible. Use the target tool's supported validation path after generic syntax checks.</p>
+
+            <h2 id="review-checklist">Anchor and merge review checklist</h2>
+            <ul>
+              <li>Does every alias refer to an anchor that appeared earlier in the same document?</li>
+              <li>Are anchor names unique in practice, even though the YAML model permits reuse?</li>
+              <li>Can the representation graph contain a cycle, and can the target format express it?</li>
+              <li>What alias expansion metric and maximum does the deployed library enforce?</li>
+              <li>Are input bytes, depth, nodes, output size, processing time, and diagnostics also bounded?</li>
+              <li>Does the target explicitly document <code>&lt;&lt;</code> merge support and sequence precedence?</li>
+              <li>Are any merges expected to be recursive even though the legacy type describes shallow mapping insertion?</li>
+              <li>Have you validated the constructed application data, not just the formatted YAML text?</li>
+            </ul>
+            <p>For a final data check, inspect expanded compatible output in the <a href="/">JSON Formatter and Validator</a>. For contrast, XML references such as entity declarations have different syntax and security behavior; the <a href="/xml-validator/">XML Validator</a> deliberately disables DTD processing rather than pretending YAML alias limits cover XML expansion risks.</p>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>What is the difference between an anchor and an alias?</h3>
+              <p>An anchor names a node at a serialized occurrence. A later alias refers to the most recent previous node with that anchor name. Use <code>&amp;name</code> for the anchor and <code>*name</code> for the alias.</p>
+              <h3>Are merge keys part of YAML 1.2?</h3>
+              <p>No. The merge key is a YAML 1.1 language-independent type, not part of the YAML 1.2 specification. Library and application support varies.</p>
+              <h3>Does the last mapping in a merge sequence win?</h3>
+              <p>Not under the published merge type. Earlier mappings in the sequence take precedence over later mappings, while keys explicitly written in the containing mapping override merged values. Test the exact consumer.</p>
+              <h3>Why limit alias expansion?</h3>
+              <p>Nested reuse can make a small source construct a much larger value and exhaust memory or CPU. Use alias, node, depth, input, output, and time limits together.</p>
+              <h3>Does LiveParse expand merge keys?</h3>
+              <p>No. YAML-to-JSON stops on an unquoted YAML 1.1 <code>&lt;&lt;</code> merge-tag key; quoted YAML 1.1 <code>"&lt;&lt;"</code> and literal YAML 1.2 Core <code>&lt;&lt;</code> remain ordinary keys. Supported ordinary aliases expand within a maximum alias count of 50 per YAML document.</p>
+              <h3>Can an alias cross a YAML document boundary?</h3>
+              <p>No portable workflow should assume it can. Anchors and aliases compose a document representation; define shared application data explicitly across document boundaries.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> — representation graphs, serialization trees, anchors, aliases, identified-alias requirements, and document streams.</li>
+                <li><a href="https://yaml.org/type/merge.html" rel="external">YAML 1.1 merge key type</a> — merge value forms and precedence.</li>
+                <li><a href="https://eemeli.org/yaml/" rel="external">yaml library documentation</a> — schema-specific merge support and alias construction limits.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: JSON</a> — the tree-shaped target data model used by conversion.</li>
+                <li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/" rel="external">Kubernetes objects</a> and <a href="https://compose-spec.io/" rel="external">Compose Specification</a> — examples of separate application schemas.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Use the five YAML tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/yaml-formatter/"><strong>YAML Formatter</strong><span>Reserialize YAML while keeping anchor and alias syntax visible for review.</span></a>
+                <a class="related-card" href="/yaml-validator/"><strong>YAML Validator</strong><span>Check strict syntax, duplicate scalar keys, and unresolved aliases.</span></a>
+                <a class="related-card" href="/yaml-viewer/"><strong>YAML Viewer</strong><span>Inspect anchor names, alias rows, tags, mapping keys, and resolved scalar types.</span></a>
+                <a class="related-card" href="/yaml-to-json/"><strong>YAML to JSON</strong><span>Expand supported aliases within a limit and report lost graph features.</span></a>
+                <a class="related-card" href="/json-to-yaml/"><strong>JSON to YAML</strong><span>Create checked YAML without inventing anchors or legacy merge behavior.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#graph-model">Graph model</a></li>
+              <li><a href="#rules">Anchor and alias rules</a></li>
+              <li><a href="#merge-difference">Feature differences</a></li>
+              <li><a href="#merge-precedence">Merge precedence</a></li>
+              <li><a href="#liveparse-policy">LiveParse policy</a></li>
+              <li><a href="#expansion-risk">Expansion risk</a></li>
+              <li><a href="#cycles">Cycles</a></li>
+              <li><a href="#conversion">JSON conversion</a></li>
+              <li><a href="#application-schemas">Application schemas</a></li>
+              <li><a href="#review-checklist">Review checklist</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">JSON Tools</a> · <a href="/yaml-viewer/">YAML Viewer</a> · <a href="/yaml-validator/">YAML Validator</a> · <a href="/yaml-to-json/">YAML to JSON</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

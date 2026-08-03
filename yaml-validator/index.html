@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML Validator Online – Check YAML Syntax Locally | LiveParse</title>
+    <meta name="description" content="Validate YAML syntax, aliases, and duplicate scalar keys locally with YAML 1.2 Core or optional YAML 1.1. This is not application-schema validation." />
+    <link rel="canonical" href="https://liveparse.com/yaml-validator/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML Validator &amp; Syntax Checker Online" />
+    <meta property="og:description" content="Check YAML syntax, unresolved aliases, and duplicate scalar keys in a local worker, with an explicit application-schema boundary." />
+    <meta property="og:url" content="https://liveparse.com/yaml-validator/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse YAML syntax validator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML Validator &amp; Syntax Checker Online" />
+    <meta name="twitter:description" content="Validate YAML syntax locally with a clear boundary between parsing and application schemas." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/yaml-validator/#app",
+            "name": "LiveParse YAML Validator",
+            "url": "https://liveparse.com/yaml-validator/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A local YAML syntax, alias-order, and duplicate-scalar-key validator using yaml 2.9.0, with YAML 1.2 Core Schema by default and optional YAML 1.1 parsing.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/yaml-validator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML Validator", "item": "https://liveparse.com/yaml-validator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/yaml-validator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does this YAML validator check?", "acceptedAnswer": { "@type": "Answer", "text": "It checks supported YAML syntax, rejects unresolved aliases, and detects duplicate scalar mapping keys under the selected schema. It does not perform deep equality checks for complex collection keys." } },
+              { "@type": "Question", "name": "Does valid YAML mean a Kubernetes or Docker Compose file is valid?", "acceptedAnswer": { "@type": "Answer", "text": "No. This is parser-level syntax, alias-order, and duplicate-scalar-key validation, not Kubernetes, Docker Compose, GitHub Actions, OpenAPI, or another application schema check." } },
+              { "@type": "Question", "name": "Does YAML validation happen on a server?", "acceptedAnswer": { "@type": "Answer", "text": "No. yaml 2.9.0 runs in a local Web Worker. Input is limited to 200,000 UTF-16 code units and is not uploaded to a validation API." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="yaml-page" data-yaml-mode="validate">
+    <a class="skip-link" href="#validator">Skip to the YAML validator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/yaml-formatter/">YAML Formatter</a>
+          <a href="#validator">YAML Validator</a>
+          <a href="/yaml-viewer/">YAML Viewer</a>
+          <a href="/yaml-to-json/">YAML to JSON</a>
+          <a href="/json-to-yaml/">JSON to YAML</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Syntax, aliases, scalar keys · YAML 1.2 default · No upload</p>
+          <h1>YAML Validator &amp; Syntax Checker Online</h1>
+          <p class="hero-lead">Check YAML structure, unresolved aliases, duplicate scalar mapping keys, document boundaries, and block scalars in a local worker. A passing result confirms supported parser rules—not a Kubernetes, Compose, or CI schema.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#validator">Validate YAML syntax</a><span>Free · Local worker · About 200,000 code units</span></div>
+        </div>
+        <div class="hero-example" aria-label="Valid YAML syntax example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>workflow.yaml</strong></div>
+          <pre><code><span class="property">jobs:</span>
+  <span class="property">verify:</span>
+    <span class="property">runs-on:</span> <span class="string">ubuntu-latest</span>
+    <span class="property">steps:</span>
+      - <span class="property">run:</span> <span class="string">npm test</span>
+
+<span class="string">✓ Syntax and keys pass</span></code></pre>
+          <p><strong>Parser baseline found</strong><span>Workflow schema not checked</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="validator" aria-labelledby="validator-heading">
+        <div><p class="section-kicker">Check one stream locally</p><h2 id="validator-heading">Validate YAML syntax, aliases, and scalar mapping keys</h2></div>
+        <p>The checker uses <code>yaml</code> version <code>2.9.0</code> with YAML 1.2 Core Schema by default and optional YAML 1.1 compatibility. It accepts multi-document streams and standard document features, but deliberately does not claim application-schema validation.</p>
+      </section>
+      <div id="yaml-root">
+        <section class="parser-fallback" aria-label="YAML validator loading"><p><strong>Loading the private YAML syntax checker…</strong></p><p>Enable JavaScript to validate YAML locally. The error patterns, version boundary, and scope guidance below remain readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-validate" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Find the first trustworthy failure</p><h2 id="how-heading">How to validate YAML online</h2><p>Resolve syntax before investigating a platform schema. Later errors can be consequences of one missing colon, quote, or indentation boundary.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste the complete YAML stream</h3><p>Include directives and every <code>---</code> document separator that affects the parse. Prefer a redacted reproduction when a configuration contains credentials, tokens, private endpoints, or customer data.</p></li>
+          <li><span>2</span><h3>Select the consumer's schema version</h3><p>Use YAML 1.2 Core for modern behavior. Choose YAML 1.1 only when the real loader requires it, because plain scalar values such as <code>yes</code> and <code>on</code> can resolve to different types.</p></li>
+          <li><span>3</span><h3>Read the local diagnostic</h3><p>Fix the first syntax, unresolved-alias, or duplicate-scalar-key problem, rerun the check, and only then apply the authoritative Kubernetes, Compose, CI, OpenAPI, or application validator.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="checks" aria-labelledby="checks-heading">
+        <div class="section-heading"><p class="section-kicker">A precise parser-level result</p><h2 id="checks-heading">What this YAML validator checks</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>YAML structure depends on indentation, collection indicators, mapping separators, scalar boundaries, anchors, aliases, tags, directives, and document markers. The validator asks <code>yaml</code> version <code>2.9.0</code> to parse every document in the stream and reports parser diagnostics with useful source positions when available. It rejects aliases that do not resolve to an earlier anchor in the same document and detects duplicate scalar mapping keys instead of silently choosing a later value.</p>
+            <p>YAML may also use a sequence or mapping as a complex key. This parser policy does not perform deep equality checks between complex collection keys, so a passing result does not prove that every downstream implementation will consider those keys distinct. Prefer scalar configuration keys and test unusual complex-key documents with the target loader.</p>
+            <p>Multi-document input, anchors, aliases, literal and folded block scalars, block collections, and flow collections are part of the supported grammar. Merge-key expansion is disabled. That matters because the optional <code>&lt;&lt;</code> convention is not treated as permission to manufacture pairs or hide which keys were written directly.</p>
+            <p>A successful result is intentionally narrow. It says the source fits the supported YAML grammar, alias-order rule, and scalar-key duplicate policy under the chosen schema. It does not know whether <code>apiVersion</code> exists, whether a container image is allowed, whether a Compose service has legal fields, or whether a workflow permission is secure.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Syntax</dt><dd>Indentation, tokens, collections, scalars, directives, and document boundaries.</dd></div>
+            <div><dt>Scalar keys</dt><dd>A mapping cannot quietly repeat the same resolved scalar key; complex-key deep equality is not checked.</dd></div>
+            <div><dt>Schema choice</dt><dd>YAML 1.2 Core by default; YAML 1.1 only as explicit compatibility.</dd></div>
+            <div><dt>Not checked</dt><dd>Kubernetes, Compose, CI, OpenAPI, application rules, and business meaning.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="common-errors" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Read structure before guessing</p><h2 id="errors-heading">Common YAML syntax errors to inspect</h2><p>Error wording can vary. Use the source location as the point where parsing became impossible, then inspect the preceding structural boundary.</p></div>
+        <div class="error-table" role="table" aria-label="Common YAML syntax errors">
+          <div class="error-row error-head" role="row"><span role="columnheader">Symptom</span><span role="columnheader">Likely cause</span><span role="columnheader">Focused check</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unexpected mapping value</strong><span role="cell">A colon appears where the current scalar or collection cannot accept one.</span><span role="cell">Check the previous line, quote ambiguous text, and keep a space after mapping colons.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Bad indentation</strong><span role="cell">A child moved to a level that has no matching parent or a tab was used for indentation.</span><span role="cell">Use spaces consistently and align siblings at the same structural column.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Duplicate key</strong><span role="cell">One mapping defines the same resolved key more than once.</span><span role="cell">Choose the intended value explicitly; do not rely on last-key-wins behavior.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unclosed flow collection</strong><span role="cell">A <code>[</code> or <code>{</code> has no matching closing token.</span><span role="cell">Trace nested flow collections and quoted strings from the reported line backward.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unknown anchor</strong><span role="cell">An alias refers to an anchor that is absent or unavailable at that point.</span><span role="cell">Confirm the exact, case-sensitive anchor name and its position in the document.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="schema-boundary" aria-labelledby="schema-heading">
+        <div class="section-heading"><p class="section-kicker">Syntax is not a platform contract</p><h2 id="schema-heading">Why valid YAML can still fail Kubernetes or Compose</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Kubernetes manifests</h3><p>A parser cannot prove that an API version, resource kind, metadata field, selector, pod specification, or custom resource matches the cluster's installed schemas and policies.</p></article>
+          <article><h3>Docker Compose</h3><p>YAML syntax does not establish that a service key, volume form, health check, network setting, interpolation expression, or Compose version is supported.</p></article>
+          <article><h3>CI workflows</h3><p>GitHub Actions, GitLab CI, CircleCI, and other systems define their own keys, expressions, permissions, and execution rules. A local syntax pass does not authorize or execute them.</p></article>
+          <article><h3>Application configuration</h3><p>Types resolved by the selected YAML schema can still differ from the application's expected types. Validate against the real loader and test the behavior in a controlled environment.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">No validation API receives the source</p><h2 id="privacy-heading">Local YAML parsing with explicit limits</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The interactive check runs in a disposable browser worker and accepts at most 200,000 UTF-16 code units. Moving parsing off the interface thread and bounding input helps keep the page responsive. These limits are an availability guard for this tool, not proof that a downstream YAML loader is configured safely.</p>
+            <p>LiveParse does not put the source in the page URL or send it to a validation service. Your browser, extensions, clipboard manager, downloaded files, backups, and device monitoring can have separate behavior. Redact secrets even when using a local tool, then apply the organization's approved validation and deployment workflow.</p>
+          </div>
+          <div class="callout-card"><strong>Syntax passed—what next?</strong><p>Format the document for a reviewable diff, inspect anchors and aliases as nodes, or convert supported values to JSON with explicit conversion boundaries.</p><a href="/yaml-formatter/">Open the YAML Formatter →</a><br /><a href="/yaml-viewer/">Open the YAML Viewer →</a><br /><a href="/yaml-to-json/">Convert YAML to JSON →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Validation scope</p><h2 id="faq-heading">YAML validator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does this YAML validator check?</summary><p>It checks supported YAML syntax, rejects unresolved aliases, and detects duplicate scalar mapping keys under the selected schema. It supports multi-document streams and block scalars, with merge-key expansion disabled. It does not deeply compare complex collection keys.</p></details>
+          <details><summary>Does valid YAML mean a Kubernetes or Docker Compose file is valid?</summary><p>No. This is parser-level syntax, alias-order, and duplicate-scalar-key validation, not Kubernetes, Docker Compose, GitHub Actions, OpenAPI, or another application schema check. Use the authoritative platform validator afterward.</p></details>
+          <details><summary>Does YAML validation happen on a server?</summary><p>No. <code>yaml</code> version <code>2.9.0</code> runs in a local Web Worker. Input is limited to 200,000 UTF-16 code units and is not uploaded to a validation API.</p></details>
+          <details><summary>Will this validator fix indentation or duplicate keys?</summary><p>No. It reports diagnostics and leaves the source untouched. Automatic recovery could conceal which structure or value the author intended.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Grammar and parser references</p><h2 id="references-heading">YAML validation resources</h2></div>
+        <ul>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noreferrer">YAML 1.2.2 specification</a></li>
+          <li><a href="https://eemeli.org/yaml/" target="_blank" rel="noreferrer">yaml 2.9 documentation</a></li>
+          <li><a href="/guides/common-yaml-errors/">Common YAML errors and focused fixes</a></li>
+          <li><a href="/guides/yaml-1-1-vs-1-2/">YAML 1.1 vs YAML 1.2</a></li>
+          <li><a href="/">JSON Parser &amp; Validator</a></li>
+          <li><a href="/xml-validator/">XML Validator</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Syntax, alias order, and scalar keys · No platform schema claim</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive YAML syntax check. The error, schema-version, platform-boundary, and privacy guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/yaml.tsx"></script>
+  </body>
+</html>

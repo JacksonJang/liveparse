@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON to YAML Converter Online – Preserve Numbers Locally | LiveParse</title>
+    <meta name="description" content="Convert strict JSON to YAML locally with duplicate-key rejection and original JSON number-token preservation. Input stays in a browser worker." />
+    <link rel="canonical" href="https://liveparse.com/json-to-yaml/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="JSON to YAML Converter Online" />
+    <meta property="og:description" content="Parse strict JSON without losing number token text, reject duplicate keys, and serialize YAML locally." />
+    <meta property="og:url" content="https://liveparse.com/json-to-yaml/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private JSON to YAML converter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON to YAML Converter Online" />
+    <meta name="twitter:description" content="Convert strict JSON to readable YAML locally with duplicate-key checks and number-token preservation." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/json-to-yaml/#app",
+            "name": "LiveParse JSON to YAML Converter",
+            "url": "https://liveparse.com/json-to-yaml/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A local strict JSON-to-YAML converter that rejects duplicate object keys and preserves original JSON number token text.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/json-to-yaml/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "JSON to YAML", "item": "https://liveparse.com/json-to-yaml/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/json-to-yaml/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does JSON to YAML conversion preserve large numbers?", "acceptedAnswer": { "@type": "Answer", "text": "The converter uses LiveParse's strict lossless JSON parser and preserves the original valid JSON number token when serializing it to YAML instead of first rounding it through a JavaScript Number." } },
+              { "@type": "Question", "name": "What happens when JSON contains duplicate object keys?", "acceptedAnswer": { "@type": "Answer", "text": "Conversion stops. Duplicate keys are rejected rather than silently keeping the first or last value, because either choice can conceal data." } },
+              { "@type": "Question", "name": "Does the generated YAML include comments or anchors?", "acceptedAnswer": { "@type": "Answer", "text": "No source comments, anchors, aliases, tags, or multiple documents can be recovered because strict JSON does not contain those YAML features. The converter produces a single YAML document." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="yaml-page" data-yaml-mode="json-to-yaml">
+    <a class="skip-link" href="#converter">Skip to the JSON to YAML converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/yaml-formatter/">YAML Formatter</a>
+          <a href="/yaml-validator/">YAML Validator</a>
+          <a href="/yaml-viewer/">YAML Viewer</a>
+          <a href="/yaml-to-json/">YAML to JSON</a>
+          <a href="#converter">JSON to YAML</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Strict JSON · Number tokens preserved · Local worker</p>
+          <h1>JSON to YAML Converter Online</h1>
+          <p class="hero-lead">Convert one strict JSON value into readable YAML while rejecting duplicate keys and retaining valid number-token text. The source stays in your browser and never passes through the lossy native JSON parser.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#converter">Convert JSON to YAML</a><span>Free · No upload · 200,000-code-unit limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="JSON converted to YAML example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>config.json → config.yaml</strong></div>
+          <pre><code><span class="property">service:</span>
+  <span class="property">name:</span> <span class="string">api</span>
+  <span class="property">replicas:</span> <span class="number">3</span>
+  <span class="property">enabled:</span> <span class="boolean">true</span></code></pre>
+          <p><strong>One YAML document</strong><span>Review the target loader's schema</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="converter" aria-labelledby="converter-heading">
+        <div><p class="section-kicker">Strict source, explicit serialization</p><h2 id="converter-heading">Convert JSON to YAML without rounding number tokens</h2></div>
+        <p>LiveParse's strict lossless JSON parser rejects duplicate keys and retains each valid JSON number spelling for YAML output. A purpose-built serializer produces one document, then <code>yaml</code> version <code>2.9.0</code> verifies the generated YAML 1.2 syntax in the local worker.</p>
+      </section>
+      <div id="yaml-root">
+        <section class="parser-fallback" aria-label="JSON to YAML converter loading"><p><strong>Loading the private JSON to YAML converter…</strong></p><p>Enable JavaScript to convert locally. The number, duplicate-key, representation, and review guidance below remains readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-convert" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A strict three-step conversion</p><h2 id="how-heading">How to convert JSON to YAML online</h2><p>Start with valid RFC 8259 JSON, then verify the generated YAML in the loader that will actually consume it.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste one strict JSON value</h3><p>Use one object, array, string, number, boolean, or null. Comments, trailing commas, single-quoted strings, undefined, <code>NaN</code>, and infinity are not valid JSON extensions here.</p></li>
+          <li><span>2</span><h3>Run the local conversion</h3><p>The worker parses without collapsing large or precise number tokens into native JavaScript Number values. Duplicate object names stop the operation instead of applying an arbitrary winner.</p></li>
+          <li><span>3</span><h3>Review YAML types and presentation</h3><p>Copy or download the single YAML document, inspect its scalar styles and indentation, then test it under the target application's schema and YAML implementation.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="lossless-json" aria-labelledby="lossless-heading">
+        <div class="section-heading"><p class="section-kicker">Avoid an unnecessary numeric round trip</p><h2 id="lossless-heading">Why original JSON number tokens matter</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>JSON's grammar permits finite decimal number tokens without defining one fixed machine representation. JavaScript's ordinary <code>JSON.parse</code> converts every JSON number to an IEEE-754 double. Large integers and high-precision decimals can therefore lose digits before a converter ever begins writing YAML.</p>
+            <p>This page uses LiveParse's strict lossless JSON parser and carries the original valid number token into the YAML serialization. A token such as <code>9007199254740993</code> is not first rounded to <code>9007199254740992</code> by a native Number conversion. Preserving token text avoids that particular loss, but the later YAML consumer can still choose a limited numeric type and round or reject the value.</p>
+            <p>Duplicate keys are another ambiguity avoided at the parser boundary. Although some JSON implementations keep the last repeated member and others expose different behavior, this converter stops and reports the duplicate. An explicit correction is safer than silently discarding one value.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Source grammar</dt><dd>Strict RFC 8259 JSON with exactly one top-level value.</dd></div>
+            <div><dt>Numbers</dt><dd>Original valid number-token text is retained for YAML serialization.</dd></div>
+            <div><dt>Duplicate names</dt><dd>Rejected instead of applying first-key-wins or last-key-wins behavior.</dd></div>
+            <div><dt>Output</dt><dd>One YAML document that still requires target-loader testing.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="representation" aria-labelledby="representation-heading">
+        <div class="section-heading"><p class="section-kicker">JSON starts with fewer concepts</p><h2 id="representation-heading">What JSON cannot add to the generated YAML</h2></div>
+        <div class="use-case-grid">
+          <article><h3>No source comments</h3><p>Strict JSON has no comments, so a converter cannot reconstruct explanations, disabled settings, provenance notes, or operational warnings that were never present in the input data.</p></article>
+          <article><h3>No anchors or aliases</h3><p>JSON represents nested values, not YAML node identity. Repeated objects remain repeated values; the converter does not invent anchors or infer that two equal objects should be shared.</p></article>
+          <article><h3>No custom YAML tags</h3><p>JSON types map to ordinary scalar and collection output. The converter does not invent application-specific tags or constructors from property names.</p></article>
+          <article><h3>One document only</h3><p>One JSON text contains one top-level value, so output is one YAML document. An array remains a sequence; it is not split into a multi-document stream.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="review" aria-labelledby="review-heading">
+        <div class="section-heading"><p class="section-kicker">Generated syntax is not deployment approval</p><h2 id="review-heading">Review JSON converted to YAML</h2></div>
+        <div class="error-table" role="table" aria-label="JSON to YAML review checklist">
+          <div class="error-row error-head" role="row"><span role="columnheader">Review</span><span role="columnheader">Why it matters</span><span role="columnheader">Next check</span></div>
+          <div class="error-row" role="row"><strong role="cell">Numeric capacity</strong><span role="cell">Token preservation does not force every YAML loader to use arbitrary precision.</span><span role="cell">Parse with the real consumer and compare exact values.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Plain scalars</strong><span role="cell">The serializer must quote strings when a plain spelling could be interpreted as another type.</span><span role="cell">Validate under the consumer's YAML version and schema.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Application schema</strong><span role="cell">Readable YAML can still contain unknown keys, wrong types, or forbidden values.</span><span role="cell">Run Kubernetes, Compose, CI, or application validation separately.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Operational context</strong><span role="cell">Comments and provenance are absent from strict JSON.</span><span role="cell">Restore required human documentation through an approved source process.</span></div>
+        </div>
+        <p class="text-link"><a href="/yaml-to-json/">Need the reverse direction? Convert YAML to JSON →</a></p>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Data remains local to the tab</p><h2 id="privacy-heading">Private JSON to YAML conversion</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Parsing and serialization occur in a Web Worker, and input is limited to 200,000 UTF-16 code units. LiveParse does not send the JSON to a conversion API, insert it into the URL, or require an account. The worker boundary helps keep the interface responsive; it is not a security certification for the generated configuration.</p>
+            <p>Clipboard managers, browser extensions, downloads, screen sharing, device backups, and local monitoring remain outside the site's processing promise. Redact production secrets and prefer synthetic examples. After conversion, use the real target parser and policy checks before deployment.</p>
+          </div>
+          <div class="callout-card"><strong>Need to inspect the result?</strong><p>Validate the generated YAML syntax and scalar keys, or open it as a searchable tree whose aliases remain unexpanded.</p><a href="/yaml-validator/">Open the YAML Validator →</a><br /><a href="/yaml-viewer/">Open the YAML Viewer →</a><br /><a href="/">Open the JSON Parser →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Conversion guarantees and limits</p><h2 id="faq-heading">JSON to YAML FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does JSON to YAML conversion preserve large numbers?</summary><p>The converter uses LiveParse's strict lossless JSON parser and preserves the original valid JSON number token when serializing it to YAML instead of first rounding it through a JavaScript Number. The downstream YAML loader can still impose its own numeric limits.</p></details>
+          <details><summary>What happens when JSON contains duplicate object keys?</summary><p>Conversion stops. Duplicate keys are rejected rather than silently keeping the first or last value, because either choice can conceal data.</p></details>
+          <details><summary>Does the generated YAML include comments or anchors?</summary><p>No source comments, anchors, aliases, tags, or multiple documents can be recovered because strict JSON does not contain those YAML features. The converter produces a single YAML document.</p></details>
+          <details><summary>Is the generated YAML valid for Kubernetes or Compose?</summary><p>The output can be valid YAML syntax and still violate a platform schema. Apply the authoritative Kubernetes, Compose, CI, or application validator separately.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Source and target specifications</p><h2 id="references-heading">JSON to YAML resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noreferrer">YAML 1.2.2 specification</a></li>
+          <li><a href="/guides/yaml-to-json-types/">YAML and JSON type conversion</a></li>
+          <li><a href="/">Lossless JSON Parser</a></li>
+          <li><a href="/json-to-csv/">JSON to CSV Converter</a></li>
+          <li><a href="/xml-formatter/">XML Formatter</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Strict JSON · Original number tokens preserved</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive JSON-to-YAML conversion. The strict-source, number-token, duplicate-key, representation, and review guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/yaml.tsx"></script>
+  </body>
+</html>

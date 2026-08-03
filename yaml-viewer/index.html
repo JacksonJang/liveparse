@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML Viewer Online – Explore YAML as a Tree | LiveParse</title>
+    <meta name="description" content="View YAML as a searchable tree with mappings, sequences, scalar types, anchors, and unexpanded aliases. Multi-document input stays in your browser." />
+    <link rel="canonical" href="https://liveparse.com/yaml-viewer/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML Viewer with a Searchable Tree" />
+    <meta property="og:description" content="Inspect YAML documents, types, anchors, and alias references locally without expanding aliases in the tree." />
+    <meta property="og:url" content="https://liveparse.com/yaml-viewer/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse searchable YAML tree viewer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML Viewer with a Searchable Tree" />
+    <meta name="twitter:description" content="Explore YAML locally as bounded tree rows while keeping aliases as references." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/yaml-viewer/#app",
+            "name": "LiveParse YAML Viewer",
+            "url": "https://liveparse.com/yaml-viewer/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A browser-based YAML tree viewer for mappings, sequences, scalar types, anchors, aliases, and multi-document streams without alias expansion.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/yaml-viewer/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML Viewer", "item": "https://liveparse.com/yaml-viewer/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/yaml-viewer/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the YAML viewer expand aliases?", "acceptedAnswer": { "@type": "Answer", "text": "No. Anchors and aliases are represented in the tree, but alias references are not recursively expanded. The viewer does not duplicate an anchored subtree beneath each alias." } },
+              { "@type": "Question", "name": "Can the YAML viewer show multiple documents?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. A YAML stream separated by document markers is represented as distinct documents rather than merged into one object." } },
+              { "@type": "Question", "name": "Does viewing YAML validate a Kubernetes or Compose schema?", "acceptedAnswer": { "@type": "Answer", "text": "No. The viewer parses supported YAML syntax for display. It does not validate Kubernetes, Docker Compose, CI, OpenAPI, or application-specific schemas." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="yaml-page" data-yaml-mode="view">
+    <a class="skip-link" href="#viewer">Skip to the YAML viewer</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/yaml-formatter/">YAML Formatter</a>
+          <a href="/yaml-validator/">YAML Validator</a>
+          <a href="#viewer">YAML Viewer</a>
+          <a href="/yaml-to-json/">YAML to JSON</a>
+          <a href="/json-to-yaml/">JSON to YAML</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Searchable tree · Typed scalars · Aliases stay references</p>
+          <h1>YAML Viewer with a Searchable Tree</h1>
+          <p class="hero-lead">Explore mappings, sequences, scalar values, anchors, aliases, tags, and separate stream documents as a bounded text tree. The source is parsed locally and aliases are never expanded in the viewer.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#viewer">View a YAML tree</a><span>Free · Browser worker · 200,000-code-unit input limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="YAML tree viewer example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>catalog.yaml · tree</strong></div>
+          <pre><code><span class="property">− document 1</span>
+  <span class="property">− products</span> <span class="boolean">sequence</span>
+    <span class="property">− [0]</span> <span class="boolean">mapping</span>
+      <span class="property">name</span> <span class="string">Trail Bottle</span>
+      <span class="property">stock</span> <span class="number">18</span></code></pre>
+          <p><strong>Structural outline</strong><span>Search labels and scalar values</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="viewer" aria-labelledby="viewer-heading">
+        <div><p class="section-kicker">Inspect structure without flattening references</p><h2 id="viewer-heading">Build and search a YAML document tree</h2></div>
+        <p>The local worker parses YAML with <code>yaml</code> version <code>2.9.0</code>, returns a bounded display model, and keeps alias nodes as references. YAML 1.2 Core Schema is the default, YAML 1.1 is optional, and merge-key expansion remains disabled.</p>
+      </section>
+      <div id="yaml-root">
+        <section class="parser-fallback" aria-label="YAML viewer loading"><p><strong>Loading the private YAML tree viewer…</strong></p><p>Enable JavaScript to explore YAML locally. The tree model, alias boundary, type, and size guidance below remains readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-view" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Move from indentation to structure</p><h2 id="how-heading">How to view and explore YAML online</h2><p>The tree is an inspection aid. It does not edit the source, execute configuration, or replace the schema-aware tools used by the target platform.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste a YAML stream</h3><p>Include one document or several documents separated by <code>---</code>. Choose YAML 1.2 Core unless the actual consumer requires YAML 1.1 scalar resolution.</p></li>
+          <li><span>2</span><h3>Build the local tree</h3><p>Mappings, sequences, scalars, alias references, and document boundaries receive rows; anchors and tags are shown on their owning rows. Block scalar values are shown as text rather than executable content.</p></li>
+          <li><span>3</span><h3>Search and collapse</h3><p>Filter displayed keys, indices, types, and values or collapse a mapping or sequence to focus on nearby structure. Display state never changes the YAML input.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="tree-model" aria-labelledby="tree-heading">
+        <div class="section-heading"><p class="section-kicker">YAML is a graph-shaped data model</p><h2 id="tree-heading">What the YAML viewer represents</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A YAML document is not merely an indented JSON object. Mappings associate keys with values, sequences retain item order, and scalars resolve under a selected schema. Anchors name nodes and aliases refer back to those nodes, which means the representation can be a graph rather than a pure tree. Tags can also participate in type resolution.</p>
+            <p>The viewer presents a bounded tree-shaped outline while keeping each alias as a reference row. It does not copy or recursively expand the anchored node under every alias. This avoids disguising shared identity as repeated source and prevents an alias-heavy document from creating a disproportionately large display. Merge-key expansion is likewise disabled.</p>
+            <p>Comments and presentation details belong to the YAML source model, while the tree focuses on document structure and resolved scalar information useful for inspection. Use the <a href="/yaml-formatter/">YAML Formatter</a> when the goal is a new serialization, and compare that serialization with the original because formatting can change presentation.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Mapping</dt><dd>Key/value pairs whose keys must be unique under the validator policy.</dd></div>
+            <div><dt>Sequence</dt><dd>An ordered collection whose rows retain their numeric item positions.</dd></div>
+            <div><dt>Scalar</dt><dd>A value resolved according to YAML 1.2 Core or explicit YAML 1.1 behavior.</dd></div>
+            <div><dt>Alias</dt><dd>A reference to an anchored node, displayed without recursive expansion.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="types" aria-labelledby="types-heading">
+        <div class="section-heading"><p class="section-kicker">The selected schema changes interpretation</p><h2 id="types-heading">Read YAML scalar types carefully</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Strings and booleans</h3><p>Under YAML 1.2 Core, <code>true</code> and <code>false</code> are booleans, while values such as <code>yes</code> normally remain strings. YAML 1.1 compatibility can interpret a broader set.</p></article>
+          <article><h3>Numbers and null</h3><p>Plain scalar spelling affects numeric resolution. A tree type label helps reveal when an unquoted token did not remain the string the author expected.</p></article>
+          <article><h3>Block scalar text</h3><p>Literal and folded block styles have distinct newline semantics plus chomping controls. Inspect the value and keep the original source nearby when exact text matters.</p></article>
+          <article><h3>Custom tags</h3><p>A visible tag is metadata, not permission to construct a class or execute code. This page is an inspector; downstream loaders define their own tag behavior and risk.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="limits" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Inspection remains bounded</p><h2 id="limits-heading">Large YAML, aliases, and incomplete views</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Input is limited to 200,000 UTF-16 code units and parsed in a browser worker. The returned display is also bounded so a very deep or broad document cannot create unlimited rows in the page. If the interface reports truncation, the outline is incomplete; absence from the displayed tree is not evidence that a node is absent from the source.</p>
+            <p>Aliases remain reference rows even when the anchored node is small. This is a semantic and availability boundary, not a defect: expanding aliases could multiply repeated content and blur the difference between written nodes and references. Use a controlled application loader if you specifically need a resolved object graph, with its own limits and trust policy.</p>
+            <p>The document is not uploaded or placed in the URL. Browser extensions, clipboard history, screen capture, backups, and other local software remain outside that promise. Redact secrets from production configuration whenever a synthetic example can reproduce the issue.</p>
+          </div>
+          <div class="callout-card"><strong>Need conversion instead?</strong><p>The YAML-to-JSON converter applies a different, explicit rule set: aliases may expand up to a limit, multiple documents become an array, and unsupported keys or tags stop conversion.</p><a href="/yaml-to-json/">Open YAML to JSON →</a><br /><a href="/json-to-yaml/">Open JSON to YAML →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Viewer behavior</p><h2 id="faq-heading">YAML viewer FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the YAML viewer expand aliases?</summary><p>No. Anchors and aliases are represented in the tree, but alias references are not recursively expanded. The viewer does not duplicate an anchored subtree beneath each alias.</p></details>
+          <details><summary>Can the YAML viewer show multiple documents?</summary><p>Yes. A YAML stream separated by document markers is represented as distinct documents rather than merged into one object.</p></details>
+          <details><summary>Does viewing YAML validate a Kubernetes or Compose schema?</summary><p>No. The viewer parses supported YAML syntax for display. It does not validate Kubernetes, Docker Compose, CI, OpenAPI, or application-specific schemas.</p></details>
+          <details><summary>Does collapsing or searching change the YAML?</summary><p>No. Those controls affect only visible rows. The source remains untouched, and the viewer does not produce an edited download.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Data-model background</p><h2 id="references-heading">YAML viewer resources</h2></div>
+        <ul>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noreferrer">YAML 1.2.2 specification</a></li>
+          <li><a href="https://eemeli.org/yaml/" target="_blank" rel="noreferrer">yaml 2.9 documentation</a></li>
+          <li><a href="/guides/yaml-anchors-aliases-merge-keys/">YAML anchors, aliases, and merge keys</a></li>
+          <li><a href="/">JSON Tree Viewer</a></li>
+          <li><a href="/xml-viewer/">XML Viewer</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Aliases stay references · Tree output is bounded</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive YAML tree viewer. The data-model, scalar-type, alias, and size guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/yaml.tsx"></script>
+  </body>
+</html>

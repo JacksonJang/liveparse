@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YAML to JSON Converter Online – Convert Locally | LiveParse</title>
+    <meta name="description" content="Convert YAML to JSON locally with explicit rules for multiple documents, aliases, complex keys, comments, tags, and YAML 1.2 or optional YAML 1.1 types." />
+    <link rel="canonical" href="https://liveparse.com/yaml-to-json/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="YAML to JSON Converter Online" />
+    <meta property="og:description" content="Convert supported YAML values to strict JSON locally with bounded alias expansion and visible loss boundaries." />
+    <meta property="og:url" content="https://liveparse.com/yaml-to-json/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private YAML to JSON converter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="YAML to JSON Converter Online" />
+    <meta name="twitter:description" content="Convert YAML to strict JSON locally and see which YAML features cannot survive the conversion." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/yaml-to-json/#app",
+            "name": "LiveParse YAML to JSON Converter",
+            "url": "https://liveparse.com/yaml-to-json/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A local YAML-to-JSON converter with explicit rules for comments, tags, aliases, complex keys, and multi-document streams.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/yaml-to-json/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "YAML to JSON", "item": "https://liveparse.com/yaml-to-json/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/yaml-to-json/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How are multiple YAML documents converted to JSON?", "acceptedAnswer": { "@type": "Answer", "text": "A stream with more than one YAML document becomes one top-level JSON array, with one converted value per document in source order." } },
+              { "@type": "Question", "name": "What happens to YAML comments, anchors, and aliases?", "acceptedAnswer": { "@type": "Answer", "text": "Comments are removed because JSON has no comment model. Anchors are not represented in JSON; aliases are expanded into values with a maximum alias count of 50 per YAML document." } },
+              { "@type": "Question", "name": "Which YAML values stop conversion?", "acceptedAnswer": { "@type": "Answer", "text": "Alias or complex mapping keys, unsupported tags, YAML 1.1 merge-tag keys, non-finite values, and precision-losing numbers or timestamps stop conversion instead of being silently coerced." } },
+              { "@type": "Question", "name": "Does the converter upload my YAML?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing and conversion run in a local Web Worker. The page does not send the source to a converter service or place it in the URL." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="yaml-page" data-yaml-mode="yaml-to-json">
+    <a class="skip-link" href="#converter">Skip to the YAML to JSON converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/yaml-formatter/">YAML Formatter</a>
+          <a href="/yaml-validator/">YAML Validator</a>
+          <a href="/yaml-viewer/">YAML Viewer</a>
+          <a href="#converter">YAML to JSON</a>
+          <a href="/json-to-yaml/">JSON to YAML</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Strict JSON · Explicit losses · Local conversion</p>
+          <h1>YAML to JSON Converter Online</h1>
+          <p class="hero-lead">Convert supported YAML mappings, sequences, and scalars to strict JSON without uploading the source. Multiple documents become an array, aliases expand only within a fixed limit, and unsupported keys or tags stop the operation.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#converter">Convert YAML to JSON</a><span>Free · Local worker · No silent tag coercion</span></div>
+        </div>
+        <div class="hero-example" aria-label="YAML converted to JSON example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>config.yaml → config.json</strong></div>
+          <pre><code><span class="property">{</span>
+  <span class="property">"service"</span>: <span class="property">{</span>
+    <span class="property">"name"</span>: <span class="string">"api"</span>,
+    <span class="property">"replicas"</span>: <span class="number">3</span>
+  <span class="property">}</span>
+<span class="property">}</span></code></pre>
+          <p><strong>Strict JSON output</strong><span>Review type and reference changes</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="converter" aria-labelledby="converter-heading">
+        <div><p class="section-kicker">Convert data models, not just punctuation</p><h2 id="converter-heading">Convert YAML documents to strict JSON locally</h2></div>
+        <p>The worker uses <code>yaml</code> version <code>2.9.0</code> with YAML 1.2 Core Schema by default and optional YAML 1.1 compatibility. Conversion has explicit boundaries because JSON cannot represent every YAML key, tag, comment, reference, or scalar value.</p>
+      </section>
+      <div id="yaml-root">
+        <section class="parser-fallback" aria-label="YAML to JSON converter loading"><p><strong>Loading the private YAML to JSON converter…</strong></p><p>Enable JavaScript to convert locally. The type, alias, multi-document, and information-loss rules below remain readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-convert" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A bounded conversion workflow</p><h2 id="how-heading">How to convert YAML to JSON online</h2><p>Choose the same YAML schema as the source consumer, then inspect every change that follows from JSON's smaller data model.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste one YAML stream</h3><p>Input may contain one document or several documents separated by <code>---</code>. The page rejects input above 200,000 UTF-16 code units before starting the local worker.</p></li>
+          <li><span>2</span><h3>Select YAML 1.2 or 1.1</h3><p>YAML 1.2 Core is the default. Use YAML 1.1 only for compatibility with a known older loader; the selection can change whether a plain scalar becomes a string, boolean, number, or null.</p></li>
+          <li><span>3</span><h3>Convert and review the JSON</h3><p>Inspect types, removed comments, expanded aliases, multi-document wrapping, and key restrictions. Then test the JSON with the receiving application instead of assuming equivalent behavior.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="conversion-rules" aria-labelledby="rules-heading">
+        <div class="section-heading"><p class="section-kicker">No claim of lossless YAML conversion</p><h2 id="rules-heading">YAML to JSON conversion rules</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>JSON supports objects with string member names, arrays, strings, finite numbers, booleans, and null. YAML can express mappings with non-string or structured keys, node tags, anchors and aliases, presentation comments, multiple documents, and schema-dependent scalar types. Conversion therefore needs a policy rather than a simple character replacement.</p>
+            <p>One YAML document becomes one JSON value. A stream containing multiple documents becomes one top-level JSON array in source order. Comments disappear because RFC 8259 JSON has no comment node. Anchors do not have a JSON representation, and alias construction is bounded by a maximum alias count of 50 per YAML document.</p>
+            <p>Alias mapping keys and complex collection keys are rejected. Under YAML 1.1, an unquoted <code>&lt;&lt;</code> is a legacy merge-tag key and stops conversion because LiveParse does not expand it. A quoted <code>"&lt;&lt;"</code> key in YAML 1.1 or a literal <code>&lt;&lt;</code> key under YAML 1.2 Core remains an ordinary property. <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, custom or unresolved tags, non-finite values, and other values without a supported strict JSON representation also stop conversion.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>One document</dt><dd>Produces one top-level JSON value.</dd></div>
+            <div><dt>Several documents</dt><dd>Produce one top-level array in document order.</dd></div>
+            <div><dt>Aliases</dt><dd>Expand as values with a maximum alias count of 50 per YAML document.</dd></div>
+            <div><dt>Comments and anchors</dt><dd>Are not represented in the JSON output.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="type-boundaries" aria-labelledby="types-heading">
+        <div class="section-heading"><p class="section-kicker">Types deserve an explicit review</p><h2 id="types-heading">YAML values that need care in JSON</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Schema-sensitive text</h3><p>Plain <code>yes</code>, <code>no</code>, <code>on</code>, and <code>off</code> normally stay strings under YAML 1.2 Core but can become booleans in YAML 1.1 compatibility mode.</p></article>
+          <article><h3>Numbers and timestamps</h3><p>Exact arbitrary-size integers are emitted as JSON number tokens. Conversion stops before a finite decimal would round, underflow, or overflow. YAML 1.1 timestamps become ISO 8601 strings, but non-zero sub-millisecond digits stop conversion rather than being truncated. Later JSON consumers may still lose numeric precision.</p></article>
+          <article><h3>Mapping keys</h3><p>JSON object names are strings. A YAML mapping with a sequence, mapping, or another complex node as a key is rejected rather than flattened into an unstable spelling.</p></article>
+          <article><h3>References and identity</h3><p>Two YAML aliases can refer to the same anchored node. JSON duplicates the resulting values and cannot preserve shared node identity, even below the expansion limit.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="review" aria-labelledby="review-heading">
+        <div class="section-heading"><p class="section-kicker">Before replacing a configuration format</p><h2 id="review-heading">Review checklist for YAML converted to JSON</h2></div>
+        <div class="error-table" role="table" aria-label="YAML to JSON review checklist">
+          <div class="error-row error-head" role="row"><span role="columnheader">Review</span><span role="columnheader">Why it matters</span><span role="columnheader">Evidence</span></div>
+          <div class="error-row" role="row"><strong role="cell">Selected schema</strong><span role="cell">YAML 1.2 and 1.1 can resolve plain scalars differently.</span><span role="cell">Compare output types with the original loader.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Document count</strong><span role="cell">A multi-document stream becomes an array, changing the top-level shape.</span><span role="cell">Confirm the receiver expects one value or an array.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Comments and tags</strong><span role="cell">Comments are removed, while custom or unresolved tags stop conversion.</span><span role="cell">Preserve operational notes elsewhere and resolve tag semantics explicitly.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Aliases</strong><span role="cell">Expanded values no longer share identity; the maximum alias count is 50 per YAML document.</span><span role="cell">Inspect repeated output and test mutation assumptions.</span></div>
+        </div>
+        <p class="text-link"><a href="/json-to-yaml/">Need the reverse direction? Convert JSON to YAML →</a></p>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Conversion remains in this browser</p><h2 id="privacy-heading">Private YAML to JSON conversion</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The source is processed in a browser worker and is not sent to a conversion API. The 200,000-code-unit input boundary and alias-expansion limit keep the interactive operation bounded. LiveParse stops before its runtime would change a finite decimal or discard non-zero sub-millisecond timestamp digits; equivalent numeric spelling may still normalize, and a downstream JSON parser may still lose precision. These boundaries do not make a configuration safe to deploy.</p>
+            <p>Configuration can contain secrets even when conversion is local. Clipboard tools, downloads, browser extensions, screen sharing, backups, and device monitoring can handle copied data separately. Use a synthetic sample where possible and remove production credentials before pasting.</p>
+          </div>
+          <div class="callout-card"><strong>Inspect before converting</strong><p>The YAML tree viewer keeps aliases as references instead of expanding them, which can make anchors, types, and document boundaries easier to audit first.</p><a href="/yaml-viewer/">Open the YAML Viewer →</a><br /><a href="/yaml-validator/">Check YAML syntax →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Conversion boundaries</p><h2 id="faq-heading">YAML to JSON FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How are multiple YAML documents converted to JSON?</summary><p>A stream with more than one YAML document becomes one top-level JSON array, with one converted value per document in source order.</p></details>
+          <details><summary>What happens to YAML comments, anchors, and aliases?</summary><p>Comments are removed because JSON has no comment model. Anchors are not represented in JSON; aliases are expanded into values with a maximum alias count of 50 per YAML document.</p></details>
+          <details><summary>Which YAML values stop conversion?</summary><p>Alias or complex mapping keys, unsupported tags, YAML 1.1 merge-tag keys, non-finite values, and precision-losing numbers or timestamps stop conversion instead of being silently coerced.</p></details>
+          <details><summary>Does the converter upload my YAML?</summary><p>No. Parsing and conversion run in a local Web Worker. The page does not send the source to a converter service or place it in the URL.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Source and target specifications</p><h2 id="references-heading">YAML to JSON resources</h2></div>
+        <ul>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noreferrer">YAML 1.2.2 specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: JSON</a></li>
+          <li><a href="/guides/yaml-to-json-types/">YAML to JSON type conversion</a></li>
+          <li><a href="/guides/yaml-anchors-aliases-merge-keys/">YAML anchors, aliases, and merge keys</a></li>
+          <li><a href="/">JSON Parser &amp; Viewer</a></li>
+          <li><a href="/csv-to-json/">CSV to JSON Converter</a></li>
+          <li><a href="/xml-viewer/">XML Viewer</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Strict JSON · Explicit conversion boundaries</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive YAML-to-JSON conversion. The document, type, alias, loss, and privacy rules remain readable without it.</p></noscript>
+    <script type="module" src="/src/yaml.tsx"></script>
+  </body>
+</html>

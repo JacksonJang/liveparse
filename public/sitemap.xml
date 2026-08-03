@@ -97,6 +97,26 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/yaml-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/yaml-validator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/yaml-viewer/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/yaml-to-json/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/json-to-yaml/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
@@ -150,6 +170,22 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/xml-well-formed-vs-valid/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/yaml-1-1-vs-1-2/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/yaml-to-json-types/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/common-yaml-errors/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

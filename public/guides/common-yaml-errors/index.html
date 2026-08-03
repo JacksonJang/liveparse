@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Common YAML Errors: Examples and Safe Fixes | LiveParse</title>
+    <meta name="description" content="Diagnose YAML indentation, tabs, colons, comments, quotes, block scalars, duplicate keys, aliases, tags, and schema errors with examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/common-yaml-errors/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Common YAML Errors: Diagnose Syntax Before Schema" />
+    <meta property="og:description" content="Fix indentation, scalar, key, alias, and document errors without confusing YAML syntax with Kubernetes or Compose schema validation." />
+    <meta property="og:url" content="https://liveparse.com/guides/common-yaml-errors/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Common YAML syntax errors and diagnostics guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Common YAML Errors" />
+    <meta name="twitter:description" content="Diagnose YAML syntax precisely, then run the separate application-schema checks your configuration requires." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/common-yaml-errors/#article",
+            "headline": "Common YAML Errors: Examples, Diagnostics, and Safe Fixes",
+            "description": "Diagnose YAML indentation, tabs, colons, comments, quotes, block scalars, duplicate keys, aliases, tags, and schema errors.",
+            "mainEntityOfPage": "https://liveparse.com/guides/common-yaml-errors/",
+            "url": "https://liveparse.com/guides/common-yaml-errors/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "YAML diagnostics",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/common-yaml-errors/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Common YAML Errors", "item": "https://liveparse.com/guides/common-yaml-errors/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/common-yaml-errors/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Can YAML indentation use tabs?", "acceptedAnswer": { "@type": "Answer", "text": "No. Tabs must not be used as indentation characters. They can occur in some other contexts, but spaces should establish block structure. Configure the editor to show tabs and spaces." } },
+              { "@type": "Question", "name": "Why does valid YAML fail in Kubernetes or Docker Compose?", "acceptedAnswer": { "@type": "Answer", "text": "Because YAML syntax and application schemas answer different questions. Kubernetes and Compose impose supported fields, types, versions, references, and semantic rules after YAML parsing." } },
+              { "@type": "Question", "name": "Can a formatter automatically fix invalid YAML?", "acceptedAnswer": { "@type": "Answer", "text": "Not reliably. Broken structure can have several plausible repairs. LiveParse rejects invalid source, and formatting valid YAML may still change presentation choices that deserve a diff." } },
+              { "@type": "Question", "name": "Are duplicate keys allowed?", "acceptedAnswer": { "@type": "Answer", "text": "YAML mapping keys are unique in the representation model. LiveParse rejects duplicate scalar keys rather than relying on implementation-specific first-key or last-key behavior; it does not deeply compare complex collection keys." } },
+              { "@type": "Question", "name": "Why did yes become true?", "acceptedAnswer": { "@type": "Answer", "text": "The file was likely resolved under a YAML 1.1 schema, where several yes/no and on/off spellings are booleans. YAML 1.2 core treats those words as strings. Quote domain text and use lowercase true/false for booleans." } },
+              { "@type": "Question", "name": "Does LiveParse validate Kubernetes or Compose schemas?", "acceptedAnswer": { "@type": "Answer", "text": "No. It validates supported YAML syntax and composition under the selected YAML schema. Run the target platform's own schema-aware validation afterward." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the YAML error guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/yaml-validator/">Validate YAML</a>
+        <a href="/yaml-formatter/">Format YAML</a>
+        <a href="/yaml-viewer/">View YAML</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">YAML syntax diagnostics</p>
+          <h1>Common YAML Errors: Examples and Safe Fixes</h1>
+          <p class="dek">Most YAML failures become manageable when you separate character-level syntax, node composition, scalar type resolution, and the target application's schema. Fix one layer at a time instead of asking a formatter to guess the intended configuration.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>14 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> check indentation spaces, mapping separators, sequence markers, quote boundaries, block-scalar indentation, duplicate keys, document markers, and anchor order first. Then inspect resolved scalar types under the intended YAML 1.1 or 1.2 schema. Only after generic YAML succeeds should you run Kubernetes, Compose, CI, or application-schema validation.</p>
+            </div>
+
+            <h2 id="layers">Four layers behind a YAML error message</h2>
+            <ol class="steps">
+              <li><strong>Presentation syntax:</strong> do indentation, indicators, comments, quoted scalars, block scalars, and document markers match the YAML grammar?</li>
+              <li><strong>Composition:</strong> are mapping keys unique under the processor's policy, and does every alias refer to a previously anchored node?</li>
+              <li><strong>Resolution and construction:</strong> what types do plain scalars and tags become under the selected YAML schema, and can the runtime construct them safely?</li>
+              <li><strong>Application validation:</strong> do the keys, value types, versions, references, and business rules satisfy Kubernetes, Compose, a CI provider, or your own configuration contract?</li>
+            </ol>
+            <p>The <a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> describes parsing, composing, and constructing as distinct processes with distinct failure points. A generic <a href="/yaml-validator/">YAML Validator</a> can report the first layers. It cannot know every application vocabulary.</p>
+
+            <h2 id="quick-table">Common errors at a glance</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Symptom</th><th>Likely YAML issue</th><th>First safe action</th></tr></thead>
+                <tbody>
+                  <tr><td>Nested block starts unexpectedly</td><td>Inconsistent indentation or a tab in indentation</td><td>Show whitespace and replace structural tabs with spaces.</td></tr>
+                  <tr><td>Mapping key is not recognized</td><td>Missing separation after a colon</td><td>Use <code>key: value</code>, not <code>key:value</code>.</td></tr>
+                  <tr><td>Text disappears after <code>#</code></td><td>Text was parsed as a comment</td><td>Quote the entire scalar when <code>#</code> begins comment text.</td></tr>
+                  <tr><td>Unexpected end of scalar</td><td>Unclosed quote or invalid escape</td><td>Match quote styles and use their correct escaping rules.</td></tr>
+                  <tr><td>Duplicate mapping key</td><td>Same resolved key appears twice</td><td>Choose one authoritative value; do not rely on last-key-wins.</td></tr>
+                  <tr><td>Unidentified alias</td><td>Alias appears before its anchor or in another document</td><td>Move the anchored node earlier in the same document.</td></tr>
+                  <tr><td>Valid YAML, rejected by platform</td><td>Application-schema or semantic error</td><td>Run the target platform's schema-aware validator.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="indentation">1. Indentation spaces and tabs</h2>
+            <p>YAML block structure uses indentation spaces. Tab characters must not be used for indentation. A tab may be permitted in other contexts, including quoted content and some in-line separation, so the precise rule is not “YAML forbids every tab.” The reliable configuration convention is simpler: use spaces for all structural indentation and configure the editor to display invisible characters.</p>
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Broken: items are aligned at different levels</span></figcaption>
+                <pre><code>services:
+  api:
+    image: example/api
+   ports:
+      - "8080:8080"</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="good">Clear: sibling keys share one indentation level</span></figcaption>
+                <pre><code>services:
+  api:
+    image: example/api
+    ports:
+      - "8080:8080"</code></pre>
+              </figure>
+            </div>
+            <p>YAML does not require exactly two spaces; consistent indentation establishes scope. Two spaces are a common style, while four can also be valid. Re-indenting invalid source automatically is unsafe because the desired parent-child relationship is not encoded once the whitespace is wrong.</p>
+
+            <h2 id="colons-dashes">2. Colons, dashes, and separation</h2>
+            <p>A block mapping entry normally uses a colon followed by separation, as in <code>port: 8080</code>. Without the separating space, <code>port:8080</code> can be read as a plain scalar rather than the intended key-value pair. A colon can legally occur inside a plain scalar when the following character does not create a mapping separator; URLs such as <code>https://example.test</code> illustrate why every colon cannot be banned.</p>
+            <p>A block sequence entry uses a dash followed by separation. The dash in <code>- item</code> is an indicator, while the hyphen inside <code>us-east-1</code> is scalar content. Problems arise when a child mapping is not indented under the sequence item or when a dash is added where the application expected one mapping.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">A sequence of mappings</figcaption>
+              <pre><code>servers:
+  - name: primary
+    port: 443
+  - name: backup
+    port: 8443</code></pre>
+            </figure>
+
+            <h2 id="comments">3. Hash characters and comments</h2>
+            <p>An explicit comment begins with <code>#</code> and must be separated from preceding tokens. A hash inside a plain scalar without separation can remain data, as in <code>color: blue#2</code>, but that spelling is easy to misunderstand. Quote values such as issue identifiers, CSS colors, fragments, and shell snippets whenever human readers or downstream tools could disagree.</p>
+            <div class="example-grid">
+              <figure class="code-example"><figcaption class="code-label">Comment after a value</figcaption><pre><code>retries: 3 # temporary limit</code></pre></figure>
+              <figure class="code-example"><figcaption class="code-label">Hash character preserved as text</figcaption><pre><code>ticket: "#1842"
+color: "#0ea5b7"</code></pre></figure>
+            </div>
+            <p>Comments are presentation details and are not part of YAML's representation graph. A formatter may retain many comments, but a YAML-to-JSON conversion cannot represent them in ordinary JSON. LiveParse reports when conversion drops comments rather than claiming losslessness.</p>
+
+            <h2 id="quotes">4. Quotes and escape sequences</h2>
+            <p>Single-quoted and double-quoted scalars have different escape rules. In a single-quoted scalar, write a literal apostrophe by doubling it: <code>'it''s ready'</code>. Backslash does not introduce the YAML double-quoted escape set there. In a double-quoted scalar, backslash sequences such as <code>\n</code>, <code>\t</code>, and Unicode escapes are interpreted, and an unknown escape is an error.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Choose quote style based on intended characters</figcaption>
+              <pre><code>windows_path: 'C:\new\tools'
+message: "first line\nsecond line"
+apostrophe: 'it''s ready'
+boolean_word: "off"</code></pre>
+            </figure>
+            <p>Quotes also control type resolution. Under YAML 1.1, plain <code>off</code> may be false; quoted <code>"off"</code> is a string. Under YAML 1.2 core it is already a string, but quoting communicates portable intent. See <a href="/guides/yaml-1-1-vs-1-2/">YAML 1.1 vs 1.2</a> for the full comparison.</p>
+
+            <h2 id="block-scalars">5. Literal and folded block scalars</h2>
+            <p>A literal block marked with <code>|</code> preserves line breaks. A folded block marked with <code>&gt;</code> folds many line breaks to spaces while preserving boundaries around blank or more-indented lines. Chomping indicators <code>+</code> and <code>-</code> control trailing line breaks. The block's content indentation must be deeper than its parent key.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Literal script and folded description</figcaption>
+              <pre><code>script: |
+  set -eu
+  echo "deploy"
+description: &gt;-
+  This becomes one folded line
+  without a final line break.</code></pre>
+            </figure>
+            <p>An under-indented content line can end the scalar early and begin a new token. A formatter cannot safely guess whether that line belonged inside the script, was meant to be a sibling key, or should have used an explicit indentation indicator.</p>
+
+            <h2 id="duplicate-keys">6. Duplicate and unexpectedly equivalent keys</h2>
+            <p>YAML mapping keys are required to be unique in the representation model. Some historical libraries accepted duplicates and kept the first or last value, but that makes configuration behavior parser-dependent and can hide security-sensitive overrides. LiveParse enables the parser's strict duplicate-scalar-key check and reports those duplicates rather than choosing a winner. It does not perform deep equality checks between complex sequence or mapping keys.</p>
+            <p>Resolution can create non-obvious duplicates. Under YAML 1.1, keys such as <code>yes</code> and <code>true</code> may both resolve to the boolean true. A quoted <code>"1"</code> and numeric <code>1</code> remain different YAML scalar types but would collide if both were coerced to the JSON property name <code>"1"</code>. The <a href="/guides/yaml-to-json-types/">YAML-to-JSON types guide</a> explains why LiveParse rejects post-conversion key collisions.</p>
+
+            <h2 id="anchors-tags">7. Anchors, aliases, and tags</h2>
+            <p>An alias must refer to an anchor that appeared previously in the same document. Misspelling the name, placing the alias first, or expecting it to cross a document marker produces an unidentified alias. Anchors and aliases represent graph identity, not macro text.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Define the anchor before the alias</figcaption>
+              <pre><code>defaults: &amp;defaults
+  timeout: 10
+worker: *defaults</code></pre>
+            </figure>
+            <p>Tags require constructors that understand their semantics. A generic tool can preserve or diagnose <code>!Duration 5m</code>, but it cannot decide what duration object the application expects. LiveParse stops YAML-to-JSON conversion on <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, unresolved tags, and application-specific custom tags. It uses a maximum alias count of 50 per YAML document. Under YAML 1.1, an unquoted <code>&lt;&lt;</code> merge-tag key stops conversion because merge expansion is disabled; quoted YAML 1.1 <code>"&lt;&lt;"</code> and literal YAML 1.2 Core <code>&lt;&lt;</code> remain ordinary keys. Review <a href="/guides/yaml-anchors-aliases-merge-keys/">anchors, aliases, merge keys, and expansion safety</a> before flattening referenced data.</p>
+
+            <h2 id="documents">8. Document markers and multi-document streams</h2>
+            <p>Three dashes, <code>---</code>, can mark the start of a document; three dots, <code>...</code>, can mark its end. A stream may contain several documents. Directives such as <code>%YAML 1.1</code> belong before a document start marker. A stray marker or content after an explicit end can create an unexpected document boundary.</p>
+            <p>Many configuration applications accept exactly one document even though generic YAML permits a stream. Others, including some Kubernetes workflows, intentionally process several resources. Generic syntax success cannot tell you which policy the target uses. LiveParse's YAML-to-JSON policy maps multiple documents into a top-level JSON array and emits a diagnostic; that is a conversion choice, not a rule imposed by the YAML specification.</p>
+
+            <h2 id="syntax-vs-schema">9. Valid YAML can still be invalid Kubernetes or Compose</h2>
+            <p>A parser can successfully construct this mapping:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Syntactically valid YAML, not necessarily a valid Kubernetes object</figcaption>
+              <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+spec:
+  replicas: "many"</code></pre>
+            </figure>
+            <p>The YAML layer sees strings and mappings. Kubernetes must decide whether the API version and kind exist, whether <code>replicas</code> has the required integer type, whether required fields are present, and whether admission policies allow the resource. The official <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/" rel="external">Kubernetes object model</a> supplies that separate contract.</p>
+            <p>The <a href="https://compose-spec.io/" rel="external">Compose Specification</a> likewise defines meanings and constraints for services, networks, volumes, configs, and secrets. A misspelled field can be perfectly legal YAML. A generic validator does not know the installed Compose implementation, platform capabilities, interpolated environment, referenced files, or runtime state.</p>
+            <div class="note">
+              <p><strong>Use layered evidence:</strong> first validate YAML syntax under the expected schema, then run the target application's schema-aware validation, and finally test environment-dependent references, permissions, and behavior.</p>
+            </div>
+
+            <h2 id="formatter-limit">10. Why a formatter is not an automatic fixer</h2>
+            <p>Formatting requires a parseable interpretation. When indentation or quote boundaries are broken, several repairs may produce different data. A tool that silently guesses can turn a visible syntax error into a valid but incorrect deployment. LiveParse's <a href="/yaml-formatter/">YAML Formatter</a> rejects invalid input rather than advertising repair.</p>
+            <p>For valid YAML, formatting still parses and reserializes. It can change quoting, equivalent numeric spelling, flow versus block collections, scalar style, comments, and whitespace. LiveParse stops formatting before a precision-losing number or timestamp would change value. Review a source diff before replacing a checked-in configuration, and use the <a href="/yaml-viewer/">YAML Viewer</a> to confirm document structure and resolved types, not just visual indentation.</p>
+
+            <h2 id="workflow">A precise YAML debugging workflow</h2>
+            <ol>
+              <li><strong>Preserve the original.</strong> Work on a copy and keep line endings and invisible characters available for inspection.</li>
+              <li><strong>Select YAML 1.2 or 1.1 deliberately.</strong> Match the real consumer rather than whichever mode produces fewer errors.</li>
+              <li><strong>Fix the earliest bounded diagnostic.</strong> One missing quote or indentation error can create many later messages.</li>
+              <li><strong>Inspect resolved nodes.</strong> Confirm strings, booleans, numbers, nulls, mappings, sequences, tags, anchors, aliases, and document count.</li>
+              <li><strong>Format only after validation.</strong> Diff the reserialized result and retain comments or source conventions that still matter.</li>
+              <li><strong>Run application validation.</strong> Use Kubernetes, Compose, CI, or service-specific tooling with the correct version and environment.</li>
+              <li><strong>Test conversion separately.</strong> If producing JSON, review warnings and conversion stops for comments, aliases, alias or complex keys, unsupported tags, YAML 1.1 merge keys, multiple documents, unsafe decimals, non-finite values, and timestamp precision; then inspect with the <a href="/">JSON Formatter and Validator</a>.</li>
+            </ol>
+            <p>The same layered principle applies to XML: the <a href="/xml-validator/">XML Validator</a> checks well-formedness without claiming DTD, XSD, or business validity. Naming what a tool proves is more valuable than a broad green “valid” label.</p>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Can YAML indentation use tabs?</h3>
+              <p>No. Tabs must not be used as indentation characters. They can occur in some other contexts, but spaces should establish block structure. Configure the editor to show tabs and spaces.</p>
+              <h3>Why does valid YAML fail in Kubernetes or Docker Compose?</h3>
+              <p>Because YAML syntax and application schemas answer different questions. Kubernetes and Compose impose supported fields, types, versions, references, and semantic rules after YAML parsing.</p>
+              <h3>Can a formatter automatically fix invalid YAML?</h3>
+              <p>Not reliably. Broken structure can have several plausible repairs. LiveParse rejects invalid source, and formatting valid YAML may still change presentation choices that deserve a diff.</p>
+              <h3>Are duplicate keys allowed?</h3>
+              <p>YAML mapping keys are unique in the representation model. LiveParse rejects duplicate scalar keys rather than relying on implementation-specific first-key or last-key behavior; it does not deeply compare complex collection keys.</p>
+              <h3>Why did yes become true?</h3>
+              <p>The file was likely resolved under a YAML 1.1 schema, where several yes/no and on/off spellings are booleans. YAML 1.2 core treats those words as strings. Quote domain text and use lowercase <code>true</code>/<code>false</code> for booleans.</p>
+              <h3>Does LiveParse validate Kubernetes or Compose schemas?</h3>
+              <p>No. It validates supported YAML syntax and composition under the selected YAML schema. Run the target platform's own schema-aware validation afterward.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://yaml.org/spec/1.2.2/" rel="external">YAML 1.2.2 specification</a> — indentation, indicators, comments, scalar styles, documents, mappings, anchors, aliases, and schemas.</li>
+                <li><a href="https://eemeli.org/yaml/" rel="external">yaml library documentation</a> — parser errors, strict options, schema choices, merge settings, and alias limits.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8259" rel="external">RFC 8259: JSON</a> — target grammar and interoperability constraints for conversion diagnostics.</li>
+                <li><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/" rel="external">Kubernetes objects</a> — resource structure beyond generic YAML.</li>
+                <li><a href="https://compose-spec.io/" rel="external">Compose Specification</a> — Compose's application-level model.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Use the five YAML tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/yaml-formatter/"><strong>YAML Formatter</strong><span>Reserialize valid YAML with explicit presentation-change warnings.</span></a>
+                <a class="related-card" href="/yaml-validator/"><strong>YAML Validator</strong><span>Check strict syntax, duplicate scalar keys, unresolved aliases, and selected schema behavior.</span></a>
+                <a class="related-card" href="/yaml-viewer/"><strong>YAML Viewer</strong><span>Inspect document boundaries, resolved scalar types, anchors, aliases, and tags.</span></a>
+                <a class="related-card" href="/yaml-to-json/"><strong>YAML to JSON</strong><span>Convert supported values with explicit loss diagnostics and limits.</span></a>
+                <a class="related-card" href="/json-to-yaml/"><strong>JSON to YAML</strong><span>Turn strict JSON into a checked YAML 1.2-compatible representation.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#layers">Validation layers</a></li>
+              <li><a href="#quick-table">Error table</a></li>
+              <li><a href="#indentation">Indentation and tabs</a></li>
+              <li><a href="#colons-dashes">Colons and dashes</a></li>
+              <li><a href="#comments">Comments</a></li>
+              <li><a href="#quotes">Quotes</a></li>
+              <li><a href="#block-scalars">Block scalars</a></li>
+              <li><a href="#duplicate-keys">Duplicate keys</a></li>
+              <li><a href="#anchors-tags">Anchors and tags</a></li>
+              <li><a href="#documents">Documents</a></li>
+              <li><a href="#syntax-vs-schema">Syntax vs schema</a></li>
+              <li><a href="#formatter-limit">Formatter limits</a></li>
+              <li><a href="#workflow">Debug workflow</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">JSON Tools</a> · <a href="/yaml-validator/">YAML Validator</a> · <a href="/yaml-formatter/">YAML Formatter</a> · <a href="/yaml-viewer/">YAML Viewer</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>
