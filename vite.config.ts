@@ -17,6 +17,7 @@ export default defineConfig({
         jsonToCsv: resolve(projectRoot, 'json-to-csv/index.html'),
         csvToJson: resolve(projectRoot, 'csv-to-json/index.html'),
         jsonCompare: resolve(projectRoot, 'json-compare/index.html'),
+        unixTimestampConverter: resolve(projectRoot, 'unix-timestamp-converter/index.html'),
       },
     },
   },

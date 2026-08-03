@@ -1,6 +1,6 @@
 # LiveParse
 
-LiveParse is a local-first, lossless JSON toolkit for validating, formatting, repairing, and exploring data directly in the browser. Unlike a `JSON.parse()`/`JSON.stringify()` pipeline, it preserves the original numeric lexemes and duplicate object members instead of silently changing them. The production site is available at [liveparse.com](https://liveparse.com/).
+LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, converting, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, while its Unix timestamp converter keeps large epoch values exact. The production site is available at [liveparse.com](https://liveparse.com/).
 
 ## Features
 
@@ -14,11 +14,12 @@ LiveParse is a local-first, lossless JSON toolkit for validating, formatting, re
 - Key/value search, expand/collapse all, selected-node copy, JSONPath copy, and JSON Pointer copy
 - A dedicated JSON Repair tool with before/after diff, confidence, assumptions, and a detailed change log
 - A dedicated JSONL/NDJSON parser with line-level diagnostics, filtering, a paged table, and safe CSV export
+- A lossless Unix timestamp converter for epoch seconds, milliseconds, microseconds, and nanoseconds
 - Local file input, output copying, and JSON download
 - Optional type labels, array indexes, and sample payloads
 - No server-side JSON processing; pasted data remains local to the browser
 - No advertising, affiliate widgets, analytics, or optional third-party cookies in the current build
-- Crawlable, independent tool pages, a privacy notice, and three in-depth guides
+- Crawlable, independent tool pages, a privacy notice, and in-depth guides
 
 ## Local run
 
@@ -29,7 +30,7 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-The main routes are `/`, `/ko/json-parser/`, `/json-repair/`, `/jsonl-parser/`, and `/privacy/`.
+The main routes are `/`, `/json-compare/`, `/json-repair/`, `/jsonl-parser/`, `/json-to-csv/`, `/csv-to-json/`, `/unix-timestamp-converter/`, `/ko/json-parser/`, and `/privacy/`.
 
 Run the parser and UI utility tests with:
 

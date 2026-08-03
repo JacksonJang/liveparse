@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unix Timestamp Converter – Epoch to Date (Seconds, ms, µs, ns) | LiveParse</title>
+    <meta name="description" content="Convert Unix timestamps to dates and dates to epoch time in seconds, milliseconds, microseconds, or nanoseconds. Exact, private, and browser-based." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/unix-timestamp-converter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/unix-timestamp-converter/" />
+    <meta property="og:title" content="Unix Timestamp Converter – Epoch to Date" />
+    <meta property="og:description" content="Convert epoch time in seconds, milliseconds, microseconds, or nanoseconds without losing integer precision." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Unix timestamp converter for exact epoch-to-date conversion" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Unix Timestamp Converter – Seconds, ms, µs, ns" />
+    <meta name="twitter:description" content="Convert epoch timestamps to readable UTC and local dates, or turn a date into exact Unix time." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for JSON, timestamps, and developer data.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/unix-timestamp-converter/#application",
+            "name": "LiveParse Unix Timestamp Converter",
+            "url": "https://liveparse.com/unix-timestamp-converter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Unix timestamp converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A free browser-based epoch converter for Unix timestamps in seconds, milliseconds, microseconds, and nanoseconds, with exact integer output and UTC and local date views.",
+            "featureList": [
+              "Convert Unix timestamps to UTC and local dates",
+              "Convert dates to epoch seconds, milliseconds, microseconds, and nanoseconds",
+              "Detect common timestamp units",
+              "Preserve large integer timestamps without floating-point rounding",
+              "Convert multiple timestamp values in one batch",
+              "Process all values in the current browser tab"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/unix-timestamp-converter/#webpage",
+            "url": "https://liveparse.com/unix-timestamp-converter/",
+            "name": "Unix Timestamp Converter – Epoch to Date (Seconds, ms, µs, ns)",
+            "description": "Convert epoch timestamps to dates and dates to exact Unix time across four common units.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/unix-timestamp-converter/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/unix-timestamp-converter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/unix-timestamp-converter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Converter", "item": "https://liveparse.com/unix-timestamp-converter/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="timestamp-page">
+    <a class="skip-link" href="#converter">Skip to the Unix timestamp converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Formatter</a>
+          <a href="/json-compare/">JSON Compare</a>
+          <a href="/json-to-csv/">JSON to CSV</a>
+          <a href="#timestamp-units">Timestamp units</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · Exact · Private</p>
+          <h1>Unix Timestamp Converter</h1>
+          <p class="hero-lead">Convert epoch time to a readable UTC or local date, or turn a date into Unix time. Work safely with seconds, milliseconds, microseconds, and nanoseconds without rounding long integers.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#converter">Convert a timestamp</a>
+            <span>No sign-up · Runs in your browser</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="Unix timestamp conversion example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>epoch → UTC</strong></div>
+          <pre><code><span class="number">1754208000000000000</span> ns
+÷ 1,000,000,000
+<span class="string">2025-08-03T08:00:00.000Z</span></code></pre>
+          <p><strong>Exact integer input</strong><span>UTC + local output</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="converter" aria-labelledby="converter-heading">
+        <div><p class="section-kicker">Epoch time conversion</p><h2 id="converter-heading">Timestamp to date, and date to timestamp</h2></div>
+        <p>Paste one value or convert a batch. Select a unit yourself when the source system documents it, or use automatic detection as a practical starting point.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="Unix timestamp converter loading">
+          <p><strong>Loading the Unix timestamp converter…</strong></p>
+          <p>Enable JavaScript to convert timestamps and copy exact results.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-convert" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">A reliable three-step check</p>
+          <h2 id="how-heading">How to convert a Unix timestamp</h2>
+          <p>The arithmetic is simple only after the unit and timezone meaning are clear. Use these steps to avoid the two most common failures: choosing the wrong scale and interpreting a local wall-clock value as UTC.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste the epoch value</h3><p>Enter an integer or supported decimal timestamp. For a log, database export, queue message, or API response, copy the original token rather than a value already opened and rounded in a spreadsheet.</p></li>
+          <li><span>2</span><h3>Confirm its unit</h3><p>Choose seconds, milliseconds, microseconds, or nanoseconds from the producing system’s documentation. Auto-detection uses the value’s magnitude, so treat it as a hint rather than a contract.</p></li>
+          <li><span>3</span><h3>Read the right date</h3><p>Use UTC for protocols, logs, signatures, and cross-region comparisons. Use local time for human context, and retain the numeric timestamp when sub-millisecond precision matters.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">One instant, one numeric offset</p><h2 id="meaning-heading">What is a Unix timestamp?</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A Unix timestamp represents elapsed time relative to the Unix epoch: <strong>1970-01-01 00:00:00 UTC</strong>. A positive value names an instant after the epoch, zero names the epoch itself, and a negative value represents an instant before it. The value is independent of a viewer’s country or timezone. Timezone formatting changes the displayed calendar fields, not the underlying instant.</p>
+            <p>The word “timestamp” does not identify a unit. Traditional Unix time is counted in seconds, while JavaScript and many web APIs commonly use milliseconds. Databases, telemetry pipelines, and operating-system interfaces may expose microseconds or nanoseconds. The values <code>1754208000</code>, <code>1754208000000</code>, <code>1754208000000000</code>, and <code>1754208000000000000</code> can all describe the same instant at different scales.</p>
+            <p>Common Unix/POSIX time handling also does not count leap seconds as distinct numbered seconds. It is excellent for exchanging ordinary application instants, but it is not a complete representation of civil-time policy, calendar intent, or a future recurring schedule. Store the timezone identifier and business rule separately when an event must remain at “09:00 in Seoul” or “08:30 in New York” after rules change.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Epoch</dt><dd>1970-01-01 00:00:00 UTC, represented by zero.</dd></div>
+            <div><dt>UTC</dt><dd>A global reference used to format the instant without a regional offset.</dd></div>
+            <div><dt>Local time</dt><dd>The same instant rendered with the browser’s current timezone rules.</dd></div>
+            <div><dt>Precision</dt><dd>The smallest stored unit: seconds, ms, µs, or ns.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="timestamp-units" aria-labelledby="units-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Scale matters</p>
+          <h2 id="units-heading">Seconds vs milliseconds vs microseconds vs nanoseconds</h2>
+          <p>Each step is a factor of one thousand. Around the 2020s, the number of digits is a useful clue for positive modern timestamps, but it is not proof: older dates, far-future dates, padded strings, negative values, and application-specific epochs break simplistic digit rules.</p>
+        </div>
+        <div class="error-table" role="table" aria-label="Unix timestamp unit comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Unit</span><span role="columnheader">Typical modern shape</span><span role="columnheader">Where it commonly appears</span></div>
+          <div class="error-row" role="row"><strong role="cell">Seconds (s)</strong><code role="cell">1754208000</code><span role="cell">Unix tools, Python timestamps, many SQL date functions, JWT <code>iat</code> and <code>exp</code> NumericDate values.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Milliseconds (ms)</strong><code role="cell">1754208000000</code><span role="cell">JavaScript <code>Date</code>, browser events, many JSON and analytics APIs.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Microseconds (µs)</strong><code role="cell">1754208000000000</code><span role="cell">Database internals, tracing systems, data warehouses, high-resolution event records.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Nanoseconds (ns)</strong><code role="cell">1754208000000000000</code><span role="cell">Go and Rust services, Linux tooling, observability pipelines, exchange and sensor data.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Read the complete timestamp unit guide →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="precision-heading">
+        <div class="section-heading"><p class="section-kicker">Do not round event identity</p><h2 id="precision-heading">Exact conversion for large timestamp integers</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A current nanosecond timestamp is roughly nineteen decimal digits. That is far beyond JavaScript’s largest exactly representable consecutive integer, <code>9007199254740991</code>. If an application first converts the token to a floating-point <code>Number</code>, several adjacent nanosecond values may collapse to the same number before date conversion begins. Sorting, deduplication, latency measurement, and event correlation can then produce false results.</p>
+            <p>LiveParse keeps integer timestamp arithmetic exact while changing scale. Whole seconds and the fractional remainder are separated without passing the original long token through binary floating point. Its ISO and UTC outputs are serialized directly from that exact value and can preserve as many as nine fractional digits. Local-time, RFC-style, and native <code>Date</code> projections use the browser’s millisecond date model, so use the exact ISO/UTC or epoch output when microsecond or nanosecond identity matters.</p>
+            <p>Precision and range are separate concerns. A value may be a valid integer but outside the calendar range supported by the browser date model. In that case the timestamp can still be rescaled arithmetically, yet no trustworthy browser date should be invented. Similarly, an auto-detected unit can be arithmetically valid while semantically wrong. The producer’s schema remains the best authority.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Exact input</dt><dd>The original decimal token is retained instead of becoming a rounded float.</dd></div>
+            <div><dt>Remainder</dt><dd>Sub-second digits remain in exact ISO/UTC and epoch output, up to nanoseconds.</dd></div>
+            <div><dt>Range check</dt><dd>Dates outside the browser-supported interval are reported rather than guessed.</dd></div>
+            <div><dt>Negative time</dt><dd>Pre-1970 values keep the correct sign and fractional relationship.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="timezone-heading">
+        <div class="section-heading"><p class="section-kicker">The instant does not move</p><h2 id="timezone-heading">UTC, local time, offsets, and daylight saving time</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Use UTC for machine exchange</h3><p>An ISO 8601-style value ending in <code>Z</code> is explicitly UTC. UTC makes logs from different hosts comparable and avoids the repeated or missing wall-clock hours created by daylight saving transitions.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Use local time for human context</h3><p>The local view uses the browser’s timezone. It is convenient for answering “what time was that for me?” but another user in another zone will see different calendar fields for the same epoch value.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Include an offset in date input</h3><p><code>2026-08-03T09:00:00+09:00</code> identifies an instant. <code>2026-08-03 09:00:00</code> alone does not; it needs a documented zone or an explicit decision to interpret it as local time.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Keep zone rules for schedules</h3><p>An epoch stores one instant, not a recurring civil-time rule. Persist an IANA zone such as <code>Asia/Seoul</code> with the schedule when future “same local time” behavior matters.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="batch-heading">
+        <div class="section-heading"><p class="section-kicker">Logs and exports</p><h2 id="batch-heading">Convert multiple timestamps without mixing units silently</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Batch conversion is useful when a log excerpt, database column, or event list contains more than one timestamp. Paste one value per line and review the detected or selected unit beside each output. Mixed-unit data deserves special attention: a seconds field copied next to a millisecond field can look like a plausible list of integers even though one result lands thousands of years away.</p>
+            <p>For production migrations, preserve the raw column, add a separate normalized column, and record the transformation rule. Reject or quarantine rows whose unit, range, or timezone meaning is unknown. A convenient converter is a review aid; it cannot recover metadata that the source system never recorded.</p>
+            <p>When timestamps are embedded in JSON, check the field’s schema before extracting them. JSON itself has no timestamp type, so a number named <code>createdAt</code> could be seconds or milliseconds, while a string could be ISO text or a numeric token. Use the <a href="/">JSON formatter and validator</a> to inspect payload structure, and the <a href="/json-compare/">JSON comparison tool</a> to verify that a migration changed only intended fields.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Keep raw</dt><dd>Retain the source token for audit, rollback, and precision checks.</dd></div>
+            <div><dt>Normalize</dt><dd>Choose one documented target unit and UTC representation.</dd></div>
+            <div><dt>Validate</dt><dd>Set acceptable date ranges and reject implausible conversions.</dd></div>
+            <div><dt>Document</dt><dd>Name units in schemas and column names, such as <code>created_at_ms</code>.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="year2038-heading">
+        <div class="section-heading"><p class="section-kicker">Range, not format</p><h2 id="year2038-heading">The Year 2038 problem explained</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The Year 2038 problem affects systems that store Unix seconds in a signed 32-bit integer. The maximum value, <code>2147483647</code>, represents <code>2038-01-19T03:14:07Z</code>. Adding one second overflows that representation. The timestamp text is not inherently broken, and Unix time does not end in 2038; the limitation belongs to that particular integer storage type and to software that depends on it.</p>
+            <p>A signed 64-bit seconds field has vastly more range than ordinary civil applications need. Migrating is not only a database-column change: serialized messages, file formats, foreign-function interfaces, firmware, caches, validation rules, and client libraries may still assume 32 bits. Test dates across the boundary and verify the entire path from input through storage to display.</p>
+            <p>Do not “solve” 2038 by changing seconds to milliseconds inside the same 32-bit field; multiplying by one thousand makes the range much smaller. Choose an appropriately wide type, specify the unit, and test. For code in several languages, see the <a href="/guides/unix-timestamp-code-examples/">Unix timestamp conversion examples</a>.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Max int32</dt><dd><code>2147483647</code> seconds.</dd></div>
+            <div><dt>Boundary</dt><dd><code>2038-01-19T03:14:07Z</code>.</dd></div>
+            <div><dt>Failure</dt><dd>The next value cannot fit in a signed 32-bit integer.</dd></div>
+            <div><dt>Remedy</dt><dd>Use a reviewed wider representation across every system boundary.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Common workflows</p><h2 id="uses-heading">When an epoch converter is useful</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Debug application logs</h3><p>Translate numeric event times into UTC, compare services in different regions, and keep exact sub-second values available for ordering requests inside a busy trace.</p></article>
+          <article><h3>Inspect JWT claims</h3><p>Read NumericDate claims such as <code>iat</code>, <code>nbf</code>, and <code>exp</code> as seconds since the epoch. Conversion helps inspection; it does not verify the token’s signature or trustworthiness.</p></article>
+          <article><h3>Review database exports</h3><p>Check whether a column is stored in seconds, milliseconds, microseconds, or nanoseconds before importing, rescaling, or building a date index.</p></article>
+          <article><h3>Investigate API payloads</h3><p>Confirm that timestamps from different endpoints refer to the expected instants and that a frontend has not mistaken seconds for the milliseconds expected by JavaScript.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Unix timestamp converter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How can I tell whether a timestamp is in seconds or milliseconds?</summary><p>For a positive date near the present, seconds usually have 10 digits and milliseconds 13. That is only a magnitude heuristic. Confirm the field definition, SDK, database schema, or producer code whenever possible, especially for historical dates and custom epochs.</p></details>
+          <details><summary>Why does my converted date show 1970?</summary><p>A millisecond value may have been interpreted as seconds after division, or a seconds value may have been passed to an API that expects milliseconds without multiplying by 1,000. Confirm both the input unit and the receiving function’s unit.</p></details>
+          <details><summary>Are Unix timestamps always UTC?</summary><p>A Unix timestamp identifies an instant relative to a UTC epoch and does not carry a timezone. It can be formatted in UTC or any local zone. A date typed without an offset, however, needs an interpretation before it can be converted to an instant.</p></details>
+          <details><summary>Can a Unix timestamp be negative?</summary><p>Yes. Negative values represent instants before 1970-01-01T00:00:00Z. Some legacy systems or APIs reject them even though the representation is meaningful, so check the target system’s supported range.</p></details>
+          <details><summary>Which outputs preserve microseconds and nanoseconds?</summary><p>LiveParse’s exact ISO/UTC and epoch outputs preserve as many as nine fractional digits. Local-time, RFC-style, and native browser <code>Date</code> projections are millisecond-based, so use an exact output when sub-millisecond identity matters.</p></details>
+          <details><summary>Is the converter private?</summary><p>Yes. Conversion runs in the current browser tab; the timestamp values you enter are not sent to a conversion API. The site’s <a href="/privacy/">privacy page</a> explains this processing model and remaining device-level considerations.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Learn and implement</p><h2 id="references-heading">Unix timestamp guides</h2></div>
+        <ul>
+          <li><a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Seconds vs ms, µs, and ns</a></li>
+          <li><a href="/guides/unix-timestamp-code-examples/">Code examples by language</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc3339" target="_blank" rel="noreferrer">RFC 3339 date-time format</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based JSON, timestamp, and data conversion tools.</p></div>
+      <div class="footer-links"><a href="/">JSON Formatter</a><a href="/json-compare/">JSON Compare</a><a href="/json-to-csv/">JSON to CSV</a><a href="/jsonl-parser/">JSONL Parser</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. Input is processed locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive Unix timestamp converter. The explanatory content remains available without it.</p></noscript>
+    <script type="module" src="/src/unix-timestamp.tsx"></script>
+  </body>
+</html>

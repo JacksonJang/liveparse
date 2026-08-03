@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unix Timestamp Units: Seconds vs Milliseconds, Microseconds, Nanoseconds | LiveParse</title>
+    <meta name="description" content="Identify and convert Unix timestamps in seconds, milliseconds, microseconds, and nanoseconds without unit mistakes, precision loss, or timezone confusion." />
+    <link rel="canonical" href="https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Unix Timestamp Units: Seconds vs Milliseconds, Microseconds, Nanoseconds" />
+    <meta property="og:description" content="A practical guide to recognizing timestamp units, converting them exactly, and avoiding 1970 dates, overflow, and nanosecond rounding." />
+    <meta property="og:url" content="https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Unix timestamp converter for seconds, milliseconds, microseconds, and nanoseconds" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Unix Timestamp Units: Seconds, ms, µs, and ns" />
+    <meta name="twitter:description" content="Choose the correct epoch unit and preserve exact timestamp precision across APIs, databases, logs, and code." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/#article",
+            "headline": "Unix Timestamp Units: Seconds vs Milliseconds, Microseconds, and Nanoseconds",
+            "description": "Identify and convert Unix timestamps in seconds, milliseconds, microseconds, and nanoseconds without unit mistakes, precision loss, or timezone confusion.",
+            "mainEntityOfPage": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/",
+            "url": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Time and date engineering",
+            "inLanguage": "en",
+            "breadcrumb": { "@id": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Units", "item": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/unix-timestamp-converter/">Timestamp Converter</a>
+        <a href="/guides/unix-timestamp-code-examples/">Code Examples</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Unix timestamp units</span></nav>
+          <p class="eyebrow">Time and date engineering</p>
+          <h1>Unix Timestamp Units: Seconds vs Milliseconds, Microseconds, and Nanoseconds</h1>
+          <p class="dek">A timestamp can be numerically valid and still produce the wrong date when its unit is misidentified. Learn how to recognize common epoch scales, convert them with integer arithmetic, preserve sub-millisecond precision, and document the result.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-03">August 3, 2026</time></span><span>15 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> Unix seconds, milliseconds, microseconds, and nanoseconds differ by powers of 1,000. Near the present, positive values often contain 10, 13, 16, and 19 digits respectively, but digit count is only a heuristic. Confirm the producer’s documented unit, use exact integer division and remainders for long values, and keep the original timestamp when the readable date cannot display all of its precision.</p>
+            </div>
+
+            <h2 id="same-instant">Four numbers can represent the same instant</h2>
+            <p>Unix time measures an offset from <strong>1970-01-01T00:00:00Z</strong>, the Unix epoch. The scale of that offset is a separate choice. A service counting whole seconds and a tracing database counting nanoseconds can record the same event with values that differ by nine decimal places. There is no marker inside a bare integer that says which unit was chosen.</p>
+            <p>For example, each value below identifies <code>2025-08-03T08:00:00Z</code> when interpreted with the unit in its row. The trailing zeros are not decorative; they change the scale.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Unit</th><th scope="col">Symbol</th><th scope="col">Example value</th><th scope="col">Units per second</th></tr></thead>
+                <tbody>
+                  <tr><td>Seconds</td><td><code>s</code></td><td><code>1754208000</code></td><td><code>1</code></td></tr>
+                  <tr><td>Milliseconds</td><td><code>ms</code></td><td><code>1754208000000</code></td><td><code>1,000</code></td></tr>
+                  <tr><td>Microseconds</td><td><code>µs</code></td><td><code>1754208000000000</code></td><td><code>1,000,000</code></td></tr>
+                  <tr><td>Nanoseconds</td><td><code>ns</code></td><td><code>1754208000000000000</code></td><td><code>1,000,000,000</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Resolution describes the size of a unit, not necessarily the accuracy of the clock. A value stored in nanoseconds might merely pad a millisecond clock with six zeros. Conversely, an instrument may measure fine intervals accurately but synchronize poorly with UTC. Do not advertise “nanosecond accuracy” solely because a field has nineteen digits.</p>
+
+            <h2 id="identify-unit">How to identify a timestamp unit</h2>
+            <p>Start with metadata, not arithmetic. Look for a schema property such as <code>created_at_ms</code>, a database column comment, an API specification, a serialization type, or the function that produced the value. Unit suffixes and explicit documentation are stronger evidence than a plausible converted date.</p>
+            <p>When documentation is unavailable, magnitude can narrow the options. In the 2020s, a positive timestamp near “now” is usually 10 digits in seconds, 13 in milliseconds, 16 in microseconds, or 19 in nanoseconds. Divide the larger candidates by powers of 1,000 and check whether the result falls into an expected operational range. A customer signup record should not resolve to 1970 or to a year centuries in the future.</p>
+            <ol class="steps">
+              <li><strong>Preserve the raw token.</strong> Copy the exact text before opening it in software that may use scientific notation or round long integers.</li>
+              <li><strong>Inspect names and neighboring fields.</strong> A suffix, API version, SDK type, or adjacent ISO date can reveal the intended unit.</li>
+              <li><strong>Generate candidates.</strong> Interpret the value under each plausible scale with the <a href="/unix-timestamp-converter/">LiveParse Unix Timestamp Converter</a>.</li>
+              <li><strong>Apply domain bounds.</strong> Compare candidates with a known deployment date, account lifetime, retention window, or event sequence.</li>
+              <li><strong>Verify the producer.</strong> Turn the inferred unit into explicit schema documentation and add a test so the next consumer does not repeat the guess.</li>
+            </ol>
+            <div class="warning">
+              <p><strong>Digit detection is not universal.</strong> The seconds value <code>999999999</code> has nine digits and represents a date in 2001. A 10-digit number might be a short millisecond offset from a custom epoch. Negative signs, leading zeros, far-future dates, and duration counters also defeat simple length checks. Use auto-detection for exploration, not as an undocumented production rule.</p>
+            </div>
+
+            <h2 id="wrong-unit-symptoms">What a wrong unit looks like</h2>
+            <p>The classic JavaScript bug is passing Unix seconds directly to <code>new Date()</code>. The constructor expects milliseconds, so <code>1754208000</code> becomes only about twenty days after the epoch and appears in January 1970. Multiplying by 1,000 produces the intended 2025 instant. The opposite mistake—treating milliseconds as seconds—creates a date tens of thousands of years beyond ordinary date ranges.</p>
+            <p>Wrong-unit results are not always spectacular. A relative duration, custom epoch, or truncated value can produce a believable but incorrect date. The safest validation uses facts external to the number: the event happened after the system launched, before it was exported, and in the same interval as nearby records. Add minimum and maximum accepted instants at ingestion boundaries.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">First check</th></tr></thead>
+                <tbody>
+                  <tr><td>Date in January 1970</td><td>Seconds supplied to a millisecond API</td><td>Multiply seconds by 1,000 before the call</td></tr>
+                  <tr><td>Invalid or extremely distant date</td><td>Milliseconds treated as seconds</td><td>Divide by 1,000 and confirm schema</td></tr>
+                  <tr><td>Nearby events become identical</td><td>Microseconds or nanoseconds rounded as floating point</td><td>Keep the token as text or arbitrary-size integer</td></tr>
+                  <tr><td>Time differs by whole hours</td><td>UTC/local interpretation, not scale</td><td>Inspect the offset and timezone</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="conversion-math">Convert units with exact arithmetic</h2>
+            <p>Moving to a finer unit multiplies by a power of 1,000. Moving to a coarser unit divides by the same factor. Seconds to milliseconds multiply by <code>1,000</code>; milliseconds to microseconds multiply by another <code>1,000</code>; microseconds to nanoseconds do the same. Seconds to nanoseconds multiply by <code>1,000,000,000</code>.</p>
+            <p>Division needs a policy for the remainder. Converting <code>1754208000123456789</code> nanoseconds to whole milliseconds gives a quotient of <code>1754208000123</code> with <code>456789</code> nanoseconds left over. Dropping that remainder is truncation, not a lossless conversion. Keep a pair such as whole milliseconds plus a sub-millisecond remainder, or use a type that represents seconds and nanoseconds separately.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Exact nanoseconds split using integer arithmetic</figcaption>
+              <pre><code>input:       1754208000123456789 ns
+seconds:             1754208000 s
+remainder:              123456789 ns
+Date.toISOString(): 2025-08-03T08:00:00.123Z
+exact fraction:                    123456789</code></pre>
+            </figure>
+            <p>The native JavaScript <code>Date.toISOString()</code> display in this example shows milliseconds because <code>Date</code> stores millisecond precision. It must not be used to reconstruct the original nanoseconds; six digits would be lost. A converter can instead format UTC directly from exact seconds and the nanosecond remainder—LiveParse does this for its exact ISO/UTC output—but local and native <code>Date</code> projections remain millisecond-based.</p>
+
+            <h2 id="negative-values">Negative timestamps need careful division</h2>
+            <p>Negative Unix timestamps represent instants before the epoch. Whole values are straightforward: <code>-1</code> second is <code>1969-12-31T23:59:59Z</code>. Fractions expose an important implementation detail. The instant half a second before the epoch is <code>-0.5</code> seconds, equivalent to <code>-500</code> milliseconds. A normalized seconds-plus-nanoseconds representation commonly expresses that as <code>-1</code> second plus <code>500000000</code> nonnegative nanoseconds.</p>
+            <p>Many programming-language integer division operators truncate toward zero, whereas timestamp normalization often needs floor division so the remainder stays between zero and one unit. If negative historical dates are supported, test values immediately below zero, exact negative seconds, and values with a fractional remainder. A formula verified only with positive modern timestamps can be wrong for archival data.</p>
+            <div class="note">
+              <p><strong>Boundary test set:</strong> include <code>0</code>, <code>1</code>, <code>-1</code>, one unit below an exact second, one unit above it, the largest supported value, and the smallest supported value. Run the tests for every accepted unit.</p>
+            </div>
+
+            <h2 id="precision">Precision limits in JSON, JavaScript, and spreadsheets</h2>
+            <p>JavaScript’s <code>Number</code> type uses IEEE 754 binary64. It represents every integer only through <code>9007199254740991</code>, which is <code>2^53 - 1</code>. Present-day millisecond timestamps and microsecond timestamps fit below that threshold, although calculations and future ranges still require care. Present-day nanosecond epoch values do not fit and can round as soon as a JSON parser creates a <code>Number</code>.</p>
+            <p>JSON defines a number grammar but does not require a particular machine representation. A JSON document can contain a nineteen-digit integer, yet a typical <code>JSON.parse()</code> call may round it. If exact nanoseconds are part of an API contract, encode them as a decimal string or use a lossless parser and an arbitrary-size integer type. Document the choice; changing a field between number and string is itself an API contract change.</p>
+            <p>Spreadsheets are another risk. A cell may display a long timestamp in scientific notation and retain only about fifteen significant decimal digits. Formatting the cell as text before import, exporting quoted strings, or using a database-aware import flow protects the raw token. Never use a visually shortened spreadsheet value as migration evidence.</p>
+            <p>Database precision varies by type and product. A native timestamp type may store microseconds while an integer column holds any documented scale. Verify range, rounding, timezone behavior, and driver mapping—not only the SQL column declaration. Drivers may convert a database integer to a JavaScript number even when the database stored it exactly.</p>
+
+            <h2 id="timezone">Unit errors and timezone errors are different</h2>
+            <p>A Unix timestamp identifies an instant without carrying a timezone. Formatting that instant in UTC, Seoul, or New York produces different calendar labels for the same point on the timeline. Changing from seconds to milliseconds changes scale; changing from UTC to a regional zone changes presentation. Debug these as separate dimensions.</p>
+            <p>An input such as <code>2026-08-03T09:00:00Z</code> explicitly names UTC. An input with <code>+09:00</code> carries a numeric offset. An input such as <code>2026-08-03 09:00:00</code> has neither, so software must assume a zone. That assumption can vary between servers and browsers. Require an offset for exchanged date strings, or pair the local calendar value with an IANA timezone and an explicit rule for daylight saving gaps and overlaps.</p>
+            <p>Daylight saving time does not make an epoch value ambiguous. Ambiguity appears when a local wall-clock time occurs twice during a fall-back transition. A spring-forward transition can create local times that never occur. Convert an already-known epoch freely; when converting a local date to an epoch, choose the intended zone and overlap policy before calculating.</p>
+
+            <h2 id="year-2038">Timestamp units do not cause the Year 2038 problem</h2>
+            <p>The Year 2038 problem is an integer-range failure. A signed 32-bit seconds value reaches its maximum, <code>2147483647</code>, at <code>2038-01-19T03:14:07Z</code>. The next second cannot be represented by that type. Unix time itself continues; applications using wider types can represent later instants.</p>
+            <p>Switching the same 32-bit field to milliseconds makes the representable calendar range shorter because the counter advances one thousand times faster. The practical remedy is a sufficiently wide, consistently serialized representation. Audit database columns, protocol fields, native interfaces, device firmware, caches, language bindings, and validation limits. Test dates just before and after the boundary end to end.</p>
+
+            <h2 id="source-conventions">Know the convention of the source API</h2>
+            <p>Conventions help orientation but never replace documentation. JavaScript <code>Date.now()</code> returns milliseconds. Python’s common POSIX timestamp interfaces use seconds and may accept a fractional float, though exact high-resolution work should avoid relying on binary floating point. PostgreSQL’s <code>to_timestamp(double precision)</code> interprets a numeric argument as Unix seconds. Java and Go provide constructors whose names or arguments make seconds, milliseconds, and nanoseconds explicit.</p>
+            <p>JWT NumericDate claims are measured in seconds from the epoch and may be non-integer according to the underlying specification. A token’s readable expiration is not proof that it is authentic: decode for inspection, then verify its cryptographic signature, issuer, audience, allowed algorithms, and claim rules in trusted code.</p>
+            <p>File modification times, telemetry SDKs, cloud data warehouses, and database drivers each use their own resolution and range. Name the unit at every boundary. Prefer <code>created_at_ms</code> over <code>created_at</code> for a numeric column, and include examples in schemas so a ten-digit test fixture does not accidentally validate a millisecond field.</p>
+
+            <h2 id="migration">A safe unit-normalization workflow</h2>
+            <ol class="steps">
+              <li><strong>Inventory every producer and consumer.</strong> Record the current storage type, unit, precision, range, timezone interpretation, and transport representation.</li>
+              <li><strong>Select one canonical contract.</strong> Choose a numeric scale or an offset-bearing text format based on ordering, precision, interoperability, and human-debugging needs.</li>
+              <li><strong>Preserve raw input.</strong> During migration, keep the original field or immutable backup so conversions can be audited and reversed.</li>
+              <li><strong>Use exact conversion.</strong> Apply integer quotient-and-remainder logic, define rounding explicitly, and reject values outside the accepted date range.</li>
+              <li><strong>Validate representative records.</strong> Cover pre-epoch dates, sub-second values, daylight saving boundaries, maximum values, and the 2038 boundary where relevant.</li>
+              <li><strong>Deploy readers before writers.</strong> If a compatibility period is needed, make consumers understand both versions before producers switch, then remove the old path deliberately.</li>
+              <li><strong>Monitor semantic bounds.</strong> Alert on dates before the product existed, too far in the future, or out of sequence with ingestion time.</li>
+            </ol>
+            <div class="tool-callout">
+              <p><strong>Check a value before changing code.</strong> LiveParse can interpret seconds, milliseconds, microseconds, and nanoseconds, show UTC and local dates, and keep large integer inputs exact in the current browser tab.</p>
+              <a class="button" href="/unix-timestamp-converter/">Open the Unix Timestamp Converter</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Is a 13-digit timestamp always milliseconds?</h3>
+              <p>No. A positive epoch value near the present is often 13-digit milliseconds, but a different epoch, a duration counter, a padded string, or a far-future seconds value can have the same length. Confirm the producing contract and validate the converted date against domain bounds.</p>
+              <h3>Should timestamps be stored as seconds or milliseconds?</h3>
+              <p>Choose the coarsest unit that preserves required event ordering and the format best supported by every consumer. Seconds are widely interoperable; milliseconds fit browser and JavaScript conventions; higher resolutions may be needed for telemetry. The crucial requirement is explicit, exact, consistent documentation.</p>
+              <h3>Can I recover nanoseconds after converting to a JavaScript Date?</h3>
+              <p>No. A JavaScript Date represents milliseconds. Keep the original nanosecond integer or a separate sub-millisecond remainder. A millisecond ISO string cannot reconstruct discarded digits.</p>
+              <h3>Why are two different nanosecond timestamps equal in my code?</h3>
+              <p>They were probably converted to a floating-point number beyond the safe-integer limit. Parse them as decimal strings or arbitrary-size integers and compare them exactly before creating any millisecond display value.</p>
+              <h3>Does a Unix timestamp include a timezone?</h3>
+              <p>No. It names an instant relative to the UTC epoch. UTC and local time are renderings of that instant. A local date being converted in the other direction needs a timezone or offset before it identifies one instant.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary specifications and references</h2>
+              <ul>
+                <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap04.html#tag_04_19" rel="external">POSIX.1-2024: Seconds Since the Epoch</a> — the POSIX definition used by Unix time interfaces.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc3339" rel="external">RFC 3339: Date and Time on the Internet</a> — an interoperable offset-bearing date-time profile.</li>
+                <li><a href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-time-values-and-time-range" rel="external">ECMAScript: Time Values and Time Range</a> — the millisecond-based JavaScript time model.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7519#section-2" rel="external">RFC 7519: NumericDate</a> — the seconds-based time representation used by JWT claims.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Continue with developer data tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/unix-timestamp-converter/"><strong>Unix Timestamp Converter</strong><span>Convert epoch values in four units to UTC and local dates.</span></a>
+                <a class="related-card" href="/guides/unix-timestamp-code-examples/"><strong>Timestamp code examples</strong><span>Use exact conversions in JavaScript, Python, Java, Go, and SQL.</span></a>
+                <a class="related-card" href="/json-compare/"><strong>JSON Compare &amp; Diff</strong><span>Check timestamp migrations inside structured API responses.</span></a>
+                <a class="related-card" href="/guides/compare-api-responses/"><strong>Compare API responses</strong><span>Separate volatile timestamps from meaningful contract changes.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#same-instant">Four units, one instant</a></li>
+              <li><a href="#identify-unit">Identify the unit</a></li>
+              <li><a href="#wrong-unit-symptoms">Wrong-unit symptoms</a></li>
+              <li><a href="#conversion-math">Exact conversion math</a></li>
+              <li><a href="#negative-values">Negative timestamps</a></li>
+              <li><a href="#precision">Precision limits</a></li>
+              <li><a href="#timezone">Timezone errors</a></li>
+              <li><a href="#year-2038">Year 2038</a></li>
+              <li><a href="#source-conventions">Source conventions</a></li>
+              <li><a href="#migration">Safe migration</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/unix-timestamp-converter/">Timestamp Converter</a> · <a href="/json-compare/">JSON Compare</a> · <a href="/json-repair/">JSON Repair</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

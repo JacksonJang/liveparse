@@ -15,6 +15,7 @@ const requiredPages = [
   { relativePath: 'json-compare/index.html', canonical: `${CANONICAL_ORIGIN}/json-compare/`, label: 'JSON Compare tool' },
   { relativePath: 'json-to-csv/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-csv/`, label: 'JSON to CSV tool' },
   { relativePath: 'csv-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/csv-to-json/`, label: 'CSV to JSON tool', requireParsing: false },
+  { relativePath: 'unix-timestamp-converter/index.html', canonical: `${CANONICAL_ORIGIN}/unix-timestamp-converter/`, label: 'Unix Timestamp Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -214,6 +215,19 @@ function isGuideHtml(relativePath) {
   return /(?:^|[\/_-])(?:guide|guides|tutorial|tutorials)(?:[\/_.-]|$)/.test(normalized);
 }
 
+function guideValidationProfile(relativePath) {
+  const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('unix-timestamp')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      topicPattern: /\b(?:unix\s+timestamps?|epoch(?:\s+time)?|timestamps?)\b/i,
+      topicLabel: 'Unix timestamp or epoch',
+    };
+  }
+  return { requireJson: true, requireParsing: true, topicPattern: /\bjson\b/i, topicLabel: 'JSON' };
+}
+
 async function staticFileForUrl(distRoot, url) {
   let decodedPath;
   try {
@@ -358,17 +372,31 @@ async function main() {
       requireJson: requirement.requireJson ?? true,
       requireParsing: requirement.requireParsing ?? true,
     });
-    validateJsonLd(page, requirement.label, requirement.requireJson ?? true);
+    validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
     if (!sitemapUrlSet.has(requirement.canonical)) fail(`${requirement.label}: missing from sitemap.xml`);
   }
 
   const guideFiles = htmlFiles.filter((path) => isGuideHtml(relative(distRoot, path)));
   const expectedGuideUrls = new Map();
   for (const path of guideFiles) {
-    const publicPath = publicPathForHtml(relative(distRoot, path));
+    const relativePath = relative(distRoot, path);
+    const publicPath = publicPathForHtml(relativePath);
     const expectedUrl = new URL(publicPath, CANONICAL_ORIGIN).href;
     expectedGuideUrls.set(expectedUrl, path);
-    validatePageBasics(htmlByPath.get(path), `guide ${publicPath}`, expectedUrl);
+    const page = htmlByPath.get(path);
+    const profile = guideValidationProfile(relativePath);
+    validatePageBasics(page, `guide ${publicPath}`, expectedUrl, profile);
+    const topicFields = [
+      ['title', titleValues(page)[0] || ''],
+      ['meta description', descriptionValues(page)[0] || ''],
+      ['H1', h1Values(page)[0] || ''],
+      ['visible copy', visibleText(page)],
+    ];
+    for (const [field, value] of topicFields) {
+      if (!profile.topicPattern.test(value)) {
+        fail(`guide ${publicPath}: ${field} must mention ${profile.topicLabel}`);
+      }
+    }
     if (!sitemapUrlSet.has(expectedUrl)) fail(`guide ${publicPath}: missing from sitemap.xml`);
   }
 

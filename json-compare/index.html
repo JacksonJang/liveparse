@@ -116,6 +116,7 @@
           <a href="/json-repair/">JSON Repair</a>
           <a href="/jsonl-parser/">JSONL Parser</a>
           <a href="/json-to-csv/">JSON to CSV</a>
+          <a href="/unix-timestamp-converter/">Timestamp</a>
           <a href="#how-to-compare">How it works</a>
           <a href="#faq">FAQ</a>
         </div>
@@ -266,6 +267,10 @@
             <h3>Prepare data for another format</h3>
             <p>Confirm the source JSON first, then use the <a class="text-link" href="/json-to-csv/">JSON to CSV converter</a> when the records need a spreadsheet-ready table. For one-record-per-line data, use the <a class="text-link" href="/jsonl-parser/">JSONL parser</a>.</p>
           </article>
+          <article>
+            <h3>Decode timestamps before comparing payloads</h3>
+            <p>When a diff contains opaque epoch values, open the <a class="text-link" href="/unix-timestamp-converter/">Unix timestamp converter</a> to identify seconds, milliseconds, microseconds, or nanoseconds and inspect the corresponding UTC date without rounding the original integer.</p>
+          </article>
         </div>
       </section>
 
@@ -335,6 +340,7 @@
         <a href="/json-repair/">JSON Repair</a>
         <a href="/jsonl-parser/">JSONL Parser</a>
         <a href="/json-to-csv/">JSON to CSV</a>
+        <a href="/unix-timestamp-converter/">Unix Timestamp</a>
         <a href="/privacy/">Privacy</a>
       </div>
       <p class="footer-note">© 2026 Jackson Jang. Compare JSON locally and verify important changes against the systems that consume them.</p>

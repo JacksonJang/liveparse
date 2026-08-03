@@ -6,18 +6,29 @@ const DIRECTORY_ROUTES = new Set([
   '/json-to-csv',
   '/csv-to-json',
   '/json-compare',
+  '/unix-timestamp-converter',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
   '/guides/json-parser-vs-formatter-validator',
   '/guides/compare-api-responses',
   '/guides/compare-json-ignore-order',
+  '/guides/unix-timestamp-seconds-vs-milliseconds',
+  '/guides/unix-timestamp-code-examples',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
   ['/json-diff/', '/json-compare/'],
   ['/json-diff-checker', '/json-compare/'],
   ['/json-diff-checker/', '/json-compare/'],
+  ['/epoch-converter', '/unix-timestamp-converter/'],
+  ['/epoch-converter/', '/unix-timestamp-converter/'],
+  ['/epoch-time-converter', '/unix-timestamp-converter/'],
+  ['/epoch-time-converter/', '/unix-timestamp-converter/'],
+  ['/timestamp-converter', '/unix-timestamp-converter/'],
+  ['/timestamp-converter/', '/unix-timestamp-converter/'],
+  ['/unix-time-converter', '/unix-timestamp-converter/'],
+  ['/unix-time-converter/', '/unix-timestamp-converter/'],
 ]);
 
 function normalizeKnownRoutePath(pathname) {

@@ -29,6 +29,10 @@
     <lastmod>2026-08-03</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/unix-timestamp-converter/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-02</lastmod>
   </url>
@@ -50,6 +54,14 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/compare-json-ignore-order/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/unix-timestamp-code-examples/</loc>
     <lastmod>2026-08-03</lastmod>
   </url>
 </urlset>

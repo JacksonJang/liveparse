@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unix Timestamp Conversion Code Examples: JavaScript, Python, Java, Go, SQL | LiveParse</title>
+    <meta name="description" content="Convert Unix timestamps safely in JavaScript, TypeScript, Python, Java, Go, PostgreSQL, MySQL, and SQLite with UTC, precision, and unit guidance." />
+    <link rel="canonical" href="https://liveparse.com/guides/unix-timestamp-code-examples/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Unix Timestamp Conversion Code Examples" />
+    <meta property="og:description" content="Production-minded epoch conversion patterns for JavaScript, Python, Java, Go, and SQL, including exact nanosecond handling." />
+    <meta property="og:url" content="https://liveparse.com/guides/unix-timestamp-code-examples/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Unix timestamp converter and code examples for developers" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Unix Timestamp Code Examples by Language" />
+    <meta name="twitter:description" content="Convert seconds, milliseconds, microseconds, and nanoseconds without rounding or timezone mistakes." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/unix-timestamp-code-examples/#article",
+            "headline": "Unix Timestamp Conversion Code Examples: JavaScript, Python, Java, Go, and SQL",
+            "description": "Convert Unix timestamps safely in JavaScript, TypeScript, Python, Java, Go, PostgreSQL, MySQL, and SQLite with UTC, precision, and unit guidance.",
+            "mainEntityOfPage": "https://liveparse.com/guides/unix-timestamp-code-examples/",
+            "url": "https://liveparse.com/guides/unix-timestamp-code-examples/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Programming",
+            "inLanguage": "en",
+            "breadcrumb": { "@id": "https://liveparse.com/guides/unix-timestamp-code-examples/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/unix-timestamp-code-examples/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Code Examples", "item": "https://liveparse.com/guides/unix-timestamp-code-examples/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/unix-timestamp-converter/">Timestamp Converter</a>
+        <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Timestamp Units</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Unix timestamp code examples</span></nav>
+          <p class="eyebrow">Implementation guide</p>
+          <h1>Unix Timestamp Conversion Code Examples</h1>
+          <p class="dek">Copying a one-line timestamp recipe is easy; choosing the right unit, range, precision, and timezone behavior is the real work. These examples show safe starting points for JavaScript, Python, Java, Go, and common SQL databases.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-03">August 3, 2026</time></span><span>17 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Before using any snippet:</strong> confirm whether the source is seconds, milliseconds, microseconds, or nanoseconds; keep large input as text or an arbitrary-size integer; format exchanged dates in UTC with an explicit <code>Z</code> or offset; and test negative, boundary, and sub-second values. Conversion code cannot infer metadata that the producer omitted.</p>
+            </div>
+
+            <h2 id="contract-first">Define the timestamp contract before the function</h2>
+            <p>A robust timestamp field needs more than a name and numeric type. Specify its epoch, unit, accepted range, precision, transport representation, and timezone rules for date strings. State how fractions are rounded when converting to a coarser unit. A field named <code>createdAt</code> does not answer any of those questions; <code>created_at_ms</code> plus a schema description is much harder to misuse.</p>
+            <p>Decide whether the timestamp represents an absolute instant, a local appointment, or a duration. Unix conversion is appropriate for an instant. A recurring event such as “09:00 every business day in America/New_York” needs a local calendar rule and IANA timezone, because a single numeric offset cannot describe future daylight saving changes. A timeout of 500 milliseconds is a duration and should not be converted relative to 1970 at all.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Contract decision</th><th scope="col">Good explicit example</th><th scope="col">Risk when omitted</th></tr></thead>
+                <tbody>
+                  <tr><td>Unit</td><td>Integer milliseconds since Unix epoch</td><td>1970 or far-future dates</td></tr>
+                  <tr><td>Precision</td><td>Microseconds preserved; reject extra digits</td><td>Silent rounding and false ordering</td></tr>
+                  <tr><td>Transport</td><td>Decimal string for nanoseconds</td><td>JSON floating-point loss</td></tr>
+                  <tr><td>Date text</td><td>RFC 3339 UTC ending in <code>Z</code></td><td>Host-dependent local interpretation</td></tr>
+                  <tr><td>Range</td><td>2020-01-01 through ingestion time + 5 min</td><td>Plausible but corrupt records</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Use the <a href="/unix-timestamp-converter/">LiveParse Unix Timestamp Converter</a> to inspect fixtures in seconds, milliseconds, microseconds, and nanoseconds before committing a rule. For a deeper identification workflow, read <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Unix timestamp units explained</a>.</p>
+
+            <h2 id="javascript">JavaScript and TypeScript</h2>
+            <p>JavaScript <code>Date</code> accepts milliseconds since the epoch and stores a time value with millisecond resolution. Seconds must be multiplied by 1,000. Present-day millisecond values are safe as integers in <code>Number</code>, but present-day nanosecond values are not. Parse long values with <code>BigInt</code> before any numeric coercion.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Seconds or milliseconds to a UTC ISO string</figcaption>
+              <pre><code>function secondsToIso(epochSeconds: number): string {
+  if (!Number.isFinite(epochSeconds)) throw new TypeError("finite seconds required");
+  return new Date(epochSeconds * 1_000).toISOString();
+}
+
+function millisecondsToIso(epochMs: number): string {
+  if (!Number.isSafeInteger(epochMs)) throw new RangeError("safe integer ms required");
+  return new Date(epochMs).toISOString();
+}
+
+secondsToIso(1754208000);       // 2025-08-03T08:00:00.000Z
+millisecondsToIso(1754208000000);</code></pre>
+            </figure>
+            <p>The seconds function permits a fraction because <code>1754208000.125</code> seconds can become an exact integer millisecond in this range. Binary fractions do not always map exactly, so use integer input plus a remainder when every microsecond or nanosecond matters. Validate the resulting <code>Date</code>; calling <code>toISOString()</code> on an invalid date throws a <code>RangeError</code>.</p>
+            <p>The following pattern keeps a nanosecond token exact, normalizes negative values using floor division, and creates a millisecond projection only after preserving the remainder.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Exact nanoseconds with BigInt</figcaption>
+              <pre><code>const NS_PER_SECOND = 1_000_000_000n;
+const NS_PER_MILLISECOND = 1_000_000n;
+
+function splitNanoseconds(totalNs: bigint) {
+  let seconds = totalNs / NS_PER_SECOND;
+  let nanoseconds = totalNs % NS_PER_SECOND;
+  if (nanoseconds &lt; 0n) {
+    seconds -= 1n;
+    nanoseconds += NS_PER_SECOND;
+  }
+  return { seconds, nanoseconds };
+}
+
+function nanosecondsToDateParts(raw: string) {
+  const totalNs = BigInt(raw);
+  const { seconds, nanoseconds } = splitNanoseconds(totalNs);
+  const epochMs = seconds * 1_000n + nanoseconds / NS_PER_MILLISECOND;
+  const date = new Date(Number(epochMs));
+  if (!Number.isFinite(date.getTime())) throw new RangeError("outside Date range");
+  return {
+    date,
+    seconds,
+    nanoseconds,
+    exactFraction: nanoseconds.toString().padStart(9, "0")
+  };
+}</code></pre>
+            </figure>
+            <p>Do not build an exact nine-digit UTC string by appending digits to <code>Date.toISOString()</code> without understanding carries and negative values. Format the normalized seconds and fraction together, or use a reviewed temporal library/type that supports nanoseconds. LiveParse directly serializes its exact UTC and ISO outputs from BigInt seconds plus the normalized remainder; its local, RFC-style, and native <code>Date</code> projections are millisecond-based.</p>
+            <p>To convert a JavaScript <code>Date</code> back to Unix time, <code>date.getTime()</code> returns integer milliseconds. Divide for seconds only with an explicit rounding policy. <code>Math.floor(ms / 1000)</code> gives the containing Unix second and behaves consistently for negative dates; <code>Math.trunc</code> gives a different result before 1970.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Date to integer epoch units</figcaption>
+              <pre><code>function dateToEpoch(date: Date) {
+  const ms = date.getTime();
+  if (!Number.isFinite(ms)) throw new RangeError("invalid date");
+  return {
+    secondsFloor: Math.floor(ms / 1_000),
+    milliseconds: ms,
+    microseconds: BigInt(ms) * 1_000n,
+    nanoseconds: BigInt(ms) * 1_000_000n
+  };
+}</code></pre>
+            </figure>
+            <p>Multiplying a millisecond <code>Date</code> into microseconds or nanoseconds adds zeros; it does not create measurement precision. Preserve a separate fraction from the source if one exists.</p>
+
+            <h2 id="python">Python</h2>
+            <p>Python’s <code>datetime</code> API accepts POSIX seconds in <code>fromtimestamp()</code>. Always pass an explicit timezone for an aware result. Omitting it returns local time and makes output depend on the machine configuration. <code>datetime.timestamp()</code> returns floating-point seconds, which is convenient but not the right final representation for exact nanosecond identifiers.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Aware UTC conversion in Python</figcaption>
+              <pre><code>from datetime import datetime, timezone
+
+def seconds_to_utc(epoch_seconds: int) -&gt; datetime:
+    return datetime.fromtimestamp(epoch_seconds, tz=timezone.utc)
+
+def milliseconds_to_utc(epoch_ms: int) -&gt; datetime:
+    seconds, milliseconds = divmod(epoch_ms, 1_000)
+    base = datetime.fromtimestamp(seconds, tz=timezone.utc)
+    return base.replace(microsecond=milliseconds * 1_000)
+
+print(seconds_to_utc(1754208000).isoformat())
+# 2025-08-03T08:00:00+00:00</code></pre>
+            </figure>
+            <p>Python <code>datetime</code> stores microseconds, not nanoseconds. Split nanosecond input with integer <code>divmod()</code>, keep the nanosecond remainder authoritative, and create a datetime projection with the first six fractional digits.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Preserve Python nanoseconds separately</figcaption>
+              <pre><code>def split_epoch_ns(epoch_ns: int):
+    seconds, nanoseconds = divmod(epoch_ns, 1_000_000_000)
+    instant_us = datetime.fromtimestamp(seconds, tz=timezone.utc).replace(
+        microsecond=nanoseconds // 1_000
+    )
+    return instant_us, nanoseconds
+
+instant, exact_ns = split_epoch_ns(1754208000123456789)
+print(instant.isoformat())  # 2025-08-03T08:00:00.123456+00:00
+print(f"{exact_ns:09d}")    # 123456789</code></pre>
+            </figure>
+            <p>Python integers have arbitrary precision, so the input arithmetic remains exact. Calendar conversion still has platform and <code>datetime</code> range limits. Catch <code>OverflowError</code>, <code>OSError</code>, and <code>ValueError</code> at untrusted boundaries, and apply an application-specific acceptable range before conversion.</p>
+
+            <h2 id="java">Java</h2>
+            <p>Java’s <code>java.time.Instant</code> models a point on the timeline with a seconds component and a nanosecond adjustment. Its factory names make units explicit: <code>ofEpochSecond</code> and <code>ofEpochMilli</code>. Use <code>OffsetDateTime</code> or <code>ZonedDateTime</code> only when a human-facing offset or regional timezone is needed.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Seconds, milliseconds, and nanoseconds in Java</figcaption>
+              <pre><code>import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
+Instant fromSeconds = Instant.ofEpochSecond(1_754_208_000L);
+Instant fromMillis = Instant.ofEpochMilli(1_754_208_000_000L);
+
+long epochNs = 1_754_208_000_123_456_789L;
+long seconds = Math.floorDiv(epochNs, 1_000_000_000L);
+long nanos = Math.floorMod(epochNs, 1_000_000_000L);
+Instant exact = Instant.ofEpochSecond(seconds, nanos);
+
+System.out.println(exact); // 2025-08-03T08:00:00.123456789Z
+System.out.println(ZonedDateTime.ofInstant(exact, ZoneId.of("Asia/Seoul")));</code></pre>
+            </figure>
+            <p><code>Math.floorDiv</code> and <code>Math.floorMod</code> keep negative values normalized correctly. A signed <code>long</code> nanosecond counter covers only a few centuries around 1970; if the contract needs a wider range, accept a decimal string and use <code>BigInteger</code> before splitting into the range supported by <code>Instant</code>. Catch <code>DateTimeException</code> for unsupported instants.</p>
+
+            <h2 id="go">Go</h2>
+            <p>Go’s <code>time.Unix(sec, nsec)</code> constructor accepts whole seconds and a nanosecond adjustment, and normalizes an adjustment outside the usual range. <code>time.UnixMilli</code>, <code>time.UnixMicro</code>, and the corresponding instance methods make common unit conversions readable.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Exact epoch conversion in Go</figcaption>
+              <pre><code>package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    epochNs := int64(1754208000123456789)
+    seconds := epochNs / int64(time.Second)
+    nanos := epochNs % int64(time.Second)
+    instant := time.Unix(seconds, nanos).UTC()
+
+    fmt.Println(instant.Format(time.RFC3339Nano))
+    // 2025-08-03T08:00:00.123456789Z
+
+    fromMs := time.UnixMilli(1754208000000).UTC()
+    fmt.Println(fromMs.Unix(), fromMs.UnixMilli(), fromMs.UnixNano())
+}</code></pre>
+            </figure>
+            <p>Go’s <code>UnixNano()</code> returns <code>int64</code>, so its usable range is much narrower than <code>time.Time</code> itself. Do not call it for arbitrary far-future or historical values without checking the documented range. Keep seconds plus nanoseconds when a broader <code>time.Time</code> range is needed.</p>
+
+            <h2 id="sql">PostgreSQL, MySQL, and SQLite</h2>
+            <p>SQL conversion behavior depends on both the database and the session timezone. Decide whether the target type represents an instant or a timezone-free calendar value. Store absolute instants in the product’s timezone-aware type where available, and set an explicit display zone in queries and clients.</p>
+            <h3>PostgreSQL</h3>
+            <p>PostgreSQL <code>to_timestamp(double precision)</code> interprets its number as Unix seconds and returns <code>timestamp with time zone</code>. Division by <code>1000.0</code> is convenient for millisecond data, but the floating-point path is not an exact nanosecond transport. PostgreSQL timestamps have microsecond resolution, so preserve an original nanosecond identifier separately if the final three digits matter.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">PostgreSQL epoch conversion</figcaption>
+              <pre><code>-- Epoch seconds to an instant, displayed as UTC by the session
+SET TIME ZONE 'UTC';
+SELECT to_timestamp(1754208000);
+
+-- Integer milliseconds using interval arithmetic
+SELECT TIMESTAMPTZ '1970-01-01 00:00:00+00'
+       + 1754208000123 * INTERVAL '1 millisecond';
+
+-- Timestamp to whole epoch milliseconds (define rounding deliberately)
+SELECT floor(extract(epoch FROM event_time) * 1000)::bigint
+FROM events;</code></pre>
+            </figure>
+            <h3>MySQL</h3>
+            <p>MySQL <code>FROM_UNIXTIME()</code> accepts seconds and returns a value in the current session timezone. Set or verify that timezone instead of assuming UTC. The supported range and fractional precision depend on the server’s temporal type and version configuration.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">MySQL seconds and milliseconds</figcaption>
+              <pre><code>SET time_zone = '+00:00';
+
+SELECT FROM_UNIXTIME(1754208000);
+SELECT FROM_UNIXTIME(1754208000123 / 1000.0);
+
+-- UTC date to Unix seconds
+SELECT UNIX_TIMESTAMP('2025-08-03 08:00:00');</code></pre>
+            </figure>
+            <h3>SQLite</h3>
+            <p>SQLite’s <code>unixepoch</code> modifier tells its date functions to interpret a number as Unix seconds. UTC is the internal reference for these functions. Converting integer milliseconds requires scaling before the modifier; verify fractional behavior and precision for the SQLite version embedded in your application.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">SQLite epoch conversion</figcaption>
+              <pre><code>SELECT datetime(1754208000, 'unixepoch');
+SELECT datetime(1754208000123 / 1000.0, 'unixepoch');
+SELECT unixepoch('2025-08-03 08:00:00');</code></pre>
+            </figure>
+            <div class="warning">
+              <p><strong>Do not paste a database recipe without checking type and zone.</strong> A session setting can change displayed calendar fields, an integer division can discard fractions, and a driver can map an exact 64-bit value into an inexact language number. Test the query through the same driver and serialization path used in production.</p>
+            </div>
+
+            <h2 id="api-json">JSON and API boundaries</h2>
+            <p>JSON has no native date or integer-width type. A timestamp can be a JSON number or string, and the consumer decides how to represent it. Milliseconds near the present fit safely in a JavaScript number; nanoseconds do not. A dependable cross-language nanosecond contract often uses a decimal string:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Explicit JSON timestamp contract</figcaption>
+              <pre><code>{
+  "occurred_at": "2025-08-03T08:00:00.123456789Z",
+  "occurred_at_ns": "1754208000123456789",
+  "timestamp_unit": "nanoseconds"
+}</code></pre>
+            </figure>
+            <p>The text date is readable and the decimal epoch string supports exact sorting and calculation after parsing with an arbitrary-size integer. Keeping both can be useful, but designate one as authoritative and validate that they agree. Otherwise conflicting duplicates create a new integrity problem.</p>
+            <p>When changing an existing API, treat number-to-string, unit, and precision changes as contract changes. Introduce a versioned field, make readers dual-compatible during a controlled period, compare old and new output on real ranges, then retire the old field. The <a href="/json-compare/">JSON Compare tool</a> can locate representation changes, while the <a href="/guides/compare-api-responses/">API response comparison guide</a> explains how to handle intentionally volatile timestamp values.</p>
+
+            <h2 id="date-input">Parse date strings without host-dependent surprises</h2>
+            <p>Use offset-bearing input for machine exchange. <code>2025-08-03T08:00:00Z</code> is UTC; <code>2025-08-03T17:00:00+09:00</code> names the same instant. A string like <code>2025-08-03 08:00:00</code> does not state a timezone and may be interpreted as local time, rejected, or parsed differently across environments.</p>
+            <p>Validate syntax and meaning before conversion. Calendar validation should reject impossible dates rather than normalizing them silently. If a local time and IANA zone are the source, define behavior for daylight saving overlaps and gaps. During a fall-back overlap, the same wall-clock fields can name two instants; during a spring-forward gap, some local times name none.</p>
+            <p>Converting to an epoch intentionally discards the original display zone. If the zone conveys user intent—such as a meeting meant to remain at 09:00 local after future rule changes—store the zone identifier and local schedule separately. An epoch is appropriate for an event that has already been resolved to one instant.</p>
+
+            <h2 id="testing">Test conversions at boundaries, not only at “now”</h2>
+            <p>A single current timestamp misses most implementation defects. Build table-driven tests that run through the actual API, serializer, database driver, and display layer. Assert exact values, not screenshots or locale-dependent strings.</p>
+            <ul>
+              <li><strong>The epoch:</strong> zero must become <code>1970-01-01T00:00:00Z</code>.</li>
+              <li><strong>Before the epoch:</strong> include <code>-1</code> in every unit and a negative value with a fraction.</li>
+              <li><strong>Unit boundaries:</strong> one tick before, at, and after a whole second tests quotient and remainder handling.</li>
+              <li><strong>Leap calendar rules:</strong> include a valid February 29 and an invalid non-leap-year February 29 for date parsing.</li>
+              <li><strong>Timezone transitions:</strong> test both sides of a real gap and overlap for every supported regional scheduling zone.</li>
+              <li><strong>Safe-integer limits:</strong> send adjacent long nanosecond values and verify they remain distinct through JSON and database layers.</li>
+              <li><strong>Year 2038:</strong> test <code>2147483647</code> and <code>2147483648</code> seconds wherever 32-bit code or storage could remain.</li>
+              <li><strong>Maximum product range:</strong> reject dates outside business bounds even when a runtime can represent them.</li>
+            </ul>
+            <p>Round-trip tests are useful but insufficient. If the same wrong unit is used in both directions, a value can round-trip while still naming the wrong instant. Include independently calculated fixtures and compare with a trusted external representation.</p>
+
+            <h2 id="review-checklist">Production review checklist</h2>
+            <ul>
+              <li>The field name or schema explicitly states seconds, milliseconds, microseconds, or nanoseconds.</li>
+              <li>Long integers remain strings or arbitrary-size integers until exact splitting is complete.</li>
+              <li>Conversion to a coarser unit has a documented floor, truncation, or rounding rule.</li>
+              <li>UTC output includes <code>Z</code> or an explicit numeric offset.</li>
+              <li>Local scheduling data retains its IANA timezone and overlap/gap policy.</li>
+              <li>The accepted range reflects the product domain and storage/runtime limits.</li>
+              <li>Database session timezone and driver mappings are controlled in tests.</li>
+              <li>Sub-millisecond source precision is not claimed after conversion through a millisecond-only type.</li>
+              <li>Negative, 2038-boundary, safe-integer, and maximum-range fixtures pass end to end.</li>
+              <li>Raw values remain available during migrations and failed rows are quarantined rather than guessed.</li>
+            </ul>
+            <div class="tool-callout">
+              <p><strong>Need a known conversion while reviewing code?</strong> Use the exact browser-based converter to generate UTC, local, and epoch outputs for seconds, milliseconds, microseconds, or nanoseconds.</p>
+              <a class="button" href="/unix-timestamp-converter/">Convert a Unix timestamp</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Why does JavaScript use milliseconds instead of seconds?</h3>
+              <p>The ECMAScript Date time value is defined in milliseconds. Unix and many server interfaces traditionally use seconds, so a boundary conversion is required. Name the unit in variables—<code>epochSeconds</code> and <code>epochMs</code>—instead of relying on memory.</p>
+              <h3>What is the safest JSON format for nanosecond timestamps?</h3>
+              <p>A decimal string is widely interoperable because parsers cannot round it before application code sees it. Convert the string to an arbitrary-size integer in the consumer and validate its grammar and range. An exact nine-digit UTC string is another interoperable choice when calendar formatting is primary.</p>
+              <h3>Should I use UTC everywhere?</h3>
+              <p>Use UTC instants for storage, logs, ordering, and exchange. Retain regional timezone and local calendar intent for future schedules and user-facing rules. “UTC everywhere” should not mean discarding the information needed to reproduce a civil-time schedule.</p>
+              <h3>Can I convert nanoseconds with a JavaScript Date?</h3>
+              <p>You can create a millisecond projection after splitting an exact BigInt value, but <code>Date</code> cannot retain the final six fractional digits. Keep those digits separately or use a nanosecond-aware type and serializer.</p>
+              <h3>Why does SQL show a different hour than my application?</h3>
+              <p>The database session and application may format the same instant in different timezones. Inspect the stored type, session timezone, driver mapping, and output offset before changing the epoch arithmetic.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Official language and database references</h2>
+              <ul>
+                <li><a href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-date-objects" rel="external">ECMAScript Date Objects</a> — JavaScript’s millisecond date model and range.</li>
+                <li><a href="https://docs.python.org/3/library/datetime.html" rel="external">Python datetime</a> — aware and naive datetime objects and POSIX conversion methods.</li>
+                <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Instant.html" rel="external">Java Instant</a> — seconds and nanosecond adjustment factories.</li>
+                <li><a href="https://pkg.go.dev/time" rel="external">Go time package</a> — Unix, UnixMilli, UnixMicro, and RFC3339Nano.</li>
+                <li><a href="https://www.postgresql.org/docs/current/functions-datetime.html" rel="external">PostgreSQL date/time functions</a> — epoch extraction, <code>to_timestamp</code>, and timezone behavior.</li>
+                <li><a href="https://dev.mysql.com/doc/refman/8.4/en/date-and-time-functions.html" rel="external">MySQL date/time functions</a> — <code>FROM_UNIXTIME</code> and <code>UNIX_TIMESTAMP</code>.</li>
+                <li><a href="https://www.sqlite.org/lang_datefunc.html" rel="external">SQLite date and time functions</a> — the <code>unixepoch</code> modifier and supported formats.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools and guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/unix-timestamp-converter/"><strong>Unix Timestamp Converter</strong><span>Check seconds, milliseconds, microseconds, and nanoseconds exactly.</span></a>
+                <a class="related-card" href="/guides/unix-timestamp-seconds-vs-milliseconds/"><strong>Timestamp units explained</strong><span>Identify units, precision limits, timezone errors, and migration risks.</span></a>
+                <a class="related-card" href="/json-compare/"><strong>JSON Compare &amp; Diff</strong><span>Review timestamp-field changes inside two structured responses.</span></a>
+                <a class="related-card" href="/json-to-csv/"><strong>JSON to CSV</strong><span>Move reviewed event records into a spreadsheet-safe table.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#contract-first">Define the contract</a></li>
+              <li><a href="#javascript">JavaScript &amp; TypeScript</a></li>
+              <li><a href="#python">Python</a></li>
+              <li><a href="#java">Java</a></li>
+              <li><a href="#go">Go</a></li>
+              <li><a href="#sql">SQL databases</a></li>
+              <li><a href="#api-json">JSON and APIs</a></li>
+              <li><a href="#date-input">Date string input</a></li>
+              <li><a href="#testing">Boundary tests</a></li>
+              <li><a href="#review-checklist">Review checklist</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/unix-timestamp-converter/">Timestamp Converter</a> · <a href="/json-compare/">JSON Compare</a> · <a href="/json-repair/">JSON Repair</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>
