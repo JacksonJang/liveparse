@@ -10,6 +10,45 @@ type OutputMode = 'text' | 'tree';
 type Locale = 'en' | 'ko';
 
 const samples = {
+  'SEO metadata': `{
+  "title": "Lossless JSON Parser & Formatter | LiveParse",
+  "description": "Parse, validate, format, minify, and explore JSON locally in your browser while preserving 64-bit numbers and duplicate keys.",
+  "canonicalUrl": "https://liveparse.com/",
+  "robots": {
+    "index": true,
+    "follow": true,
+    "maxImagePreview": "large"
+  },
+  "alternateLanguages": {
+    "en": "https://liveparse.com/",
+    "ko": "https://liveparse.com/ko/json-parser/",
+    "xDefault": "https://liveparse.com/"
+  },
+  "openGraph": {
+    "type": "website",
+    "siteName": "LiveParse",
+    "title": "Lossless JSON Parser & Formatter",
+    "description": "A private browser-based JSON tool that preserves the original data.",
+    "url": "https://liveparse.com/",
+    "image": "https://liveparse.com/og.png",
+    "imageAlt": "LiveParse lossless JSON parser"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Lossless JSON Parser & Formatter",
+    "description": "Validate and format JSON locally without losing numeric precision.",
+    "image": "https://liveparse.com/og.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "LiveParse JSON Parser",
+    "url": "https://liveparse.com/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true
+  }
+}`,
   'Lossless safety checks': `{
   "safeInteger": 9007199254740991,
   "snowflakeId": 9007199254740993,
@@ -119,6 +158,7 @@ type UiText = {
 const translations: Record<Locale, UiText> = {
   en: {
     sampleLabels: {
+      'SEO metadata': 'SEO metadata',
       'Lossless safety checks': '64-bit & duplicate key checks',
       'Developer profile': 'Developer profile',
       'API response': 'API response with Snowflake ID',
@@ -186,6 +226,7 @@ const translations: Record<Locale, UiText> = {
   },
   ko: {
     sampleLabels: {
+      'SEO metadata': 'SEO 메타데이터',
       'Lossless safety checks': '64비트·중복 키 검사',
       'Developer profile': '개발자 프로필',
       'API response': 'Snowflake ID가 있는 API 응답',
@@ -256,7 +297,7 @@ const translations: Record<Locale, UiText> = {
 const locale: Locale = document.documentElement.lang === 'ko' ? 'ko' : 'en';
 const t = translations[locale];
 const sampleNames = Object.keys(samples) as SampleName[];
-const initialSample: SampleName = 'Lossless safety checks';
+const initialSample: SampleName = 'SEO metadata';
 const initialJson = samples[initialSample];
 const MAX_HIGHLIGHT_CHARACTERS = 100_000;
 const MAX_VISIBLE_WARNINGS = 40;
