@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary Converter – Decimal, Hex &amp; Octal | LiveParse</title>
+    <meta name="description" content="Convert exact integers between binary, decimal, hexadecimal, and octal. Choose signed or unsigned width, preserve padding, and process values locally." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/binary-converter/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/binary.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/binary-converter/" />
+    <meta property="og:title" content="Binary Converter for Decimal, Hexadecimal and Octal" />
+    <meta property="og:description" content="Convert exact whole-number values across four common bases with explicit width and signed interpretation." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based binary and number-base tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Exact Binary Converter | LiveParse" />
+    <meta name="twitter:description" content="Convert whole-number values between binary, decimal, hexadecimal, and octal without uploading input." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/binary-converter/#application",
+            "name": "LiveParse Binary Converter",
+            "url": "https://liveparse.com/binary-converter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Integer number-base converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Convert bounded whole-number input between binary, octal, decimal, and hexadecimal with explicit signed, unsigned, width, prefix, case, and grouping controls in the browser.",
+            "featureList": [
+              "Convert exact integer values among base 2, base 8, base 10, and base 16",
+              "Keep mathematical sign separate from fixed-width two's-complement interpretation",
+              "Choose an explicit bit width before interpreting a fixed-width signed value",
+              "Inspect binary bit length and grouped output",
+              "Control hexadecimal letter case and conventional prefixes",
+              "Process the current value locally within the bounded interface limit"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/binary-converter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Binary Converter", "item": "https://liveparse.com/binary-converter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/binary-converter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a binary converter convert?", "acceptedAnswer": { "@type": "Answer", "text": "This binary converter changes one exact integer value among binary, octal, decimal, and hexadecimal notation. It changes the numeral representation, not the mathematical value, and it does not translate a bit stream into text." } },
+              { "@type": "Question", "name": "Is binary 10 the same value as decimal 10?", "acceptedAnswer": { "@type": "Answer", "text": "No. The digits 10 in base 2 represent decimal 2, while the digits 10 in base 10 represent decimal 10. Select or prefix the source base before conversion so the same spelling is not interpreted in the wrong radix." } },
+              { "@type": "Question", "name": "How are negative binary numbers handled?", "acceptedAnswer": { "@type": "Answer", "text": "A leading minus sign represents a mathematical negative integer. A fixed-width bit pattern can instead be interpreted as signed two's complement only after you choose its width. The tool keeps those two meanings explicit rather than guessing." } },
+              { "@type": "Question", "name": "Why do leading zeroes matter?", "acceptedAnswer": { "@type": "Answer", "text": "Leading zeroes do not change an unsigned mathematical value, but they do record a chosen field or byte width. Preserve or add padding when matching a register, protocol field, test vector, or fixed-width code literal." } },
+              { "@type": "Question", "name": "Does the binary converter support fractions?", "acceptedAnswer": { "@type": "Answer", "text": "No. This tool intentionally accepts whole numbers. Fractions in another base can repeat forever and require an explicit precision and rounding contract, so they are outside this converter's scope." } },
+              { "@type": "Question", "name": "Is my number uploaded for conversion?", "acceptedAnswer": { "@type": "Answer", "text": "No. Conversion runs in the current browser tab and does not send the entered value to a number-conversion API. The bounded input limit shown in the interface protects browser responsiveness; clipboard tools and extensions remain separate privacy boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="binary-page" data-page="binary-converter">
+    <a class="skip-link" href="#binary-tool">Skip to the binary converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/hex-converter/">Hex Converter</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII Table</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Exact integers · Four bases · Explicit signed width</p>
+          <h1>Binary Converter</h1>
+          <p class="hero-lead">Convert one whole-number value between binary, octal, decimal, and hexadecimal. Keep mathematical negatives separate from fixed-width two's-complement patterns, inspect bit length, and format copy-ready output without uploading the number.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#binary-tool">Convert an integer</a><span>Free · No sign-up · Browser local</span></div>
+        </div>
+        <div class="hero-example" aria-label="Integer number-base conversion example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>base conversion</strong></div>
+          <pre><code><span class="property">decimal</span> <span class="string">255</span>
+<span class="property">binary</span>  <span class="boolean">1111 1111</span>
+<span class="property">hex</span>     <span class="boolean">FF</span></code></pre>
+          <p><strong>One value, three spellings</strong><span>No floating-point round trip</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="binary-tool" aria-labelledby="binary-tool-heading">
+        <div><p class="section-kicker">Choose the source radix first</p><h2 id="binary-tool-heading">Convert binary, decimal, hex, and octal integers</h2></div>
+        <p>Enter a whole number within the bounded limit shown in the interface. Review every base at once, then choose padding, prefix, case, width, and signed interpretation deliberately.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Binary converter loading"><p><strong>Loading the binary converter…</strong></p><p>Enable JavaScript to convert and copy values. The base, width, signedness, and exactness guidance below remains readable.</p></section></div>
+
+      <section class="content-section" aria-labelledby="radix-heading">
+        <div class="section-heading"><p class="section-kicker">Position determines value</p><h2 id="radix-heading">How integer base conversion works</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A positional numeral assigns each digit a value based on its place and radix. In binary, each position is a power of 2; in octal, a power of 8; in decimal, a power of 10; and in hexadecimal, a power of 16. Binary <code>101101</code> therefore represents <code>1×2⁵ + 0×2⁴ + 1×2³ + 1×2² + 0×2¹ + 1×2⁰ = 45</code>.</p>
+            <p>The converter parses the selected source notation as an integer and renders that same value in the other bases. It does not pass the value through an IEEE 754 floating-point approximation. This distinction matters for long identifiers, bit masks, checksums treated as numbers, database keys, and values above the range in which a JavaScript <code>Number</code> represents every consecutive integer.</p>
+            <p>Hexadecimal is a compact view of binary because one hex digit maps to exactly four bits. Octal maps one digit to three bits. Grouping the binary result into nibbles makes <code>11111111</code> visibly correspond to <code>FF</code>; grouping into triplets makes it correspond to octal <code>377</code>.</p>
+            <p>This page is an integer converter, not a text decoder. Binary <code>01000001</code> can be the number 65 or an encoded byte for the letter A under ASCII and UTF-8. Use the <a href="/binary-translator/">Binary Translator</a> only when bytes must be interpreted as text.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Base 2</dt><dd>Digits 0 and 1; one binary digit is one bit.</dd></div>
+            <div><dt>Base 8</dt><dd>Digits 0 through 7; one octal digit covers three bits.</dd></div>
+            <div><dt>Base 10</dt><dd>Digits 0 through 9; ordinary decimal integer notation.</dd></div>
+            <div><dt>Base 16</dt><dd>Digits 0 through 9 and A through F; one digit covers four bits.</dd></div>
+            <div><dt>Scope</dt><dd>Exact whole numbers within the bounded interface limit; no fractions.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/binary-decimal-hex-octal-conversion/">Learn to convert binary, decimal, hex, and octal by hand →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="signed-heading">
+        <div class="section-heading"><p class="section-kicker">A bit pattern needs a width</p><h2 id="signed-heading">Mathematical negatives versus two's complement</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The notation <code>-5</code> is a mathematical negative integer. Its magnitude is five and the minus sign is separate from the binary digits. Two's complement instead interprets a fixed-width bit pattern as signed: the 8-bit pattern <code>11111011</code> represents −5, while the same eight bits represent unsigned 251.</p>
+            <p>Width is part of that meaning. The 8-bit pattern for −1 is <code>11111111</code>; the 16-bit pattern is <code>1111111111111111</code>. Removing leading ones before signed interpretation changes the field and can change the result. Select the width required by the register, protocol, file format, database type, or language API before using a signed view.</p>
+            <p>The signed range for width <em>n</em> is −2<sup>n−1</sup> through 2<sup>n−1</sup>−1. The unsigned range is 0 through 2<sup>n</sup>−1. Values outside the selected range should produce an explicit diagnostic, not silent wrapping, unless the interface clearly labels a deliberate modulo operation.</p>
+          </div>
+          <div class="callout-card"><strong>Interpret, do not guess</strong><p><code>11111111</code> is unsigned 255 or signed −1 at 8 bits. The digits alone do not choose between them.</p><a href="/guides/twos-complement-signed-binary/">Read the two's-complement guide →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="format-heading">
+        <div class="section-heading"><p class="section-kicker">Representation carries context</p><h2 id="format-heading">Prefixes, leading zeroes, grouping, and case</h2></div>
+        <div class="error-table" role="table" aria-label="Number-base formatting choices">
+          <div class="error-row error-head" role="row"><span role="columnheader">Choice</span><span role="columnheader">Example</span><span role="columnheader">Meaning</span></div>
+          <div class="error-row" role="row"><strong role="cell">Base prefix</strong><code role="cell">0b1010 · 0o12 · 0xA</code><span role="cell">A language-style prefix records the intended radix but is not part of the mathematical value.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Leading zeroes</strong><code role="cell">00001010</code><span role="cell">Padding preserves an 8-bit field even though the unsigned value is still decimal 10.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Bit grouping</strong><code role="cell">1101 1110 1010 1101</code><span role="cell">Nibble groups make the corresponding hexadecimal digits <code>DEAD</code> easier to verify.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Hex case</strong><code role="cell">dead · DEAD</code><span role="cell">Letter case changes presentation, not value; follow the consuming format's convention.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="workflow-heading">
+        <div class="section-heading"><p class="section-kicker">Keep assumptions visible</p><h2 id="workflow-heading">A reliable number-base conversion workflow</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Select the source base</h3><p>Do not infer whether bare <code>10</code> means binary two, decimal ten, or hexadecimal sixteen from appearance alone.</p></li>
+          <li><span>2</span><h3>Choose sign and width</h3><p>Use mathematical sign for ordinary integers. Choose a fixed width only when interpreting or emitting a two's-complement field.</p></li>
+          <li><span>3</span><h3>Preserve required formatting</h3><p>Apply padding, prefixes, grouping, and hex case after the value is understood, then copy the representation the consumer expects.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local conversion with bounded work</p><h2 id="privacy-heading">Convert identifiers and bit fields without an API request</h2></div>
+        <div class="prose-grid"><div>
+          <p>The current input is processed in this browser tab. LiveParse does not send the number to a conversion endpoint, store a conversion history, or look up its meaning in an external service. The interface displays a bounded input limit so parsing and rendering very long representations cannot monopolize the page.</p>
+          <p>Local conversion does not remove every privacy risk. Clipboard managers, browser extensions, screenshots, crash reporting, and other software on the device remain outside this page's boundary. Remove secrets before sharing a converted key, token field, memory address, or production identifier.</p>
+          <p>The implementation follows ECMAScript's arbitrary-precision integer model for exact whole-number work while applying explicit application limits. Review the <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-bigint-type" rel="external">ECMAScript BigInt definition</a> and its fixed-width signed and unsigned operations when reproducing results in JavaScript.</p>
+        </div><div class="callout-card"><strong>Working from hexadecimal bytes?</strong><p>An integer and a byte sequence can share the same hex spelling but require different parsing, grouping, and text-decoding rules.</p><a href="/hex-converter/">Open the Hex Converter →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Binary converter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does a binary converter convert?</summary><p>This binary converter changes one exact integer value among binary, octal, decimal, and hexadecimal notation. It changes the numeral representation, not the mathematical value, and it does not translate a bit stream into text.</p></details>
+          <details><summary>Is binary 10 the same value as decimal 10?</summary><p>No. The digits 10 in base 2 represent decimal 2, while the digits 10 in base 10 represent decimal 10. Select or prefix the source base before conversion so the same spelling is not interpreted in the wrong radix.</p></details>
+          <details><summary>How are negative binary numbers handled?</summary><p>A leading minus sign represents a mathematical negative integer. A fixed-width bit pattern can instead be interpreted as signed two's complement only after you choose its width. The tool keeps those two meanings explicit rather than guessing.</p></details>
+          <details><summary>Why do leading zeroes matter?</summary><p>Leading zeroes do not change an unsigned mathematical value, but they do record a chosen field or byte width. Preserve or add padding when matching a register, protocol field, test vector, or fixed-width code literal.</p></details>
+          <details><summary>Does the binary converter support fractions?</summary><p>No. This tool intentionally accepts whole numbers. Fractions in another base can repeat forever and require an explicit precision and rounding contract, so they are outside this converter's scope.</p></details>
+          <details><summary>Is my number uploaded for conversion?</summary><p>No. Conversion runs in the current browser tab and does not send the entered value to a number-conversion API. The bounded input limit shown in the interface protects browser responsiveness; clipboard tools and extensions remain separate privacy boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue converting</p><h2 id="related-heading">Number and character resources</h2></div><ul><li><a href="/hex-converter/">Hex Converter</a></li><li><a href="/binary-translator/">Binary Translator</a></li><li><a href="/ascii-table/">ASCII Table</a></li><li><a href="/guides/binary-decimal-hex-octal-conversion/">Manual base conversion</a></li><li><a href="/guides/twos-complement-signed-binary/">Two's-complement signed binary</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/hex-converter/">Hex</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Select the radix, width, and signed meaning explicitly.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive conversion. The number-base, signedness, formatting, and exactness guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/binary.tsx"></script>
+  </body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Developer Data Format Guides | LiveParse</title>
-    <meta name="description" content="Developer data guides to JSON, URLs, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums, with precise examples and local browser tools." />
+    <meta name="description" content="Developer data guides to JSON, URLs, timestamps, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums." />
     <link rel="canonical" href="https://liveparse.com/guides/" />
     <link rel="alternate" type="application/atom+xml" title="LiveParse Developer Tool Updates" href="https://liveparse.com/feed.xml" />
     <meta name="author" content="Jackson Jang" />
@@ -37,7 +37,7 @@
             "@id": "https://liveparse.com/guides/#page",
             "url": "https://liveparse.com/guides/",
             "name": "Developer Data Format Guides",
-            "description": "Practical guides to JSON, URLs, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
+            "description": "Practical guides to JSON, URLs, timestamps, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
             "inLanguage": "en",
             "isPartOf": { "@type": "WebSite", "name": "LiveParse", "url": "https://liveparse.com/" },
             "mainEntity": { "@id": "https://liveparse.com/guides/#list" },
@@ -55,7 +55,7 @@
             "@type": "ItemList",
             "@id": "https://liveparse.com/guides/#list",
             "name": "LiveParse developer guides",
-            "numberOfItems": 27,
+            "numberOfItems": 30,
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "url": "https://liveparse.com/guides/what-is-a-json-parser/", "name": "What Is a JSON Parser?" },
               { "@type": "ListItem", "position": 2, "url": "https://liveparse.com/guides/common-json-errors/", "name": "Common JSON Errors" },
@@ -83,7 +83,10 @@
               { "@type": "ListItem", "position": 24, "url": "https://liveparse.com/guides/url-percent-encoding/", "name": "URL Percent-Encoding" },
               { "@type": "ListItem", "position": 25, "url": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/", "name": "encodeURI vs encodeURIComponent" },
               { "@type": "ListItem", "position": 26, "url": "https://liveparse.com/guides/percent20-vs-plus/", "name": "%20 vs Plus in URL Encoding" },
-              { "@type": "ListItem", "position": 27, "url": "https://liveparse.com/guides/double-url-encoding/", "name": "Double URL Encoding" }
+              { "@type": "ListItem", "position": 27, "url": "https://liveparse.com/guides/double-url-encoding/", "name": "Double URL Encoding" },
+              { "@type": "ListItem", "position": 28, "url": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/", "name": "Binary, Decimal, Hex, and Octal Conversion" },
+              { "@type": "ListItem", "position": 29, "url": "https://liveparse.com/guides/twos-complement-signed-binary/", "name": "Two's Complement Signed Binary" },
+              { "@type": "ListItem", "position": 30, "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/", "name": "ASCII vs Unicode vs UTF-8" }
             ]
           }
         ]
@@ -107,7 +110,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>27 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>30 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -146,6 +149,17 @@
                 <a class="related-card" href="/guides/base64-vs-base64url/"><strong>Base64 vs Base64URL</strong><span>Alphabets, padding, canonical pad bits, UTF-8, and JWT segments.</span></a>
               </div>
               <p>Transform bytes locally with the <a href="/base64-encoder/">Base64 Encoder</a> and <a href="/base64-decoder/">Base64 Decoder</a>. Encoding changes representation; it does not encrypt or authenticate the data.</p>
+            </section>
+
+            <section aria-labelledby="number-guides">
+              <h2 id="number-guides">Number bases, binary bytes, and ASCII</h2>
+              <p>A binary integer, a fixed-width signed bit pattern, and the UTF-8 bytes for a text character can contain the same zeroes and ones while representing different things. Keep the interpretation explicit before converting.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/binary-decimal-hex-octal-conversion/"><strong>Binary, Decimal, Hex, and Octal Conversion</strong><span>Place values, repeated division, exact large integers, and hand-checkable examples.</span></a>
+                <a class="related-card" href="/guides/twos-complement-signed-binary/"><strong>Two's Complement Signed Binary</strong><span>Explicit bit widths, signed ranges, negative values, sign extension, and overflow.</span></a>
+                <a class="related-card" href="/guides/ascii-vs-unicode-utf8/"><strong>ASCII vs Unicode vs UTF-8</strong><span>Characters, code points, bytes, control codes, and why non-ASCII text needs multiple UTF-8 bytes.</span></a>
+              </div>
+              <p>Convert exact integer values with the <a href="/binary-converter/">Binary Converter</a> or <a href="/hex-converter/">Hex Converter</a>, translate text bytes with the <a href="/binary-translator/">Binary Translator</a>, and inspect all 128 standard entries in the <a href="/ascii-table/">ASCII Table</a>.</p>
             </section>
 
             <section aria-labelledby="url-guides">
@@ -231,6 +245,7 @@
               <li><a href="#json-guides">JSON and APIs</a></li>
               <li><a href="#time-guides">Time and Discord</a></li>
               <li><a href="#encoding-guides">Base64 encoding</a></li>
+              <li><a href="#number-guides">Numbers and ASCII</a></li>
               <li><a href="#url-guides">URLs and queries</a></li>
               <li><a href="#uuid-guides">UUIDs</a></li>
               <li><a href="#jwt-guides">JWTs</a></li>

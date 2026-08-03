@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hex Converter – Text, Decimal &amp; Binary | LiveParse</title>
+    <meta name="description" content="Convert hexadecimal integers to decimal, binary, and octal, or inspect hex bytes as strict UTF-8. Control prefixes, case, grouping, and width locally." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/hex-converter/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/binary.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/hex-converter/" />
+    <meta property="og:title" content="Hex Converter for Integers and UTF-8 Bytes" />
+    <meta property="og:description" content="Keep hexadecimal number conversion separate from strict hex-byte and UTF-8 interpretation." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based hexadecimal converter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hex Integer and UTF-8 Byte Converter | LiveParse" />
+    <meta name="twitter:description" content="Convert exact hex integers or decode explicit hex bytes as strict UTF-8 without uploading input." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/hex-converter/#application",
+            "name": "LiveParse Hex Converter",
+            "url": "https://liveparse.com/hex-converter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Hexadecimal integer and UTF-8 byte converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Convert bounded hexadecimal integers to binary, octal, and decimal, or parse and format hexadecimal byte sequences with strict UTF-8 text conversion in the browser.",
+            "featureList": [
+              "Keep hexadecimal integer mode separate from hexadecimal byte mode",
+              "Convert exact whole-number values among hexadecimal, binary, octal, and decimal",
+              "Encode UTF-8 text as hexadecimal bytes",
+              "Reject odd-length, malformed, or invalid UTF-8 hex-byte input",
+              "Control hexadecimal case, prefixes, and byte separators",
+              "Process the current value locally within the bounded interface limit"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/hex-converter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Hex Converter", "item": "https://liveparse.com/hex-converter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/hex-converter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the difference between a hex integer and hex bytes?", "acceptedAnswer": { "@type": "Answer", "text": "A hex integer is one mathematical value written in base 16, so leading zeroes do not change its unsigned value. Hex bytes are an ordered sequence of octets, where every two hex digits form one byte and order, width, and leading zeroes can be essential." } },
+              { "@type": "Question", "name": "Does hex 41 mean decimal 65 or the letter A?", "acceptedAnswer": { "@type": "Answer", "text": "It can mean either, depending on the contract. In integer mode, hexadecimal 41 is decimal 65. In byte mode, the byte 41 can decode to the character A because ASCII U+0041 has the same one-byte value in UTF-8." } },
+              { "@type": "Question", "name": "Which hex byte formats are accepted?", "acceptedAnswer": { "@type": "Answer", "text": "Hex byte mode accepts the explicit formats shown in the interface and normalizes supported separators or prefixes without changing byte order. It rejects stray characters, incomplete prefixes, and an odd final hex digit instead of guessing a missing nibble." } },
+              { "@type": "Question", "name": "What happens when hex bytes are not valid UTF-8?", "acceptedAnswer": { "@type": "Answer", "text": "Strict UTF-8 decoding stops with a diagnostic. The tool does not silently replace malformed byte sequences with the Unicode replacement character, because doing so would hide that the original bytes cannot be recovered from the displayed text." } },
+              { "@type": "Question", "name": "Does byte order change a hexadecimal integer?", "acceptedAnswer": { "@type": "Answer", "text": "Endianness applies when a fixed-width integer is serialized as an ordered byte sequence. An abstract integer does not have byte order. Record the width and whether bytes are big-endian or little-endian before reversing or interpreting them." } },
+              { "@type": "Question", "name": "Is hex input uploaded for conversion?", "acceptedAnswer": { "@type": "Answer", "text": "No. Integer conversion and UTF-8 byte processing run in the current browser tab without sending the value to a conversion API. The bounded input limit shown in the interface protects responsiveness; clipboard tools and browser extensions remain separate boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="binary-page" data-page="hex-converter">
+    <a class="skip-link" href="#hex-tool">Skip to the hex converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/binary-converter/">Binary Converter</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII Table</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Hex integers · Hex bytes · Strict UTF-8</p>
+          <h1>Hex Converter</h1>
+          <p class="hero-lead">Convert an exact hexadecimal integer to decimal, binary, and octal, or switch to byte mode to encode UTF-8 text and inspect a hex byte sequence. Keep numeric value, byte order, width, and text decoding as explicit choices.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#hex-tool">Convert hexadecimal</a><span>Free · No sign-up · Browser local</span></div>
+        </div>
+        <div class="hero-example" aria-label="Hexadecimal integer and text byte example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>two meanings</strong></div>
+          <pre><code><span class="property">integer</span> <span class="string">0x41</span> → <span class="boolean">65</span>
+<span class="property">byte</span>    <span class="string">41</span>   → <span class="boolean">A</span></code></pre>
+          <p><strong>Same digits, different contract</strong><span>Select Number or UTF-8 Bytes</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="hex-tool" aria-labelledby="hex-tool-heading">
+        <div><p class="section-kicker">Choose number or bytes</p><h2 id="hex-tool-heading">Convert hexadecimal values without guessing their meaning</h2></div>
+        <p>Use integer mode for one whole-number value and byte mode for two-hex-digit octets or UTF-8 text. The interface shows the bounded limit and accepted formatting for the selected workflow.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Hex converter loading"><p><strong>Loading the hex converter…</strong></p><p>Enable JavaScript to convert, format, and copy values. The integer, byte, UTF-8, and endianness guidance remains readable below.</p></section></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">Base 16 or ordered octets</p><h2 id="meaning-heading">Hexadecimal numbers and hexadecimal bytes are not interchangeable</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Hexadecimal uses sixteen digit values: <code>0</code> through <code>9</code> and <code>A</code> through <code>F</code>. As an integer, <code>01AF</code> and <code>1AF</code> represent the same unsigned value. The leading zero records presentation or field width, not another quantity.</p>
+            <p>A byte sequence assigns structure to pairs of digits. <code>01 AF</code> is two bytes in a specific order, and removing <code>01</code> removes a byte. Byte mode therefore checks that every octet has exactly two hex digits after supported separators and prefixes are parsed. It does not invent a leading or trailing nibble when the input has an odd digit count.</p>
+            <p>The distinction becomes critical when interpreting text. The integer <code>C3A9</code> is decimal 50089. The byte sequence <code>C3 A9</code> is the well-formed UTF-8 encoding of “é.” Both descriptions are true, but only the selected contract says which result is useful.</p>
+            <p>If the input is a single numeric value and you primarily need signed width, padding, or binary grouping, use the <a href="/binary-converter/">Binary Converter</a>. Hex byte mode is for ordered octets and UTF-8, not a substitute for a file-format parser or arbitrary binary decoder.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Hex integer</dt><dd>One exact whole-number value written in base 16.</dd></div>
+            <div><dt>Hex byte</dt><dd>Exactly two hexadecimal digits representing one octet.</dd></div>
+            <div><dt>UTF-8 encode</dt><dd>Unicode text converted to bytes, then each byte displayed as two hex digits.</dd></div>
+            <div><dt>Strict decode</dt><dd>Malformed UTF-8 is an error rather than replacement text.</dd></div>
+            <div><dt>Scope</dt><dd>Bounded text, bytes, or integer input as displayed by the interface.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="integer-heading">
+        <div class="section-heading"><p class="section-kicker">One value in four bases</p><h2 id="integer-heading">Exact hexadecimal integer conversion</h2></div>
+        <div class="prose-grid"><div>
+          <p>In positional notation, hexadecimal <code>2F3</code> is <code>2×16² + 15×16¹ + 3×16⁰ = 755</code> in decimal. Its binary representation can be obtained directly by expanding each hex digit into four bits: <code>2 → 0010</code>, <code>F → 1111</code>, and <code>3 → 0011</code>. Leading zeroes can then be retained for a 12-bit field or removed for the minimal unsigned notation.</p>
+          <p>Integer conversion remains exact for accepted input rather than routing through floating point. A minus sign is an ordinary mathematical negative; a two's-complement interpretation additionally requires a bit width. Keep the source value, width, and signedness visible when reproducing a debugger, protocol, or language result.</p>
+          <p>Hexadecimal letter case and a <code>0x</code> prefix are formatting choices. They do not change the value. A receiving grammar may require uppercase, lowercase, a prefix, no prefix, or a fixed number of digits, so copy the format required by that grammar rather than assuming one universal canonical spelling.</p>
+        </div><div class="callout-card"><strong>Need the arithmetic?</strong><p>Follow worked division, multiplication, and direct bit-grouping examples for binary, octal, decimal, and hexadecimal.</p><a href="/guides/binary-decimal-hex-octal-conversion/">Read the manual conversion guide →</a></div></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="utf8-heading">
+        <div class="section-heading"><p class="section-kicker">Bytes first, characters second</p><h2 id="utf8-heading">Strict UTF-8 hex byte conversion</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Encode text as UTF-8</h3><p>ASCII-range characters use the same one-byte values in UTF-8. Other Unicode scalar values use multibyte sequences, so “한” becomes <code>ED 95 9C</code> and “😀” becomes <code>F0 9F 98 80</code>.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Parse complete octets</h3><p>Normalize only the supported prefixes and separators shown by the interface. Reject an odd number of digits or a non-hex character so byte boundaries never shift silently.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Decode without replacement</h3><p>A malformed, truncated, overlong, surrogate, or out-of-range UTF-8 sequence must not become plausible-looking text. Keep the original hex visible and report the invalid byte location.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Preserve byte order</h3><p>Text bytes are decoded in their given sequence. Reversing them is not a text repair strategy and usually turns valid UTF-8 into different or invalid data.</p></article>
+        </div>
+        <p class="text-link"><a href="/guides/ascii-vs-unicode-utf8/">Understand ASCII codes, Unicode code points, and UTF-8 bytes →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="format-heading">
+        <div class="section-heading"><p class="section-kicker">Syntax is not semantics</p><h2 id="format-heading">Hex prefixes, separators, and byte order</h2></div>
+        <div class="error-table" role="table" aria-label="Hexadecimal formatting and interpretation">
+          <div class="error-row error-head" role="row"><span role="columnheader">Input</span><span role="columnheader">Interpretation</span><span role="columnheader">Required context</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>0x1234</code></strong><code role="cell">Hex integer</code><span role="cell">A language-style prefix labels base 16; the value is decimal 4660.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>12 34</code></strong><code role="cell">Two bytes</code><span role="cell">An ordered sequence with byte values 0x12 then 0x34.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>\x12\x34</code></strong><code role="cell">Byte escape notation</code><span role="cell">Accept only when that explicit prefix style is enabled by the interface.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>34 12</code></strong><code role="cell">Reversed bytes</code><span role="cell">It can serialize the same 16-bit integer in little-endian form, but only when width and endianness are defined.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local and bounded</p><h2 id="privacy-heading">Inspect copied hex without sending it to a decoder service</h2></div>
+        <div class="prose-grid"><div>
+          <p>Integer parsing, byte formatting, UTF-8 encoding, and strict decoding happen in the current browser tab. No conversion API receives the value, and the page does not try to identify a pasted signature, key, file header, memory region, or protocol field. The bounded limit displayed in the interface protects interactive rendering.</p>
+          <p>Hexadecimal is a representation, not encryption or redaction. Anyone with the text can recover the bytes. Remove credentials and private payloads before copying output into a ticket, chat, issue, or prompt. Device software such as extensions and clipboard history remains outside the page's local-processing boundary.</p>
+          <p>For normative byte-to-text behavior, consult the <a href="https://encoding.spec.whatwg.org/#utf-8" rel="external">WHATWG Encoding Standard's UTF-8 definition</a> and the <a href="https://www.unicode.org/versions/latest/" rel="external">current Unicode Standard</a>. A byte preview does not validate the surrounding application format.</p>
+        </div><div class="callout-card"><strong>Starting from bits?</strong><p>When the source is a sequence of zeroes and ones that should become UTF-8 text, preserve 8-bit byte boundaries and use strict decoding.</p><a href="/binary-translator/">Open the Binary Translator →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Hex converter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What is the difference between a hex integer and hex bytes?</summary><p>A hex integer is one mathematical value written in base 16, so leading zeroes do not change its unsigned value. Hex bytes are an ordered sequence of octets, where every two hex digits form one byte and order, width, and leading zeroes can be essential.</p></details>
+          <details><summary>Does hex 41 mean decimal 65 or the letter A?</summary><p>It can mean either, depending on the contract. In integer mode, hexadecimal 41 is decimal 65. In byte mode, the byte 41 can decode to the character A because ASCII U+0041 has the same one-byte value in UTF-8.</p></details>
+          <details><summary>Which hex byte formats are accepted?</summary><p>Hex byte mode accepts the explicit formats shown in the interface and normalizes supported separators or prefixes without changing byte order. It rejects stray characters, incomplete prefixes, and an odd final hex digit instead of guessing a missing nibble.</p></details>
+          <details><summary>What happens when hex bytes are not valid UTF-8?</summary><p>Strict UTF-8 decoding stops with a diagnostic. The tool does not silently replace malformed byte sequences with the Unicode replacement character, because doing so would hide that the original bytes cannot be recovered from the displayed text.</p></details>
+          <details><summary>Does byte order change a hexadecimal integer?</summary><p>Endianness applies when a fixed-width integer is serialized as an ordered byte sequence. An abstract integer does not have byte order. Record the width and whether bytes are big-endian or little-endian before reversing or interpreting them.</p></details>
+          <details><summary>Is hex input uploaded for conversion?</summary><p>No. Integer conversion and UTF-8 byte processing run in the current browser tab without sending the value to a conversion API. The bounded input limit shown in the interface protects responsiveness; clipboard tools and browser extensions remain separate boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue inspecting</p><h2 id="related-heading">Hex, binary, and text resources</h2></div><ul><li><a href="/binary-converter/">Binary Converter</a></li><li><a href="/binary-translator/">Binary Translator</a></li><li><a href="/ascii-table/">ASCII Table</a></li><li><a href="/guides/binary-decimal-hex-octal-conversion/">Manual base conversion</a></li><li><a href="/guides/twos-complement-signed-binary/">Two's-complement signed binary</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/binary-converter/">Binary</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Distinguish numbers, bytes, and text before converting.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive hexadecimal conversion. The integer, byte, UTF-8, formatting, and privacy guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/binary.tsx"></script>
+  </body>
+</html>

@@ -206,6 +206,55 @@ describe('production routing parity', () => {
     expect(actualAliases).toEqual(completeExpectedAliases);
   });
 
+  it('includes the number-base, binary-text, and ASCII cluster with intentional aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/binary-converter/',
+      '/hex-converter/',
+      '/binary-translator/',
+      '/ascii-table/',
+    ]);
+    const expectedAliases = new Map([
+      ['/binary-to-decimal', '/binary-converter/'],
+      ['/decimal-to-binary', '/binary-converter/'],
+      ['/base-converter', '/binary-converter/'],
+      ['/number-base-converter', '/binary-converter/'],
+      ['/hex-to-decimal', '/hex-converter/'],
+      ['/decimal-to-hex', '/hex-converter/'],
+      ['/hexadecimal-converter', '/hex-converter/'],
+      ['/binary-to-text', '/binary-translator/'],
+      ['/text-to-binary', '/binary-translator/'],
+      ['/ascii-chart', '/ascii-table/'],
+      ['/ascii-code-table', '/ascii-table/'],
+      ['/ascii-codes', '/ascii-table/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/binary-converter',
+      '/hex-converter',
+      '/binary-translator',
+      '/ascii-table',
+      '/guides/binary-decimal-hex-octal-conversion',
+      '/guides/twos-complement-signed-binary',
+      '/guides/ascii-vs-unicode-utf8',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
   it('includes the JWT canonical pages and guide without validator-like aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);

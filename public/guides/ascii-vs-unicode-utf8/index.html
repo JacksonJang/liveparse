@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASCII vs Unicode vs UTF-8: Codes &amp; Bytes | LiveParse</title>
+    <meta name="description" content="Learn how ASCII, Unicode code points, UTF-8 bytes, UTF-16 code units, glyphs, and binary notation differ with practical encoding examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/ascii-vs-unicode-utf8/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="ASCII vs Unicode vs UTF-8: From Characters to Bytes" />
+    <meta property="og:description" content="Separate characters, code points, code units, encoded bytes, and their hex or binary notation." />
+    <meta property="og:url" content="https://liveparse.com/guides/ascii-vs-unicode-utf8/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ASCII, Unicode, and UTF-8 encoding guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ASCII vs Unicode vs UTF-8" />
+    <meta name="twitter:description" content="Trace visible text through Unicode code points to exact UTF-8 bytes." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/ascii-vs-unicode-utf8/#article",
+            "headline": "ASCII vs Unicode vs UTF-8: Codes and Bytes",
+            "description": "Learn how ASCII, Unicode code points, UTF-8 bytes, UTF-16 code units, glyphs, and binary notation differ with practical encoding examples.",
+            "mainEntityOfPage": "https://liveparse.com/guides/ascii-vs-unicode-utf8/",
+            "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Text encoding",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/ascii-vs-unicode-utf8/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "ASCII vs Unicode vs UTF-8", "item": "https://liveparse.com/guides/ascii-vs-unicode-utf8/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/ascii-vs-unicode-utf8/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the difference between ASCII, Unicode, and UTF-8?", "acceptedAnswer": { "@type": "Answer", "text": "ASCII is a 128-character coded set, Unicode assigns code points to a much larger repertoire, and UTF-8 is a variable-width encoding that turns Unicode code points into bytes. They describe related but different layers." } },
+              { "@type": "Question", "name": "Is ASCII 7-bit or 8-bit?", "acceptedAnswer": { "@type": "Answer", "text": "ASCII is a 7-bit code with values from 0 through 127. It is often stored in an 8-bit byte whose highest bit is zero, but values from 128 through 255 are not part of standard ASCII." } },
+              { "@type": "Question", "name": "Does UTF-8 preserve ASCII?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every ASCII character from U+0000 through U+007F uses the same single byte in UTF-8, so an ASCII byte sequence is also a valid UTF-8 byte sequence with the same text." } },
+              { "@type": "Question", "name": "Why can one character use multiple UTF-8 bytes?", "acceptedAnswer": { "@type": "Answer", "text": "UTF-8 uses one byte for ASCII code points and two, three, or four bytes for other Unicode code points. A user-perceived character can also contain multiple code points, so its complete byte sequence may be longer." } },
+              { "@type": "Question", "name": "Why can the same-looking text have different bytes?", "acceptedAnswer": { "@type": "Answer", "text": "Unicode can represent some visible text with different code-point sequences, such as a precomposed accented letter or a base letter followed by a combining mark. Normalization can make the intended form consistent before comparison or hashing." } },
+              { "@type": "Question", "name": "Is binary 00110000 the number zero or the character 0?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on the data contract. As an unsigned binary integer it is decimal 48; as one UTF-8 byte it encodes the character 0, U+0030. Numeric zero itself is binary 0, while the text character has an encoded byte value." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the text-encoding guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/ascii-table/">ASCII Table</a><a href="/binary-translator/">Binary Translator</a><a href="/hex-converter/">Hex Converter</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">ASCII vs Unicode vs UTF-8</span></nav><p class="eyebrow">Characters, code points, and bytes</p><h1>ASCII vs Unicode vs UTF-8: Codes and Bytes</h1><p class="dek">A character is not a byte, Unicode is not “16-bit,” and hex is only notation. Trace each layer explicitly to explain corrupted text, mismatched lengths, and surprising binary data.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>14 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> ASCII assigns 128 values from 0 through 127. Unicode assigns code points such as U+0041 and U+1F600 to a far larger character repertoire. UTF-8 encodes Unicode code points as one to four bytes and preserves ASCII byte-for-byte. UTF-16 code units, rendered glyphs, and hexadecimal or binary spellings are additional layers; none should be substituted for another.</p></div>
+
+          <h2 id="layers">Five layers prevent one overloaded word</h2>
+          <p>When someone says “character,” ask what the system actually counts. A user may mean one visible grapheme; a Unicode discussion may mean one code point; JavaScript string indexing exposes UTF-16 code units; a file contains encoded bytes; a debugger renders those bytes with hex or binary digits.</p>
+          <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Example for 😀</th><th>What it describes</th></tr></thead><tbody><tr><td>Glyph or grapheme</td><td>one visible emoji</td><td>A rendered, user-perceived unit; font and composition matter</td></tr><tr><td>Unicode code point</td><td><code>U+1F600</code></td><td>An abstract coded value in the Unicode repertoire</td></tr><tr><td>UTF-16 code units</td><td><code>D83D DE00</code></td><td>Two 16-bit units used by ECMAScript string storage semantics</td></tr><tr><td>UTF-8 bytes</td><td><code>F0 9F 98 80</code></td><td>Four bytes used for files, requests, and byte buffers</td></tr><tr><td>Notation</td><td><code>11110000 10011111 10011000 10000000</code></td><td>Binary digits that display those same four bytes</td></tr></tbody></table></div>
+          <p>Counts differ without contradiction: this emoji is one code point, two UTF-16 code units, four UTF-8 bytes, and thirty-two displayed bits. A family emoji joined with zero-width joiners can be one grapheme while containing several code points and many bytes. Choose a length unit before enforcing a limit or slicing text.</p>
+
+          <h2 id="ascii">ASCII is exactly the 7-bit range 0 through 127</h2>
+          <p>The original ASCII coded set contains 128 values. Codes 0 through 31 and 127 are controls; code 32 is space; codes 33 through 126 are graphic characters including letters, digits, and punctuation. The eighth bit of a storage byte is zero for every standard ASCII value.</p>
+          <p>“Extended ASCII” is not one universal table. Several legacy 8-bit encodings reuse values 128 through 255 differently, so a bare byte such as <code>E9</code> does not identify its text without an encoding label. The primary historical specification is <a href="https://www.rfc-editor.org/info/rfc20" rel="external">RFC 20, the US-ASCII format</a>. Use the <a href="/ascii-table/">complete ASCII Table</a> for the defined 0–127 range only.</p>
+
+          <h2 id="unicode">Unicode assigns code points; it is not an encoding width</h2>
+          <p>Unicode provides a shared character repertoire and properties. A code point is written <code>U+</code> followed by hexadecimal digits: Latin capital A is U+0041, Hangul syllable 한 is U+D55C, and grinning face is U+1F600. That notation names an abstract value; it is not a promise about bytes in a file.</p>
+          <p>Unicode code points range through U+10FFFF, excluding surrogate code points reserved for UTF-16 mechanics. UTF-8, UTF-16, and UTF-32 are distinct ways to encode Unicode values. Saying “Unicode file” without naming an encoding leaves byte interpretation unresolved. The <a href="https://www.unicode.org/versions/latest/" rel="external">latest Unicode Standard</a> defines the repertoire and conformance rules.</p>
+
+          <h2 id="utf8">UTF-8 maps each Unicode scalar value to one through four bytes</h2>
+          <p>UTF-8 is variable-width and self-synchronizing. ASCII-range code points use one byte; higher values use leading and continuation-byte patterns across two, three, or four bytes. The encoding is uniquely determined for a valid Unicode scalar value; overlong alternatives, surrogate encodings, and values beyond U+10FFFF are invalid.</p>
+          <div class="table-wrap"><table><thead><tr><th>Text</th><th>Code point</th><th>UTF-8 hex bytes</th><th>UTF-8 binary bytes</th></tr></thead><tbody><tr><td><code>A</code></td><td><code>U+0041</code></td><td><code>41</code></td><td><code>01000001</code></td></tr><tr><td><code>é</code></td><td><code>U+00E9</code></td><td><code>C3 A9</code></td><td><code>11000011 10101001</code></td></tr><tr><td><code>한</code></td><td><code>U+D55C</code></td><td><code>ED 95 9C</code></td><td><code>11101101 10010101 10011100</code></td></tr><tr><td><code>😀</code></td><td><code>U+1F600</code></td><td><code>F0 9F 98 80</code></td><td><code>11110000 10011111 10011000 10000000</code></td></tr></tbody></table></div>
+          <p>The <a href="https://encoding.spec.whatwg.org/#utf-8" rel="external">WHATWG Encoding Standard’s UTF-8 definition</a> specifies browser decoding behavior. The <a href="/binary-translator/">Binary Translator</a> deliberately uses strict UTF-8 for complete byte sequences; it does not offer a competing selectable ASCII mode because ASCII’s U+0000–U+007F values already use the same one-byte values in UTF-8.</p>
+
+          <h2 id="ascii-compatibility">Why ASCII survives unchanged inside UTF-8</h2>
+          <p>Every code point from U+0000 through U+007F maps to one byte with the same numeric value. U+0041 becomes byte <code>41</code>, and U+0030 becomes byte <code>30</code>. Therefore a valid ASCII byte sequence is valid UTF-8 and decodes to the same text.</p>
+          <p>This compatibility does not turn arbitrary high bytes into characters. Byte <code>E9</code> alone is invalid UTF-8 because it begins a three-byte sequence but lacks two continuation bytes. The character é is UTF-8 bytes <code>C3 A9</code>. A legacy decoder might map lone <code>E9</code> differently, which is precisely why the encoding label matters.</p>
+
+          <h2 id="zero">Numeric zero and the text character “0” are different data</h2>
+          <p>The mathematical integer zero can be written as binary <code>0</code> or, at an explicit eight-bit width, <code>00000000</code>. The character “0” is Unicode U+0030 and UTF-8 byte <code>30</code>, displayed in binary as <code>00110000</code>. Interpreted as an unsigned integer, that byte has value 48.</p>
+          <p>A numeral parser maps the text “0” to a quantity. A text encoder maps the character to bytes. The <a href="/binary-converter/">Binary Converter</a> handles exact integer values; the Binary Translator handles UTF-8 text bytes. State the contract before deciding what a bit string means.</p>
+
+          <h2 id="normalization">The same-looking text can have different code points and bytes</h2>
+          <p>The visible é can be represented as precomposed U+00E9 or as U+0065 LATIN SMALL LETTER E followed by U+0301 COMBINING ACUTE ACCENT. They commonly render alike, but their UTF-8 bytes differ:</p>
+          <figure class="code-example"><figcaption class="code-label">Two canonically equivalent spellings</figcaption><pre><code>U+00E9             → C3 A9
+U+0065 U+0301      → 65 CC 81</code></pre></figure>
+          <p>Unicode normalization transforms text into a selected canonical or compatibility form. Normalize only according to an application contract: byte-exact signatures and file checksums must preserve original bytes, while search and identifier comparison may require a defined normalization form. Visual equality alone cannot prove byte equality.</p>
+
+          <h2 id="utf16">JavaScript indexes UTF-16 code units, not UTF-8 bytes</h2>
+          <p>ECMAScript strings are sequences of 16-bit unsigned integer values. A code point outside the Basic Multilingual Plane is represented by a surrogate pair, so <code>"😀".length</code> is 2 even though iteration by code point can yield one item. Neither count reports UTF-8 byte length. See the <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">ECMAScript String type specification</a>.</p>
+          <p>Use a text encoder to obtain UTF-8 bytes and a text decoder to validate bytes. Do not split arbitrary UTF-8 byte offsets, UTF-16 code-unit offsets, or grapheme boundaries as if they were interchangeable. Each operation needs the unit its protocol defines.</p>
+
+          <h2 id="strict-decoding">Strict decoding preserves evidence of invalid input</h2>
+          <p>A decoder can reject malformed UTF-8 or replace errors with U+FFFD. Replacement is useful for resilient display, but it loses information: different invalid byte sequences can produce the same visible replacement character. For diagnostics, validation, signatures, and round trips, report the failing offset and retain the original bytes.</p>
+          <p>Common failures include an unexpected continuation byte, a missing continuation byte, an overlong form, a surrogate value, and an out-of-range code point. A complete octet is exactly eight bits. Reject incomplete trailing groups rather than silently padding them, because adding zeroes changes the byte sequence.</p>
+
+          <h2 id="notation">Hex, binary, and Base64 are not character encodings</h2>
+          <p>Hexadecimal and binary are textual notations for numbers or bytes. The UTF-8 bytes for A can be displayed as hex <code>41</code> or binary <code>01000001</code>; the underlying byte is unchanged. Base64 maps bytes into a restricted text alphabet for transport and likewise does not decide what those bytes mean as characters.</p>
+          <p>The <a href="/hex-converter/">Hex Converter</a> separates an exact hex integer from a UTF-8 hex-byte sequence. Integer <code>41</code> means decimal 65; hex byte <code>41</code> decodes to A under UTF-8. For hand conversion between numeric bases, use the <a href="/guides/binary-decimal-hex-octal-conversion/">binary, decimal, hex, and octal guide</a>. For signed fixed-width integers, use the <a href="/guides/twos-complement-signed-binary/">two’s-complement guide</a>.</p>
+
+          <h2 id="debug">A practical text-encoding debugging checklist</h2>
+          <ol class="steps"><li><strong>Preserve the original bytes.</strong> Do not re-save suspect text before recording a hex dump.</li><li><strong>Name the expected encoding.</strong> Prefer an explicit protocol label; do not infer from a filename alone.</li><li><strong>Decode strictly.</strong> Record the first invalid byte offset and surrounding bytes.</li><li><strong>Inspect code points.</strong> Distinguish invisible controls, combining marks, and confusable characters.</li><li><strong>Check normalization separately.</strong> Valid UTF-8 can still use a different canonical sequence.</li><li><strong>Count the correct unit.</strong> Choose graphemes, code points, UTF-16 code units, or UTF-8 bytes deliberately.</li><li><strong>Re-encode and compare.</strong> A byte-for-byte round trip tests whether information was preserved.</li></ol>
+
+          <div class="tool-callout"><p><strong>Need the exact bytes?</strong> Translate bounded input between text and complete 8-bit groups with strict UTF-8 validation performed in your browser.</p><a class="button" href="/binary-translator/">Open the Binary Translator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is the difference between ASCII, Unicode, and UTF-8?</h3><p>ASCII is a 128-character coded set, Unicode assigns code points to a much larger repertoire, and UTF-8 is a variable-width encoding that turns Unicode code points into bytes. They describe related but different layers.</p>
+            <h3>Is ASCII 7-bit or 8-bit?</h3><p>ASCII is a 7-bit code with values from 0 through 127. It is often stored in an 8-bit byte whose highest bit is zero, but values from 128 through 255 are not part of standard ASCII.</p>
+            <h3>Does UTF-8 preserve ASCII?</h3><p>Yes. Every ASCII character from U+0000 through U+007F uses the same single byte in UTF-8, so an ASCII byte sequence is also a valid UTF-8 byte sequence with the same text.</p>
+            <h3>Why can one character use multiple UTF-8 bytes?</h3><p>UTF-8 uses one byte for ASCII code points and two, three, or four bytes for other Unicode code points. A user-perceived character can also contain multiple code points, so its complete byte sequence may be longer.</p>
+            <h3>Why can the same-looking text have different bytes?</h3><p>Unicode can represent some visible text with different code-point sequences, such as a precomposed accented letter or a base letter followed by a combining mark. Normalization can make the intended form consistent before comparison or hashing.</p>
+            <h3>Is binary 00110000 the number zero or the character 0?</h3><p>It depends on the data contract. As an unsigned binary integer it is decimal 48; as one UTF-8 byte it encodes the character 0, U+0030. Numeric zero itself is binary 0, while the text character has an encoded byte value.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Inspect the data</p><a href="/ascii-table/">ASCII Table</a><a href="/binary-translator/">Binary Translator</a><a href="/hex-converter/">Hex Converter</a><a href="/binary-converter/">Binary Converter</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/binary-decimal-hex-octal-conversion/">Manual base conversion</a><a href="/guides/twos-complement-signed-binary/">Two’s-complement signed binary</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/binary-converter/">Binary</a><a href="/hex-converter/">Hex</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Name the encoding before interpreting the bytes.</p></footer>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary Translator – Binary to Text &amp; Text to Binary | LiveParse</title>
+    <meta name="description" content="Translate binary bytes to text and text to binary with strict UTF-8 rules. Detect incomplete bit groups and Unicode decoding errors locally." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/binary-translator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/binary.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/binary-translator/" />
+    <meta property="og:title" content="Binary Translator for Strict UTF-8 Text and Bytes" />
+    <meta property="og:description" content="Translate UTF-8 text to 8-bit binary bytes and decode complete binary bytes without silent replacement." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based binary translator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Strict UTF-8 Binary Translator | LiveParse" />
+    <meta name="twitter:description" content="Translate text and binary bytes locally while preserving byte boundaries and reporting invalid UTF-8." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/binary-translator/#application",
+            "name": "LiveParse Binary Translator",
+            "url": "https://liveparse.com/binary-translator/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Strict UTF-8 binary-to-text translator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Encode bounded Unicode text as UTF-8 bytes displayed in binary or strictly decode complete 8-bit binary bytes as UTF-8 in the browser.",
+            "featureList": [
+              "Encode Unicode text as UTF-8 bytes displayed in 8-bit binary groups",
+              "Decode complete binary octets with strict UTF-8 validation",
+              "Reject incomplete, malformed, overlong, surrogate, or out-of-range byte sequences",
+              "Keep numeric integer conversion separate from character encoding",
+              "Show byte and bit counts for the current conversion",
+              "Process the current input locally within the bounded interface limit"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/binary-translator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Binary Translator", "item": "https://liveparse.com/binary-translator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/binary-translator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How does the binary translator convert text?", "acceptedAnswer": { "@type": "Answer", "text": "It encodes the text as UTF-8, then writes every resulting byte as eight binary digits. ASCII-range characters keep their familiar one-byte values, while many other Unicode characters require two, three, or four bytes." } },
+              { "@type": "Question", "name": "Why is character 0 different from numeric zero?", "acceptedAnswer": { "@type": "Answer", "text": "The numeric value zero is binary 0. The text character 0 is Unicode U+0030, which UTF-8 encodes as byte 30 hexadecimal or 00110000 binary. A numeral converter and a text translator therefore answer different questions." } },
+              { "@type": "Question", "name": "Must binary text be grouped into eight bits?", "acceptedAnswer": { "@type": "Answer", "text": "UTF-8 is a byte encoding, so decoding begins with complete 8-bit octets. Supported visual separators may be ignored as shown by the interface, but the remaining bit count must form complete bytes; the tool does not pad an incomplete final group." } },
+              { "@type": "Question", "name": "What happens when binary bytes are invalid UTF-8?", "acceptedAnswer": { "@type": "Answer", "text": "The translation stops with a diagnostic instead of inserting replacement characters. This preserves evidence that the input is truncated, malformed, uses another encoding, or contains arbitrary binary data rather than valid UTF-8 text." } },
+              { "@type": "Question", "name": "Can a binary translator decrypt a message or open a binary file?", "acceptedAnswer": { "@type": "Answer", "text": "No. It only changes between UTF-8 text and an explicit binary display of those bytes. It does not decrypt ciphertext, decompress data, execute machine code, identify file formats, or recover meaning from arbitrary bytes." } },
+              { "@type": "Question", "name": "Is binary or text input uploaded?", "acceptedAnswer": { "@type": "Answer", "text": "No. UTF-8 encoding and strict decoding run in the current browser tab without sending the input to a translation service. The bounded input limit shown in the interface protects responsiveness; clipboard tools and extensions remain separate boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="binary-page" data-page="binary-translator">
+    <a class="skip-link" href="#translator-tool">Skip to the binary translator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/binary-converter/">Binary Converter</a><a href="/hex-converter/">Hex Converter</a><a href="/ascii-table/">ASCII Table</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Text ↔ UTF-8 bytes · Strict decode · Local</p>
+          <h1>Binary Translator</h1>
+          <p class="hero-lead">Turn Unicode text into 8-bit binary groups through UTF-8, or decode a complete binary byte sequence without hiding malformed input behind replacement characters. This translates text bytes, not mathematical numbers, encrypted messages, or executable files.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#translator-tool">Translate binary and text</a><span>Free · No sign-up · No translation API</span></div>
+        </div>
+        <div class="hero-example" aria-label="Text character zero and numeric zero example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>value or character?</strong></div>
+          <pre><code><span class="property">number</span> <span class="string">0</span> → <span class="boolean">0</span>
+<span class="property">text</span>   <span class="string">"0"</span> → <span class="boolean">00110000</span></code></pre>
+          <p><strong>U+0030 is byte 0x30</strong><span>Text encoding is not radix conversion</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="translator-tool" aria-labelledby="translator-tool-heading">
+        <div><p class="section-kicker">Preserve every byte boundary</p><h2 id="translator-tool-heading">Translate UTF-8 text and binary bytes</h2></div>
+        <p>Enter text or binary within the bounded limit shown by the interface, choose the direction, and copy the complete result. Binary input must resolve to complete octets and valid UTF-8.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Binary translator loading"><p><strong>Loading the binary translator…</strong></p><p>Enable JavaScript to translate and copy values. The UTF-8, byte-boundary, validation, and scope guidance remains readable below.</p></section></div>
+
+      <section class="content-section" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Characters become bytes first</p><h2 id="how-heading">How text becomes binary with UTF-8</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Unicode assigns a code point to each encoded character, but a code point is not automatically one byte. UTF-8 maps every Unicode scalar value to a sequence of one to four bytes. The translator then displays each byte with eight binary digits, preserving leading zeroes so byte boundaries remain visible.</p>
+            <p>ASCII occupies code points U+0000 through U+007F. UTF-8 represents that range with the same single-byte values, so the letter A is U+0041, byte hexadecimal <code>41</code>, and binary <code>01000001</code>. The Korean syllable “한” is U+D55C and becomes three UTF-8 bytes: <code>ED 95 9C</code>, displayed as <code>11101101 10010101 10011100</code>.</p>
+            <p>User-perceived characters can contain more than one code point. An accented letter may be precomposed or may use a base letter plus a combining mark; an emoji sequence may include variation selectors, modifiers, or zero-width joiners. The translator encodes the exact string provided and does not normalize it silently.</p>
+            <p>Binary output is a representation of text bytes, not “the language computers speak” in one universal sense. Machine instructions, compressed streams, images, encrypted values, floating-point layouts, and protocol records all use bits but require their own formats and parsers.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Character</dt><dd>An element of text represented by one or more Unicode code points.</dd></div>
+            <div><dt>Code point</dt><dd>A Unicode number such as U+0041 or U+D55C.</dd></div>
+            <div><dt>UTF-8 byte</dt><dd>One octet in the variable-width UTF-8 encoding.</dd></div>
+            <div><dt>Binary display</dt><dd>Eight zero-or-one digits for each UTF-8 byte.</dd></div>
+            <div><dt>Scope</dt><dd>Bounded Unicode text and strict UTF-8 bytes; not arbitrary binary formats.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/ascii-vs-unicode-utf8/">Read the complete ASCII, Unicode, and UTF-8 guide →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="zero-heading">
+        <div class="section-heading"><p class="section-kicker">A digit can be data or notation</p><h2 id="zero-heading">Numeric zero and the character “0” are different inputs</h2></div>
+        <div class="prose-grid"><div>
+          <p>A number-base converter treats digits as a notation for a mathematical value. Decimal zero, binary zero, and hexadecimal zero all describe the quantity 0. Minimal binary notation writes that value as <code>0</code>.</p>
+          <p>A text translator treats the displayed glyph “0” as a character. Unicode assigns it U+0030, and UTF-8 encodes it as the byte <code>30</code> hexadecimal. Writing that byte in binary produces <code>00110000</code>. The leading bits are not optional padding for a number; they belong to the complete byte representation of the character.</p>
+          <p>The same distinction applies to text “10.” As a binary integer it represents decimal two. As two text characters, UTF-8 contains bytes <code>31 30</code>, displayed as <code>00110001 00110000</code>. Select the tool by the data contract rather than by whether the input happens to contain zeroes and ones.</p>
+        </div><div class="callout-card"><strong>Converting a numeric quantity?</strong><p>Use explicit base, sign, and width controls instead of decoding the digits as text bytes.</p><a href="/binary-converter/">Open the Binary Converter →</a></div></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="strict-heading">
+        <div class="section-heading"><p class="section-kicker">Reject ambiguity and data loss</p><h2 id="strict-heading">Complete octets and strict UTF-8 decoding</h2></div>
+        <div class="error-table" role="table" aria-label="Binary-to-text validation cases">
+          <div class="error-row error-head" role="row"><span role="columnheader">Input condition</span><span role="columnheader">Why it matters</span><span role="columnheader">Translator behavior</span></div>
+          <div class="error-row" role="row"><strong role="cell">Non-binary character</strong><code role="cell">01002</code><span role="cell">A bit may only be zero or one; unsupported syntax stops parsing.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Incomplete octet</strong><code role="cell">0100000</code><span role="cell">Seven bits do not identify a complete UTF-8 byte, so the tool does not invent padding.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Truncated sequence</strong><code role="cell">11100010 10000010</code><span role="cell">The leading byte requires another continuation byte; decoding stops.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Invalid UTF-8</strong><code role="cell">11000000 10000000</code><span role="cell">Overlong and otherwise malformed encodings are rejected rather than normalized.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Valid non-text bytes</strong><code role="cell">format-specific</code><span role="cell">A byte sequence may belong to another encoding or binary format; this page does not guess.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="workflow-heading">
+        <div class="section-heading"><p class="section-kicker">Translate one owned layer</p><h2 id="workflow-heading">A reliable binary-to-text workflow</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Confirm the data is text bytes</h3><p>Use this translator only when the source contract says the bits form UTF-8, not a number, encrypted message, compressed file, or machine instruction.</p></li>
+          <li><span>2</span><h3>Preserve complete octets</h3><p>Keep eight bits per byte and use only separators accepted by the interface. Do not delete or add bits to make the input decode.</p></li>
+          <li><span>3</span><h3>Treat errors as evidence</h3><p>An invalid sequence may reveal truncation, the wrong encoding, or arbitrary binary content. Keep the original bits when investigating the source.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local conversion, explicit limits</p><h2 id="privacy-heading">Translate copied byte strings without a remote service</h2></div>
+        <div class="prose-grid"><div>
+          <p>Text encoding and binary decoding run in the current browser tab. LiveParse does not send input to a translation endpoint, save a history, identify the content, or try the result as code. The interface displays a bounded limit so conversion and output rendering remain responsive.</p>
+          <p>Binary notation does not conceal content. Anyone who receives the bits can recover valid UTF-8 text. Remove secrets before copying output to an issue, chat, documentation page, or prompt, and remember that browser extensions and clipboard managers operate outside the page.</p>
+          <p>For normative behavior, consult the <a href="https://encoding.spec.whatwg.org/#utf-8" rel="external">WHATWG UTF-8 encoding definition</a> and the <a href="https://www.unicode.org/versions/latest/" rel="external">Unicode Standard</a>. The <a href="https://www.rfc-editor.org/info/rfc20" rel="external">RFC 20 ASCII table</a> documents the 7-bit range that UTF-8 preserves as identical single-byte values.</p>
+        </div><div class="callout-card"><strong>Prefer a reference lookup?</strong><p>Find one ASCII-range character's decimal, hexadecimal, octal, and 8-bit binary values without translating a whole message.</p><a href="/ascii-table/">Open the ASCII Table →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Binary translator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How does the binary translator convert text?</summary><p>It encodes the text as UTF-8, then writes every resulting byte as eight binary digits. ASCII-range characters keep their familiar one-byte values, while many other Unicode characters require two, three, or four bytes.</p></details>
+          <details><summary>Why is character 0 different from numeric zero?</summary><p>The numeric value zero is binary 0. The text character 0 is Unicode U+0030, which UTF-8 encodes as byte 30 hexadecimal or 00110000 binary. A numeral converter and a text translator therefore answer different questions.</p></details>
+          <details><summary>Must binary text be grouped into eight bits?</summary><p>UTF-8 is a byte encoding, so decoding begins with complete 8-bit octets. Supported visual separators may be ignored as shown by the interface, but the remaining bit count must form complete bytes; the tool does not pad an incomplete final group.</p></details>
+          <details><summary>What happens when binary bytes are invalid UTF-8?</summary><p>The translation stops with a diagnostic instead of inserting replacement characters. This preserves evidence that the input is truncated, malformed, uses another encoding, or contains arbitrary binary data rather than valid UTF-8 text.</p></details>
+          <details><summary>Can a binary translator decrypt a message or open a binary file?</summary><p>No. It only changes between UTF-8 text and an explicit binary display of those bytes. It does not decrypt ciphertext, decompress data, execute machine code, identify file formats, or recover meaning from arbitrary bytes.</p></details>
+          <details><summary>Is binary or text input uploaded?</summary><p>No. UTF-8 encoding and strict decoding run in the current browser tab without sending the input to a translation service. The bounded input limit shown in the interface protects responsiveness; clipboard tools and extensions remain separate boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue translating</p><h2 id="related-heading">Binary, hex, and text resources</h2></div><ul><li><a href="/binary-converter/">Binary Converter</a></li><li><a href="/hex-converter/">Hex Converter</a></li><li><a href="/ascii-table/">ASCII Table</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="/guides/binary-decimal-hex-octal-conversion/">Manual number-base conversion</a></li><li><a href="/guides/twos-complement-signed-binary/">Two's-complement signed binary</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/binary-converter/">Binary Numbers</a><a href="/hex-converter/">Hex</a><a href="/ascii-table/">ASCII</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Translate complete UTF-8 bytes without guessing.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive binary translation. The UTF-8, byte-boundary, validation, scope, and privacy guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/binary.tsx"></script>
+  </body>
+</html>

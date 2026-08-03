@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASCII Table – Decimal, Hex, Octal &amp; Binary Codes | LiveParse</title>
+    <meta name="description" content="Search all 128 ASCII codes by character, name, decimal, hexadecimal, octal, or binary; inspect control characters and copy exact values." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ascii-table/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/binary.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ascii-table/" />
+    <meta property="og:title" content="Complete 7-Bit ASCII Table with Decimal, Hex, Octal and Binary" />
+    <meta property="og:description" content="Search the 128 standard ASCII positions, including safe labels for control codes and exact 8-bit padded views." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse searchable ASCII reference table" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Complete ASCII Code Table | LiveParse" />
+    <meta name="twitter:description" content="Look up all 128 ASCII codes in decimal, hexadecimal, octal, and 8-bit binary." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ascii-table/#application",
+            "name": "LiveParse ASCII Table",
+            "url": "https://liveparse.com/ascii-table/",
+            "applicationCategory": "ReferenceApplication",
+            "applicationSubCategory": "7-bit ASCII code reference",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "The complete table is readable without JavaScript; interactive filtering requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Search and inspect all 128 standard 7-bit ASCII positions with decimal, hexadecimal, octal, 8-bit padded binary, safe symbol labels, and control-code names.",
+            "featureList": [
+              "Include all ASCII values from 0 through 127 in the initial HTML",
+              "Show decimal, hexadecimal, octal, and 8-bit padded binary values",
+              "Label control codes without inserting raw control characters into the page",
+              "Search by character, abbreviation, name, or numeric representation",
+              "Separate control codes from printable characters",
+              "Link ASCII values to their identical one-byte representation in UTF-8"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ascii-table/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "ASCII Table", "item": "https://liveparse.com/ascii-table/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ascii-table/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How many values are in the ASCII table?", "acceptedAnswer": { "@type": "Answer", "text": "Standard ASCII is a 7-bit code with 128 positions numbered 0 through 127. This table includes exactly that range and does not treat values 128 through 255 as additional ASCII characters." } },
+              { "@type": "Question", "name": "Why does the table show eight binary digits for a 7-bit code?", "acceptedAnswer": { "@type": "Answer", "text": "ASCII values require only seven significant bits, but computers commonly store and display them in an octet. The leftmost bit is therefore zero in the 8-bit padded column; the padding does not expand the ASCII range." } },
+              { "@type": "Question", "name": "Which ASCII codes are control characters?", "acceptedAnswer": { "@type": "Answer", "text": "Values 0 through 31 are C0 control codes, and value 127 is DEL. The page displays abbreviations such as NUL, LF, CR, ESC, and DEL rather than inserting raw control bytes into the document." } },
+              { "@type": "Question", "name": "Is a space an ASCII character?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Space is decimal 32, hexadecimal 20, octal 040, and binary 00100000. It is part of ASCII even though it does not draw a visible mark, so the table labels it SP." } },
+              { "@type": "Question", "name": "How does ASCII relate to UTF-8?", "acceptedAnswer": { "@type": "Answer", "text": "Unicode code points U+0000 through U+007F correspond to the ASCII range, and UTF-8 encodes each with the same single-byte value. Characters beyond that range use other Unicode code points and may require multiple UTF-8 bytes." } },
+              { "@type": "Question", "name": "Does using the ASCII table upload anything?", "acceptedAnswer": { "@type": "Answer", "text": "No. All 128 rows are present in the page itself, and interactive search or copying happens in the browser. The table never sends a lookup term or selected value to an ASCII service." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="binary-page" data-page="ascii-table">
+    <a class="skip-link" href="#ascii-reference">Skip to the ASCII table</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/binary-translator/">Binary Translator</a><a href="/binary-converter/">Binary Converter</a><a href="/hex-converter/">Hex Converter</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">128 standard codes · Safe control labels · Searchable</p>
+          <h1>ASCII Table</h1>
+          <p class="hero-lead">Look up every standard ASCII value from 0 through 127 in decimal, hexadecimal, octal, and 8-bit padded binary. Search printable characters and control names without placing raw control bytes in the page.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#ascii-reference">Browse the table</a><span>Complete in HTML · No sign-up · Browser local</span></div>
+        </div>
+        <div class="hero-example" aria-label="ASCII uppercase A example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>ASCII A</strong></div>
+          <pre><code><span class="property">decimal</span> <span class="string">65</span>
+<span class="property">hex</span>     <span class="boolean">0x41</span>
+<span class="property">binary</span>  <span class="boolean">01000001</span></code></pre>
+          <p><strong>U+0041 · LATIN CAPITAL LETTER A</strong><span>Same one-byte value in UTF-8</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="ascii-tool" aria-labelledby="ascii-tool-heading">
+        <div><p class="section-kicker">Search one standard range</p><h2 id="ascii-tool-heading">Find an ASCII character or code</h2></div>
+        <p>Use the interactive filter for a character, abbreviation, name, decimal value, hex byte, octal value, or binary code. The complete 128-row reference remains below even when JavaScript is unavailable.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="ASCII table controls loading"><p><strong>Loading ASCII search controls…</strong></p><p>The complete table is already readable below. Enable JavaScript to filter rows and copy formatted values.</p></section></div>
+
+      <section class="content-section ascii-reference-section" id="ascii-reference" aria-labelledby="table-heading">
+        <div class="section-heading"><p class="section-kicker">RFC 20 code positions 0–127</p><h2 id="table-heading">Complete ASCII code table</h2></div>
+        <p>The binary column pads each 7-bit ASCII value to a full octet for familiar byte-oriented display. Control rows use safe abbreviations; they do not contain the raw control character. Scroll horizontally on a small screen.</p>
+        <div class="table-wrap ascii-table-wrap">
+          <table class="ascii-table">
+            <caption>All 128 ASCII values with decimal, hexadecimal, octal, 8-bit binary, safe symbol, and name</caption>
+            <thead><tr><th scope="col">Dec</th><th scope="col">Hex</th><th scope="col">Octal</th><th scope="col">8-bit binary</th><th scope="col">Symbol</th><th scope="col">Name</th></tr></thead>
+            <tbody>
+              <tr data-ascii-code="0"><td>0</td><td><code>0x00</code></td><td><code>000</code></td><td><code>00000000</code></td><td><code>NUL</code></td><td>Null</td></tr>
+              <tr data-ascii-code="1"><td>1</td><td><code>0x01</code></td><td><code>001</code></td><td><code>00000001</code></td><td><code>SOH</code></td><td>Start of Heading</td></tr>
+              <tr data-ascii-code="2"><td>2</td><td><code>0x02</code></td><td><code>002</code></td><td><code>00000010</code></td><td><code>STX</code></td><td>Start of Text</td></tr>
+              <tr data-ascii-code="3"><td>3</td><td><code>0x03</code></td><td><code>003</code></td><td><code>00000011</code></td><td><code>ETX</code></td><td>End of Text</td></tr>
+              <tr data-ascii-code="4"><td>4</td><td><code>0x04</code></td><td><code>004</code></td><td><code>00000100</code></td><td><code>EOT</code></td><td>End of Transmission</td></tr>
+              <tr data-ascii-code="5"><td>5</td><td><code>0x05</code></td><td><code>005</code></td><td><code>00000101</code></td><td><code>ENQ</code></td><td>Enquiry</td></tr>
+              <tr data-ascii-code="6"><td>6</td><td><code>0x06</code></td><td><code>006</code></td><td><code>00000110</code></td><td><code>ACK</code></td><td>Acknowledge</td></tr>
+              <tr data-ascii-code="7"><td>7</td><td><code>0x07</code></td><td><code>007</code></td><td><code>00000111</code></td><td><code>BEL</code></td><td>Bell</td></tr>
+              <tr data-ascii-code="8"><td>8</td><td><code>0x08</code></td><td><code>010</code></td><td><code>00001000</code></td><td><code>BS</code></td><td>Backspace</td></tr>
+              <tr data-ascii-code="9"><td>9</td><td><code>0x09</code></td><td><code>011</code></td><td><code>00001001</code></td><td><code>HT</code></td><td>Horizontal Tab</td></tr>
+              <tr data-ascii-code="10"><td>10</td><td><code>0x0A</code></td><td><code>012</code></td><td><code>00001010</code></td><td><code>LF</code></td><td>Line Feed</td></tr>
+              <tr data-ascii-code="11"><td>11</td><td><code>0x0B</code></td><td><code>013</code></td><td><code>00001011</code></td><td><code>VT</code></td><td>Vertical Tab</td></tr>
+              <tr data-ascii-code="12"><td>12</td><td><code>0x0C</code></td><td><code>014</code></td><td><code>00001100</code></td><td><code>FF</code></td><td>Form Feed</td></tr>
+              <tr data-ascii-code="13"><td>13</td><td><code>0x0D</code></td><td><code>015</code></td><td><code>00001101</code></td><td><code>CR</code></td><td>Carriage Return</td></tr>
+              <tr data-ascii-code="14"><td>14</td><td><code>0x0E</code></td><td><code>016</code></td><td><code>00001110</code></td><td><code>SO</code></td><td>Shift Out</td></tr>
+              <tr data-ascii-code="15"><td>15</td><td><code>0x0F</code></td><td><code>017</code></td><td><code>00001111</code></td><td><code>SI</code></td><td>Shift In</td></tr>
+              <tr data-ascii-code="16"><td>16</td><td><code>0x10</code></td><td><code>020</code></td><td><code>00010000</code></td><td><code>DLE</code></td><td>Data Link Escape</td></tr>
+              <tr data-ascii-code="17"><td>17</td><td><code>0x11</code></td><td><code>021</code></td><td><code>00010001</code></td><td><code>DC1</code></td><td>Device Control One</td></tr>
+              <tr data-ascii-code="18"><td>18</td><td><code>0x12</code></td><td><code>022</code></td><td><code>00010010</code></td><td><code>DC2</code></td><td>Device Control Two</td></tr>
+              <tr data-ascii-code="19"><td>19</td><td><code>0x13</code></td><td><code>023</code></td><td><code>00010011</code></td><td><code>DC3</code></td><td>Device Control Three</td></tr>
+              <tr data-ascii-code="20"><td>20</td><td><code>0x14</code></td><td><code>024</code></td><td><code>00010100</code></td><td><code>DC4</code></td><td>Device Control Four</td></tr>
+              <tr data-ascii-code="21"><td>21</td><td><code>0x15</code></td><td><code>025</code></td><td><code>00010101</code></td><td><code>NAK</code></td><td>Negative Acknowledge</td></tr>
+              <tr data-ascii-code="22"><td>22</td><td><code>0x16</code></td><td><code>026</code></td><td><code>00010110</code></td><td><code>SYN</code></td><td>Synchronous Idle</td></tr>
+              <tr data-ascii-code="23"><td>23</td><td><code>0x17</code></td><td><code>027</code></td><td><code>00010111</code></td><td><code>ETB</code></td><td>End of Transmission Block</td></tr>
+              <tr data-ascii-code="24"><td>24</td><td><code>0x18</code></td><td><code>030</code></td><td><code>00011000</code></td><td><code>CAN</code></td><td>Cancel</td></tr>
+              <tr data-ascii-code="25"><td>25</td><td><code>0x19</code></td><td><code>031</code></td><td><code>00011001</code></td><td><code>EM</code></td><td>End of Medium</td></tr>
+              <tr data-ascii-code="26"><td>26</td><td><code>0x1A</code></td><td><code>032</code></td><td><code>00011010</code></td><td><code>SUB</code></td><td>Substitute</td></tr>
+              <tr data-ascii-code="27"><td>27</td><td><code>0x1B</code></td><td><code>033</code></td><td><code>00011011</code></td><td><code>ESC</code></td><td>Escape</td></tr>
+              <tr data-ascii-code="28"><td>28</td><td><code>0x1C</code></td><td><code>034</code></td><td><code>00011100</code></td><td><code>FS</code></td><td>File Separator</td></tr>
+              <tr data-ascii-code="29"><td>29</td><td><code>0x1D</code></td><td><code>035</code></td><td><code>00011101</code></td><td><code>GS</code></td><td>Group Separator</td></tr>
+              <tr data-ascii-code="30"><td>30</td><td><code>0x1E</code></td><td><code>036</code></td><td><code>00011110</code></td><td><code>RS</code></td><td>Record Separator</td></tr>
+              <tr data-ascii-code="31"><td>31</td><td><code>0x1F</code></td><td><code>037</code></td><td><code>00011111</code></td><td><code>US</code></td><td>Unit Separator</td></tr>
+              <tr data-ascii-code="32"><td>32</td><td><code>0x20</code></td><td><code>040</code></td><td><code>00100000</code></td><td><code>SP</code></td><td>Space</td></tr>
+              <tr data-ascii-code="33"><td>33</td><td><code>0x21</code></td><td><code>041</code></td><td><code>00100001</code></td><td><code aria-label="Exclamation Mark">&#33;</code></td><td>Exclamation Mark</td></tr>
+              <tr data-ascii-code="34"><td>34</td><td><code>0x22</code></td><td><code>042</code></td><td><code>00100010</code></td><td><code aria-label="Quotation Mark">&#34;</code></td><td>Quotation Mark</td></tr>
+              <tr data-ascii-code="35"><td>35</td><td><code>0x23</code></td><td><code>043</code></td><td><code>00100011</code></td><td><code aria-label="Number Sign">&#35;</code></td><td>Number Sign</td></tr>
+              <tr data-ascii-code="36"><td>36</td><td><code>0x24</code></td><td><code>044</code></td><td><code>00100100</code></td><td><code aria-label="Dollar Sign">&#36;</code></td><td>Dollar Sign</td></tr>
+              <tr data-ascii-code="37"><td>37</td><td><code>0x25</code></td><td><code>045</code></td><td><code>00100101</code></td><td><code aria-label="Percent Sign">&#37;</code></td><td>Percent Sign</td></tr>
+              <tr data-ascii-code="38"><td>38</td><td><code>0x26</code></td><td><code>046</code></td><td><code>00100110</code></td><td><code aria-label="Ampersand">&#38;</code></td><td>Ampersand</td></tr>
+              <tr data-ascii-code="39"><td>39</td><td><code>0x27</code></td><td><code>047</code></td><td><code>00100111</code></td><td><code aria-label="Apostrophe">&#39;</code></td><td>Apostrophe</td></tr>
+              <tr data-ascii-code="40"><td>40</td><td><code>0x28</code></td><td><code>050</code></td><td><code>00101000</code></td><td><code aria-label="Left Parenthesis">&#40;</code></td><td>Left Parenthesis</td></tr>
+              <tr data-ascii-code="41"><td>41</td><td><code>0x29</code></td><td><code>051</code></td><td><code>00101001</code></td><td><code aria-label="Right Parenthesis">&#41;</code></td><td>Right Parenthesis</td></tr>
+              <tr data-ascii-code="42"><td>42</td><td><code>0x2A</code></td><td><code>052</code></td><td><code>00101010</code></td><td><code aria-label="Asterisk">&#42;</code></td><td>Asterisk</td></tr>
+              <tr data-ascii-code="43"><td>43</td><td><code>0x2B</code></td><td><code>053</code></td><td><code>00101011</code></td><td><code aria-label="Plus Sign">&#43;</code></td><td>Plus Sign</td></tr>
+              <tr data-ascii-code="44"><td>44</td><td><code>0x2C</code></td><td><code>054</code></td><td><code>00101100</code></td><td><code aria-label="Comma">&#44;</code></td><td>Comma</td></tr>
+              <tr data-ascii-code="45"><td>45</td><td><code>0x2D</code></td><td><code>055</code></td><td><code>00101101</code></td><td><code aria-label="Hyphen-Minus">&#45;</code></td><td>Hyphen-Minus</td></tr>
+              <tr data-ascii-code="46"><td>46</td><td><code>0x2E</code></td><td><code>056</code></td><td><code>00101110</code></td><td><code aria-label="Full Stop">&#46;</code></td><td>Full Stop</td></tr>
+              <tr data-ascii-code="47"><td>47</td><td><code>0x2F</code></td><td><code>057</code></td><td><code>00101111</code></td><td><code aria-label="Solidus">&#47;</code></td><td>Solidus</td></tr>
+              <tr data-ascii-code="48"><td>48</td><td><code>0x30</code></td><td><code>060</code></td><td><code>00110000</code></td><td><code aria-label="Digit Zero">&#48;</code></td><td>Digit Zero</td></tr>
+              <tr data-ascii-code="49"><td>49</td><td><code>0x31</code></td><td><code>061</code></td><td><code>00110001</code></td><td><code aria-label="Digit One">&#49;</code></td><td>Digit One</td></tr>
+              <tr data-ascii-code="50"><td>50</td><td><code>0x32</code></td><td><code>062</code></td><td><code>00110010</code></td><td><code aria-label="Digit Two">&#50;</code></td><td>Digit Two</td></tr>
+              <tr data-ascii-code="51"><td>51</td><td><code>0x33</code></td><td><code>063</code></td><td><code>00110011</code></td><td><code aria-label="Digit Three">&#51;</code></td><td>Digit Three</td></tr>
+              <tr data-ascii-code="52"><td>52</td><td><code>0x34</code></td><td><code>064</code></td><td><code>00110100</code></td><td><code aria-label="Digit Four">&#52;</code></td><td>Digit Four</td></tr>
+              <tr data-ascii-code="53"><td>53</td><td><code>0x35</code></td><td><code>065</code></td><td><code>00110101</code></td><td><code aria-label="Digit Five">&#53;</code></td><td>Digit Five</td></tr>
+              <tr data-ascii-code="54"><td>54</td><td><code>0x36</code></td><td><code>066</code></td><td><code>00110110</code></td><td><code aria-label="Digit Six">&#54;</code></td><td>Digit Six</td></tr>
+              <tr data-ascii-code="55"><td>55</td><td><code>0x37</code></td><td><code>067</code></td><td><code>00110111</code></td><td><code aria-label="Digit Seven">&#55;</code></td><td>Digit Seven</td></tr>
+              <tr data-ascii-code="56"><td>56</td><td><code>0x38</code></td><td><code>070</code></td><td><code>00111000</code></td><td><code aria-label="Digit Eight">&#56;</code></td><td>Digit Eight</td></tr>
+              <tr data-ascii-code="57"><td>57</td><td><code>0x39</code></td><td><code>071</code></td><td><code>00111001</code></td><td><code aria-label="Digit Nine">&#57;</code></td><td>Digit Nine</td></tr>
+              <tr data-ascii-code="58"><td>58</td><td><code>0x3A</code></td><td><code>072</code></td><td><code>00111010</code></td><td><code aria-label="Colon">&#58;</code></td><td>Colon</td></tr>
+              <tr data-ascii-code="59"><td>59</td><td><code>0x3B</code></td><td><code>073</code></td><td><code>00111011</code></td><td><code aria-label="Semicolon">&#59;</code></td><td>Semicolon</td></tr>
+              <tr data-ascii-code="60"><td>60</td><td><code>0x3C</code></td><td><code>074</code></td><td><code>00111100</code></td><td><code aria-label="Less-Than Sign">&#60;</code></td><td>Less-Than Sign</td></tr>
+              <tr data-ascii-code="61"><td>61</td><td><code>0x3D</code></td><td><code>075</code></td><td><code>00111101</code></td><td><code aria-label="Equals Sign">&#61;</code></td><td>Equals Sign</td></tr>
+              <tr data-ascii-code="62"><td>62</td><td><code>0x3E</code></td><td><code>076</code></td><td><code>00111110</code></td><td><code aria-label="Greater-Than Sign">&#62;</code></td><td>Greater-Than Sign</td></tr>
+              <tr data-ascii-code="63"><td>63</td><td><code>0x3F</code></td><td><code>077</code></td><td><code>00111111</code></td><td><code aria-label="Question Mark">&#63;</code></td><td>Question Mark</td></tr>
+              <tr data-ascii-code="64"><td>64</td><td><code>0x40</code></td><td><code>100</code></td><td><code>01000000</code></td><td><code aria-label="Commercial At">&#64;</code></td><td>Commercial At</td></tr>
+              <tr data-ascii-code="65"><td>65</td><td><code>0x41</code></td><td><code>101</code></td><td><code>01000001</code></td><td><code aria-label="Latin Capital Letter A">&#65;</code></td><td>Latin Capital Letter A</td></tr>
+              <tr data-ascii-code="66"><td>66</td><td><code>0x42</code></td><td><code>102</code></td><td><code>01000010</code></td><td><code aria-label="Latin Capital Letter B">&#66;</code></td><td>Latin Capital Letter B</td></tr>
+              <tr data-ascii-code="67"><td>67</td><td><code>0x43</code></td><td><code>103</code></td><td><code>01000011</code></td><td><code aria-label="Latin Capital Letter C">&#67;</code></td><td>Latin Capital Letter C</td></tr>
+              <tr data-ascii-code="68"><td>68</td><td><code>0x44</code></td><td><code>104</code></td><td><code>01000100</code></td><td><code aria-label="Latin Capital Letter D">&#68;</code></td><td>Latin Capital Letter D</td></tr>
+              <tr data-ascii-code="69"><td>69</td><td><code>0x45</code></td><td><code>105</code></td><td><code>01000101</code></td><td><code aria-label="Latin Capital Letter E">&#69;</code></td><td>Latin Capital Letter E</td></tr>
+              <tr data-ascii-code="70"><td>70</td><td><code>0x46</code></td><td><code>106</code></td><td><code>01000110</code></td><td><code aria-label="Latin Capital Letter F">&#70;</code></td><td>Latin Capital Letter F</td></tr>
+              <tr data-ascii-code="71"><td>71</td><td><code>0x47</code></td><td><code>107</code></td><td><code>01000111</code></td><td><code aria-label="Latin Capital Letter G">&#71;</code></td><td>Latin Capital Letter G</td></tr>
+              <tr data-ascii-code="72"><td>72</td><td><code>0x48</code></td><td><code>110</code></td><td><code>01001000</code></td><td><code aria-label="Latin Capital Letter H">&#72;</code></td><td>Latin Capital Letter H</td></tr>
+              <tr data-ascii-code="73"><td>73</td><td><code>0x49</code></td><td><code>111</code></td><td><code>01001001</code></td><td><code aria-label="Latin Capital Letter I">&#73;</code></td><td>Latin Capital Letter I</td></tr>
+              <tr data-ascii-code="74"><td>74</td><td><code>0x4A</code></td><td><code>112</code></td><td><code>01001010</code></td><td><code aria-label="Latin Capital Letter J">&#74;</code></td><td>Latin Capital Letter J</td></tr>
+              <tr data-ascii-code="75"><td>75</td><td><code>0x4B</code></td><td><code>113</code></td><td><code>01001011</code></td><td><code aria-label="Latin Capital Letter K">&#75;</code></td><td>Latin Capital Letter K</td></tr>
+              <tr data-ascii-code="76"><td>76</td><td><code>0x4C</code></td><td><code>114</code></td><td><code>01001100</code></td><td><code aria-label="Latin Capital Letter L">&#76;</code></td><td>Latin Capital Letter L</td></tr>
+              <tr data-ascii-code="77"><td>77</td><td><code>0x4D</code></td><td><code>115</code></td><td><code>01001101</code></td><td><code aria-label="Latin Capital Letter M">&#77;</code></td><td>Latin Capital Letter M</td></tr>
+              <tr data-ascii-code="78"><td>78</td><td><code>0x4E</code></td><td><code>116</code></td><td><code>01001110</code></td><td><code aria-label="Latin Capital Letter N">&#78;</code></td><td>Latin Capital Letter N</td></tr>
+              <tr data-ascii-code="79"><td>79</td><td><code>0x4F</code></td><td><code>117</code></td><td><code>01001111</code></td><td><code aria-label="Latin Capital Letter O">&#79;</code></td><td>Latin Capital Letter O</td></tr>
+              <tr data-ascii-code="80"><td>80</td><td><code>0x50</code></td><td><code>120</code></td><td><code>01010000</code></td><td><code aria-label="Latin Capital Letter P">&#80;</code></td><td>Latin Capital Letter P</td></tr>
+              <tr data-ascii-code="81"><td>81</td><td><code>0x51</code></td><td><code>121</code></td><td><code>01010001</code></td><td><code aria-label="Latin Capital Letter Q">&#81;</code></td><td>Latin Capital Letter Q</td></tr>
+              <tr data-ascii-code="82"><td>82</td><td><code>0x52</code></td><td><code>122</code></td><td><code>01010010</code></td><td><code aria-label="Latin Capital Letter R">&#82;</code></td><td>Latin Capital Letter R</td></tr>
+              <tr data-ascii-code="83"><td>83</td><td><code>0x53</code></td><td><code>123</code></td><td><code>01010011</code></td><td><code aria-label="Latin Capital Letter S">&#83;</code></td><td>Latin Capital Letter S</td></tr>
+              <tr data-ascii-code="84"><td>84</td><td><code>0x54</code></td><td><code>124</code></td><td><code>01010100</code></td><td><code aria-label="Latin Capital Letter T">&#84;</code></td><td>Latin Capital Letter T</td></tr>
+              <tr data-ascii-code="85"><td>85</td><td><code>0x55</code></td><td><code>125</code></td><td><code>01010101</code></td><td><code aria-label="Latin Capital Letter U">&#85;</code></td><td>Latin Capital Letter U</td></tr>
+              <tr data-ascii-code="86"><td>86</td><td><code>0x56</code></td><td><code>126</code></td><td><code>01010110</code></td><td><code aria-label="Latin Capital Letter V">&#86;</code></td><td>Latin Capital Letter V</td></tr>
+              <tr data-ascii-code="87"><td>87</td><td><code>0x57</code></td><td><code>127</code></td><td><code>01010111</code></td><td><code aria-label="Latin Capital Letter W">&#87;</code></td><td>Latin Capital Letter W</td></tr>
+              <tr data-ascii-code="88"><td>88</td><td><code>0x58</code></td><td><code>130</code></td><td><code>01011000</code></td><td><code aria-label="Latin Capital Letter X">&#88;</code></td><td>Latin Capital Letter X</td></tr>
+              <tr data-ascii-code="89"><td>89</td><td><code>0x59</code></td><td><code>131</code></td><td><code>01011001</code></td><td><code aria-label="Latin Capital Letter Y">&#89;</code></td><td>Latin Capital Letter Y</td></tr>
+              <tr data-ascii-code="90"><td>90</td><td><code>0x5A</code></td><td><code>132</code></td><td><code>01011010</code></td><td><code aria-label="Latin Capital Letter Z">&#90;</code></td><td>Latin Capital Letter Z</td></tr>
+              <tr data-ascii-code="91"><td>91</td><td><code>0x5B</code></td><td><code>133</code></td><td><code>01011011</code></td><td><code aria-label="Left Square Bracket">&#91;</code></td><td>Left Square Bracket</td></tr>
+              <tr data-ascii-code="92"><td>92</td><td><code>0x5C</code></td><td><code>134</code></td><td><code>01011100</code></td><td><code aria-label="Reverse Solidus">&#92;</code></td><td>Reverse Solidus</td></tr>
+              <tr data-ascii-code="93"><td>93</td><td><code>0x5D</code></td><td><code>135</code></td><td><code>01011101</code></td><td><code aria-label="Right Square Bracket">&#93;</code></td><td>Right Square Bracket</td></tr>
+              <tr data-ascii-code="94"><td>94</td><td><code>0x5E</code></td><td><code>136</code></td><td><code>01011110</code></td><td><code aria-label="Circumflex Accent">&#94;</code></td><td>Circumflex Accent</td></tr>
+              <tr data-ascii-code="95"><td>95</td><td><code>0x5F</code></td><td><code>137</code></td><td><code>01011111</code></td><td><code aria-label="Low Line">&#95;</code></td><td>Low Line</td></tr>
+              <tr data-ascii-code="96"><td>96</td><td><code>0x60</code></td><td><code>140</code></td><td><code>01100000</code></td><td><code aria-label="Grave Accent">&#96;</code></td><td>Grave Accent</td></tr>
+              <tr data-ascii-code="97"><td>97</td><td><code>0x61</code></td><td><code>141</code></td><td><code>01100001</code></td><td><code aria-label="Latin Small Letter A">&#97;</code></td><td>Latin Small Letter A</td></tr>
+              <tr data-ascii-code="98"><td>98</td><td><code>0x62</code></td><td><code>142</code></td><td><code>01100010</code></td><td><code aria-label="Latin Small Letter B">&#98;</code></td><td>Latin Small Letter B</td></tr>
+              <tr data-ascii-code="99"><td>99</td><td><code>0x63</code></td><td><code>143</code></td><td><code>01100011</code></td><td><code aria-label="Latin Small Letter C">&#99;</code></td><td>Latin Small Letter C</td></tr>
+              <tr data-ascii-code="100"><td>100</td><td><code>0x64</code></td><td><code>144</code></td><td><code>01100100</code></td><td><code aria-label="Latin Small Letter D">&#100;</code></td><td>Latin Small Letter D</td></tr>
+              <tr data-ascii-code="101"><td>101</td><td><code>0x65</code></td><td><code>145</code></td><td><code>01100101</code></td><td><code aria-label="Latin Small Letter E">&#101;</code></td><td>Latin Small Letter E</td></tr>
+              <tr data-ascii-code="102"><td>102</td><td><code>0x66</code></td><td><code>146</code></td><td><code>01100110</code></td><td><code aria-label="Latin Small Letter F">&#102;</code></td><td>Latin Small Letter F</td></tr>
+              <tr data-ascii-code="103"><td>103</td><td><code>0x67</code></td><td><code>147</code></td><td><code>01100111</code></td><td><code aria-label="Latin Small Letter G">&#103;</code></td><td>Latin Small Letter G</td></tr>
+              <tr data-ascii-code="104"><td>104</td><td><code>0x68</code></td><td><code>150</code></td><td><code>01101000</code></td><td><code aria-label="Latin Small Letter H">&#104;</code></td><td>Latin Small Letter H</td></tr>
+              <tr data-ascii-code="105"><td>105</td><td><code>0x69</code></td><td><code>151</code></td><td><code>01101001</code></td><td><code aria-label="Latin Small Letter I">&#105;</code></td><td>Latin Small Letter I</td></tr>
+              <tr data-ascii-code="106"><td>106</td><td><code>0x6A</code></td><td><code>152</code></td><td><code>01101010</code></td><td><code aria-label="Latin Small Letter J">&#106;</code></td><td>Latin Small Letter J</td></tr>
+              <tr data-ascii-code="107"><td>107</td><td><code>0x6B</code></td><td><code>153</code></td><td><code>01101011</code></td><td><code aria-label="Latin Small Letter K">&#107;</code></td><td>Latin Small Letter K</td></tr>
+              <tr data-ascii-code="108"><td>108</td><td><code>0x6C</code></td><td><code>154</code></td><td><code>01101100</code></td><td><code aria-label="Latin Small Letter L">&#108;</code></td><td>Latin Small Letter L</td></tr>
+              <tr data-ascii-code="109"><td>109</td><td><code>0x6D</code></td><td><code>155</code></td><td><code>01101101</code></td><td><code aria-label="Latin Small Letter M">&#109;</code></td><td>Latin Small Letter M</td></tr>
+              <tr data-ascii-code="110"><td>110</td><td><code>0x6E</code></td><td><code>156</code></td><td><code>01101110</code></td><td><code aria-label="Latin Small Letter N">&#110;</code></td><td>Latin Small Letter N</td></tr>
+              <tr data-ascii-code="111"><td>111</td><td><code>0x6F</code></td><td><code>157</code></td><td><code>01101111</code></td><td><code aria-label="Latin Small Letter O">&#111;</code></td><td>Latin Small Letter O</td></tr>
+              <tr data-ascii-code="112"><td>112</td><td><code>0x70</code></td><td><code>160</code></td><td><code>01110000</code></td><td><code aria-label="Latin Small Letter P">&#112;</code></td><td>Latin Small Letter P</td></tr>
+              <tr data-ascii-code="113"><td>113</td><td><code>0x71</code></td><td><code>161</code></td><td><code>01110001</code></td><td><code aria-label="Latin Small Letter Q">&#113;</code></td><td>Latin Small Letter Q</td></tr>
+              <tr data-ascii-code="114"><td>114</td><td><code>0x72</code></td><td><code>162</code></td><td><code>01110010</code></td><td><code aria-label="Latin Small Letter R">&#114;</code></td><td>Latin Small Letter R</td></tr>
+              <tr data-ascii-code="115"><td>115</td><td><code>0x73</code></td><td><code>163</code></td><td><code>01110011</code></td><td><code aria-label="Latin Small Letter S">&#115;</code></td><td>Latin Small Letter S</td></tr>
+              <tr data-ascii-code="116"><td>116</td><td><code>0x74</code></td><td><code>164</code></td><td><code>01110100</code></td><td><code aria-label="Latin Small Letter T">&#116;</code></td><td>Latin Small Letter T</td></tr>
+              <tr data-ascii-code="117"><td>117</td><td><code>0x75</code></td><td><code>165</code></td><td><code>01110101</code></td><td><code aria-label="Latin Small Letter U">&#117;</code></td><td>Latin Small Letter U</td></tr>
+              <tr data-ascii-code="118"><td>118</td><td><code>0x76</code></td><td><code>166</code></td><td><code>01110110</code></td><td><code aria-label="Latin Small Letter V">&#118;</code></td><td>Latin Small Letter V</td></tr>
+              <tr data-ascii-code="119"><td>119</td><td><code>0x77</code></td><td><code>167</code></td><td><code>01110111</code></td><td><code aria-label="Latin Small Letter W">&#119;</code></td><td>Latin Small Letter W</td></tr>
+              <tr data-ascii-code="120"><td>120</td><td><code>0x78</code></td><td><code>170</code></td><td><code>01111000</code></td><td><code aria-label="Latin Small Letter X">&#120;</code></td><td>Latin Small Letter X</td></tr>
+              <tr data-ascii-code="121"><td>121</td><td><code>0x79</code></td><td><code>171</code></td><td><code>01111001</code></td><td><code aria-label="Latin Small Letter Y">&#121;</code></td><td>Latin Small Letter Y</td></tr>
+              <tr data-ascii-code="122"><td>122</td><td><code>0x7A</code></td><td><code>172</code></td><td><code>01111010</code></td><td><code aria-label="Latin Small Letter Z">&#122;</code></td><td>Latin Small Letter Z</td></tr>
+              <tr data-ascii-code="123"><td>123</td><td><code>0x7B</code></td><td><code>173</code></td><td><code>01111011</code></td><td><code aria-label="Left Curly Bracket">&#123;</code></td><td>Left Curly Bracket</td></tr>
+              <tr data-ascii-code="124"><td>124</td><td><code>0x7C</code></td><td><code>174</code></td><td><code>01111100</code></td><td><code aria-label="Vertical Line">&#124;</code></td><td>Vertical Line</td></tr>
+              <tr data-ascii-code="125"><td>125</td><td><code>0x7D</code></td><td><code>175</code></td><td><code>01111101</code></td><td><code aria-label="Right Curly Bracket">&#125;</code></td><td>Right Curly Bracket</td></tr>
+              <tr data-ascii-code="126"><td>126</td><td><code>0x7E</code></td><td><code>176</code></td><td><code>01111110</code></td><td><code aria-label="Tilde">&#126;</code></td><td>Tilde</td></tr>
+              <tr data-ascii-code="127"><td>127</td><td><code>0x7F</code></td><td><code>177</code></td><td><code>01111111</code></td><td><code>DEL</code></td><td>Delete</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="range-heading">
+        <div class="section-heading"><p class="section-kicker">Seven significant bits</p><h2 id="range-heading">ASCII range, printable characters, and control codes</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>ASCII defines 128 code positions because seven bits provide values from 0 through 127. Values 0 through 31 originated as controls for communication and device behavior; value 127 is DEL. Values 32 through 126 cover space, punctuation, decimal digits, uppercase letters, lowercase letters, and additional symbols.</p>
+            <p>The 8-bit binary column is a padded view of the same 7-bit value. Decimal 65 needs the significant bits <code>1000001</code>; writing <code>01000001</code> aligns it to an octet. The added leading zero does not create another character set or change the value.</p>
+            <p>Raw controls can affect terminals, logs, parsers, and copy operations. This page therefore renders names such as NUL, HT, LF, CR, ESC, and DEL. Copy a raw control value only in a tool or programming environment designed to represent bytes explicitly.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>C0 controls</dt><dd>Decimal 0–31, labeled with safe abbreviations.</dd></div>
+            <div><dt>Space</dt><dd>Decimal 32, labeled SP because its glyph is visually blank.</dd></div>
+            <div><dt>Graphic range</dt><dd>Decimal 33–126, including punctuation, digits, and Latin letters.</dd></div>
+            <div><dt>DEL</dt><dd>Decimal 127, a control code shown as a label.</dd></div>
+            <div><dt>Binary display</dt><dd>Seven significant bits padded to eight with a leading zero.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="unicode-heading">
+        <div class="section-heading"><p class="section-kicker">Codes, code points, and bytes</p><h2 id="unicode-heading">ASCII inside Unicode and UTF-8</h2></div>
+        <div class="prose-grid"><div>
+          <p>Unicode preserves the ASCII repertoire at code points U+0000 through U+007F. UTF-8 encodes each of those code points as one byte with the identical numeric value. That is why ASCII A, Unicode U+0041, UTF-8 byte <code>41</code> hexadecimal, and binary byte <code>01000001</code> line up.</p>
+          <p>Beyond U+007F, a Unicode code point is not an ASCII code. UTF-8 uses two, three, or four bytes for those scalar values. For example, “é” is U+00E9 but its UTF-8 bytes are <code>C3 A9</code>; looking up decimal 233 in this ASCII table would ask the wrong question.</p>
+          <p>An HTML numeric character reference also names a Unicode code point rather than promising a particular source byte. Keep character identity, source encoding, and serialized bytes as separate layers when debugging text.</p>
+        </div><div class="callout-card"><strong>Need the full encoding model?</strong><p>Compare ASCII codes, Unicode code points, UTF-16 code units, UTF-8 bytes, and user-perceived characters with worked examples.</p><a href="/guides/ascii-vs-unicode-utf8/">Read ASCII vs Unicode vs UTF-8 →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Reference, then apply context</p><h2 id="uses-heading">Useful ASCII table lookups</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Inspect a delimiter</h3><p>Confirm that comma is decimal 44 and hex 2C, tab is HT at decimal 9, or line feed is LF at decimal 10 before reviewing a byte-oriented protocol.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Read a hex dump</h3><p>Map bytes 20 through 7E to familiar ASCII-range characters while keeping non-text bytes and control codes visibly separate.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Verify an escape</h3><p>Check a language escape or test vector against the intended code, then confirm the language's own escaping and source-encoding rules.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Teach bit patterns</h3><p>Compare decimal, hex, octal, and binary representations without claiming that a numeric base conversion by itself encodes a message.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="scope-heading">
+        <div class="section-heading"><p class="section-kicker">Static, local, and narrowly scoped</p><h2 id="scope-heading">Use the table without a lookup request</h2></div>
+        <div class="prose-grid"><div>
+          <p>All 128 rows are embedded in the initial document. Filtering and copy controls operate in the browser and do not send a query or selected value to an ASCII service. The static reference remains available if scripts are disabled.</p>
+          <p>The table describes ASCII code positions, not terminal key combinations, keyboard layouts, font glyph coverage, locale code pages, Unicode normalization, or application-specific control behavior. A protocol can assign additional meaning to the same byte, so consult that protocol before acting on a control code.</p>
+          <p>Primary references are <a href="https://www.rfc-editor.org/info/rfc20" rel="external">RFC 20, ASCII Format for Network Interchange</a>, the <a href="https://www.unicode.org/versions/latest/" rel="external">Unicode Standard</a>, and the <a href="https://encoding.spec.whatwg.org/#utf-8" rel="external">WHATWG UTF-8 definition</a>.</p>
+        </div><div class="callout-card"><strong>Translating more than one code?</strong><p>Encode complete Unicode text as UTF-8 or decode complete binary octets with strict validation.</p><a href="/binary-translator/">Open the Binary Translator →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">ASCII table FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How many values are in the ASCII table?</summary><p>Standard ASCII is a 7-bit code with 128 positions numbered 0 through 127. This table includes exactly that range and does not treat values 128 through 255 as additional ASCII characters.</p></details>
+          <details><summary>Why does the table show eight binary digits for a 7-bit code?</summary><p>ASCII values require only seven significant bits, but computers commonly store and display them in an octet. The leftmost bit is therefore zero in the 8-bit padded column; the padding does not expand the ASCII range.</p></details>
+          <details><summary>Which ASCII codes are control characters?</summary><p>Values 0 through 31 are C0 control codes, and value 127 is DEL. The page displays abbreviations such as NUL, LF, CR, ESC, and DEL rather than inserting raw control bytes into the document.</p></details>
+          <details><summary>Is a space an ASCII character?</summary><p>Yes. Space is decimal 32, hexadecimal 20, octal 040, and binary 00100000. It is part of ASCII even though it does not draw a visible mark, so the table labels it SP.</p></details>
+          <details><summary>How does ASCII relate to UTF-8?</summary><p>Unicode code points U+0000 through U+007F correspond to the ASCII range, and UTF-8 encodes each with the same single-byte value. Characters beyond that range use other Unicode code points and may require multiple UTF-8 bytes.</p></details>
+          <details><summary>Does using the ASCII table upload anything?</summary><p>No. All 128 rows are present in the page itself, and interactive search or copying happens in the browser. The table never sends a lookup term or selected value to an ASCII service.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue decoding</p><h2 id="related-heading">ASCII, UTF-8, and number resources</h2></div><ul><li><a href="/binary-translator/">Binary Translator</a></li><li><a href="/hex-converter/">Hex Converter</a></li><li><a href="/binary-converter/">Binary Converter</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="/guides/binary-decimal-hex-octal-conversion/">Manual base conversion</a></li><li><a href="/guides/twos-complement-signed-binary/">Two's-complement signed binary</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/binary-translator/">Binary Translator</a><a href="/binary-converter/">Binary</a><a href="/hex-converter/">Hex</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Standard ASCII contains exactly 128 code positions.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is optional for reading the complete ASCII table. Interactive filtering and copy controls require it.</p></noscript>
+    <script type="module" src="/src/binary.tsx"></script>
+  </body>
+</html>

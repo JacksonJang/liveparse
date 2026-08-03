@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binary, Decimal, Hex &amp; Octal Conversion by Hand | LiveParse</title>
+    <meta name="description" content="Convert whole numbers among binary, decimal, hexadecimal, and octal by hand with place values, repeated division, and direct bit grouping." />
+    <link rel="canonical" href="https://liveparse.com/guides/binary-decimal-hex-octal-conversion/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Convert Binary, Decimal, Hex and Octal by Hand" />
+    <meta property="og:description" content="Worked integer examples using powers, repeated division, nibbles, octal triplets, padding, and exact checks." />
+    <meta property="og:url" content="https://liveparse.com/guides/binary-decimal-hex-octal-conversion/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Number-base conversion guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Binary, Decimal, Hex and Octal by Hand" />
+    <meta name="twitter:description" content="A practical guide to exact whole-number conversion across four common bases." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/#article",
+            "headline": "Binary, Decimal, Hex and Octal Conversion by Hand",
+            "description": "Convert whole numbers among binary, decimal, hexadecimal, and octal with positional weights, repeated division, and direct bit grouping.",
+            "mainEntityOfPage": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/",
+            "url": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Number systems",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "Manual Number-Base Conversion", "item": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the easiest way to convert binary to decimal?", "acceptedAnswer": { "@type": "Answer", "text": "Multiply each binary digit by its power of two and add the nonzero terms. An equivalent left-to-right method repeatedly doubles the running total and adds the next bit." } },
+              { "@type": "Question", "name": "How do I convert decimal to binary by hand?", "acceptedAnswer": { "@type": "Answer", "text": "Repeatedly divide the nonnegative integer by two, record each remainder, and read the remainders from last to first. Each remainder is zero or one because the divisor is two." } },
+              { "@type": "Question", "name": "Why can binary convert directly to hexadecimal?", "acceptedAnswer": { "@type": "Answer", "text": "Sixteen is two to the fourth power, so every hexadecimal digit corresponds to exactly four binary bits. Group bits from the right and map each group without using decimal as an intermediate." } },
+              { "@type": "Question", "name": "How does binary convert directly to octal?", "acceptedAnswer": { "@type": "Answer", "text": "Eight is two to the third power, so every octal digit corresponds to exactly three binary bits. Group from the right, pad only the leftmost group when needed, and map each triplet to a digit from zero through seven." } },
+              { "@type": "Question", "name": "Do leading zeroes change a converted number?", "acceptedAnswer": { "@type": "Answer", "text": "Leading zeroes do not change an unsigned mathematical value, but they can preserve a required bit or byte width. Keep them when a protocol field, register, test vector, or serialized representation defines that width." } },
+              { "@type": "Question", "name": "Can these methods convert binary fractions exactly?", "acceptedAnswer": { "@type": "Answer", "text": "The worked methods here cover whole numbers. Fractions use negative powers and can repeat forever in another base, so an implementation must define precision, rounding, and how it marks a repeating or truncated result." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the number-base conversion guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/binary-converter/">Binary Converter</a><a href="/hex-converter/">Hex Converter</a><a href="/ascii-table/">ASCII Table</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">Manual Number-Base Conversion</span></nav><p class="eyebrow">Positional integer arithmetic</p><h1>Binary, Decimal, Hex and Octal Conversion by Hand</h1><p class="dek">Convert whole numbers with powers and remainders, then use four-bit nibbles and three-bit groups to move directly between binary, hexadecimal, and octal.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> a positional numeral is a sum of digits multiplied by powers of its base. To reach decimal, evaluate those powers or repeatedly multiply a running total by the base. To leave decimal, divide by the target base and read remainders upward. Binary converts directly to hex in four-bit groups and to octal in three-bit groups. Sign, fixed width, and text encoding remain separate concerns.</p></div>
+
+          <h2 id="positions">Start with the radix and digit positions</h2>
+          <p>A numeral system's base, also called its radix, determines the available digit values and each position's weight. In base <em>b</em>, the rightmost whole-number digit has weight <em>b</em><sup>0</sup>, the next has weight <em>b</em><sup>1</sup>, then <em>b</em><sup>2</sup>. A spelling without its base is ambiguous: <code>10</code> means two in binary, eight in octal, ten in decimal, and sixteen in hexadecimal.</p>
+          <div class="table-wrap"><table><thead><tr><th>System</th><th>Base</th><th>Digits</th><th>Relationship</th></tr></thead><tbody><tr><td>Binary</td><td>2</td><td><code>0–1</code></td><td>One digit is one bit</td></tr><tr><td>Octal</td><td>8</td><td><code>0–7</code></td><td>One digit maps to three bits</td></tr><tr><td>Decimal</td><td>10</td><td><code>0–9</code></td><td>Common human notation</td></tr><tr><td>Hexadecimal</td><td>16</td><td><code>0–9, A–F</code></td><td>One digit maps to four bits</td></tr></tbody></table></div>
+          <p>Hex letters are digit values: A is ten through F as fifteen. Letter case does not change the value. Prefixes such as <code>0b</code>, <code>0o</code>, and <code>0x</code> can label a base in programming contexts, but they are syntax rather than part of the mathematical value.</p>
+
+          <h2 id="binary-decimal">Convert binary to decimal with positional weights</h2>
+          <p>For binary <code>101101</code>, label positions from right to left and add the powers whose bit is one:</p>
+          <figure class="code-example"><figcaption class="code-label">Binary 101101 to decimal</figcaption><pre><code>1×2⁵ + 0×2⁴ + 1×2³ + 1×2² + 0×2¹ + 1×2⁰
+= 32 + 0 + 8 + 4 + 0 + 1
+= 45</code></pre></figure>
+          <p>A left-to-right method avoids writing every power. Begin at zero; for each bit, double the running total and add that bit. Processing <code>101101</code> yields totals 1, 2, 5, 11, 22, and 45. This is Horner's method specialized to base 2. In any base, multiply the current total by the base and add the next digit.</p>
+
+          <h2 id="decimal-binary">Convert decimal to binary with repeated division</h2>
+          <p>To convert nonnegative decimal 45 to binary, repeatedly divide by two and record each remainder. Continue with the quotient until it reaches zero:</p>
+          <figure class="code-example"><figcaption class="code-label">Decimal 45 divided by two</figcaption><pre><code>45 ÷ 2 = 22 remainder 1
+22 ÷ 2 = 11 remainder 0
+11 ÷ 2 =  5 remainder 1
+ 5 ÷ 2 =  2 remainder 1
+ 2 ÷ 2 =  1 remainder 0
+ 1 ÷ 2 =  0 remainder 1
+
+Read remainders upward: 101101</code></pre></figure>
+          <p>The first remainder is the least significant bit, so reading downward reverses the number. Convert back with positional weights as an independent check. For zero, emit the digit <code>0</code>; an ordinary repeated-division loop otherwise has no remainder to record.</p>
+
+          <h2 id="hex">Convert binary and hexadecimal in four-bit groups</h2>
+          <p>Because 16 equals 2<sup>4</sup>, split a whole-number binary string into groups of four from the right. Pad only the leftmost incomplete group for lookup. Binary <code>1011110011</code> becomes <code>0010 1111 0011</code>, then hexadecimal <code>2F3</code>.</p>
+          <div class="table-wrap"><table><thead><tr><th>Binary</th><th>Hex</th><th>Binary</th><th>Hex</th></tr></thead><tbody><tr><td><code>0000</code></td><td>0</td><td><code>1000</code></td><td>8</td></tr><tr><td><code>0001</code></td><td>1</td><td><code>1001</code></td><td>9</td></tr><tr><td><code>0010</code></td><td>2</td><td><code>1010</code></td><td>A</td></tr><tr><td><code>0011</code></td><td>3</td><td><code>1011</code></td><td>B</td></tr><tr><td><code>0100</code></td><td>4</td><td><code>1100</code></td><td>C</td></tr><tr><td><code>0101</code></td><td>5</td><td><code>1101</code></td><td>D</td></tr><tr><td><code>0110</code></td><td>6</td><td><code>1110</code></td><td>E</td></tr><tr><td><code>0111</code></td><td>7</td><td><code>1111</code></td><td>F</td></tr></tbody></table></div>
+          <p>Reverse the mapping for hex to binary. Preserve four bits for every source hex digit while expanding; remove leading zeroes only after deciding whether a fixed field width matters. For a byte sequence, two hex digits are one byte, so removing a leading pair removes data rather than formatting.</p>
+
+          <h2 id="octal">Convert binary and octal in three-bit groups</h2>
+          <p>Because 8 equals 2<sup>3</sup>, group binary digits in threes from the right. The same <code>1011110011</code> becomes <code>001 011 110 011</code>, which maps to octal <code>1363</code>. Reverse the mapping by expanding every octal digit into exactly three bits.</p>
+          <p>Octal and hexadecimal can interconvert through binary without decimal arithmetic: expand octal triplets, regroup the complete bit string into four-bit nibbles, then map to hex. Keep lookup padding separate from significant field width.</p>
+
+          <h2 id="other">Use powers or repeated division for other directions</h2>
+          <p>Hexadecimal <code>2F3</code> becomes decimal by evaluating <code>2×16² + 15×16 + 3 = 755</code>. Decimal 755 becomes hex by repeated division by 16: the remainders are 3, 15, and 2, read upward as <code>2F3</code>. Use divisor 8 for octal.</p>
+          <p>Horner's method is a useful check: scan <code>2F3</code> left to right, multiply by 16, and add the next digit. Totals 2, 47, and 755 reach the same value. ECMAScript defines <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-bigint-type" rel="external">BigInt as an arbitrary-precision integer type</a>; a browser tool should still bound input and output for responsiveness.</p>
+
+          <h2 id="sign-width">Keep sign, width, and value separate</h2>
+          <p>A leading minus sign expresses a mathematical negative. A fixed-width two's-complement pattern is another representation that requires a width. At eight bits, <code>11111111</code> is unsigned 255 or signed −1; without a stated interpretation, the bits do not carry a unique signed meaning.</p>
+          <p>Leading zeroes do not change an unsigned value, but they preserve widths such as 8, 16, 32, or 64 bits. Leading ones can be sign extension for a negative two's-complement value. Read the <a href="/guides/twos-complement-signed-binary/">explicit-width signed binary guide</a> before trimming either.</p>
+
+          <h2 id="text">Do not translate numeric digits as text bytes</h2>
+          <p>Binary integer <code>10</code> represents decimal two. Text “10” contains Unicode characters U+0031 and U+0030, whose UTF-8 bytes are hexadecimal <code>31 30</code>. Number-base conversion preserves a quantity; character encoding maps text to bytes. Use the <a href="/binary-translator/">Binary Translator</a> for UTF-8 bytes and the <a href="/ascii-table/">ASCII Table</a> for one code lookup.</p>
+
+          <h2 id="check">Check every conversion independently</h2>
+          <ol class="steps"><li><strong>Label the input base.</strong> A bare numeral does not identify its radix.</li><li><strong>Validate every digit.</strong> Binary rejects 2, octal rejects 8 and 9, and hex rejects letters beyond F.</li><li><strong>Use one complete method.</strong> Choose powers, Horner's method, repeated division, or direct power-of-two grouping.</li><li><strong>Convert back differently.</strong> A round trip catches reversed remainders and misplaced groups.</li><li><strong>Record sign and width.</strong> Do not call a high bit a sign bit until the representation defines it.</li><li><strong>Format last.</strong> Add prefixes, separators, padding, and case after the exact value is known.</li></ol>
+
+          <div class="tool-callout"><p><strong>Want to check a worked result?</strong> Convert a bounded whole-number value across binary, octal, decimal, and hexadecimal with explicit signed width and formatting.</p><a class="button" href="/binary-converter/">Open the Binary Converter</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is the easiest way to convert binary to decimal?</h3><p>Multiply each binary digit by its power of two and add the nonzero terms. An equivalent left-to-right method repeatedly doubles the running total and adds the next bit.</p>
+            <h3>How do I convert decimal to binary by hand?</h3><p>Repeatedly divide the nonnegative integer by two, record each remainder, and read the remainders from last to first. Each remainder is zero or one because the divisor is two.</p>
+            <h3>Why can binary convert directly to hexadecimal?</h3><p>Sixteen is two to the fourth power, so every hexadecimal digit corresponds to exactly four binary bits. Group bits from the right and map each group without using decimal as an intermediate.</p>
+            <h3>How does binary convert directly to octal?</h3><p>Eight is two to the third power, so every octal digit corresponds to exactly three binary bits. Group from the right, pad only the leftmost group when needed, and map each triplet to a digit from zero through seven.</p>
+            <h3>Do leading zeroes change a converted number?</h3><p>Leading zeroes do not change an unsigned mathematical value, but they can preserve a required bit or byte width. Keep them when a protocol field, register, test vector, or serialized representation defines that width.</p>
+            <h3>Can these methods convert binary fractions exactly?</h3><p>The worked methods here cover whole numbers. Fractions use negative powers and can repeat forever in another base, so an implementation must define precision, rounding, and how it marks a repeating or truncated result.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the tools</p><a href="/binary-converter/">Binary Converter</a><a href="/hex-converter/">Hex Converter</a><a href="/ascii-table/">ASCII Table</a></div><div class="sidebar-card"><p class="sidebar-label">Related resources</p><a href="/guides/twos-complement-signed-binary/">Two's-complement signed binary</a><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a><a href="/binary-translator/">Binary text translation</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/binary-converter/">Binary</a><a href="/hex-converter/">Hex</a><a href="/binary-translator/">Binary Translator</a><a href="/ascii-table/">ASCII</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Preserve value first; format the result second.</p></footer>
+  </body>
+</html>

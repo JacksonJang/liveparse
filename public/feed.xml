@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T06:56:03+09:00</updated>
+  <updated>2026-08-04T07:59:09+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,70 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/binary-converter/</id>
+    <title>Binary Converter</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/binary-converter/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="Number bases" />
+    <summary>Convert exact arbitrary-precision integers across bases 2 through 36 and explicitly encode or interpret fixed-width two's-complement words.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/hex-converter/</id>
+    <title>Hex Converter</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/hex-converter/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="Hexadecimal" />
+    <summary>Convert an exact hexadecimal integer or deliberately switch to a separate strict hexadecimal-byte and UTF-8 text workflow.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/binary-translator/</id>
+    <title>Binary Translator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/binary-translator/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="UTF-8 bytes" />
+    <summary>Translate Unicode text to complete 8-bit UTF-8 binary bytes and decode valid byte sequences without silent replacement.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/ascii-table/</id>
+    <title>ASCII Table</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/ascii-table/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="ASCII" />
+    <summary>Search all 128 standard ASCII codes by safe symbol label, control abbreviation, name, decimal, hexadecimal, octal, or binary value.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/binary-decimal-hex-octal-conversion/</id>
+    <title>Binary, Decimal, Hex, and Octal Conversion</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/binary-decimal-hex-octal-conversion/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="Number-base guides" />
+    <summary>Learn positional-value, repeated-division, and direct bit-grouping methods for exact integer conversion across four common bases.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/twos-complement-signed-binary/</id>
+    <title>Two's Complement Signed Binary</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/twos-complement-signed-binary/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="Signed binary guides" />
+    <summary>Understand why two's-complement meaning requires an explicit bit width, with exact ranges, sign extension, and overflow rules.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/ascii-vs-unicode-utf8/</id>
+    <title>ASCII vs Unicode vs UTF-8</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/ascii-vs-unicode-utf8/" />
+    <published>2026-08-04T07:59:09+09:00</published>
+    <updated>2026-08-04T07:59:09+09:00</updated>
+    <category term="Character encoding guides" />
+    <summary>Separate characters, Unicode code points, and UTF-8 bytes while preserving ASCII's exact 0 through 127 subset.</summary>
+  </entry>
 
   <entry>
     <id>https://liveparse.com/url-encoder/</id>

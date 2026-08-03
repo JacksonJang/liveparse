@@ -33,6 +33,13 @@ const FAQ_PARITY_PATHS = new Set([
   '/guides/encodeuri-vs-encodeuricomponent/',
   '/guides/percent20-vs-plus/',
   '/guides/double-url-encoding/',
+  '/binary-converter/',
+  '/hex-converter/',
+  '/binary-translator/',
+  '/ascii-table/',
+  '/guides/binary-decimal-hex-octal-conversion/',
+  '/guides/twos-complement-signed-binary/',
+  '/guides/ascii-vs-unicode-utf8/',
   '/uuid-v4-generator/',
   '/uuid-decoder/',
   '/guides/uuid-versions-explained/',
@@ -54,6 +61,10 @@ const requiredPages = [
   { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
+  { relativePath: 'binary-converter/index.html', canonical: `${CANONICAL_ORIGIN}/binary-converter/`, label: 'Binary Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\bconvert(?:er|ing|s|ed)?\b)/i, topicLabel: 'binary conversion' },
+  { relativePath: 'hex-converter/index.html', canonical: `${CANONICAL_ORIGIN}/hex-converter/`, label: 'Hex Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\b(?:hex|hexadecimal)\b)(?=.*\bconvert(?:er|ing|s|ed)?\b)/i, topicLabel: 'hexadecimal conversion' },
+  { relativePath: 'binary-translator/index.html', canonical: `${CANONICAL_ORIGIN}/binary-translator/`, label: 'Binary Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\btranslat(?:e|or|ing|ion)\b)/i, topicLabel: 'binary text translation' },
+  { relativePath: 'ascii-table/index.html', canonical: `${CANONICAL_ORIGIN}/ascii-table/`, label: 'ASCII Table tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bascii\b)(?=.*\b(?:table|codes?|chart)\b)/i, topicLabel: 'ASCII table' },
   { relativePath: 'url-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-encoder/`, label: 'URL Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bencod(?:e|er|ing)\b)/i, topicLabel: 'URL encoding' },
   { relativePath: 'url-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-decoder/`, label: 'URL Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'URL decoding' },
   { relativePath: 'url-parser/index.html', canonical: `${CANONICAL_ORIGIN}/url-parser/`, label: 'URL Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'URL parsing' },
@@ -205,6 +216,35 @@ function validateJsonLd(html, label, required = false) {
       fail(`${label}: JSON-LD block ${index + 1} is invalid JSON (${error.message})`);
     }
   });
+}
+
+function validateAsciiTableRows(html, label) {
+  const rowCodes = openingTags(html, 'tr')
+    .filter((attributes) => attributes.has('data-ascii-code'))
+    .map((attributes) => attributes.get('data-ascii-code')?.trim() ?? '');
+
+  if (rowCodes.length !== 128) {
+    fail(`${label}: expected exactly 128 static ASCII rows, found ${rowCodes.length}`);
+  }
+
+  const seen = new Set();
+  for (const rawCode of rowCodes) {
+    if (!/^(?:0|[1-9]\d*)$/.test(rawCode)) {
+      fail(`${label}: invalid data-ascii-code value ${JSON.stringify(rawCode)}`);
+      continue;
+    }
+    const code = Number(rawCode);
+    if (code < 0 || code > 127) {
+      fail(`${label}: data-ascii-code must be between 0 and 127, found ${code}`);
+      continue;
+    }
+    if (seen.has(code)) fail(`${label}: duplicate static ASCII row ${code}`);
+    seen.add(code);
+  }
+
+  for (let code = 0; code <= 127; code += 1) {
+    if (!seen.has(code)) fail(`${label}: missing static ASCII row ${code}`);
+  }
 }
 
 function collectJsonLdNodes(value, nodes = []) {
@@ -360,6 +400,33 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('binary-decimal-hex-octal-conversion')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bbinary\b)(?=.*\bdecimal\b)(?=.*\b(?:hex|hexadecimal)\b)(?=.*\boctal\b)/i,
+      topicLabel: 'binary, decimal, hexadecimal, and octal conversion',
+    };
+  }
+  if (normalized.includes('twos-complement-signed-binary')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\btwo['’]?s\s+complement\b)(?=.*\bsigned\b)(?=.*\bbinary\b)/i,
+      topicLabel: "two's complement signed binary",
+    };
+  }
+  if (normalized.includes('ascii-vs-unicode-utf8')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bascii\b)(?=.*\bunicode\b)(?=.*\butf-?8\b)/i,
+      topicLabel: 'ASCII, Unicode, and UTF-8',
+    };
+  }
   if (normalized.includes('url-percent-encoding')) {
     return {
       requireJson: false,
@@ -986,6 +1053,9 @@ async function main() {
       requireParsing: requirement.requireParsing ?? true,
     });
     validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
+    if (requirement.relativePath === 'ascii-table/index.html') {
+      validateAsciiTableRows(page, requirement.label);
+    }
     if (requirement.topicPattern) {
       const topicFields = [
         ['title', titleValues(page)[0] || ''],
