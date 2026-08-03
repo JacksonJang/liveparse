@@ -55,7 +55,7 @@
             "@type": "ItemList",
             "@id": "https://liveparse.com/guides/#list",
             "name": "LiveParse developer guides",
-            "numberOfItems": 30,
+            "numberOfItems": 32,
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "url": "https://liveparse.com/guides/what-is-a-json-parser/", "name": "What Is a JSON Parser?" },
               { "@type": "ListItem", "position": 2, "url": "https://liveparse.com/guides/common-json-errors/", "name": "Common JSON Errors" },
@@ -86,7 +86,9 @@
               { "@type": "ListItem", "position": 27, "url": "https://liveparse.com/guides/double-url-encoding/", "name": "Double URL Encoding" },
               { "@type": "ListItem", "position": 28, "url": "https://liveparse.com/guides/binary-decimal-hex-octal-conversion/", "name": "Binary, Decimal, Hex, and Octal Conversion" },
               { "@type": "ListItem", "position": 29, "url": "https://liveparse.com/guides/twos-complement-signed-binary/", "name": "Two's Complement Signed Binary" },
-              { "@type": "ListItem", "position": 30, "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/", "name": "ASCII vs Unicode vs UTF-8" }
+              { "@type": "ListItem", "position": 30, "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/", "name": "ASCII vs Unicode vs UTF-8" },
+              { "@type": "ListItem", "position": 31, "url": "https://liveparse.com/guides/how-word-counting-works/", "name": "How Word Counting Works" },
+              { "@type": "ListItem", "position": 32, "url": "https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/", "name": "Grapheme Clusters vs Code Points and Bytes" }
             ]
           }
         ]
@@ -110,7 +112,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>30 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>32 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -160,6 +162,16 @@
                 <a class="related-card" href="/guides/ascii-vs-unicode-utf8/"><strong>ASCII vs Unicode vs UTF-8</strong><span>Characters, code points, bytes, control codes, and why non-ASCII text needs multiple UTF-8 bytes.</span></a>
               </div>
               <p>Convert exact integer values with the <a href="/binary-converter/">Binary Converter</a> or <a href="/hex-converter/">Hex Converter</a>, translate text bytes with the <a href="/binary-translator/">Binary Translator</a>, and inspect all 128 standard entries in the <a href="/ascii-table/">ASCII Table</a>.</p>
+            </section>
+
+            <section aria-labelledby="text-guides">
+              <h2 id="text-guides">Word counts and Unicode characters</h2>
+              <p>Text length depends on the unit being measured. Locale-aware word boundaries, user-perceived grapheme clusters, Unicode code points, UTF-16 storage units, and UTF-8 bytes answer different questions.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/how-word-counting-works/"><strong>How Word Counting Works</strong><span>Locale, apostrophes, hyphens, scripts without spaces, sentences, paragraphs, and implementation differences.</span></a>
+                <a class="related-card" href="/guides/grapheme-clusters-vs-code-points-and-bytes/"><strong>Grapheme Clusters vs Code Points and Bytes</strong><span>Combining marks, emoji sequences, UTF-16, UTF-8, normalization, and storage limits.</span></a>
+              </div>
+              <p>Measure prose with the <a href="/word-counter/">Word Counter</a> or inspect exact Unicode and encoding units with the <a href="/character-counter/">Character Counter</a>.</p>
             </section>
 
             <section aria-labelledby="url-guides">

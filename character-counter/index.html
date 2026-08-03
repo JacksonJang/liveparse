@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Character Counter – Graphemes, Code Points &amp; Bytes | LiveParse</title>
+    <meta name="description" content="Count grapheme clusters, Unicode code points, UTF-16 code units, and strict UTF-8 bytes, with a custom visible-character limit and local processing." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/character-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/character-counter/" />
+    <meta property="og:title" content="Character Counter – Graphemes, Code Points &amp; Bytes" />
+    <meta property="og:description" content="Compare visible graphemes with code points, JavaScript UTF-16 units, and strict UTF-8 bytes before enforcing a limit." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse Unicode character counter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Character Counter – Four Unicode Lengths" />
+    <meta name="twitter:description" content="Measure graphemes, code points, UTF-16 code units, and UTF-8 bytes without uploading text." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/character-counter/#application",
+            "name": "LiveParse Character Counter",
+            "url": "https://liveparse.com/character-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Unicode character and encoded-length counter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript, Intl.Segmenter, and TextEncoder support",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Compare grapheme clusters, Unicode code points, UTF-16 code units, and strict UTF-8 bytes, and track a custom grapheme limit locally.",
+            "featureList": [
+              "User-perceived grapheme cluster count",
+              "Unicode code-point count",
+              "ECMAScript UTF-16 code-unit count",
+              "Strict UTF-8 byte count",
+              "Custom grapheme limit with remaining or over status",
+              "Local browser processing without Unicode normalization"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/character-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Character Counter", "item": "https://liveparse.com/character-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/character-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does character count mean in this tool?", "acceptedAnswer": { "@type": "Answer", "text": "The primary character total is a grapheme-cluster count, which approximates user-perceived characters. The tool also reports Unicode code points, JavaScript UTF-16 code units, and UTF-8 bytes so a platform's exact unit can be matched." } },
+              { "@type": "Question", "name": "Why can one emoji count as several code points?", "acceptedAnswer": { "@type": "Answer", "text": "An emoji shown as one grapheme can be a sequence containing people, skin-tone modifiers, variation selectors, regional indicators, or zero-width joiners. Grapheme segmentation keeps many such sequences together while code-point counting exposes their components." } },
+              { "@type": "Question", "name": "What is the difference between a code point and a UTF-16 code unit?", "acceptedAnswer": { "@type": "Answer", "text": "A code point is a Unicode coded value. A UTF-16 code unit is one 16-bit value in an ECMAScript string; code points above U+FFFF use a surrogate pair and therefore occupy two UTF-16 code units." } },
+              { "@type": "Question", "name": "How does the tool handle an unpaired surrogate?", "acceptedAnswer": { "@type": "Answer", "text": "An unpaired UTF-16 surrogate is not a Unicode scalar value. Rather than silently count replacement-character bytes, the tool marks the strict UTF-8 byte result unavailable and shows an error until the malformed string is repaired." } },
+              { "@type": "Question", "name": "Does the character counter normalize Unicode text?", "acceptedAnswer": { "@type": "Answer", "text": "No Unicode normalization is applied to the current textarea value. A precomposed accented letter and a base letter followed by a combining mark remain distinct. HTML textarea behavior separately converts CRLF and CR line endings to LF before analysis, which can change code-unit and byte totals." } },
+              { "@type": "Question", "name": "Is the custom limit based on bytes?", "acceptedAnswer": { "@type": "Answer", "text": "No. The custom limit tracks grapheme clusters and reports how many are remaining or how far the text is over. If a service defines its limit in code points, UTF-16 units, or UTF-8 bytes, compare the corresponding metric instead." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="character-counter">
+    <a class="skip-link" href="#counter">Skip to the character counter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/word-counter/">Word Counter</a><a href="#units">Length units</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Graphemes · Code points · UTF-16 · UTF-8</p>
+          <h1>Character Counter</h1>
+          <p class="hero-lead">Measure visible characters and encoded length without pretending that every “character” is one number. Set a grapheme limit, compare four Unicode units, and keep the current text in this browser tab.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">Count characters</a><span>Custom limit · Remaining · Over</span></div>
+        </div>
+        <div class="hero-example" aria-label="Example character metrics for an emoji">
+          <div class="example-bar"><span></span><span></span><span></span><strong>emoji.txt</strong></div>
+          <pre><code><span class="property">Graphemes</span>      1
+<span class="string">Code points</span>     1
+<span class="boolean">UTF-16 units</span>    2
+UTF-8 bytes      4</code></pre>
+          <p><strong>😀 is not length 1 everywhere</strong><span>Choose the unit the receiver specifies</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">Inspect before truncating</p><h2 id="counter-heading">Compare visible and encoded text length</h2></div>
+        <p>The interactive workspace counts grapheme clusters, code points, UTF-16 code units, and strict UTF-8 bytes. Add a custom grapheme limit to see the remaining allowance or the amount over.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Character counter loading"><p><strong>Loading the character counter…</strong></p><p>Enable JavaScript to inspect text. The Unicode length definitions, examples, and limit guidance below remain available.</p></section></div>
+
+      <section class="content-section" id="units" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">One string, four valid lengths</p><h2 id="units-heading">Choose graphemes, code points, code units, or bytes deliberately</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A person usually expects a “character limit” to follow visible units: an accented letter or joined emoji should not be torn apart. Unicode calls the practical boundary used here an extended grapheme cluster. It is an approximation of a user-perceived character, not a promise that every font, language, or editing task will treat every sequence identically.</p>
+            <p>A code point is a value in the Unicode codespace, written like U+0065 or U+1F600. ECMAScript strings expose a third layer: sequences of 16-bit code units. A code point above U+FFFF occupies a surrogate pair, which is why <code>"😀".length</code> equals 2. Files and network payloads add a fourth layer when the string is encoded as UTF-8 bytes.</p>
+            <p>The counter reports all four because limits are contracts. A database column measured in bytes, a JavaScript API measured in UTF-16 units, and a product field measured in visible graphemes can accept different amounts of the same text. The label “500 characters” is incomplete until the unit and normalization policy are named.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Grapheme clusters</dt><dd>Locale-aware extended boundaries that approximate visible characters.</dd></div>
+            <div><dt>Code points</dt><dd>Unicode coded values obtained by code-point iteration.</dd></div>
+            <div><dt>UTF-16 code units</dt><dd>The 16-bit elements counted by JavaScript string length.</dd></div>
+            <div><dt>UTF-8 bytes</dt><dd>The strict encoded payload length when every scalar value is valid.</dd></div>
+            <div><dt>Custom limit</dt><dd>A grapheme allowance with remaining and over-limit status.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Read the in-depth guide to Unicode length units →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">Small examples expose the layers</p><h2 id="examples-heading">The same visible length can require different storage</h2></div>
+        <div class="error-table" role="table" aria-label="Example grapheme, code point, UTF-16, and UTF-8 counts">
+          <div class="error-row error-head" role="row"><span role="columnheader">Text and representation</span><span role="columnheader">Graphemes · points · units</span><span role="columnheader">UTF-8 bytes</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+00E9</strong><code role="cell">1 · 1 · 1</code><span role="cell">2 bytes: <code>C3 A9</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+0065 U+0301</strong><code role="cell">1 · 2 · 2</code><span role="cell">3 bytes: <code>65 CC 81</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>😀</code> · U+1F600</strong><code role="cell">1 · 1 · 2</code><span role="cell">4 bytes: <code>F0 9F 98 80</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>👨‍👩‍👧‍👦</code> · joined family</strong><code role="cell">1 · 7 · 11</code><span role="cell">25 UTF-8 bytes</span></div>
+        </div>
+        <p>The first two rows commonly render as the same accented letter. The counter intentionally does not normalize them, so their underlying lengths remain distinguishable. The family sequence combines four emoji with three zero-width joiners; treating its code points as independently removable “characters” can leave a visibly broken result.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="segmentation-heading">
+        <div class="section-heading"><p class="section-kicker">A Unicode boundary algorithm</p><h2 id="segmentation-heading">Grapheme boundaries depend on current segmentation data</h2></div>
+        <div class="prose-grid"><div>
+          <p>The grapheme total uses <code>Intl.Segmenter</code> with grapheme granularity. The API follows locale negotiation and an implementation's Unicode boundary data. <a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a> defines default extended grapheme cluster rules, including behavior for combining marks, emoji modifiers, regional indicators, and zero-width-joiner sequences. <a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402</a> defines the JavaScript segmentation interface.</p>
+          <p>Boundary behavior is not frozen independently of the browser. A newer engine can ship updated Unicode properties or tailoring, and specialized editors may apply domain-specific rules beyond the default algorithm. Persist the original text and record the runtime when a limit decision must be audited exactly.</p>
+          <p>A grapheme count is designed for cursor movement and user-facing limits, but it does not measure visual width. One cluster may be narrow, wide, invisible, rendered as a missing-glyph box, or shaped with its neighbors. Layout limits need font and rendering measurement in addition to string segmentation.</p>
+        </div><div class="callout-card"><strong>Counting editorial length?</strong><p>Graphemes answer a visible-character question. Words and sentences need locale-aware word and sentence boundary rules plus separate paragraph and line definitions.</p><a href="/word-counter/">Open the Word Counter →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limit-heading">
+        <div class="section-heading"><p class="section-kicker">Match the receiving contract</p><h2 id="limit-heading">Use the custom grapheme limit for visible-character policies</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Name the unit</h3><p>Confirm whether the receiver limits graphemes, code points, UTF-16 code units, or encoded bytes. Do not infer it from the word “character.”</p></li>
+          <li><span>2</span><h3>Set the allowance</h3><p>Enter a custom grapheme limit to track how many visible clusters remain or how far the current text exceeds that allowance.</p></li>
+          <li><span>3</span><h3>Truncate safely</h3><p>If graphemes are the contract, cut only at a grapheme boundary. Recheck bytes afterward if transport or storage has an additional byte ceiling.</p></li>
+        </ol>
+        <p>The custom limit does not rewrite, clip, or apply Unicode normalization after the textarea value is received. HTML textarea behavior converts CRLF and CR line endings to LF before analysis. A service that applies other normalization, strips controls, or counts a different Unicode version may still produce a different result, so test representative emoji and combining sequences against the actual destination.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="encoding-heading">
+        <div class="section-heading"><p class="section-kicker">Exact input, strict encoding</p><h2 id="encoding-heading">Normalization and lone surrogates change the byte question</h2></div>
+        <div class="prose-grid"><div>
+          <p>No NFC, NFD, NFKC, or NFKD transformation is applied to the current textarea value. HTML textarea behavior has already converted CRLF and CR line endings to LF, so byte-exact source comparisons must account for that conversion. Normalize Unicode only when the consuming protocol requires a named form; signatures, hashes, database keys, and byte contracts must follow their own rules.</p>
+          <p>Most text typed normally consists of Unicode scalar values, but a JavaScript string can contain a lone high or low surrogate. The ECMAScript <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">String type</a> permits sequences of 16-bit values that are not well-formed UTF-16. A lone surrogate has a UTF-16 code-unit count but no direct UTF-8 encoding as a Unicode scalar value.</p>
+          <p>The Web's <a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a> accepts a <code>USVString</code>, which converts lone surrogates to U+FFFD before UTF-8 encoding. That replacement is useful interoperability behavior, but its three bytes are not a byte-preserving encoding of the original code unit. This counter therefore treats UTF-8 byte length as unavailable and reports the malformed input instead of silently using the replacement total.</p>
+        </div><div class="callout-card"><strong>Trace text all the way to bytes</strong><p>ASCII, Unicode, UTF-8, UTF-16, graphemes, and hex notation describe related but separate layers.</p><a href="/guides/ascii-vs-unicode-utf8/">Read ASCII vs Unicode vs UTF-8 →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local inspection</p><h2 id="privacy-heading">Measure text without a counting API request</h2></div>
+        <div class="prose-grid"><div><p>Counting runs in this browser tab. LiveParse does not intentionally upload the entered string to a character-count endpoint or save a server-side history. That reduces exposure for draft copy, identifiers, and sample payloads.</p><p>Local processing is not the same as an isolated device. Browser extensions, clipboard utilities, accessibility software, screenshots, crash reporting, and the operating system remain outside this page's control. Remove secrets that do not need to be measured and follow the data-handling policy that applies to the device.</p></div><div class="callout-card"><strong>Need words and reading time?</strong><p>Switch to locale-aware word and sentence segmentation, structural paragraph and line counts, and adjustable pace estimates.</p><a href="/word-counter/">Count words and sentences →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Character counter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does character count mean in this tool?</summary><p>The primary character total is a grapheme-cluster count, which approximates user-perceived characters. The tool also reports Unicode code points, JavaScript UTF-16 code units, and UTF-8 bytes so a platform's exact unit can be matched.</p></details>
+          <details><summary>Why can one emoji count as several code points?</summary><p>An emoji shown as one grapheme can be a sequence containing people, skin-tone modifiers, variation selectors, regional indicators, or zero-width joiners. Grapheme segmentation keeps many such sequences together while code-point counting exposes their components.</p></details>
+          <details><summary>What is the difference between a code point and a UTF-16 code unit?</summary><p>A code point is a Unicode coded value. A UTF-16 code unit is one 16-bit value in an ECMAScript string; code points above U+FFFF use a surrogate pair and therefore occupy two UTF-16 code units.</p></details>
+          <details><summary>How does the tool handle an unpaired surrogate?</summary><p>An unpaired UTF-16 surrogate is not a Unicode scalar value. Rather than silently count replacement-character bytes, the tool marks the strict UTF-8 byte result unavailable and shows an error until the malformed string is repaired.</p></details>
+          <details><summary>Does the character counter normalize Unicode text?</summary><p>No Unicode normalization is applied to the current textarea value. A precomposed accented letter and a base letter followed by a combining mark remain distinct. HTML textarea behavior separately converts CRLF and CR line endings to LF before analysis, which can change code-unit and byte totals.</p></details>
+          <details><summary>Is the custom limit based on bytes?</summary><p>No. The custom limit tracks grapheme clusters and reports how many are remaining or how far the text is over. If a service defines its limit in code points, UTF-16 units, or UTF-8 bytes, compare the corresponding metric instead.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue exploring text</p><h2 id="related-heading">Counters, standards, and practical guides</h2></div><ul><li><a href="/word-counter/">Word Counter</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Grapheme clusters, code points, and bytes</a></li><li><a href="/guides/how-word-counting-works/">How word counting works</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li><li><a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/word-counter/">Words</a><a href="/character-counter/">Characters</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. A character limit is only precise when its unit is named.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive counting. The Unicode length definitions, examples, and limit guidance remain readable without it.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

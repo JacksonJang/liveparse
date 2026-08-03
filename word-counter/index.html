@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Counter – Words, Sentences &amp; Reading Time | LiveParse</title>
+    <meta name="description" content="Count words, sentences, paragraphs, and lines with locale-aware segmentation, plus adjustable reading and speaking time estimates in your browser." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/word-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/word-counter/" />
+    <meta property="og:title" content="Word Counter – Words, Sentences &amp; Reading Time" />
+    <meta property="og:description" content="Measure words and text structure with explicit locale and pace controls. Processing stays in this browser tab." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse locale-aware word counter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Word Counter – Locale-Aware Text Metrics" />
+    <meta name="twitter:description" content="Count words, sentences, paragraphs, and lines and estimate reading or speaking time locally." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/word-counter/#application",
+            "name": "LiveParse Word Counter",
+            "url": "https://liveparse.com/word-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Locale-aware word and text-structure counter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript, Intl.Segmenter, and TextEncoder support",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Count locale-aware words and sentences, nonblank paragraphs, logical lines, and adjustable reading and speaking time in the browser.",
+            "featureList": [
+              "Locale-aware word and sentence segmentation",
+              "Auto, English, Korean, Japanese, Chinese, and Thai locale choices",
+              "Paragraph and logical-line counts",
+              "Adjustable reading words per minute",
+              "Adjustable speaking words per minute",
+              "Local browser processing without text normalization"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/word-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Word Counter", "item": "https://liveparse.com/word-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/word-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does this word counter count?", "acceptedAnswer": { "@type": "Answer", "text": "It counts word-like segments and sentences with the selected locale, then separately counts nonblank paragraphs and logical lines. It also estimates reading and speaking time from the word count and the chosen words-per-minute rates." } },
+              { "@type": "Question", "name": "Why can two word counters produce different totals?", "acceptedAnswer": { "@type": "Answer", "text": "Word boundaries are not universal. Counters may split punctuation, contractions, hyphenated terms, emoji, or scripts without spaces differently. This tool uses the browser's locale-aware segmentation data, so the selected locale and browser engine can affect edge cases." } },
+              { "@type": "Question", "name": "Can it count Chinese, Japanese, Korean, or Thai text?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Choose Chinese, Japanese, Korean, or Thai, or leave the locale on Auto to use the browser preference. Locale-aware segmentation is more appropriate than splitting only at spaces, although results can still vary with the browser's Unicode and dictionary data." } },
+              { "@type": "Question", "name": "How are paragraphs and lines counted?", "acceptedAnswer": { "@type": "Answer", "text": "A paragraph is a nonblank block separated by one or more blank lines. The analysis rule recognizes CRLF as one break and also recognizes CR, LF, NEL, line separator, and paragraph separator. The HTML textarea exposes CRLF and CR as LF before analysis; empty input has zero lines, and a final break creates an empty final line." } },
+              { "@type": "Question", "name": "How are reading and speaking times calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Each estimate divides the word count by the selected words-per-minute rate. The rates are adjustable because audience, language, difficulty, pauses, and delivery style all change real timing; the result is a planning estimate, not a measured duration." } },
+              { "@type": "Question", "name": "Is my text uploaded or normalized?", "acceptedAnswer": { "@type": "Answer", "text": "No. Counting runs in the current browser tab and the tool does not intentionally upload the entered text. It analyzes the current textarea value without Unicode normalization, so canonically equivalent spellings can retain different code-point and byte counts. HTML textarea behavior converts CRLF and CR line endings to LF before analysis." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="word-counter">
+    <a class="skip-link" href="#counter">Skip to the word counter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/character-counter/">Character Counter</a><a href="#method">Method</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Locale-aware segmentation · Adjustable pace · Local processing</p>
+          <h1>Word Counter</h1>
+          <p class="hero-lead">Count words, sentences, paragraphs, and logical lines without reducing every language to spaces. Select a locale, tune reading and speaking speed, and keep the text in this browser tab.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">Count words</a><span>Auto · English · Korean · Japanese · Chinese · Thai</span></div>
+        </div>
+        <div class="hero-example" aria-label="Example word-count metrics">
+          <div class="example-bar"><span></span><span></span><span></span><strong>draft.txt</strong></div>
+          <pre><code><span class="property">Words</span>       428
+<span class="string">Sentences</span>    24
+<span class="boolean">Paragraphs</span>    7
+Lines          31</code></pre>
+          <p><strong>≈ 2 min read</strong><span>Change the rate to match the audience</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">Paste, type, or revise</p><h2 id="counter-heading">Measure the structure and pace of a draft</h2></div>
+        <p>The interactive workspace reports several units side by side. Choose Auto for the browser locale or explicitly select English, Korean, Japanese, Chinese, or Thai when a reproducible language assumption matters.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Word counter loading"><p><strong>Loading the word counter…</strong></p><p>Enable JavaScript to analyze text. The segmentation method, structural definitions, and timing guidance below remain available.</p></section></div>
+
+      <section class="content-section" id="method" aria-labelledby="method-heading">
+        <div class="section-heading"><p class="section-kicker">Boundaries, not whitespace</p><h2 id="method-heading">How locale-aware word counting works</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A simple <code>text.split(/\s+/)</code> recipe treats every run between spaces as a word. That breaks down for writing systems that do not routinely put a space between every word, and it gives accidental meaning to punctuation and repeated separators. This counter asks <code>Intl.Segmenter</code> for word segments and counts segments the implementation marks as word-like.</p>
+            <p>The selected locale supplies an explicit segmentation context. Auto resolves through the browser's locale negotiation; the named choices request <code>en</code>, <code>ko</code>, <code>ja</code>, <code>zh</code>, or <code>th</code>. The same interface uses sentence granularity for sentence boundaries. See the <a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter definition</a> and <a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a> for the standards behind the API and default boundary rules.</p>
+            <p>Those standards do not promise one eternal total for every input. Unicode data, locale tailoring, dictionary segmentation, and the implementation-defined <code>isWordLike</code> classification can change among browser engines and releases. Record the locale, browser, and rules when a count is part of a contractual publishing or billing workflow.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Words</dt><dd>Locale-aware segments classified by the browser as word-like.</dd></div>
+            <div><dt>Sentences</dt><dd>Nonblank segments returned by locale-aware sentence boundary analysis.</dd></div>
+            <div><dt>Paragraphs</dt><dd>Nonblank blocks separated by one or more blank lines.</dd></div>
+            <div><dt>Lines</dt><dd>Logical lines separated by recognized Unicode line-break characters.</dd></div>
+            <div><dt>Timing</dt><dd>Word count divided by the selected reading or speaking rate.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/how-word-counting-works/">Read the complete guide to word-counting rules →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="structure-heading">
+        <div class="section-heading"><p class="section-kicker">Four related measurements</p><h2 id="structure-heading">Words, sentences, paragraphs, and lines answer different questions</h2></div>
+        <div class="error-table" role="table" aria-label="Text structure measurement definitions">
+          <div class="error-row error-head" role="row"><span role="columnheader">Metric</span><span role="columnheader">Useful for</span><span role="columnheader">Boundary rule</span></div>
+          <div class="error-row" role="row"><strong role="cell">Word count</strong><span role="cell">Editorial length, assignments, content planning</span><span role="cell">Locale-aware word-like segments, not a whitespace split.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Sentence count</strong><span role="cell">Pacing and rough readability review</span><span role="cell">Locale-aware sentence segmentation; a period alone does not settle every case.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Paragraph count</strong><span role="cell">Document structure and scanning</span><span role="cell">Nonblank text blocks separated by at least one blank line.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Line count</strong><span role="cell">Scripts, subtitles, source text, exports</span><span role="cell">CRLF counts as one break; CR, LF, NEL, U+2028, and U+2029 also create lines.</span></div>
+        </div>
+        <p>Empty input has zero lines. Once text exists, every recognized break ends one line and begins another, so a trailing break deliberately adds an empty final line. In this interface, HTML textarea behavior converts CRLF and CR to LF before the JavaScript value is analyzed; the logical line total remains the same, but byte and code-unit comparisons must account for that conversion.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="time-heading">
+        <div class="section-heading"><p class="section-kicker">A transparent heuristic</p><h2 id="time-heading">Estimate reading and speaking time with an adjustable pace</h2></div>
+        <div class="prose-grid"><div>
+          <p>Reading time and speaking time are calculated from the same word total but use separate words-per-minute settings. The arithmetic is intentionally simple: words divided by words per minute. Raising the rate shortens the estimate; lowering it lengthens the estimate.</p>
+          <p>A rate is not a property of the document. Dense technical prose, unfamiliar names, equations, on-screen demonstrations, audience questions, dramatic pauses, and a language learner's pace all move real duration away from a generic default. Use the controls to model the specific reader or presentation, then rehearse anything with a hard time slot.</p>
+          <p>For multilingual text, word segmentation and delivery pace are separate choices. Selecting Japanese or Thai changes how boundaries are requested; it does not claim that one universal WPM value makes different languages directly comparable.</p>
+        </div><div class="callout-card"><strong>Need a platform limit instead?</strong><p>Word counts estimate editorial length. Usernames, messages, database fields, and API payloads often specify graphemes, UTF-16 units, code points, or bytes.</p><a href="/character-counter/">Open the Character Counter →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="reproduce-heading">
+        <div class="section-heading"><p class="section-kicker">Make the contract reproducible</p><h2 id="reproduce-heading">Why a locale and engine version belong beside a formal count</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Preserve the source</h3><p>Count the exact draft that will be published. The tool does not normalize Unicode, fold case, or rewrite punctuation after receiving the textarea value; browsers expose CRLF and CR line endings there as LF.</p></li>
+          <li><span>2</span><h3>Record the locale</h3><p>Use a named locale rather than Auto when another reviewer or build system must reproduce the assumption.</p></li>
+          <li><span>3</span><h3>Test disputed examples</h3><p>Keep examples with contractions, hyphens, abbreviations, emoji, and scripts without spaces as regression cases for the chosen environment.</p></li>
+        </ol>
+        <p>ECMA-402 deliberately leaves some boundary details to the implementation and its internationalization data. A server library, desktop editor, search index, and browser can all be standards-conforming yet disagree on an edge case. If an external submission portal is authoritative, its published rules and final displayed total take precedence over this planning tool.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">The current browser string stays local</p><h2 id="privacy-heading">Count locally without Unicode normalization</h2></div>
+        <div class="prose-grid"><div>
+          <p>Analysis runs in the current browser tab. LiveParse does not intentionally send the entered text to a counting endpoint or create a server-side document history. That makes the page useful for drafts that should not be pasted into an unknown remote API, while browser extensions, clipboard managers, device backups, and screenshots remain separate privacy boundaries.</p>
+          <p>The tool does not apply NFC, NFD, NFKC, or NFKD normalization to the current textarea value. A precomposed accented letter and a decomposed base-plus-mark sequence therefore remain distinct. HTML textarea behavior separately converts CRLF and CR line endings to LF before analysis; inspect code-point, UTF-16, and UTF-8 units with the Character Counter.</p>
+          <p>JavaScript strings can also contain an unpaired UTF-16 surrogate. Locale segmentation can analyze the string as held by the engine, but strict UTF-8 encoding cannot preserve that isolated code unit as a Unicode scalar value. The related character tool reports UTF-8 bytes as unavailable for such input instead of quietly presenting a replacement-based byte total.</p>
+        </div><div class="callout-card"><strong>Learn the layers</strong><p>Grapheme clusters, code points, UTF-16 code units, and UTF-8 bytes are distinct units with different limit and slicing behavior.</p><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Compare Unicode length units →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Word counter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does this word counter count?</summary><p>It counts word-like segments and sentences with the selected locale, then separately counts nonblank paragraphs and logical lines. It also estimates reading and speaking time from the word count and the chosen words-per-minute rates.</p></details>
+          <details><summary>Why can two word counters produce different totals?</summary><p>Word boundaries are not universal. Counters may split punctuation, contractions, hyphenated terms, emoji, or scripts without spaces differently. This tool uses the browser's locale-aware segmentation data, so the selected locale and browser engine can affect edge cases.</p></details>
+          <details><summary>Can it count Chinese, Japanese, Korean, or Thai text?</summary><p>Yes. Choose Chinese, Japanese, Korean, or Thai, or leave the locale on Auto to use the browser preference. Locale-aware segmentation is more appropriate than splitting only at spaces, although results can still vary with the browser's Unicode and dictionary data.</p></details>
+          <details><summary>How are paragraphs and lines counted?</summary><p>A paragraph is a nonblank block separated by one or more blank lines. The analysis rule recognizes CRLF as one break and also recognizes CR, LF, NEL, line separator, and paragraph separator. The HTML textarea exposes CRLF and CR as LF before analysis; empty input has zero lines, and a final break creates an empty final line.</p></details>
+          <details><summary>How are reading and speaking times calculated?</summary><p>Each estimate divides the word count by the selected words-per-minute rate. The rates are adjustable because audience, language, difficulty, pauses, and delivery style all change real timing; the result is a planning estimate, not a measured duration.</p></details>
+          <details><summary>Is my text uploaded or normalized?</summary><p>No. Counting runs in the current browser tab and the tool does not intentionally upload the entered text. It analyzes the current textarea value without Unicode normalization, so canonically equivalent spellings can retain different code-point and byte counts. HTML textarea behavior converts CRLF and CR line endings to LF before analysis.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue exploring text</p><h2 id="related-heading">Counters, standards, and practical guides</h2></div><ul><li><a href="/character-counter/">Character Counter</a></li><li><a href="/guides/how-word-counting-works/">How word counting works</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Graphemes, code points, and bytes</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li><li><a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/word-counter/">Words</a><a href="/character-counter/">Characters</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Name the locale and counting unit before comparing totals.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive counting. The segmentation rules, structural definitions, and timing guidance remain readable without it.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

@@ -61,6 +61,14 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/word-counter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/character-counter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/url-encoder/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
@@ -226,6 +234,14 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/ascii-vs-unicode-utf8/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/how-word-counting-works/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>

@@ -25,6 +25,8 @@ export default defineConfig({
         hexConverter: resolve(projectRoot, 'hex-converter/index.html'),
         binaryTranslator: resolve(projectRoot, 'binary-translator/index.html'),
         asciiTable: resolve(projectRoot, 'ascii-table/index.html'),
+        wordCounter: resolve(projectRoot, 'word-counter/index.html'),
+        characterCounter: resolve(projectRoot, 'character-counter/index.html'),
         urlEncoder: resolve(projectRoot, 'url-encoder/index.html'),
         urlDecoder: resolve(projectRoot, 'url-decoder/index.html'),
         urlParser: resolve(projectRoot, 'url-parser/index.html'),

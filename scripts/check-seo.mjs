@@ -37,6 +37,10 @@ const FAQ_PARITY_PATHS = new Set([
   '/hex-converter/',
   '/binary-translator/',
   '/ascii-table/',
+  '/word-counter/',
+  '/character-counter/',
+  '/guides/how-word-counting-works/',
+  '/guides/grapheme-clusters-vs-code-points-and-bytes/',
   '/guides/binary-decimal-hex-octal-conversion/',
   '/guides/twos-complement-signed-binary/',
   '/guides/ascii-vs-unicode-utf8/',
@@ -65,6 +69,8 @@ const requiredPages = [
   { relativePath: 'hex-converter/index.html', canonical: `${CANONICAL_ORIGIN}/hex-converter/`, label: 'Hex Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\b(?:hex|hexadecimal)\b)(?=.*\bconvert(?:er|ing|s|ed)?\b)/i, topicLabel: 'hexadecimal conversion' },
   { relativePath: 'binary-translator/index.html', canonical: `${CANONICAL_ORIGIN}/binary-translator/`, label: 'Binary Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\btranslat(?:e|or|ing|ion)\b)/i, topicLabel: 'binary text translation' },
   { relativePath: 'ascii-table/index.html', canonical: `${CANONICAL_ORIGIN}/ascii-table/`, label: 'ASCII Table tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bascii\b)(?=.*\b(?:table|codes?|chart)\b)/i, topicLabel: 'ASCII table' },
+  { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
+  { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
   { relativePath: 'url-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-encoder/`, label: 'URL Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bencod(?:e|er|ing)\b)/i, topicLabel: 'URL encoding' },
   { relativePath: 'url-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-decoder/`, label: 'URL Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'URL decoding' },
   { relativePath: 'url-parser/index.html', canonical: `${CANONICAL_ORIGIN}/url-parser/`, label: 'URL Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'URL parsing' },
@@ -425,6 +431,24 @@ function guideValidationProfile(relativePath) {
       minimumCharacters: 1_000,
       topicPattern: /(?=.*\bascii\b)(?=.*\bunicode\b)(?=.*\butf-?8\b)/i,
       topicLabel: 'ASCII, Unicode, and UTF-8',
+    };
+  }
+  if (normalized.includes('how-word-counting-works')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bwords?\b)(?=.*\bcount(?:er|ing|s|ed)?\b)/i,
+      topicLabel: 'how word counting works',
+    };
+  }
+  if (normalized.includes('grapheme-clusters-vs-code-points-and-bytes')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bgrapheme(?:s|\s+clusters?)?\b)(?=.*\bcode\s+points?\b)(?=.*\bbytes?\b)/i,
+      topicLabel: 'grapheme clusters, code points, and bytes',
     };
   }
   if (normalized.includes('url-percent-encoding')) {

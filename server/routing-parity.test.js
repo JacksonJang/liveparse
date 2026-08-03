@@ -399,4 +399,37 @@ describe('production routing parity', () => {
     const routeNames = [...directories, ...redirects.keys()];
     expect(routeNames.some((route) => /yaml-(?:schema|linter|lint|fixer)|(?:schema|lint|linter|fixer)-yaml/i.test(route))).toBe(false);
   });
+
+  it('includes the text measurement tools and guides with intentional aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set(['/word-counter/', '/character-counter/']);
+    const expectedAliases = new Map([
+      ['/word-count', '/word-counter/'],
+      ['/word-count-checker', '/word-counter/'],
+      ['/character-count', '/character-counter/'],
+      ['/letter-counter', '/character-counter/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/word-counter',
+      '/character-counter',
+      '/guides/how-word-counting-works',
+      '/guides/grapheme-clusters-vs-code-points-and-bytes',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
 });
