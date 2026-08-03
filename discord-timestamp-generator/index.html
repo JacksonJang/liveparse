@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Timestamp Generator – All 9 Formats | LiveParse</title>
+    <meta name="description" content="Generate Discord timestamp codes for a date and browser-supported IANA timezone. Copy all 9 current formats, including relative, compact, and full date/time." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/discord-timestamp-generator/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/discord-timestamp-generator/" />
+    <meta property="og:title" content="Discord Timestamp Generator – All 9 Formats" />
+    <meta property="og:description" content="Choose a date and IANA timezone, decode existing tags, and copy all nine currently documented Discord timestamp styles." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse developer tools for timestamps, conversion, and structured data" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Discord Timestamp Generator – All 9 Formats" />
+    <meta name="twitter:description" content="Generate timezone-aware Discord timestamp codes, including s, S, and relative R formats." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#4854cf" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for JSON, timestamps, and developer data.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/discord-timestamp-generator/#application",
+            "name": "LiveParse Timestamp Code Generator",
+            "url": "https://liveparse.com/discord-timestamp-generator/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Timestamp generator and timezone converter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A free browser-based generator for all nine currently documented Discord timestamp styles, with IANA timezone conversion, DST ambiguity checks, existing-tag decoding, and ready-to-copy message templates.",
+            "featureList": [
+              "Generate all nine currently documented Discord timestamp styles",
+              "Interpret date and time input in an IANA timezone",
+              "Warn about daylight-saving gaps and overlaps",
+              "Decode existing Discord timestamp tags",
+              "Detect likely milliseconds, microseconds, and nanoseconds",
+              "Copy full-date and relative-time message templates",
+              "Process dates and messages in the current browser tab"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/discord-timestamp-generator/#webpage",
+            "url": "https://liveparse.com/discord-timestamp-generator/",
+            "name": "Discord Timestamp Generator – All 9 Formats",
+            "description": "Generate and decode timezone-aware Discord timestamp tags in all nine currently documented styles.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/discord-timestamp-generator/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/discord-timestamp-generator/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/discord-timestamp-generator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Discord Timestamp Generator", "item": "https://liveparse.com/discord-timestamp-generator/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="discord-page">
+    <a class="skip-link" href="#generator">Skip to the Discord timestamp generator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Formatter</a>
+          <a href="/unix-timestamp-converter/">Unix Timestamp</a>
+          <a href="#formats">9 formats</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · 9 formats · IANA timezones</p>
+          <h1>Discord Timestamp Generator</h1>
+          <p class="hero-lead">Choose a date, time, and source timezone. Copy a Discord timestamp code that renders for each reader in their own locale and timezone—including the often-missed <code>:s</code> and <code>:S</code> styles.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#generator">Generate a timestamp</a>
+            <span>No sign-up · Runs in your browser</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="Discord timestamp code example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>event-announcement.txt</strong></div>
+          <pre><code>Event starts
+<span class="string">&lt;t:1785758400:F&gt;</span>
+(<span class="property">&lt;t:1785758400:R&gt;</span>)</code></pre>
+          <p><strong>One instant</strong><span>Localized for every reader</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="generator" aria-labelledby="generator-heading">
+        <div><p class="section-kicker">Date → Discord code</p><h2 id="generator-heading">Generate, convert, or decode a Discord timestamp</h2></div>
+        <p>Pick an IANA timezone, use a quick future preset, or paste an existing <code>&lt;t:…&gt;</code> tag. The generator validates whole Unix seconds and keeps every date and message in this tab.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="Discord timestamp generator loading">
+          <p><strong>Loading the Discord timestamp generator…</strong></p>
+          <p>Enable JavaScript to select a timezone, preview formats, and copy timestamp codes.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Ready in three steps</p>
+          <h2 id="how-heading">How to generate a Discord timestamp</h2>
+          <p>A Discord time code represents one instant. The generator first converts the wall-clock time you enter into Unix seconds; Discord then localizes that instant for whoever reads the message.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Choose the source time</h3><p>Enter the date and clock time, then choose the timezone in which that wall clock should be understood. “9:00” in Seoul and “9:00” in New York are different instants, so the source zone is part of the input.</p></li>
+          <li><span>2</span><h3>Pick a display style</h3><p>Select one of the nine current style letters. Use <code>F</code> for a complete event date, <code>R</code> for relative wording, or pair both when readers need a calendar anchor and countdown context.</p></li>
+          <li><span>3</span><h3>Copy and paste the tag</h3><p>Copy the generated code, such as <code>&lt;t:1785758400:F&gt;</code>, into the message you are composing. Test it in the intended Discord context before publishing an important announcement.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="syntax" aria-labelledby="syntax-heading">
+        <div class="section-heading"><p class="section-kicker">The exact structure</p><h2 id="syntax-heading">Discord timestamp syntax: &lt;t:UNIX_SECONDS:STYLE&gt;</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The documented timestamp structure is <code>&lt;t:TIMESTAMP&gt;</code>, with the styled form <code>&lt;t:TIMESTAMP:STYLE&gt;</code>. The first <code>t</code> identifies the timestamp construct. <code>TIMESTAMP</code> is a whole Unix timestamp in <strong>seconds</strong>. The optional final letter asks Discord to render a particular date, time, or relative form.</p>
+            <p>If the style is omitted, Discord documents <code>f</code> as the default. Therefore <code>&lt;t:1785758400&gt;</code> and <code>&lt;t:1785758400:f&gt;</code> request the same style. Keeping <code>:f</code> visible can make a template easier to review; omitting it makes the tag slightly shorter.</p>
+            <p>Style letters are case-sensitive. Lowercase <code>t</code> and uppercase <code>T</code> are different styles, as are <code>d</code>/<code>D</code>, <code>f</code>/<code>F</code>, and <code>s</code>/<code>S</code>. Relative time uses uppercase <code>R</code>.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>&lt;t:</dt><dd>Opens the timestamp tag and distinguishes it from ordinary text.</dd></div>
+            <div><dt>Unix seconds</dt><dd>A whole-second offset from 1970-01-01 00:00:00 UTC. This generator targets non-negative event times.</dd></div>
+            <div><dt>:STYLE</dt><dd>An optional, case-sensitive display choice such as <code>:F</code> or <code>:R</code>.</dd></div>
+            <div><dt>&gt;</dt><dd>Closes the tag so the client can recognize the complete construct.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="formats" aria-labelledby="formats-table-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Complete current reference</p>
+          <h2 id="formats-table-heading">All 9 Discord timestamp formats</h2>
+          <p>Many older references list seven styles. The current Discord API reference also documents compact date-and-time styles <code>s</code> and <code>S</code>, bringing the table to nine. Examples are locale-dependent.</p>
+        </div>
+        <div class="error-table" role="table" aria-label="Nine Discord timestamp style codes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Style and official description</span><span role="columnheader">Code shape</span><span role="columnheader">Useful for</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>t</code> · Short Time</strong><code role="cell">&lt;t:…:t&gt;</code><span role="cell">A time-only mention when the surrounding message already makes the date clear.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>T</code> · Medium Time</strong><code role="cell">&lt;t:…:T&gt;</code><span role="cell">A time including seconds for precise launches or coordinated actions.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>d</code> · Short Date</strong><code role="cell">&lt;t:…:d&gt;</code><span role="cell">Compact date references in lists, tables, and brief status messages.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>D</code> · Long Date</strong><code role="cell">&lt;t:…:D&gt;</code><span role="cell">A written date for deadlines and notices that do not need a time.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>f</code> · Long Date, Short Time</strong><code role="cell">&lt;t:…:f&gt;</code><span role="cell">The documented default: a readable date plus time without the weekday.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>F</code> · Full Date, Short Time</strong><code role="cell">&lt;t:…:F&gt;</code><span role="cell">Event announcements where weekday, full date, and time add context.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>s</code> · Short Date, Short Time</strong><code role="cell">&lt;t:…:s&gt;</code><span role="cell">Compact schedules that need both date and time but not seconds.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>S</code> · Short Date, Medium Time</strong><code role="cell">&lt;t:…:S&gt;</code><span role="cell">Compact schedules that also need seconds.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>R</code> · Relative Time</strong><code role="cell">&lt;t:…:R&gt;</code><span role="cell">Countdown and elapsed-time context such as “in 2 hours.”</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/discord-timestamp-formats/">Read the complete nine-format guide →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="relative-heading">
+        <div class="section-heading"><p class="section-kicker">Countdown without timezone math</p><h2 id="relative-heading">Create a relative Discord timestamp with R</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The <code>R</code> style expresses an instant relative to the viewer’s current time. A future value might appear as “in 2 hours,” while a past value might appear as “3 days ago.” Discord owns the final wording, so do not assume every locale chooses the same unit or phrase.</p>
+            <p>Relative output is excellent for urgency but weak as the only permanent record. After enough time passes, “months ago” no longer identifies the exact calendar date. Pair <code>R</code> with <code>F</code>: <code>Event starts &lt;t:1785758400:F&gt; (&lt;t:1785758400:R&gt;).</code> The first tag anchors the schedule; the second makes remaining time easy to grasp.</p>
+            <p>The generator includes event, deadline, release, and maintenance templates using this pair. They are plain message text, so you can edit the surrounding words after copying.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Event</dt><dd><code>Event starts &lt;t:…:F&gt; (&lt;t:…:R&gt;).</code></dd></div>
+            <div><dt>Deadline</dt><dd><code>Deadline: &lt;t:…:F&gt; — &lt;t:…:R&gt;.</code></dd></div>
+            <div><dt>Release</dt><dd><code>Going live &lt;t:…:R&gt; at &lt;t:…:F&gt;.</code></dd></div>
+            <div><dt>Maintenance</dt><dd><code>Maintenance begins &lt;t:…:F&gt; (&lt;t:…:R&gt;).</code></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="timezone-heading">
+        <div class="section-heading"><p class="section-kicker">Source zone in, viewer zone out</p><h2 id="timezone-heading">How Discord timestamps handle timezones and locales</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>The source timezone defines the instant</h3><p>“2026-08-03 09:00” needs a location. Select an IANA zone such as <code>Asia/Seoul</code> or <code>America/New_York</code>; the name carries regional offset and daylight-saving rules.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Unix seconds are zone-independent</h3><p>After conversion, the number represents one instant. The source zone is not embedded in the tag. A different preview zone changes calendar fields, not the moment.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Each reader gets a localized view</h3><p>Discord states that timestamps display using the user’s timezone and locale. Tokyo and Los Angeles readers can see different dates or clock times for the same code.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Preview text is illustrative</h3><p>LiveParse uses browser internationalization data. Discord controls final wording, punctuation, field order, and 12/24-hour preference. Test critical notices at their destination.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="seconds-heading">
+        <div class="section-heading"><p class="section-kicker">The most common mistake</p><h2 id="seconds-heading">Discord timestamps use seconds, not milliseconds</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Discord’s reference specifies seconds. JavaScript’s <code>Date.now()</code> returns milliseconds. A current Unix seconds value is commonly about ten digits, while the same instant in milliseconds is commonly about thirteen. Pasting the larger value as seconds can produce an implausibly distant date.</p>
+            <p>For example, <code>1785758400</code> is seconds; <code>1785758400000</code> is milliseconds for the same instant. Convert deliberately by dividing whole milliseconds by 1,000 and deciding how to handle a remainder. In JavaScript, <code>Math.floor(milliseconds / 1000)</code> selects the containing Unix second, including the correct direction before the epoch.</p>
+            <p>The decoder detects values that resemble modern milliseconds, microseconds, or nanoseconds and offers a seconds conversion rather than silently accepting the wrong scale. For broader work, use the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> and <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">timestamp unit guide</a>.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Seconds</dt><dd><code>1785758400</code> — the documented tag unit.</dd></div>
+            <div><dt>Milliseconds</dt><dd><code>1785758400000</code> — common in JavaScript.</dd></div>
+            <div><dt>Microseconds</dt><dd><code>1785758400000000</code> — common in databases and tracing.</dd></div>
+            <div><dt>Nanoseconds</dt><dd><code>1785758400000000000</code> — high-resolution time that must be rescaled.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="dst-heading">
+        <div class="section-heading"><p class="section-kicker">Regional clock rules</p><h2 id="dst-heading">Daylight-saving gaps and overlaps</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A timezone can skip a wall-clock interval when clocks move forward. If a region changes directly from 01:59 to 03:00, then 02:30 does not exist on that date. LiveParse reports the gap rather than silently normalizing it to another time.</p>
+            <p>When clocks move backward, one wall-clock time can occur twice with different offsets. The generator detects both matching instants and lets you choose the earlier or later occurrence. The typed date looks identical, but the resulting Unix seconds differ.</p>
+            <p>Use IANA names for regional schedules instead of ambiguous abbreviations or a fixed offset that ignores future rule changes. For an event already defined globally, choose UTC. A timestamp stores one instant, not a recurring local-time rule.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Gap</dt><dd>A local time does not exist because the clock jumps forward.</dd></div>
+            <div><dt>Overlap</dt><dd>A local time occurs twice because the clock moves backward.</dd></div>
+            <div><dt>IANA zone</dt><dd>A rule-bearing name such as <code>Europe/Berlin</code>.</dd></div>
+            <div><dt>UTC</dt><dd>A stable choice when the source instant is already global.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="decode-heading">
+        <div class="section-heading"><p class="section-kicker">Work in both directions</p><h2 id="decode-heading">Decode an existing Discord timestamp</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Paste a tag such as <code>&lt;t:1785758400:S&gt;</code>. LiveParse extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
+            <p>Decoding helps when updating an old event message, reviewing a bot template, or checking a unit mistake. The parser accepts the timestamp structure rather than arbitrary message text. It rejects decimal seconds and undocumented style letters instead of guessing.</p>
+            <p>This is different from a Discord snowflake ID. Snowflakes encode creation time plus other bits and use a separate calculation. Inline timestamp tags take ordinary Unix seconds directly.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Input</dt><dd><code>&lt;t:1785758400:S&gt;</code></dd></div>
+            <div><dt>Seconds</dt><dd><code>1785758400</code></dd></div>
+            <div><dt>Style</dt><dd><code>S</code> — Short Date, Medium Time</dd></div>
+            <div><dt>Alternatives</dt><dd>Regenerate the same instant in any documented style.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="workflow-heading">
+        <div class="section-heading"><p class="section-kicker">Choose the fitting workflow</p><h2 id="workflow-heading">Web generator, @time, Scheduled Event, or bot?</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Generator for explicit control</h3><p>Use this page for IANA timezone input, DST diagnostics, all nine codes, existing-tag decoding, unit warnings, and ready-made <code>F + R</code> messages.</p></article>
+          <article><h3>@time for an in-app desktop flow</h3><p>Discord’s February 4, 2026 patch notes describe a native <code>@time</code> command on Desktop. It can be faster while composing there; check current client availability rather than assuming every platform behaves identically.</p></article>
+          <article><h3>Scheduled Event for event features</h3><p>An inline tag places localized time in ordinary text. A Discord Scheduled Event is a separate event object with event-specific discovery and notification behavior. A community can use one or both.</p></article>
+          <article><h3>Bot for repeated automation</h3><p>A bot or webhook can generate tags from a trusted schedule. It must still interpret the source timezone correctly and emit whole Unix seconds. Test automated templates around DST transitions.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Discord Timestamp Generator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What is the Discord timestamp syntax?</summary><p>Use <code>&lt;t:UNIX_SECONDS&gt;</code> for default display or <code>&lt;t:UNIX_SECONDS:STYLE&gt;</code> for an explicit, case-sensitive style.</p></details>
+          <details><summary>Does Discord use Unix seconds or milliseconds?</summary><p>The current reference says timestamps are expressed in seconds. JavaScript <code>Date.now()</code> returns milliseconds and must be deliberately converted.</p></details>
+          <details><summary>Are there seven or nine timestamp formats?</summary><p>The current official table lists nine: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. Older guides often omit <code>s</code> and <code>S</code>.</p></details>
+          <details><summary>Which style is the default?</summary><p>Discord marks <code>f</code>—Long Date, Short Time—as default. Omitting the final style requests that form.</p></details>
+          <details><summary>How do I make a relative countdown?</summary><p>Use uppercase <code>R</code>. Pair it with <code>F</code> when the message should also retain an exact full date and time.</p></details>
+          <details><summary>Why does another person see a different clock time?</summary><p>The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently.</p></details>
+          <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
+          <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Paste the complete tag into the decoder to extract its seconds and style, view the date, and regenerate every format.</p></details>
+          <details><summary>Do I need a bot?</summary><p>Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination.</p></details>
+          <details><summary>Why is raw &lt;t:…&gt; text not rendering?</summary><p>Check the angle brackets, <code>t:</code> prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context.</p></details>
+          <details><summary>Is LiveParse affiliated with Discord?</summary><p>No. LiveParse is an independent developer tool and is not affiliated with or endorsed by Discord.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary references</p><h2 id="references-heading">Verify current behavior</h2></div>
+        <ul>
+          <li><a href="https://docs.discord.com/developers/reference#message-formatting" target="_blank" rel="noreferrer">Discord API Reference: Message Formatting</a></li>
+          <li><a href="https://discord.com/blog/discord-patch-notes-february-4-2026" target="_blank" rel="noreferrer">Discord patch notes: February 4, 2026</a></li>
+          <li><a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" target="_blank" rel="noreferrer">Discord Scheduled Events</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for timestamps, JSON, comparison, repair, and conversion.</p></div>
+      <div class="footer-links">
+        <a href="#generator">Discord Timestamp</a>
+        <a href="/guides/discord-timestamp-formats/">9 Format Guide</a>
+        <a href="/unix-timestamp-converter/">Unix Timestamp</a>
+        <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Seconds vs ms</a>
+        <a href="/">JSON Formatter</a>
+        <a href="/json-compare/">JSON Compare</a>
+        <a href="/privacy/">Privacy &amp; cookies</a>
+      </div>
+      <p class="footer-note">Last reviewed August 3, 2026 · Local date processing · Not affiliated with or endorsed by Discord</p>
+    </footer>
+
+    <noscript><p class="noscript-note">JavaScript is required to generate and decode timestamp codes. The format reference remains available without it.</p></noscript>
+    <script type="module" src="/src/discord-timestamp.tsx"></script>
+  </body>
+</html>

@@ -16,6 +16,7 @@ const requiredPages = [
   { relativePath: 'json-to-csv/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-csv/`, label: 'JSON to CSV tool' },
   { relativePath: 'csv-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/csv-to-json/`, label: 'CSV to JSON tool', requireParsing: false },
   { relativePath: 'unix-timestamp-converter/index.html', canonical: `${CANONICAL_ORIGIN}/unix-timestamp-converter/`, label: 'Unix Timestamp Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true },
+  { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -217,6 +218,14 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('discord-timestamp')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      topicPattern: /\bdiscord\s+timestamps?\b/i,
+      topicLabel: 'Discord timestamp',
+    };
+  }
   if (normalized.includes('unix-timestamp')) {
     return {
       requireJson: false,
@@ -373,6 +382,19 @@ async function main() {
       requireParsing: requirement.requireParsing ?? true,
     });
     validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
+    if (requirement.topicPattern) {
+      const topicFields = [
+        ['title', titleValues(page)[0] || ''],
+        ['meta description', descriptionValues(page)[0] || ''],
+        ['H1', h1Values(page)[0] || ''],
+        ['visible copy', visibleText(page)],
+      ];
+      for (const [field, value] of topicFields) {
+        if (!requirement.topicPattern.test(value)) {
+          fail(`${requirement.label}: ${field} must mention ${requirement.topicLabel}`);
+        }
+      }
+    }
     if (!sitemapUrlSet.has(requirement.canonical)) fail(`${requirement.label}: missing from sitemap.xml`);
   }
 

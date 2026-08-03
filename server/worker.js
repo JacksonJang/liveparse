@@ -7,6 +7,7 @@ const DIRECTORY_ROUTES = new Set([
   '/csv-to-json',
   '/json-compare',
   '/unix-timestamp-converter',
+  '/discord-timestamp-generator',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
@@ -15,6 +16,7 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/compare-json-ignore-order',
   '/guides/unix-timestamp-seconds-vs-milliseconds',
   '/guides/unix-timestamp-code-examples',
+  '/guides/discord-timestamp-formats',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
@@ -29,6 +31,14 @@ const ROUTE_REDIRECTS = new Map([
   ['/timestamp-converter/', '/unix-timestamp-converter/'],
   ['/unix-time-converter', '/unix-timestamp-converter/'],
   ['/unix-time-converter/', '/unix-timestamp-converter/'],
+  ['/discord-timestamp', '/discord-timestamp-generator/'],
+  ['/discord-timestamp/', '/discord-timestamp-generator/'],
+  ['/discord-timestamp-converter', '/discord-timestamp-generator/'],
+  ['/discord-timestamp-converter/', '/discord-timestamp-generator/'],
+  ['/discord-time-converter', '/discord-timestamp-generator/'],
+  ['/discord-time-converter/', '/discord-timestamp-generator/'],
+  ['/discord-time-generator', '/discord-timestamp-generator/'],
+  ['/discord-time-generator/', '/discord-timestamp-generator/'],
 ]);
 
 function normalizeKnownRoutePath(pathname) {

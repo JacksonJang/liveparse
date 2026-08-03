@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Timestamp Formats: All 9 Codes Explained | LiveParse</title>
+    <meta name="description" content="Learn all 9 Discord timestamp formats—t, T, d, D, f, F, s, S, and R—with syntax, timezone behavior, use cases, and copy-ready examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/discord-timestamp-formats/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Discord Timestamp Formats: All 9 Codes Explained" />
+    <meta property="og:description" content="A current reference for Discord timestamp syntax, all nine style letters, viewer-local rendering, countdowns, and unit troubleshooting." />
+    <meta property="og:url" content="https://liveparse.com/guides/discord-timestamp-formats/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse developer tools for timestamps, conversion, and structured data" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Discord Timestamp Formats: All 9 Codes" />
+    <meta name="twitter:description" content="Understand t, T, d, D, f, F, s, S, and R with copy-ready syntax and careful timezone guidance." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/discord-timestamp-formats/#article",
+            "headline": "Discord Timestamp Formats: All 9 Codes Explained",
+            "description": "Learn all nine Discord timestamp formats with syntax, timezone behavior, use cases, existing-tag decoding, and unit troubleshooting.",
+            "mainEntityOfPage": "https://liveparse.com/guides/discord-timestamp-formats/",
+            "url": "https://liveparse.com/guides/discord-timestamp-formats/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Developer communication",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/discord-timestamp-formats/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Discord Timestamp Formats", "item": "https://liveparse.com/guides/discord-timestamp-formats/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/discord-timestamp-generator/">Discord Timestamp Generator</a>
+        <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Discord timestamp formats</span></nav>
+          <p class="eyebrow">Message formatting reference</p>
+          <h1>Discord Timestamp Formats: All 9 Codes Explained</h1>
+          <p class="dek">Discord’s timestamp syntax turns one Unix time into a date or time rendered for each reader’s locale and timezone. This guide covers every currently documented style—including the often-missed <code>s</code> and <code>S</code> forms—and shows how to choose, decode, and troubleshoot a tag.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-03">August 3, 2026</time></span><span>14 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Quick answer:</strong> the full syntax is <code>&lt;t:UNIX_SECONDS:STYLE&gt;</code>. Discord currently documents nine case-sensitive style letters: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. The lowercase <code>f</code> style is the default when the style is omitted. Use whole Unix seconds—not JavaScript milliseconds—and remember that the visible result depends on the reader’s locale and timezone.</p>
+            </div>
+
+            <h2 id="syntax">How Discord timestamp syntax works</h2>
+            <p>Discord describes timestamps as a custom part of its message formatting. A basic tag contains <code>t</code>, a colon, and a Unix timestamp wrapped in angle brackets. Add another colon and a style letter to choose the presentation:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Basic and styled timestamp tags</figcaption>
+              <pre><code>&lt;t:1754208000&gt;
+&lt;t:1754208000:F&gt;</code></pre>
+            </figure>
+            <p>The number <code>1754208000</code> identifies one instant. It does not carry a country, language, or timezone name. According to the current <a href="https://docs.discord.com/developers/reference#message-formatting" rel="external">Discord API message-formatting reference</a>, timestamps are expressed in seconds and displayed in the user’s timezone and locale. One reader may therefore see a 12-hour clock and month-first date while another sees a 24-hour clock and day-first date. Both renderings can identify the same instant.</p>
+            <p>Style letters are case-sensitive. <code>t</code> and <code>T</code> are different, as are <code>d</code> and <code>D</code>, <code>f</code> and <code>F</code>, and <code>s</code> and <code>S</code>. A generator should preserve the selected case exactly. If you want a ready-to-paste tag without doing the epoch calculation, use the <a href="/discord-timestamp-generator/">LiveParse Discord Timestamp Generator</a>.</p>
+
+            <h2 id="reference-table">All nine Discord timestamp formats</h2>
+            <p>The table uses the names in Discord’s current developer documentation. Output descriptions are structural rather than fixed English examples because punctuation, date order, month names, and 12- or 24-hour clocks can vary by viewer.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Style</th><th scope="col">Example syntax</th><th scope="col">Documented description</th><th scope="col">Useful when</th></tr></thead>
+                <tbody>
+                  <tr><td><code>t</code></td><td><code>&lt;t:1754208000:t&gt;</code></td><td>Short Time</td><td>The date is already clear and seconds are unnecessary.</td></tr>
+                  <tr><td><code>T</code></td><td><code>&lt;t:1754208000:T&gt;</code></td><td>Medium Time</td><td>A clock time needs seconds.</td></tr>
+                  <tr><td><code>d</code></td><td><code>&lt;t:1754208000:d&gt;</code></td><td>Short Date</td><td>A compact numeric date is enough.</td></tr>
+                  <tr><td><code>D</code></td><td><code>&lt;t:1754208000:D&gt;</code></td><td>Long Date</td><td>A readable date is needed without a time.</td></tr>
+                  <tr><td><code>f</code></td><td><code>&lt;t:1754208000:f&gt;</code></td><td>Long Date, Short Time</td><td>A compact general-purpose date and time is wanted. This is the default.</td></tr>
+                  <tr><td><code>F</code></td><td><code>&lt;t:1754208000:F&gt;</code></td><td>Full Date, Short Time</td><td>The weekday helps make an event announcement clear.</td></tr>
+                  <tr><td><code>s</code></td><td><code>&lt;t:1754208000:s&gt;</code></td><td>Short Date, Short Time</td><td>Both date and time must fit in a compact layout.</td></tr>
+                  <tr><td><code>S</code></td><td><code>&lt;t:1754208000:S&gt;</code></td><td>Short Date, Medium Time</td><td>A compact date and a time with seconds are needed.</td></tr>
+                  <tr><td><code>R</code></td><td><code>&lt;t:1754208000:R&gt;</code></td><td>Relative Time</td><td>The message should describe the instant relative to when it is viewed.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note">
+              <p><strong>Why do some references say seven formats?</strong> Many older or incomplete lists stop after <code>F</code> and <code>R</code>. Discord’s current reference also lists <code>s</code> and <code>S</code>, making nine documented style letters. “Currently documented” is the useful claim; the reference does not provide a release date for the two compact styles.</p>
+            </div>
+
+            <h2 id="time-date-styles">Choose between time-only, date-only, and combined styles</h2>
+            <p>Use <code>t</code> or <code>T</code> only when the surrounding sentence establishes the day. “Today at <code>&lt;t:…:t&gt;</code>” can be concise in a short-lived conversation, but it becomes unclear when someone finds the message later. The uppercase <code>T</code> adds seconds; that precision is useful for coordinated launches or incident timelines but usually adds noise to a casual event.</p>
+            <p>Use <code>d</code> or <code>D</code> when the clock time does not matter. The numeric <code>d</code> form is compact, yet its order follows locale, so one viewer’s month/day arrangement can differ from another’s. The written <code>D</code> form can be easier to scan when the exact date deserves more space.</p>
+            <p>The combined formats serve most scheduling messages. Lowercase <code>f</code> includes a long date and short time and is the documented default. Uppercase <code>F</code> adds the weekday, which is helpful for a raid, class, release, or community meeting. The compact <code>s</code> and <code>S</code> forms retain both date and time in less space; uppercase <code>S</code> includes seconds. These forms are especially useful in dense status lists or generated tables where a written month would dominate the row.</p>
+
+            <h2 id="relative">Use the R style for relative time</h2>
+            <p>The <code>R</code> style asks the client to present the instant relative to the time of viewing. Depending on the instant and viewer, that can appear as wording equivalent to “in 2 hours” or “3 days ago.” It is useful for a countdown, submission window, maintenance start, or incident age. Avoid promising an exact refresh interval: Discord documents the style as Relative Time but does not specify a second-by-second update contract in the message-formatting table.</p>
+            <p>Relative text supplies urgency but can hide the calendar date. Pair it with an absolute style when people may revisit the message, cross a midnight boundary, or need to add the event to another system.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">One instant shown as an absolute date and relative time</figcaption>
+              <pre><code>Event starts &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).</code></pre>
+            </figure>
+            <p>Both tags must use the same Unix value. If one number is regenerated later, the displayed date and relative description can disagree. A one-click combined template in the <a href="/discord-timestamp-generator/">Discord timestamp generator</a> avoids that copy error.</p>
+
+            <h2 id="templates">Copy-ready announcement patterns</h2>
+            <p>Replace the sample number by generating the intended date and source timezone. The surrounding wording remains static while Discord formats each tag for the reader.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Event, deadline, release, and maintenance templates</figcaption>
+              <pre><code>Community event: &lt;t:1754208000:F&gt; — &lt;t:1754208000:R&gt;.
+Submissions close &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
+Release window opens &lt;t:1754208000:f&gt;.
+Maintenance begins &lt;t:1754208000:F&gt; and is expected to last 30 minutes.
+Incident began &lt;t:1754208000:R&gt; at &lt;t:1754208000:T&gt;.</code></pre>
+            </figure>
+            <p>Keep durations separate from instants. The timestamp identifies when maintenance begins; “30 minutes” describes an interval. Do not convert a duration such as 1,800 seconds into a date relative to 1970. For accessibility and resilience, give the timestamp a plain-language label such as “starts,” “closes,” or “began” instead of posting an unexplained tag by itself.</p>
+
+            <h2 id="locale-timezone">Understand source time, viewer timezone, and locale</h2>
+            <p>Creating the Unix value and displaying it are two separate operations. First, the generator interprets the date and time in a <strong>source timezone</strong> and resolves it to one instant. Then Discord displays that instant using each viewer’s timezone and locale. The tag itself contains only Unix seconds and the style letter; it does not preserve the source timezone name.</p>
+            <p>This distinction matters for daylight saving time. A regional zone such as <code>America/New_York</code> has historical and seasonal rules, while a fixed offset such as <code>UTC-05:00</code> does not adjust itself. During a spring transition, some local clock times do not occur. During a fall transition, one local time can occur twice. When scheduling near either boundary, use an IANA regional timezone, review the resolved UTC instant, and make an explicit choice if the local input is ambiguous.</p>
+            <p>A browser preview is only an approximation of what one reader may see. Discord’s documentation explicitly makes locale and timezone viewer-dependent, so a generator should not claim that punctuation or English wording will match every client. Validate the instant and style, then expect presentation differences that preserve the same moment.</p>
+
+            <h2 id="seconds-milliseconds">Discord timestamps use seconds, not milliseconds</h2>
+            <p>Discord’s reference says timestamp values are expressed in seconds. This differs from JavaScript’s <code>Date.now()</code>, which returns milliseconds. Around the present, Unix seconds are usually 10 digits while milliseconds are usually 13. Pasting a millisecond value directly into a Discord timestamp can produce an invalid or wildly distant date instead of the intended event.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Same instant at two scales</figcaption>
+              <pre><code>Unix seconds:      1754208000     ← use inside &lt;t:...:F&gt;
+Unix milliseconds: 1754208000000  ← divide by 1,000 first
+
+Correct: &lt;t:1754208000:F&gt;
+Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
+            </figure>
+            <p>If the millisecond value is divisible by 1,000, exact conversion is simple integer division. If it contains a sub-second remainder, choose and document whether to floor, round, or reject it; the inline tag cannot communicate that extra precision. Do not rely only on digit count for historical or far-future values. The <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">seconds vs milliseconds guide</a> explains reliable unit detection, and the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> can inspect seconds, milliseconds, microseconds, and nanoseconds directly.</p>
+
+            <h2 id="decode">How to decode an existing timestamp tag</h2>
+            <p>To decode <code>&lt;t:1754208000:F&gt;</code>, remove the angle brackets and split on colons. The first field, <code>t</code>, identifies timestamp markup. The second field, <code>1754208000</code>, is the Unix-seconds value. The optional third field, <code>F</code>, selects the style. If no third field exists, use the default <code>f</code> interpretation described in Discord’s table.</p>
+            <ol class="steps">
+              <li><strong>Preserve the original tag.</strong> Do not edit the number while trying to read it.</li>
+              <li><strong>Validate the shell.</strong> It should have angle brackets, a lowercase leading <code>t</code>, and colon-separated fields.</li>
+              <li><strong>Validate seconds.</strong> Treat the middle field as Unix seconds and check that it resolves to a plausible date.</li>
+              <li><strong>Validate the style.</strong> Accept only <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, or <code>R</code>.</li>
+              <li><strong>Convert or restyle.</strong> Decode the number with the generator, then change only the final style letter to preserve the instant.</li>
+            </ol>
+            <p>Developers parsing user input can start from a strict shape such as <code>^&lt;t:(\d+)(?::([tTdDfFsSR]))?&gt;$</code>, then separately enforce the application’s allowed date range. A matching shape does not prove that a client will accept an extreme timestamp.</p>
+
+            <h2 id="event-choice">Inline timestamp or Discord Scheduled Event?</h2>
+            <p>An inline timestamp is useful inside an announcement, checklist, incident update, or generated message. It is lightweight and keeps the time beside the surrounding explanation. A Discord Scheduled Event is a separate server feature with event details and an Interested workflow that can notify participating members when the event goes live. Discord documents the setup and permission model in its <a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" rel="external">Scheduled Events support guide</a>.</p>
+            <p>Use the feature that matches the job. A short deadline may need only <code>F</code> plus <code>R</code>. A community session that benefits from discovery and participation tracking may warrant a Scheduled Event, with inline timestamps repeated in channel announcements. The two approaches can complement each other.</p>
+
+            <h2 id="troubleshooting">Troubleshooting a tag that stays as raw text</h2>
+            <ul>
+              <li><strong>Check angle brackets and colons.</strong> The complete shape is <code>&lt;t:UNIX_SECONDS:STYLE&gt;</code>, not parentheses, braces, or an ISO date.</li>
+              <li><strong>Use whole Unix seconds.</strong> Convert a millisecond API value before placing it in the tag.</li>
+              <li><strong>Check letter case.</strong> Only the nine documented, case-sensitive styles belong in the style position.</li>
+              <li><strong>Remove code formatting.</strong> Backticks are useful for showing raw syntax in a tutorial but intentionally present text as code rather than normal message formatting.</li>
+              <li><strong>Test the intended context.</strong> Discord documents inline timestamp message formatting, but distinct fields and surfaces can have different formatting behavior.</li>
+              <li><strong>Check range and plausibility.</strong> A syntactically valid integer can still represent an unsupported or unintended date.</li>
+            </ul>
+
+            <div class="tool-callout">
+              <p><strong>Ready to create a tag?</strong> Select the source date and timezone, compare all nine formats, or paste an existing tag to inspect its Unix seconds and style.</p>
+              <a class="button" href="/discord-timestamp-generator/">Open the Discord Timestamp Generator</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>What are the nine Discord timestamp style letters?</h3>
+              <p>Discord currently documents <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. They select time-only, date-only, combined, compact combined, or relative presentations.</p>
+
+              <h3>What happens if I omit the style?</h3>
+              <p>The current Discord reference marks lowercase <code>f</code> as the default. Therefore <code>&lt;t:1754208000&gt;</code> uses the Long Date, Short Time presentation.</p>
+
+              <h3>What is the difference between f and F?</h3>
+              <p>Both show a date and short time. Uppercase <code>F</code> adds the weekday and uses the Full Date, Short Time style, while lowercase <code>f</code> is the more compact default.</p>
+
+              <h3>What is the difference between s and S?</h3>
+              <p>Both are compact short-date combinations. Lowercase <code>s</code> uses Short Time, while uppercase <code>S</code> uses Medium Time and therefore includes seconds in the documented example structure.</p>
+
+              <h3>Which format creates a countdown?</h3>
+              <p>Use <code>R</code> for Relative Time. Pair it with <code>F</code> when readers also need an absolute weekday, date, and time.</p>
+
+              <h3>Why does the timestamp look different to another person?</h3>
+              <p>Discord says timestamps display in the user’s timezone and locale. Date order, clock style, language, and wall-clock time can differ while the Unix value still identifies the same instant.</p>
+
+              <h3>Can I put milliseconds inside the tag?</h3>
+              <p>No—convert them first. Discord documents the value as seconds. Divide known epoch milliseconds by 1,000 using an explicit policy for any sub-second remainder.</p>
+
+              <h3>Do I need a bot to use a generated timestamp?</h3>
+              <p>The generator produces text in Discord’s documented inline timestamp syntax. Paste it into a normal supported message context and test the result; no bot calculation is required merely to create the text.</p>
+
+              <h3>Is this the same as a message’s creation timestamp?</h3>
+              <p>No. An inline tag is content chosen by the message author and can represent a past or future instant. The message creation time is metadata assigned when the message is sent.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://docs.discord.com/developers/reference#message-formatting" rel="external">Discord API Reference: Message Formatting</a> — syntax, seconds, viewer locale/timezone behavior, and the current nine-style table.</li>
+                <li><a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" rel="external">Discord Support: Scheduled Events</a> — event creation, permissions, participation, and notification behavior.</li>
+                <li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap04.html#tag_04_19" rel="external">POSIX.1-2024: Seconds Since the Epoch</a> — the underlying Unix-seconds definition.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools and guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/discord-timestamp-generator/"><strong>Discord Timestamp Generator</strong><span>Create and decode tags in all nine documented styles.</span></a>
+                <a class="related-card" href="/unix-timestamp-converter/"><strong>Unix Timestamp Converter</strong><span>Convert epoch values to exact UTC, local, ISO, and RFC-style dates.</span></a>
+                <a class="related-card" href="/guides/unix-timestamp-seconds-vs-milliseconds/"><strong>Timestamp units explained</strong><span>Distinguish seconds, milliseconds, microseconds, and nanoseconds safely.</span></a>
+                <a class="related-card" href="/guides/unix-timestamp-code-examples/"><strong>Timestamp code examples</strong><span>Implement epoch conversion in JavaScript, Python, Java, Go, and SQL.</span></a>
+              </div>
+            </section>
+
+            <p class="note">LiveParse is not affiliated with or endorsed by Discord.</p>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#syntax">Timestamp syntax</a></li>
+              <li><a href="#reference-table">All nine formats</a></li>
+              <li><a href="#time-date-styles">Choose a style</a></li>
+              <li><a href="#relative">Relative time</a></li>
+              <li><a href="#templates">Message templates</a></li>
+              <li><a href="#locale-timezone">Locale and timezone</a></li>
+              <li><a href="#seconds-milliseconds">Seconds vs milliseconds</a></li>
+              <li><a href="#decode">Decode a tag</a></li>
+              <li><a href="#event-choice">Timestamp or event</a></li>
+              <li><a href="#troubleshooting">Troubleshooting</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/discord-timestamp-generator/">Discord Timestamp Generator</a> · <a href="/unix-timestamp-converter/">Timestamp Converter</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

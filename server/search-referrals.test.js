@@ -39,7 +39,7 @@ describe('search referrer classification', () => {
 
 describe('request eligibility', () => {
   const browser = 'Mozilla/5.0 AppleWebKit/537.36 Chrome/140.0 Safari/537.36';
-  const allowedPaths = new Set(['/json-compare/']);
+  const allowedPaths = new Set(['/json-compare/', '/discord-timestamp-generator/']);
 
   it('counts only GET HTML landings from a recognized search engine', () => {
     expect(searchReferralFromRequest({
@@ -50,6 +50,10 @@ describe('request eligibility', () => {
       method: 'HEAD', isHtml: true, requestPath: '/json-compare/',
       referrer: 'https://www.google.com/search?q=json+compare', userAgent: browser, allowedPaths,
     })).toBeNull();
+    expect(searchReferralFromRequest({
+      method: 'GET', isHtml: true, requestPath: '/discord-timestamp-generator/',
+      referrer: 'https://www.google.com/search?q=discord+timestamp+generator', userAgent: browser, allowedPaths,
+    })).toEqual({ engine: 'google', path: '/discord-timestamp-generator/' });
     expect(searchReferralFromRequest({
       method: 'GET', isHtml: false, requestPath: '/og.png',
       referrer: 'https://www.google.com/search?q=json+compare', userAgent: browser, allowedPaths,
