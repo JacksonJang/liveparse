@@ -84,4 +84,52 @@ describe('production routing parity', () => {
     expect(redirects.has('/sql-parser')).toBe(false);
     expect(redirects.has('/sql-linter')).toBe(false);
   });
+
+  it('includes the XML formatter, validator, viewer, and guide with only the intended aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set(['/xml-formatter/', '/xml-validator/', '/xml-viewer/']);
+    const expectedAliases = new Map([
+      ['/xml-format', '/xml-formatter/'],
+      ['/format-xml', '/xml-formatter/'],
+      ['/xml-beautifier', '/xml-formatter/'],
+      ['/xml-pretty-printer', '/xml-formatter/'],
+      ['/online-xml-formatter', '/xml-formatter/'],
+      ['/xml-formatter-online', '/xml-formatter/'],
+      ['/validate-xml', '/xml-validator/'],
+      ['/xml-validation', '/xml-validator/'],
+      ['/xml-checker', '/xml-validator/'],
+      ['/xml-syntax-checker', '/xml-validator/'],
+      ['/online-xml-validator', '/xml-validator/'],
+      ['/xml-validator-online', '/xml-validator/'],
+      ['/view-xml', '/xml-viewer/'],
+      ['/xml-tree-viewer', '/xml-viewer/'],
+      ['/online-xml-viewer', '/xml-viewer/'],
+      ['/xml-viewer-online', '/xml-viewer/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/xml-formatter',
+      '/xml-validator',
+      '/xml-viewer',
+      '/guides/xml-well-formed-vs-valid',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualXmlAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualXmlAliases).toEqual(completeExpectedAliases);
+
+    const routeNames = [...directories, ...redirects.keys()];
+    expect(routeNames.some((route) => /(?:xsd|xml-(?:schema|dtd)|(?:schema|dtd)-xml)/i.test(route))).toBe(false);
+  });
 });

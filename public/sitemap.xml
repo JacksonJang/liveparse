@@ -85,6 +85,18 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/xml-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/xml-validator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/xml-viewer/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
@@ -134,6 +146,10 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/sql-dialect-formatting/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/xml-well-formed-vs-valid/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

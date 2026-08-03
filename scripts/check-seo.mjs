@@ -29,6 +29,9 @@ const requiredPages = [
   { relativePath: 'postgresql-sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/postgresql-sql-formatter/`, label: 'PostgreSQL SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bpostgres(?:ql)?\s+(?:sql\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'PostgreSQL SQL formatting' },
   { relativePath: 'bigquery-sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/bigquery-sql-formatter/`, label: 'BigQuery SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbigquery\s+(?:google)?sql\s+(?:formatter|formatting|beautifier)\b/i, topicLabel: 'BigQuery SQL formatting' },
   { relativePath: 'sql-server-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/sql-server-formatter/`, label: 'SQL Server Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bsql\s+server\s+(?:t-sql\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'SQL Server formatting' },
+  { relativePath: 'xml-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/xml-formatter/`, label: 'XML Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:format(?:ter|ting)?|beautif(?:y|ier)|pretty[-\s]?print(?:er|ing)?)\b)/i, topicLabel: 'XML formatting', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
+  { relativePath: 'xml-validator/index.html', canonical: `${CANONICAL_ORIGIN}/xml-validator/`, label: 'XML Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:valid(?:ate|ator|ation)|well[-\s]?formed(?:ness)?(?:\s+(?:check(?:er|ing)?))?)\b)/i, topicLabel: 'XML well-formedness validation', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
+  { relativePath: 'xml-viewer/index.html', canonical: `${CANONICAL_ORIGIN}/xml-viewer/`, label: 'XML Viewer tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bxml\b)(?=.*\b(?:view(?:er|ing)?|tree|explor(?:e|er|ing))\b)/i, topicLabel: 'XML viewing', forbiddenHeadingPattern: /\b(?:xsd|xml\s+schema|schema\s+valid(?:ate|ator|ation))\b/i },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -230,6 +233,15 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('xml-well-formed-vs-valid')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bxml\b)(?=.*\bwell[-\s]?formed(?:ness)?\b)(?=.*\bvalid(?:ity|ation)?\b)/i,
+      topicLabel: 'well-formed XML and valid XML',
+    };
+  }
   if (normalized.includes('sql-dialect')) {
     return {
       requireJson: false,
@@ -448,6 +460,7 @@ async function main() {
     const page = htmlByPath.get(pagePath) ?? (await readRequired(pagePath, requirement.label));
     if (page === null) continue;
     validatePageBasics(page, requirement.label, requirement.canonical, {
+      minimumCharacters: requirement.minimumCharacters ?? 200,
       requireJson: requirement.requireJson ?? true,
       requireParsing: requirement.requireParsing ?? true,
     });
@@ -462,6 +475,17 @@ async function main() {
       for (const [field, value] of topicFields) {
         if (!requirement.topicPattern.test(value)) {
           fail(`${requirement.label}: ${field} must mention ${requirement.topicLabel}`);
+        }
+      }
+    }
+    if (requirement.forbiddenHeadingPattern) {
+      const claimFields = [
+        ['title', titleValues(page)[0] || ''],
+        ['H1', h1Values(page)[0] || ''],
+      ];
+      for (const [field, value] of claimFields) {
+        if (requirement.forbiddenHeadingPattern.test(value)) {
+          fail(`${requirement.label}: ${field} must not claim XSD or XML Schema validation`);
         }
       }
     }

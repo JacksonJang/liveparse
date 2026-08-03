@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML Formatter &amp; Pretty Printer Online – Format XML Locally | LiveParse</title>
+    <meta name="description" content="Format and pretty-print XML online with 2 spaces, 4 spaces, or tabs and LF or CRLF line endings. Processing stays in your browser." />
+    <link rel="canonical" href="https://liveparse.com/xml-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="XML Formatter &amp; Pretty Printer Online" />
+    <meta property="og:description" content="Format XML into an indented layout locally while preserving raw markup tokens, then review changed whitespace." />
+    <meta property="og:url" content="https://liveparse.com/xml-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-xml.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based XML formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="XML Formatter &amp; Pretty Printer Online" />
+    <meta name="twitter:description" content="Pretty-print XML locally with explicit indentation and line-ending controls." />
+    <meta name="twitter:image" content="https://liveparse.com/og-xml.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/xml-formatter/#app",
+            "name": "LiveParse XML Formatter",
+            "url": "https://liveparse.com/xml-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A browser-based XML formatter and pretty printer with indentation and line-ending controls.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/xml-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "XML Formatter", "item": "https://liveparse.com/xml-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/xml-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the XML formatter upload my document?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting runs in a disposable worker in the current browser tab. The XML is not sent to a formatting service." } },
+              { "@type": "Question", "name": "What does this XML formatter preserve?", "acceptedAnswer": { "@type": "Answer", "text": "It preserves raw tags, attribute order and quotes, supported entity-reference spellings, declarations, comments, CDATA, processing instructions, mixed content, and preserved-space subtrees. It changes eligible whitespace between or around markup, which still requires review." } },
+              { "@type": "Question", "name": "Does pretty-printed XML become valid against an XSD?", "acceptedAnswer": { "@type": "Answer", "text": "No. Pretty printing changes presentation. It does not evaluate DTD, XSD, Relax NG, Schematron, signatures, or application constraints." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="xml-page" data-xml-mode="format">
+    <a class="skip-link" href="#formatter">Skip to the XML formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON</a>
+          <a href="#formatter">XML Formatter</a>
+          <a href="/xml-validator/">XML Validator</a>
+          <a href="/xml-viewer/">XML Viewer</a>
+          <a href="/guides/xml-well-formed-vs-valid/">XML Guide</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Browser-only · Explicit layout · No sign-up</p>
+          <h1>XML Formatter &amp; Pretty Printer Online</h1>
+          <p class="hero-lead">Format compressed XML into a readable hierarchy with two spaces, four spaces, or tabs and choose LF or CRLF output. The document stays in this browser tab.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format XML now</a><span>Free · Local worker · About 200,000 characters</span></div>
+        </div>
+        <div class="hero-example" aria-label="Pretty-printed XML example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>catalog.xml</strong></div>
+          <pre><code><span class="property">&lt;catalog&gt;</span>
+  <span class="property">&lt;product</span> <span class="boolean">id="p-104"</span><span class="property">&gt;</span>
+    <span class="property">&lt;name&gt;</span><span class="string">Trail Bottle</span><span class="property">&lt;/name&gt;</span>
+    <span class="property">&lt;stock&gt;</span><span class="number">18</span><span class="property">&lt;/stock&gt;</span>
+  <span class="property">&lt;/product&gt;</span>
+<span class="property">&lt;/catalog&gt;</span></code></pre>
+          <p><strong>Readable nesting</strong><span>Review before replacing source</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">Pretty-print in a local worker</p><h2 id="formatter-heading">Paste XML and choose the output layout</h2></div>
+        <p>The formatter checks XML 1.0 document structure, then replaces eligible whitespace between or around markup while preserving raw markup tokens. A DOCTYPE is handled as opaque source, so its DTD grammar is not checked. No referenced resource is fetched and no schema validity is proved.</p>
+      </section>
+      <div id="xml-root">
+        <section class="parser-fallback" aria-label="XML formatter loading"><p><strong>Loading the private XML formatter…</strong></p><p>Enable JavaScript to format XML locally. The workflow and limitations below remain available without it.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-format" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A reviewable three-step workflow</p><h2 id="how-heading">How to format and beautify XML online</h2><p>Treat pretty printing as a source transformation that deserves a diff, even when the intended change is indentation.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste one XML document</h3><p>Use a complete document with one root element. The tool rejects malformed markup, custom entity declarations, undefined named references, excessive nesting, and inputs above the page limit.</p></li>
+          <li><span>2</span><h3>Choose layout details</h3><p>Select two spaces, four spaces, or tabs, then choose Unix-style LF or Windows-style CRLF separators. These controls apply to newly inserted structural whitespace, not verbatim preserved subtrees.</p></li>
+          <li><span>3</span><h3>Format, diff, and test</h3><p>Copy or download the formatted XML, compare it with the original, and run the consuming system's parser, schema checks, signature checks, and tests where applicable. Browser download is disabled when the declaration names a non-UTF-8 encoding.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="what-changes" aria-labelledby="changes-heading">
+        <div class="section-heading"><p class="section-kicker">More precise than “add whitespace”</p><h2 id="changes-heading">What this raw-token XML pretty printer changes</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>An XML formatter makes element nesting easier to scan by placing structural nodes on lines and indenting descendants. It can clarify a compact configuration file, SOAP envelope, Maven document, SVG source, syndication feed, or test fixture. Formatting does not explain whether the element names are correct for that vocabulary.</p>
+            <p>This implementation preserves each raw tag and retained content token. Attribute order and quote style, self-closing spelling, supported entity-reference spellings, XML declarations, comments, CDATA sections, processing instructions, namespace prefixes, mixed-content subtrees, and inherited <code>xml:space="preserve"</code> regions remain verbatim. The formatter only replaces eligible whitespace between or around markup; this includes document-edge whitespace and inter-tag whitespace in regions that look element-only.</p>
+            <p>That narrow change still deserves a diff. Inter-tag whitespace becomes a text node in the XML data model, and a consumer can observe it even in a vocabulary that normally treats it as indentation. Byte comparisons, digests, canonicalization inputs, snapshots, and signatures can also change when structural whitespace changes.</p>
+            <p>Cryptographic XML signatures and canonicalization are especially sensitive. Pretty printing is not XML Canonicalization and does not preserve or verify a signature. If a signed document must remain verifiable, follow the signature profile and canonicalization algorithm used by the sender instead of reformatting the signed bytes.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Indent</dt><dd>Two spaces, four spaces, or a tab per structural level.</dd></div>
+            <div><dt>Newline</dt><dd>LF or CRLF for separators the formatter inserts; preserved raw regions keep their source text.</dd></div>
+            <div><dt>Syntax</dt><dd>XML 1.0 structure is checked, except that any DOCTYPE and internal-subset grammar remain opaque.</dd></div>
+            <div><dt>Meaning</dt><dd>Vocabulary, schema, signature, and business rules remain unchecked.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="mixed-content" aria-labelledby="mixed-heading">
+        <div class="section-heading"><p class="section-kicker">Whitespace may be data</p><h2 id="mixed-heading">Mixed content and <code>xml:space</code> need special care</h2><p>Not every line break is safely decorative. Text-bearing XML can assign meaning to spaces between child elements.</p></div>
+        <div class="use-case-grid">
+          <article><h3>Element-only configuration</h3><p>A document whose parent elements contain only other elements is usually the clearest candidate for indentation. Even when every markup token stays exact, signatures and downstream byte comparisons can make newly inserted whitespace relevant.</p></article>
+          <article><h3>Mixed text and elements</h3><p>In <code>&lt;p&gt;Read &lt;em&gt;this&lt;/em&gt; now&lt;/p&gt;</code>, text occurs before and after a child element. Inserting visual line breaks can change the character data observed by an application.</p></article>
+          <article><h3><code>xml:space="preserve"</code></h3><p>The reserved <code>xml:space</code> attribute communicates whitespace-handling intent. A careful formatter should avoid inventing indentation within a preserved subtree, and a reviewer should confirm the consuming application behaves as expected.</p></article>
+          <article><h3>CDATA and entity references</h3><p>CDATA provides a source spelling for character data, while entity references provide another. This formatter keeps those raw spellings verbatim. Custom entity declarations and undefined named references are rejected because their replacement text is not expanded.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Document text remains local</p><h2 id="privacy-heading">Private XML formatting in the browser</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>XML often contains account identifiers, internal endpoints, build coordinates, message payloads, or operational metadata. When you press the format button, LiveParse creates a disposable Web Worker in this tab. The document is not posted to a formatter API, placed in the URL, or written to browser storage by the tool.</p>
+            <p>Input is limited to 200,000 UTF-16 code units and the page warns above 100,000; an astral Unicode symbol uses two units. The formatting operation is stopped after two seconds after the worker is ready, while worker loading has a separate twelve-second limit. Changing the source or an option terminates the current worker, preventing an older result from replacing newer input.</p>
+            <p>The XML parser never fetches external resources. A DOCTYPE is preserved as opaque source and is not validated; custom entity declarations and undefined named references are rejected. This boundary does not control browser extensions, clipboard managers, downloaded files, device backups, screen sharing, or other local software. Redact secrets and follow your organization's data-handling policy.</p>
+          </div>
+          <div class="callout-card"><strong>Need a different XML question?</strong><p>Use the well-formedness checker for syntax diagnostics or the tree viewer for a searchable text outline. Neither tool validates an XSD.</p><a href="/xml-validator/">Open the XML Validator →</a><br /><a href="/xml-viewer/">Open the XML Viewer →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="review" aria-labelledby="review-heading">
+        <div class="section-heading"><p class="section-kicker">Before committing formatted output</p><h2 id="review-heading">XML formatting review checklist</h2></div>
+        <div class="error-table" role="table" aria-label="XML formatter review checklist">
+          <div class="error-row error-head" role="row"><span role="columnheader">Review</span><span role="columnheader">Why it matters</span><span role="columnheader">Evidence to collect</span></div>
+          <div class="error-row" role="row"><strong role="cell">Text and mixed content</strong><span role="cell">Inserted whitespace can become character data.</span><span role="cell">Compare parsed text nodes and application rendering.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Namespaces and QNames</strong><span role="cell">Prefixes and namespace URIs identify vocabulary names.</span><span role="cell">Check namespace-aware parsing in the target system.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Raw tokens</strong><span role="cell">Quotes, attributes, supported entity references, CDATA, declarations, and empty tags are preserved verbatim.</span><span role="cell">Confirm the diff contains only intended whitespace between or around markup.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Validity and signatures</strong><span role="cell">Readable XML can still violate a schema or invalidate a signature.</span><span role="cell">Run the authoritative validator, canonicalizer, signature verifier, and tests.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">XML formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the XML formatter upload my document?</summary><p>No. Formatting runs in a disposable Web Worker in the current browser tab. LiveParse does not send the source to a formatting service or put it in the URL.</p></details>
+          <details><summary>What does this XML formatter preserve?</summary><p>It preserves raw tags, attribute order and quotes, self-closing spelling, supported entity-reference spellings, declarations, comments, CDATA, processing instructions, mixed-content subtrees, and inherited <code>xml:space="preserve"</code> regions. It changes eligible whitespace between or around markup, including document-edge whitespace, so review a diff before replacing source.</p></details>
+          <details><summary>Does pretty-printed XML become valid against an XSD?</summary><p>No. Pretty printing changes presentation. It does not evaluate DTD, XSD, Relax NG, Schematron, signatures, namespace policies, or application constraints. Read the <a href="/guides/xml-well-formed-vs-valid/">well-formed versus valid XML guide</a>.</p></details>
+          <details><summary>Can I choose tabs or Windows line endings?</summary><p>Yes. Choose two spaces, four spaces, or tabs for indentation and LF or CRLF for newly inserted structural separators. Raw mixed-content and preserved-space subtrees keep their original text. The browser creates text downloads as UTF-8, so download is disabled if the preserved XML declaration names another encoding; copy into an encoding-aware editor instead.</p></details>
+          <details><summary>Will the formatter resolve an external entity or validate a DTD?</summary><p>No. External resources are never fetched. A DOCTYPE can be preserved as opaque source, but its grammar is not validated. Custom entity declarations and undefined named entity references are rejected.</p></details>
+          <details><summary>Can I safely format signed XML?</summary><p>Do not assume so. XML signatures use specified canonicalization and transformation rules. A general pretty printer is not a canonicalizer or signature verifier, and changed inter-tag whitespace can change signed data. Follow the signature profile and verify independently.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary background</p><h2 id="references-heading">XML formatting references</h2></div>
+        <ul>
+          <li><a href="https://www.w3.org/TR/xml/" target="_blank" rel="noreferrer">W3C XML 1.0</a></li>
+          <li><a href="https://www.w3.org/TR/xml-names/" target="_blank" rel="noreferrer">W3C Namespaces in XML</a></li>
+          <li><a href="https://www.w3.org/TR/xml-c14n11/" target="_blank" rel="noreferrer">W3C XML Canonicalization</a></li>
+          <li><a href="/guides/xml-well-formed-vs-valid/">Well-formed vs valid XML</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/xml-formatter/">XML Formatter</a><a href="/xml-validator/">XML Validator</a><a href="/xml-viewer/">XML Viewer</a><a href="/guides/xml-well-formed-vs-valid/">XML Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · XML formatting runs locally · Review changed whitespace</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive XML formatting. The formatting, privacy, mixed-content, and review guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/xml.tsx"></script>
+  </body>
+</html>

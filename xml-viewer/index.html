@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML Viewer Online – Explore a Searchable XML Tree | LiveParse</title>
+    <meta name="description" content="View XML as a searchable, expandable text tree with elements, attributes, text, comments, CDATA, namespaces, and document statistics." />
+    <link rel="canonical" href="https://liveparse.com/xml-viewer/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="XML Viewer with Searchable Tree" />
+    <meta property="og:description" content="Explore XML elements, attributes, and text in a local tree without rendering the markup as HTML." />
+    <meta property="og:url" content="https://liveparse.com/xml-viewer/" />
+    <meta property="og:image" content="https://liveparse.com/og-xml.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse searchable XML tree viewer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="XML Viewer with Searchable Tree" />
+    <meta name="twitter:description" content="View and explore XML locally as a collapsible, searchable text outline." />
+    <meta name="twitter:image" content="https://liveparse.com/og-xml.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/xml-viewer/#app",
+            "name": "LiveParse XML Viewer",
+            "url": "https://liveparse.com/xml-viewer/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A browser-based XML viewer that presents parsed nodes as a searchable and expandable text tree.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/xml-viewer/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "XML Viewer", "item": "https://liveparse.com/xml-viewer/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/xml-viewer/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the XML viewer render markup as HTML?", "acceptedAnswer": { "@type": "Answer", "text": "No. Tree labels and values are rendered as React text. The viewer does not insert XML nodes into the page as HTML or execute markup." } },
+              { "@type": "Question", "name": "What can I search in the XML tree?", "acceptedAnswer": { "@type": "Answer", "text": "The search filters rows by their displayed label and value, including element names, attribute names and values, text, comments, and CDATA represented in the tree." } },
+              { "@type": "Question", "name": "Does the XML tree prove that the document is well formed or valid?", "acceptedAnswer": { "@type": "Answer", "text": "No. XML 1.0 document structure and namespace constraints are checked, but a displayed DOCTYPE remains opaque. DTD grammar, XSD and other schemas, signatures, and application rules are not checked." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="xml-page" data-xml-mode="view">
+    <a class="skip-link" href="#viewer">Skip to the XML viewer</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON</a>
+          <a href="/xml-formatter/">XML Formatter</a>
+          <a href="/xml-validator/">XML Validator</a>
+          <a href="#viewer">XML Viewer</a>
+          <a href="/guides/xml-well-formed-vs-valid/">XML Guide</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Searchable rows · Expandable branches · Text only</p>
+          <h1>XML Viewer with a Searchable Tree</h1>
+          <p class="hero-lead">View XML 1.0 document structure as an expandable outline of elements, attributes, text, comments, CDATA, and processing instructions. Search the displayed labels and values without uploading the source.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#viewer">Explore an XML tree</a><span>Free · Local worker · Markup never rendered as HTML</span></div>
+        </div>
+        <div class="hero-example" aria-label="XML tree viewer example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>feed.xml · tree</strong></div>
+          <pre><code><span class="property">− feed</span>
+  <span class="boolean">@ xmlns</span> <span class="string">https://…/Atom</span>
+  <span class="property">− entry</span>
+    <span class="property">· id</span> <span class="string">urn:demo:42</span>
+    <span class="property">· title</span> <span class="string">XML tools</span>
+  <span class="property">+ entry</span></code></pre>
+          <p><strong>Structural outline</strong><span>Search labels and values</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="viewer" aria-labelledby="viewer-heading">
+        <div><p class="section-kicker">Inspect structure without executing markup</p><h2 id="viewer-heading">Build, search, and expand an XML document tree</h2></div>
+        <p>The worker parses the source, returns a bounded row model, and terminates. React displays every label and value as text; the XML is never injected into the page as HTML.</p>
+      </section>
+      <div id="xml-root">
+        <section class="parser-fallback" aria-label="XML viewer loading"><p><strong>Loading the private XML tree viewer…</strong></p><p>Enable JavaScript to explore XML locally. The node, namespace, and review guidance below remains readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-view" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Move from source text to a bounded outline</p><h2 id="how-heading">How to view and explore an XML tree</h2><p>The tree is designed for orientation and focused inspection, not as a replacement for the source or a domain-aware XML editor.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste one complete document</h3><p>Use XML 1.0 with a single document element. A failed structural parse produces a local diagnostic. If a DOCTYPE exists, the result visibly warns that its DTD grammar remains opaque.</p></li>
+          <li><span>2</span><h3>Build the text tree</h3><p>Elements become opening, empty, and closing rows; attributes, text, comments, CDATA, declarations, and processing instructions receive their own labeled rows.</p></li>
+          <li><span>3</span><h3>Search or collapse branches</h3><p>Filter by displayed names and values, or collapse an opening-element row to hide its descendants. Starting a search expands the outline and temporarily disables collapse controls; clear the search to return to the complete expanded outline.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="tree-model" aria-labelledby="tree-heading">
+        <div class="section-heading"><p class="section-kicker">XML is more than nested tags</p><h2 id="tree-heading">What the XML viewer represents</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>XML's document model contains several node kinds. Elements establish hierarchy and carry qualified names. Attributes belong to elements but are not child elements. Text and CDATA sections carry character data. Comments and processing instructions can preserve author or application information. An XML declaration describes source-level properties but is not the document element.</p>
+            <p>The viewer creates rows that retain these distinctions instead of converting the document into a generic JavaScript object. Object conversions often lose ordering between text and elements, merge repeated sibling names into inconsistent shapes, or erase comments and processing instructions. A tree outline is closer to the parsed document structure, although it is still a presentation rather than the original bytes.</p>
+            <p>Opening elements with descendants can be collapsed. The search compares the visible row label and value case-insensitively and shows matching rows; it is not XPath, XQuery, CSS selection, full-text indexing, or namespace-aware query evaluation. Use a real query engine when selection semantics, axes, predicates, variables, or namespace bindings matter.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Element</dt><dd>A named structural node that can contain attributes and ordered child nodes.</dd></div>
+            <div><dt>Attribute</dt><dd>A named value attached to one element; its order is not application data.</dd></div>
+            <div><dt>Text</dt><dd>Character data whose whitespace can be significant to the consumer.</dd></div>
+            <div><dt>CDATA</dt><dd>A source notation for character data, not a separate application-level string type.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="namespaces" aria-labelledby="namespaces-heading">
+        <div class="section-heading"><p class="section-kicker">Prefixes are shorthand, URIs identify names</p><h2 id="namespaces-heading">Reading XML namespaces in a tree view</h2><p>Two identical local names can mean different things when their namespace names differ.</p></div>
+        <div class="use-case-grid">
+          <article><h3>Default namespace</h3><p><code>xmlns="https://example.com/invoice"</code> sets the default namespace for unprefixed element names in scope. It does not automatically place unprefixed attributes in that namespace.</p></article>
+          <article><h3>Prefixed names</h3><p>In <code>meta:updated</code>, <code>meta</code> is a prefix bound by an in-scope <code>xmlns:meta</code> declaration. The prefix spelling can change while the expanded namespace name remains the same.</p></article>
+          <article><h3>Shadowed bindings</h3><p>A descendant can bind a prefix or default namespace differently from an ancestor. Read the closest in-scope declaration rather than assuming one prefix mapping applies to the entire file.</p></article>
+          <article><h3>Search limitations</h3><p>The viewer searches displayed row text; it does not resolve a query prefix to a namespace URI. Search can locate a QName or URI spelling, but namespace-aware selection belongs in XPath or application code.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="rendering-boundary" aria-labelledby="rendering-heading">
+        <div class="section-heading"><p class="section-kicker">Inspection is not rendering</p><h2 id="rendering-heading">Why this XML viewer displays rows as text</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Some XML vocabularies, such as SVG or XHTML, can describe content a browser knows how to render. A developer inspection tool should not need to activate that content merely to show its structure. This viewer sends a plain row model from the worker and lets React create ordinary text nodes for labels and values. It does not use <code>innerHTML</code> for XML content.</p>
+            <p>Text-only display avoids turning an element name, event-like attribute, stylesheet instruction, link, or embedded markup into a live page node. The viewer also does not fetch stylesheets, schemas, DTD system identifiers, image sources, or linked documents. A DOCTYPE can appear as an opaque text row but is never fetched or validated; custom entity declarations and undefined named references are rejected.</p>
+            <p>This boundary is useful, but it is not a promise that every XML use is safe. If you pass the same document to a server parser with DTD loading enabled, an XSLT processor with extension functions, an SVG renderer, or an application with unsafe deserialization, that separate component has its own attack surface. Review the exact parser configuration at every trust boundary.</p>
+          </div>
+          <div class="callout-card"><strong>Need syntax or formatting?</strong><p>Use the well-formedness checker for a focused syntax result. Use the formatter when the deliverable is an indented serialization that you can diff and download.</p><a href="/xml-validator/">Open the XML Validator →</a><br /><a href="/xml-formatter/">Open the XML Formatter →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="limits" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">A tree must stay bounded</p><h2 id="limits-heading">Large XML documents, truncation, and statistics</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Input and time</h3><p>Input is capped at 200,000 UTF-16 code units and warned at 100,000; an astral Unicode symbol uses two units. Worker computation stops after two seconds to keep the tab responsive. A separate load timeout handles a worker that never becomes ready.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Depth and nodes</h3><p>The parser layer limits nesting depth, element count, and attribute count. Those defensive bounds can reject a technically well-formed document that is too expensive for this interactive viewer.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Tree rows</h3><p>The returned view is capped by row count and serialized output size. When truncation is reported, the outline is incomplete; do not infer that an absent row is absent from the source.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Structural totals</h3><p>Statistics summarize the parsed document's root QName, elements, attributes, text nodes, comments, CDATA sections, processing instructions, depth, and distinct non-empty namespace URIs.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Tree behavior and boundaries</p><h2 id="faq-heading">XML viewer FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the XML viewer render markup as HTML?</summary><p>No. Tree labels and values are rendered as React text. The viewer does not insert XML nodes into the page as HTML, run scripts, activate event attributes, apply XML stylesheets, or render SVG content.</p></details>
+          <details><summary>What can I search in the XML tree?</summary><p>The search filters rows by their displayed label and value, including element names, attribute names and values, text, comments, and CDATA represented in the tree. It is a case-insensitive text filter, not XPath or XQuery.</p></details>
+          <details><summary>Does the XML tree prove that the document is well formed or valid?</summary><p>No. XML 1.0 document structure and namespace constraints are checked, but a displayed DOCTYPE remains opaque, so the viewer does not establish that its internal subset is well formed. DTD grammar, XSD and other schemas, signatures, referenced identifiers, and application rules are not checked. See the <a href="/guides/xml-well-formed-vs-valid/">XML validity guide</a>.</p></details>
+          <details><summary>Why are attributes separate rows?</summary><p>Attributes belong to an element but are not child elements, and their ordering is not semantically significant in XML. Separate rows make the distinction and each name/value pair visible without pretending attributes are ordinary children.</p></details>
+          <details><summary>What happens when the tree is truncated?</summary><p>The page displays a warning. The returned outline reached a row or output-size limit and is incomplete. Reduce the source to the relevant subtree or use a streaming, indexed, or desktop tool designed for larger files.</p></details>
+          <details><summary>Does collapsing a branch change the XML?</summary><p>No. Collapse state only hides descendant rows in the current display. It does not edit the input, regenerate a document, or remove nodes from a downloaded file because the viewer has no edited-output action.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Document-model background</p><h2 id="references-heading">XML viewer references</h2></div>
+        <ul>
+          <li><a href="https://www.w3.org/TR/xml/" target="_blank" rel="noreferrer">W3C XML 1.0</a></li>
+          <li><a href="https://www.w3.org/TR/xml-names/" target="_blank" rel="noreferrer">W3C Namespaces in XML</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString" target="_blank" rel="noreferrer">MDN DOMParser overview</a></li>
+          <li><a href="/guides/xml-well-formed-vs-valid/">Well-formed vs valid XML</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/xml-formatter/">XML Formatter</a><a href="/xml-validator/">XML Validator</a><a href="/xml-viewer/">XML Viewer</a><a href="/guides/xml-well-formed-vs-valid/">XML Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · XML rows render as text · Tree output is bounded</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive XML tree viewer. The node model, namespace, rendering, and limit guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/xml.tsx"></script>
+  </body>
+</html>

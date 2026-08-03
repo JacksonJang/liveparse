@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Well-Formed vs Valid XML: Syntax and Validation Guide | LiveParse</title>
+    <meta name="description" content="Learn how well-formed XML differs from valid XML, what DTD and XSD validation establish, and how to build a secure, evidence-based checking workflow." />
+    <link rel="canonical" href="https://liveparse.com/guides/xml-well-formed-vs-valid/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Well-Formed XML vs Valid XML" />
+    <meta property="og:description" content="Separate XML syntax, schema validity, application meaning, and parser security before choosing a validation tool." />
+    <meta property="og:url" content="https://liveparse.com/guides/xml-well-formed-vs-valid/" />
+    <meta property="og:image" content="https://liveparse.com/og-xml.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Well-formed XML and valid XML validation guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Well-Formed XML vs Valid XML" />
+    <meta name="twitter:description" content="Understand what XML syntax and validity checks prove, and what they leave for application validation." />
+    <meta name="twitter:image" content="https://liveparse.com/og-xml.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/xml-well-formed-vs-valid/#article",
+            "headline": "Well-Formed XML vs Valid XML: What Validation Proves",
+            "description": "Learn how well-formed XML differs from valid XML, what DTD and XSD validation establish, and how to build a secure checking workflow.",
+            "mainEntityOfPage": "https://liveparse.com/guides/xml-well-formed-vs-valid/",
+            "url": "https://liveparse.com/guides/xml-well-formed-vs-valid/",
+            "image": "https://liveparse.com/og-xml.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "XML validation",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/xml-well-formed-vs-valid/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Well-Formed vs Valid XML", "item": "https://liveparse.com/guides/xml-well-formed-vs-valid/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/xml-well-formed-vs-valid/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Can XML be well formed but not valid?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. A document can satisfy XML syntax while failing the element, attribute, order, type, and occurrence constraints imposed by the selected DTD, XSD, or other validation language." } },
+              { "@type": "Question", "name": "Can invalid XML still be parsed?", "acceptedAnswer": { "@type": "Answer", "text": "The word invalid is ambiguous. XML that is not well formed cannot be parsed as an XML document without recovery behavior. Well-formed XML that fails a schema can still be parsed into a document tree." } },
+              { "@type": "Question", "name": "Does an XML formatter validate XML?", "acceptedAnswer": { "@type": "Answer", "text": "A formatter may require well-formed input, but readable output does not establish DTD or schema validity, signature validity, or business correctness." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the XML validation guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/xml-validator/">Check XML</a>
+        <a href="/xml-formatter/">Format XML</a>
+        <a href="/xml-viewer/">View XML</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <p class="eyebrow">XML validation fundamentals</p>
+          <h1>Well-Formed XML vs Valid XML: What Validation Proves</h1>
+          <p class="dek">A well-formedness check answers whether text obeys XML syntax. A validity check asks whether that well-formed document conforms to a particular declared or selected grammar. Neither one proves that the message is authentic, authorized, safe, or correct for your business.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>14 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> every valid XML document must first be well formed. Well-formed XML has legal XML syntax: one document element, properly nested tags, quoted attributes, legal names, and permitted character data. Valid XML also satisfies the constraints of a specific DTD or schema validation process. Application correctness, signature verification, trust, and authorization are later and separate questions.</p>
+            </div>
+
+            <h2 id="layers">Four different questions hidden behind “Is this XML valid?”</h2>
+            <p>Teams often use <em>valid</em> to mean several things. That shorthand becomes dangerous when two people believe the same green indicator represents different evidence. Separate the question into four layers:</p>
+            <ol class="steps">
+              <li><strong>Well-formed syntax:</strong> can an XML processor construct one document according to XML's core grammar and well-formedness constraints?</li>
+              <li><strong>Grammar or schema validity:</strong> does the document conform to the particular DTD, XSD, Relax NG grammar, Schematron rule set, or other contract selected for this exchange?</li>
+              <li><strong>Application correctness:</strong> do identifiers exist, totals reconcile, state transitions make sense, references resolve, and business permissions allow the requested action?</li>
+              <li><strong>Security and provenance:</strong> is the sender authenticated, is the signature valid under the required canonicalization rules, is the content authorized, and is every parser configured safely?</li>
+            </ol>
+            <p>A browser syntax checker can provide evidence for the first layer. It cannot infer the other three from markup alone. A production acceptance pipeline may need all four, with different tools and trust inputs at each stage.</p>
+
+            <h2 id="well-formed-definition">What well-formed XML means</h2>
+            <p>The <a href="https://www.w3.org/TR/xml/" rel="external">W3C XML 1.0 specification</a> defines the document grammar and named well-formedness constraints. A conforming document has exactly one root, or document, element. Tags nest rather than cross, element and attribute names are legal, attribute values are quoted, entity references have permitted forms, and reserved markup characters appear only where XML grammar allows them.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Well-formed XML syntax</figcaption>
+              <pre><code>&lt;order id="o-42"&gt;
+  &lt;customer&gt;Ahn &amp;amp; Lee&lt;/customer&gt;
+  &lt;item quantity="2"&gt;B-17&lt;/item&gt;
+&lt;/order&gt;</code></pre>
+            </figure>
+            <p>This document has one root element, its child tags close in order, the attribute values use quotes, and the ampersand in text is escaped. Those facts say nothing about whether <code>order</code> is an allowed root, whether <code>quantity</code> must be an integer, or whether customer Ahn &amp; Lee may order item B-17.</p>
+
+            <div class="example-grid">
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Not well formed: crossed tags</span></figcaption>
+                <pre><code>&lt;order&gt;
+  &lt;customer&gt;Ahn
+&lt;/order&gt;
+  &lt;/customer&gt;</code></pre>
+              </figure>
+              <figure class="code-example">
+                <figcaption class="code-label"><span class="bad">Not well formed: raw ampersand</span></figcaption>
+                <pre><code>&lt;customer&gt;
+  Ahn &amp; Lee
+&lt;/customer&gt;</code></pre>
+              </figure>
+            </div>
+            <p>XML names are case-sensitive: <code>&lt;Item&gt;&lt;/item&gt;</code> does not match. An empty element may use <code>&lt;item/&gt;</code>. Comments cannot contain the forbidden double-hyphen sequence, and CDATA closing syntax cannot occur as ordinary CDATA content. Namespace prefixes must be declared in scope according to <a href="https://www.w3.org/TR/xml-names/" rel="external">Namespaces in XML</a>.</p>
+
+            <h2 id="valid-definition">What valid XML means</h2>
+            <p>In the XML 1.0 specification, a valid document is well formed, has an associated document type definition, and obeys the specification's validity constraints. The DTD describes permitted element content, attributes, entities, and notations. Validation is therefore relative to that declared grammar; there is no universal vocabulary rule that says every well-formed <code>&lt;order&gt;</code> is a valid order.</p>
+            <p>Modern systems also use <a href="https://www.w3.org/TR/xmlschema11-1/" rel="external">W3C XML Schema Definition Language</a>, commonly called XSD, and other languages. An XSD processor performs schema assessment against a selected schema set and can evaluate element declarations, content models, occurrences, simple data types, derived types, wildcards, and identity constraints. Relax NG expresses patterns with a different model. Schematron evaluates assertions and reports. Saying “schema-valid” should identify the language, exact schema artifacts, version, and resolution policy.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Well formed, but validity depends on the selected contract</figcaption>
+              <pre><code>&lt;order id="o-42"&gt;
+  &lt;quantity&gt;many&lt;/quantity&gt;
+  &lt;delivery-date&gt;eventually&lt;/delivery-date&gt;
+&lt;/order&gt;</code></pre>
+            </figure>
+            <p>The parser can build this tree. An XSD might require <code>quantity</code> to be a positive integer and <code>delivery-date</code> to be a date. A DTD can constrain element order and presence but does not provide XSD's built-in decimal and date type system. A Schematron rule might require a delivery date only for physical items. The same syntax receives different answers under different contracts.</p>
+
+            <div class="note">
+              <p><strong>Name the contract in evidence.</strong> “Validation passed” is incomplete. Record the validation language, schema or DTD identifiers, resolved versions, catalog or import policy, processor version, and relevant options. A result against yesterday's cached schema is not automatically evidence for today's production contract.</p>
+            </div>
+
+            <h2 id="namespaces">Namespaces and validity are related but separate</h2>
+            <p>A namespace name is an identifier, usually written like a URI, that distinguishes vocabularies. A prefix is local shorthand for that identifier. The elements <code>a:item</code> and <code>b:item</code> have the same expanded name when both prefixes are bound to the same namespace URI. Conversely, two unprefixed <code>item</code> elements can mean different things under different default namespaces.</p>
+            <p>Namespace well-formedness checks whether prefixes are legally declared and used. It does not prove that the namespace URI is reachable, that a schema exists at that address, or that the element is allowed by a schema. XML namespace names are identifiers rather than an automatic download instruction. Schema processors use their own import, include, catalog, and resolver policies to locate grammar resources.</p>
+            <p>Unprefixed attributes are not automatically placed in the element's default namespace. This detail causes subtle contract failures when authors assume a default namespace applies uniformly. Diagnose with expanded names—namespace URI plus local name—not only the visible prefix spelling.</p>
+
+            <h2 id="pipeline">A practical XML checking pipeline</h2>
+            <p>Run cheaper and more universal checks before expensive or context-dependent ones. Preserve the original bytes whenever signatures, forensic evidence, or source-sensitive processing matters.</p>
+            <ol>
+              <li><strong>Establish the trust boundary.</strong> Record where the XML came from, its maximum permitted size, encoding expectations, and whether any referenced resources are allowed.</li>
+              <li><strong>Configure the parser before parsing.</strong> Disable DTD processing and external entity resolution unless the protocol explicitly requires them and you have a controlled local resolution policy. Apply input, depth, node, expansion, time, and output limits.</li>
+              <li><strong>Check well-formedness.</strong> Reject broken syntax without attempting a guess-based repair. Report a bounded diagnostic and location while avoiding sensitive content in logs.</li>
+              <li><strong>Select an authoritative grammar.</strong> Choose the exact DTD, XSD, Relax NG, or Schematron assets by version and policy, not an untrusted location supplied by the document.</li>
+              <li><strong>Validate the document.</strong> Capture the validator, versions, catalogs, imports, and errors. Avoid treating warnings as success without an explicit policy.</li>
+              <li><strong>Verify signatures and provenance.</strong> Use the required canonicalization and transformation algorithms, certificate or key trust rules, replay controls, and signed-node selection defenses.</li>
+              <li><strong>Apply application rules.</strong> Resolve references, authorize the actor, validate state transitions, recompute totals, and test side effects. Schema-valid data can still be fraudulent or nonsensical.</li>
+            </ol>
+            <p>The <a href="/xml-validator/">LiveParse XML Validator</a> deliberately covers only a local XML 1.0 well-formedness stage without DTD processing. A DOCTYPE stops its check because DTD grammar is unsupported; the validator never fetches or validates a DTD, rejects custom entity declarations and undefined named references, and does not load an XSD or other external resource. That narrow result is useful when it is labeled accurately.</p>
+
+            <h2 id="security">DTD, external entities, and parser security</h2>
+            <p>DTD and entity processing are not merely validation features; they affect resource access and expansion behavior. An external entity can point to a file or network location. A parser configured to resolve it may disclose local data, make server-side requests, or consume resources. Nested entity expansion can also exhaust memory or CPU. The <a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_%28XXE%29_Processing" rel="external">OWASP XXE overview</a> explains this vulnerability class and emphasizes disabling DTD and external entity processing when they are not required.</p>
+            <div class="warning">
+              <p><strong>Do not copy untrusted production parser settings into a browser demo.</strong> A DTD-aware workflow should use an allowlisted local catalog or resolver, deny arbitrary network and filesystem access, enforce expansion and resource limits, and be tested with the exact library and version deployed in production.</p>
+            </div>
+            <p>Disabling external resolution does not make every later use safe. XSLT engines may load documents or expose extension functions. XPath expressions can be constructed unsafely. XML deserializers can instantiate application types. SVG or XHTML rendered as active content has a browser security surface. Treat each processor as a new trust boundary with its own features and limits.</p>
+
+            <h2 id="browser-parsing">Browser parsing and rendering are different operations</h2>
+            <p>The browser <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString" rel="external">DOMParser API documented by MDN</a> can parse XML-family MIME types into a document, but its error representation and availability differ by environment. A Web Worker does not share every Window API, and libraries can report errors differently. Portable tooling should define its parser contract, treat warnings deliberately, cap diagnostics, and test known malformed cases.</p>
+            <p>Parsing a string into an inert-looking document is also not permission to inject its markup into the live page. Inserting untrusted XML-derived strings through HTML sinks can activate browser interpretation. A structural viewer should render labels and values as text, as LiveParse's <a href="/xml-viewer/">XML Viewer</a> does, rather than treating the input as page markup.</p>
+
+            <h2 id="formatting">Why formatting does not establish validity</h2>
+            <p>An <a href="/xml-formatter/">XML formatter</a> primarily improves layout. It may parse the source first, so malformed syntax can prevent output. That parser gate establishes at most well-formedness under the formatter's supported subset; it does not select the correct schema or apply business rules.</p>
+            <p>LiveParse's formatter preserves raw tags, attribute order and quote style, self-closing spelling, supported entity-reference spellings, declarations, comments, CDATA, processing instructions, mixed-content subtrees, and inherited <code>xml:space="preserve"</code> regions. It changes eligible whitespace between or around markup and applies the selected line ending only to inserted structural separators. That whitespace can still affect application text nodes, byte comparisons, canonicalization inputs, and signatures. Pretty printing is not XML Canonicalization and does not verify a digital signature.</p>
+
+            <h2 id="examples">Three outcomes that should not be confused</h2>
+            <h3>1. Not well formed</h3>
+            <figure class="code-example"><figcaption class="code-label">A missing attribute quote breaks XML syntax</figcaption><pre><code>&lt;invoice currency="USD&gt;
+  &lt;total&gt;42.00&lt;/total&gt;
+&lt;/invoice&gt;</code></pre></figure>
+            <p>No schema question is meaningful until the quote boundary is repaired. A strict XML processor cannot reliably construct the intended attribute and element tree.</p>
+
+            <h3>2. Well formed but invalid under the selected schema</h3>
+            <figure class="code-example"><figcaption class="code-label">Legal syntax, potentially wrong type and child order</figcaption><pre><code>&lt;invoice xmlns="urn:example:invoice"&gt;
+  &lt;total&gt;forty-two&lt;/total&gt;
+  &lt;invoice-number&gt;INV-42&lt;/invoice-number&gt;
+&lt;/invoice&gt;</code></pre></figure>
+            <p>An XSD may require <code>invoice-number</code> before <code>total</code> and require <code>total</code> to be decimal. Another schema could allow this exact shape. Include the schema identity when reporting the failure.</p>
+
+            <h3>3. Schema-valid but rejected by the application</h3>
+            <figure class="code-example"><figcaption class="code-label">A type-correct value can still violate business state</figcaption><pre><code>&lt;payment xmlns="urn:example:payments"&gt;
+  &lt;account&gt;closed-account-17&lt;/account&gt;
+  &lt;amount currency="USD"&gt;42.00&lt;/amount&gt;
+&lt;/payment&gt;</code></pre></figure>
+            <p>The schema can confirm strings, decimals, currency syntax, element order, and occurrence counts. It cannot know the current account state, the actor's permissions, available funds, duplicate-message history, or fraud policy unless those facts are supplied to application logic.</p>
+
+            <h2 id="checklist">XML validation review checklist</h2>
+            <ul>
+              <li><strong>Question:</strong> Are you checking XML syntax, a named grammar, application meaning, signature validity, or all of them?</li>
+              <li><strong>Grammar identity:</strong> Which DTD, XSD, Relax NG, or Schematron version is authoritative for this message?</li>
+              <li><strong>Resolution policy:</strong> Are imports and references resolved through a pinned local catalog or an uncontrolled document-supplied location?</li>
+              <li><strong>Parser features:</strong> Are DTDs, external general entities, external parameter entities, XInclude, and network access disabled unless explicitly required?</li>
+              <li><strong>Limits:</strong> Are source size, nesting, nodes, attributes, entity expansion, processing time, output, and error text bounded?</li>
+              <li><strong>Namespaces:</strong> Are comparisons based on expanded names rather than prefix spelling alone?</li>
+              <li><strong>Evidence:</strong> Did you record processor and schema versions, options, warnings, and the exact artifact validated?</li>
+              <li><strong>Security:</strong> Are signatures verified before trusted use, and are signed-node selection and canonicalization handled by the approved library?</li>
+              <li><strong>Application:</strong> Are authorization, reference resolution, totals, state, replay, and business constraints checked after structural validation?</li>
+            </ul>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Can XML be well formed but not valid?</h3>
+              <p>Yes. A document can satisfy XML syntax while failing element, attribute, order, type, and occurrence constraints imposed by the selected DTD, XSD, or other validation language. “Not valid” must name the contract used.</p>
+
+              <h3>Can invalid XML still be parsed?</h3>
+              <p>The word <em>invalid</em> is ambiguous. XML that is not well formed cannot be parsed as an XML document by a conforming processor without some separate recovery behavior. Well-formed XML that fails a schema can still be parsed into a document tree and inspected.</p>
+
+              <h3>Does an XML formatter validate XML?</h3>
+              <p>A formatter may require well-formed input before generating output. Readable formatting does not establish DTD or schema validity, signature validity, or business correctness. Even a raw-token formatter can change eligible whitespace between or around markup, so review a source diff.</p>
+
+              <h3>Is XSD the same as XML?</h3>
+              <p>No. XML defines the syntax for documents. XSD is one schema language used to describe and assess classes of XML documents, including structures and data types. An XML document can be well formed without having an XSD.</p>
+
+              <h3>Does a namespace URI point to the schema?</h3>
+              <p>Not automatically. A namespace URI identifies a namespace. A schema processor uses schema-selection, import, include, catalog, and resolver rules to locate schema documents. Fetching the namespace URI is not the general definition of validation.</p>
+
+              <h3>Should a validator load a DTD from the document?</h3>
+              <p>Not for arbitrary untrusted input. When a trusted protocol requires DTD validation, use a controlled, allowlisted local resolution policy with network and filesystem restrictions plus expansion and resource limits. Otherwise disable DTD and external entity processing.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://www.w3.org/TR/xml/" rel="external">W3C Extensible Markup Language (XML) 1.0</a> — document grammar, well-formedness constraints, validity constraints, and DTD terminology.</li>
+                <li><a href="https://www.w3.org/TR/xml-names/" rel="external">W3C Namespaces in XML 1.0</a> — namespace declarations, qualified names, and expanded names.</li>
+                <li><a href="https://www.w3.org/TR/xmlschema11-1/" rel="external">W3C XML Schema Definition Language 1.1: Structures</a> — schema components and assessment terminology.</li>
+                <li><a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_%28XXE%29_Processing" rel="external">OWASP: XML External Entity Processing</a> — risks from unsafe DTD and external entity processing.</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString" rel="external">MDN: DOMParser.parseFromString()</a> — browser API behavior and injection-related cautions.</li>
+                <li><a href="https://www.w3.org/TR/xml-c14n11/" rel="external">W3C Canonical XML 1.1</a> — canonical serialization used by applications such as digital signatures.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Use the right XML tool</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/xml-validator/"><strong>XML Validator</strong><span>Check local well-formedness and see bounded syntax diagnostics.</span></a>
+                <a class="related-card" href="/xml-formatter/"><strong>XML Formatter</strong><span>Pretty-print checked XML 1.0 structure and review whitespace changes between or around markup; DTD grammar remains opaque.</span></a>
+                <a class="related-card" href="/xml-viewer/"><strong>XML Viewer</strong><span>Search and collapse a text-only outline of parsed XML nodes.</span></a>
+                <a class="related-card" href="/privacy/"><strong>Privacy</strong><span>Understand local processing and limited search-referral measurement.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#layers">Four validation questions</a></li>
+              <li><a href="#well-formed-definition">Well-formed XML</a></li>
+              <li><a href="#valid-definition">Valid XML</a></li>
+              <li><a href="#namespaces">Namespaces</a></li>
+              <li><a href="#pipeline">Checking pipeline</a></li>
+              <li><a href="#security">DTD and XXE security</a></li>
+              <li><a href="#browser-parsing">Browser parsing</a></li>
+              <li><a href="#formatting">Formatting limits</a></li>
+              <li><a href="#examples">Three outcomes</a></li>
+              <li><a href="#checklist">Review checklist</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">Home</a> · <a href="/xml-validator/">XML Validator</a> · <a href="/xml-formatter/">XML Formatter</a> · <a href="/xml-viewer/">XML Viewer</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

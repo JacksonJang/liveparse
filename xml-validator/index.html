@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML Validator Online – Check XML 1.0 Syntax Without DTD | LiveParse</title>
+    <meta name="description" content="Check XML 1.0 well-formedness for documents without a DOCTYPE and see local diagnostics plus statistics. DTD, XSD, and application rules are not checked." />
+    <link rel="canonical" href="https://liveparse.com/xml-validator/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#5059a8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="XML Validator for XML 1.0 Syntax" />
+    <meta property="og:description" content="Check XML 1.0 syntax locally for a document without a DOCTYPE and understand what the result does not prove." />
+    <meta property="og:url" content="https://liveparse.com/xml-validator/" />
+    <meta property="og:image" content="https://liveparse.com/og-xml.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse XML validator and well-formedness checker" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="XML Validator for XML 1.0 Syntax" />
+    <meta name="twitter:description" content="Check XML 1.0 syntax locally without DOCTYPE processing, uploads, or external resource fetches." />
+    <meta name="twitter:image" content="https://liveparse.com/og-xml.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/xml-validator/#app",
+            "name": "LiveParse XML Validator",
+            "url": "https://liveparse.com/xml-validator/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A local XML 1.0 well-formedness checker for documents without a DOCTYPE, with syntax diagnostics and structural statistics.",
+            "isAccessibleForFree": true,
+            "browserRequirements": "JavaScript and Web Worker support",
+            "dateModified": "2026-08-04"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/xml-validator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "XML Validator", "item": "https://liveparse.com/xml-validator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/xml-validator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does this XML validator check?", "acceptedAnswer": { "@type": "Answer", "text": "For an XML 1.0 document without a DOCTYPE, it checks well-formed syntax including one root element, properly nested tags, quoted attributes, and namespace constraints. A DOCTYPE stops the check because DTD grammar is unsupported." } },
+              { "@type": "Question", "name": "Does a well-formed result mean the XML is valid for my application?", "acceptedAnswer": { "@type": "Answer", "text": "No. Well-formedness is the syntax baseline. The result does not evaluate DTD, XSD, Relax NG, Schematron, signatures, vocabulary rules, or business constraints." } },
+              { "@type": "Question", "name": "Are external XML resources loaded during validation?", "acceptedAnswer": { "@type": "Answer", "text": "No. A DOCTYPE stops this XML 1.0 well-formedness check because DTD grammar is unsupported; no DTD or external resource is fetched or validated. Custom ENTITY declarations and undefined named references are also rejected." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="xml-page" data-xml-mode="validate">
+    <a class="skip-link" href="#validator">Skip to the XML validator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON</a>
+          <a href="/xml-formatter/">XML Formatter</a>
+          <a href="#validator">XML Validator</a>
+          <a href="/xml-viewer/">XML Viewer</a>
+          <a href="/guides/xml-well-formed-vs-valid/">XML Guide</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">XML 1.0 · No DTD processing · Local diagnostics</p>
+          <h1>XML Validator for XML 1.0 Syntax</h1>
+          <p class="hero-lead">For a document without a DOCTYPE, check XML 1.0 well-formedness, inspect a concise error location when available, and review structural statistics—all inside your browser.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#validator">Check XML syntax</a><span>Free · No external fetches · About 200,000 characters</span></div>
+        </div>
+        <div class="hero-example" aria-label="Well-formed XML syntax example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>shipment.xml</strong></div>
+          <pre><code><span class="property">&lt;shipment</span> <span class="boolean">id="demo-42"</span><span class="property">&gt;</span>
+  <span class="property">&lt;origin&gt;</span><span class="string">Seoul</span><span class="property">&lt;/origin&gt;</span>
+  <span class="property">&lt;package</span> <span class="boolean">weight="2.4"</span> <span class="property">/&gt;</span>
+<span class="property">&lt;/shipment&gt;</span>
+
+<span class="string">✓ Well-formed syntax</span></code></pre>
+          <p><strong>Syntax baseline found</strong><span>Schema and meaning not checked</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="validator" aria-labelledby="validator-heading">
+        <div><p class="section-kicker">Check one document locally</p><h2 id="validator-heading">Check XML 1.0 well-formedness without DTD processing</h2></div>
+        <p>The checker parses a document without a DOCTYPE in a disposable browser worker. A passing result confirms its supported XML 1.0 syntax baseline only; it is not evidence that a schema, signature, or business rule accepted the document.</p>
+      </section>
+      <div id="xml-root">
+        <section class="parser-fallback" aria-label="XML validator loading"><p><strong>Loading the private XML 1.0 syntax checker…</strong></p><p>Enable JavaScript to check a document without a DOCTYPE locally. The error guide and validation boundaries below remain readable.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-check" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Start with syntax evidence</p><h2 id="how-heading">How to run an XML well-formedness check</h2><p>Fix the first reliable syntax error before investigating a schema or application failure. Later diagnostics can be consequences of an earlier broken boundary.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste the complete XML text</h3><p>Include the document element and any XML declaration you need to inspect. A DOCTYPE stops this checker; use a controlled DTD-aware validator when document-type grammar is required. Prefer a small synthetic reproduction over confidential production data.</p></li>
+          <li><span>2</span><h3>Run the local syntax check</h3><p>For XML 1.0 without a DOCTYPE, the worker checks well-formedness under input, depth, node-count, time, and output limits. It does not make network requests or expand an external entity.</p></li>
+          <li><span>3</span><h3>Use the right next validator</h3><p>After syntax passes, apply the authoritative XSD, DTD, Relax NG, Schematron, signature profile, or application validator in a controlled environment if the workflow requires it.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="well-formed" aria-labelledby="well-formed-heading">
+        <div class="section-heading"><p class="section-kicker">The universal XML baseline</p><h2 id="well-formed-heading">What this XML validator checks</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A well-formed XML document follows XML's core syntax constraints. It has exactly one document element. Start-tags and end-tags match with proper nesting. Attribute values are quoted, reserved characters are escaped where required, and character data occurs in legal positions. Names and namespace declarations also have lexical and scoping requirements. This checker covers that XML 1.0 baseline only when no DOCTYPE is present; a DOCTYPE stops the check.</p>
+            <p>For example, <code>&lt;order&gt;&lt;id&gt;42&lt;/order&gt;&lt;/id&gt;</code> is not well formed because the elements cross rather than nest. <code>&lt;order status=open&gt;</code> is not well formed because the attribute value lacks quotes. A raw ampersand in text begins what looks like an entity reference; write <code>&amp;amp;</code> when the data is an ampersand character.</p>
+            <p>The checker reports a bounded message and a line and column when the underlying parser provides useful location data. Treat that location as the point where parsing could no longer continue, not always the exact character where the author first made a mistake. Inspect the token immediately before the location and its matching opener.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Root</dt><dd>Exactly one document element encloses the document content.</dd></div>
+            <div><dt>Nesting</dt><dd>Every non-empty start-tag closes in last-opened, first-closed order.</dd></div>
+            <div><dt>Quotes</dt><dd>Every attribute value uses matching single or double quotes.</dd></div>
+            <div><dt>Escapes</dt><dd>Reserved markup characters are represented legally in text and attributes.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="common-errors" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Read the first failure in context</p><h2 id="errors-heading">Common XML validation errors and what to inspect</h2><p>Error wording differs among parsers. The structural cause is more useful than memorizing one engine's message.</p></div>
+        <div class="error-table" role="table" aria-label="Common XML well-formedness errors">
+          <div class="error-row error-head" role="row"><span role="columnheader">Symptom</span><span role="columnheader">Likely XML issue</span><span role="columnheader">Focused repair</span></div>
+          <div class="error-row" role="row"><strong role="cell">Mismatched closing tag</strong><span role="cell">An element closed under the wrong parent or uses different case.</span><span role="cell">Follow the open-element stack backward; XML names are case-sensitive.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unbound prefix</strong><span role="cell">A qualified name uses a prefix with no in-scope namespace declaration.</span><span role="cell">Declare the prefix on that element or an ancestor and confirm the intended URI.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Invalid attribute syntax</strong><span role="cell">A quote is missing, an attribute repeats, or markup appears inside a value.</span><span role="cell">Quote the complete value, escape reserved characters, and keep attribute names unique per element.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Content after root</strong><span role="cell">A second top-level element or non-permitted text follows the document element.</span><span role="cell">Wrap related elements in one root or split independent documents.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unsupported entity</strong><span role="cell">The source declares a custom entity or uses an undefined named reference.</span><span role="cell">Do not delete meaningful declarations to get a green result; use the approved DTD-aware workflow instead.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="not-schema" aria-labelledby="not-schema-heading">
+        <div class="section-heading"><p class="section-kicker">A passing parse is the beginning</p><h2 id="not-schema-heading">What XML well-formedness does not validate</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Vocabulary and element order</h3><p><code>&lt;invoice&gt;&lt;banana/&gt;&lt;/invoice&gt;</code> can be well formed even when the invoice vocabulary never permits a <code>banana</code> element. Only the contract for that vocabulary can answer the question.</p></article>
+          <article><h3>Data types and cardinality</h3><p>Well-formedness does not know whether an amount is decimal, a date uses the correct timezone, an identifier matches a pattern, or an element must occur exactly once. Schema or application logic defines those constraints.</p></article>
+          <article><h3>Signatures and trust</h3><p>Parsing does not verify an XML signature, certificate chain, digest, canonicalization transform, sender identity, or authorization. Use the security library and trust policy approved for the protocol.</p></article>
+          <article><h3>Business meaning</h3><p>A structurally allowed payment can still have the wrong account, currency, total, state transition, or permission. Domain validation and transactional checks remain necessary after syntax and schema validation.</p></article>
+        </div>
+        <p class="text-link"><a href="/guides/xml-well-formed-vs-valid/">Compare well-formed and valid XML in detail →</a></p>
+      </section>
+
+      <section class="content-section" id="safe-boundary" aria-labelledby="safe-heading">
+        <div class="section-heading"><p class="section-kicker">A deliberately narrow parser surface</p><h2 id="safe-heading">Local XML validation without external resource loading</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Historical XML parser vulnerabilities often involve DTD processing, general or parameter entities, external system identifiers, or resource expansion. This checker never fetches external resources or validates a DTD. A <code>DOCTYPE</code> stops the XML 1.0 well-formedness check because DTD grammar is unsupported. Custom <code>&lt;!ENTITY&gt;</code> declarations and undefined named references are also rejected. This checker is not suitable for workflows whose semantics depend on declared entities.</p>
+            <p>The browser page caps input at 200,000 UTF-16 code units, warns at 100,000, limits structural depth and node counts in the core, and stops an operation after two seconds once the worker is ready. An astral Unicode symbol uses two units. These are availability boundaries for the page, not a certification that arbitrary XML is harmless. A downstream service can use different parser features and face different risks.</p>
+            <p>The source and result stay in the tab unless you copy them. The site does not place XML in a query string or local storage. Browser extensions, assistive software, clipboard history, screen capture, and device-level monitoring are outside that promise. Prefer synthetic examples and remove credentials, secrets, personal records, and production identifiers.</p>
+          </div>
+          <div class="callout-card"><strong>Need a readable view?</strong><p>Once syntax passes, format the document for a source diff or build a text-only tree to search element names, attribute values, and text.</p><a href="/xml-formatter/">Open the XML Formatter →</a><br /><a href="/xml-viewer/">Open the XML Viewer →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Scope made explicit</p><h2 id="faq-heading">XML validator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does this XML validator check?</summary><p>For an XML 1.0 document without a DOCTYPE, it checks well-formed syntax: one document element, properly nested and matching tags, quoted attributes, legal markup boundaries, and namespace constraints. It also returns bounded structural statistics after a successful parse. A DOCTYPE stops the check because DTD grammar is unsupported.</p></details>
+          <details><summary>Does a well-formed result mean the XML is valid for my application?</summary><p>No. Well-formedness is the syntax baseline. The result does not evaluate DTD, XSD, Relax NG, Schematron, signatures, vocabulary rules, referenced identifiers, or business constraints.</p></details>
+          <details><summary>Are external XML resources loaded during validation?</summary><p>No. A <code>DOCTYPE</code> stops this XML 1.0 well-formedness check because DTD grammar is unsupported; no DTD or external resource is fetched or validated. Custom <code>&lt;!ENTITY&gt;</code> declarations and undefined named references are also rejected, so DTD-dependent document semantics cannot be evaluated here.</p></details>
+          <details><summary>Why can an error location appear after the real mistake?</summary><p>A parser can continue until it reaches a token that cannot be reconciled with the open structure. A missing quote or closing tag earlier in the document may therefore be reported at a later line. Inspect the preceding token and matching opener.</p></details>
+          <details><summary>Does the checker repair invalid XML?</summary><p>No. Automatic recovery can hide which structure the author intended. The tool reports a failure and leaves the source untouched so you can make a deliberate change and run the check again.</p></details>
+          <details><summary>Can I validate a fragment containing several root elements?</summary><p>Not as one XML document. A document has one document element. Wrap the fragment in a synthetic root for diagnostic work only when that wrapper accurately represents the intended processing context.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary and security references</p><h2 id="references-heading">XML validation resources</h2></div>
+        <ul>
+          <li><a href="https://www.w3.org/TR/xml/" target="_blank" rel="noreferrer">W3C XML 1.0</a></li>
+          <li><a href="https://www.w3.org/TR/xml-names/" target="_blank" rel="noreferrer">W3C Namespaces in XML</a></li>
+          <li><a href="https://owasp.org/www-community/vulnerabilities/XML_External_Entity_%28XXE%29_Processing" target="_blank" rel="noreferrer">OWASP XXE overview</a></li>
+          <li><a href="/guides/xml-well-formed-vs-valid/">Well-formed vs valid XML</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/xml-formatter/">XML Formatter</a><a href="/xml-validator/">XML Validator</a><a href="/xml-viewer/">XML Viewer</a><a href="/guides/xml-well-formed-vs-valid/">XML Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · Well-formedness only · External resources never fetched</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive XML 1.0 syntax check. The well-formedness, DOCTYPE boundary, error, scope, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/xml.tsx"></script>
+  </body>
+</html>
