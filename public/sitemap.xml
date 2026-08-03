@@ -37,6 +37,14 @@
     <lastmod>2026-08-03</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/base64-decoder/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/base64-encoder/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-03</lastmod>
   </url>
@@ -70,6 +78,10 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/discord-timestamp-formats/</loc>
+    <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/base64-vs-base64url/</loc>
     <lastmod>2026-08-03</lastmod>
   </url>
 </urlset>

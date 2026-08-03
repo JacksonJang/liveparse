@@ -1,6 +1,6 @@
 # LiveParse
 
-LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, converting, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, while its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation. The production site is available at [liveparse.com](https://liveparse.com/).
+LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, encoding, decoding, converting, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation, and its Base64 tools handle text, files, Base64URL, and Data URLs with RFC diagnostics. The production site is available at [liveparse.com](https://liveparse.com/).
 
 ## Features
 
@@ -16,6 +16,7 @@ LiveParse is a local-first developer data toolkit for validating, formatting, co
 - A dedicated JSONL/NDJSON parser with line-level diagnostics, filtering, a paged table, and safe CSV export
 - A lossless Unix timestamp converter for epoch seconds, milliseconds, microseconds, and nanoseconds
 - A Discord timestamp generator with all nine current styles, IANA timezones, DST diagnostics, tag decoding, and unit warnings
+- Separate Base64 decoder and encoder pages with strict canonical validation, Base64URL conversion, local file handling, Data URLs, UTF-8/hex output, and safe raster previews
 - Local file input, output copying, and JSON download
 - Optional type labels, array indexes, and sample payloads
 - No server-side JSON processing; pasted data remains local to the browser
@@ -32,7 +33,7 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-The main routes are `/`, `/json-compare/`, `/json-repair/`, `/jsonl-parser/`, `/json-to-csv/`, `/csv-to-json/`, `/unix-timestamp-converter/`, `/discord-timestamp-generator/`, `/ko/json-parser/`, and `/privacy/`.
+The main routes are `/`, `/json-compare/`, `/json-repair/`, `/jsonl-parser/`, `/json-to-csv/`, `/csv-to-json/`, `/unix-timestamp-converter/`, `/discord-timestamp-generator/`, `/base64-decoder/`, `/base64-encoder/`, `/ko/json-parser/`, and `/privacy/`.
 
 Run the parser and UI utility tests with:
 

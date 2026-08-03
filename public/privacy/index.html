@@ -31,6 +31,7 @@
         <a href="/#parser">JSON Parser</a>
         <a href="/json-repair/">JSON Repair</a>
         <a href="/jsonl-parser/">JSONL Parser</a>
+        <a href="/base64-decoder/">Base64 Decoder</a>
       </nav>
     </header>
 
@@ -39,7 +40,7 @@
         <header class="article-hero">
           <p class="eyebrow">Plain-language notice</p>
           <h1>Privacy, cookies, and advertising</h1>
-          <p class="dek">The important distinction is simple: JSON you paste into a LiveParse tool stays in your browser. Ordinary connection data is still needed to deliver the website itself.</p>
+          <p class="dek">The important distinction is simple: data and files you provide to a LiveParse tool stay in your browser. Ordinary connection data is still needed to deliver the website itself.</p>
           <p class="byline"><span>Effective <time datetime="2026-08-03">August 3, 2026</time></span><span>Last reviewed August 3, 2026</span></p>
         </header>
 
@@ -50,16 +51,16 @@
             </div>
 
             <h2>1. Tool input and files you provide</h2>
-            <p>JSON, JSONL, NDJSON, repair input, timestamps, dates, timezones, and generated message text are processed in the current browser tab. The tools do not submit that content to a LiveParse application server, save it to a LiveParse database, or include it in analytics. Formatting, warnings, tree search, repair, conversion, table generation, and file export also run locally.</p>
+            <p>JSON, JSONL, NDJSON, repair input, timestamps, dates, timezones, Base64 text, Data URLs, selected files, decoded bytes, and generated output are processed in the current browser tab. The tools do not submit that content to a LiveParse application server, save it to a LiveParse database, or include it in analytics. Formatting, warnings, tree search, repair, encoding, decoding, conversion, safe raster preview, and file export also run locally.</p>
             <p>Your input remains in page memory until you replace it, reload the page, or close the tab. A browser extension, clipboard manager, screen-sharing session, or managed device may have access outside LiveParse's control. Remove secrets and personal data when your organization requires it.</p>
 
             <h2>2. Website delivery and security data</h2>
-            <p>When you visit any website, the hosting and network providers necessarily receive connection information such as an IP address, requested URL, time, user agent, and security signals. LiveParse uses this information only to deliver files, prevent abuse, diagnose availability, and secure the service. The current application has no user accounts and does not combine connection information with the JSON you paste.</p>
+            <p>When you visit any website, the hosting and network providers necessarily receive connection information such as an IP address, requested URL, time, user agent, and security signals. LiveParse uses this information only to deliver files, prevent abuse, diagnose availability, and secure the service. The current application has no user accounts and does not combine connection information with the tool data you provide.</p>
             <p>To measure progress toward search visibility without a client-side analytics script, the primary LiveParse server recognizes common search-engine referrer hostnames and filters obvious automated user agents at request time. It stores only daily aggregate counts by search engine and landing-page path. It does not store an IP address, user agent, full referrer URL, search query, or per-visit timestamp in this aggregate, and it sets no identifier for this purpose. These counts measure search landing visits, not unique people or Search Console clicks.</p>
             <p>Infrastructure providers may retain limited request or security records under their own operational policies. LiveParse does not promise a specific provider retention period that it cannot control.</p>
 
             <h2>3. Cookies and browser storage</h2>
-            <p>LiveParse currently sets no analytics or advertising cookies and does not use local storage to retain your JSON. Hosting or security infrastructure may use a strictly necessary cookie when needed to protect or deliver the site. Blocking such a cookie may affect access but does not cause your pasted JSON to be uploaded.</p>
+            <p>LiveParse currently sets no analytics or advertising cookies and does not use local storage to retain tool input. Hosting or security infrastructure may use a strictly necessary cookie when needed to protect or deliver the site. Blocking such a cookie may affect access but does not cause your pasted or selected data to be uploaded.</p>
             <p>Because no optional cookie category is currently active, LiveParse does not show a consent banner. If analytics or advertising is introduced, optional scripts will remain blocked until any legally required consent mechanism is available, and this notice will name the provider and purposes first.</p>
 
             <h2>4. Advertising and affiliate disclosure</h2>
@@ -75,7 +76,7 @@
             <hr />
             <section lang="ko" aria-labelledby="korean-summary">
               <h2 id="korean-summary">한국어 요약</h2>
-              <p>LiveParse에 붙여 넣은 JSON·JSONL과 복구 대상 텍스트는 현재 브라우저 탭에서만 처리되며 LiveParse 애플리케이션 서버나 데이터베이스로 전송되지 않습니다. 웹사이트 파일을 제공하고 보안을 유지하기 위한 일반적인 접속 정보는 호스팅·네트워크 제공자가 처리할 수 있습니다.</p>
+              <p>LiveParse에 붙여 넣은 JSON·JSONL·Base64 텍스트와 선택한 로컬 파일은 현재 브라우저 탭에서만 처리되며 LiveParse 애플리케이션 서버나 데이터베이스로 전송되지 않습니다. 웹사이트 파일을 제공하고 보안을 유지하기 위한 일반적인 접속 정보는 호스팅·네트워크 제공자가 처리할 수 있습니다.</p>
               <p>현재 LiveParse는 광고, 제휴 위젯, 제3자 분석, 행동 추적 스크립트를 불러오지 않으며 광고·분석 쿠키를 설정하지 않습니다. 기본 서버는 검색 유입 추세를 보기 위해 검색엔진과 랜딩 페이지별 일일 합계만 저장하며, 이 집계에는 IP 주소·사용자 에이전트·전체 리퍼러 URL·검색어·개별 방문 시각을 저장하지 않습니다.</p>
             </section>
 
@@ -84,6 +85,7 @@
               <a class="button" href="/#parser">Open JSON Parser</a>
               <a class="button secondary" href="/json-repair/">Open JSON Repair</a>
               <a class="button secondary" href="/jsonl-parser/">Open JSONL Parser</a>
+              <a class="button secondary" href="/base64-decoder/">Open Base64 Decoder</a>
             </div>
           </div>
         </div>
@@ -91,7 +93,7 @@
     </main>
 
     <footer class="site-footer">
-      <p><strong>LiveParse</strong> · Local-first JSON tools by Jackson Jang.</p>
+      <p><strong>LiveParse</strong> · Local-first developer data tools by Jackson Jang.</p>
       <nav aria-label="Footer navigation"><a href="/">Home</a> · <a href="/privacy/" aria-current="page">Privacy &amp; cookies</a> · <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">Source</a></nav>
     </footer>
   </body>

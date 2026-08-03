@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Base64 vs Base64URL: Encoding, Padding, and JWTs | LiveParse</title>
+    <meta name="description" content="Learn the exact Base64 and Base64URL differences: alphabets, padding, UTF-8 bytes, canonical encoding, JWT segments, URLs, and safe code examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/base64-vs-base64url/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Base64 vs Base64URL: Encoding, Padding, and JWTs" />
+    <meta property="og:description" content="A precise, practical guide to choosing and implementing the two RFC 4648 Base64 alphabets." />
+    <meta property="og:url" content="https://liveparse.com/guides/base64-vs-base64url/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide comparing Base64 and Base64URL encoding" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Base64 vs Base64URL" />
+    <meta name="twitter:description" content="Understand alphabets, padding, UTF-8, canonical pad bits, JWTs, URLs, and implementation pitfalls." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/base64-vs-base64url/#article",
+            "headline": "Base64 vs Base64URL: Encoding, Padding, and JWTs",
+            "description": "Learn the exact Base64 and Base64URL differences: alphabets, padding, UTF-8 bytes, canonical encoding, JWT segments, URLs, and safe code examples.",
+            "mainEntityOfPage": "https://liveparse.com/guides/base64-vs-base64url/",
+            "url": "https://liveparse.com/guides/base64-vs-base64url/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-03",
+            "dateModified": "2026-08-03",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Data Encoding",
+            "inLanguage": "en",
+            "breadcrumb": { "@id": "https://liveparse.com/guides/base64-vs-base64url/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/base64-vs-base64url/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Base64 vs Base64URL", "item": "https://liveparse.com/guides/base64-vs-base64url/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/base64-decoder/">Base64 Decoder</a>
+        <a href="/base64-encoder/">Base64 Encoder</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Base64 vs Base64URL</span></nav>
+          <p class="eyebrow">Encoding guide</p>
+          <h1>Base64 vs Base64URL</h1>
+          <p class="dek">They encode the same bytes with almost the same alphabet, but two substituted characters and one padding rule can decide whether a token survives a URL, cookie, signature check, or strict decoder.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-03">August 3, 2026</time></span><span>14 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>The short answer:</strong> standard Base64 uses <code>+</code> and <code>/</code> for values 62 and 63. Base64URL uses <code>-</code> and <code>_</code> instead. Both are defined by RFC 4648 and both can use <code>=</code> padding. Padding is omitted only when the surrounding specification permits it; JWS and JWT deliberately use unpadded Base64URL. In every case, the encoder transforms bytes—not abstract text characters—and provides no secrecy or authenticity.</p>
+            </div>
+
+            <h2 id="difference">The exact difference between Base64 and Base64URL</h2>
+            <p>Base64 represents arbitrary bytes with printable ASCII. It reads three input bytes, or 24 bits, at a time; divides those bits into four six-bit values; and maps each value to one of 64 characters. Uppercase letters cover values 0–25, lowercase letters cover 26–51, and digits cover 52–61. The last two values are where the variants diverge.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Property</th><th scope="col">Base64</th><th scope="col">Base64URL</th></tr></thead>
+                <tbody>
+                  <tr><td>RFC 4648 section</td><td>Section 4</td><td>Section 5</td></tr>
+                  <tr><td>Alphabet values 0–61</td><td><code>A–Z a–z 0–9</code></td><td><code>A–Z a–z 0–9</code></td></tr>
+                  <tr><td>Value 62</td><td><code>+</code></td><td><code>-</code></td></tr>
+                  <tr><td>Value 63</td><td><code>/</code></td><td><code>_</code></td></tr>
+                  <tr><td>Pad marker</td><td><code>=</code></td><td><code>=</code></td></tr>
+                  <tr><td>Typical use</td><td>MIME, certificates, general binary-to-text data</td><td>URLs, filenames, JOSE, JWS, and JWT segments</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The substitution does not change the decoded bytes. For example, bytes <code>fb ff</code> in hexadecimal encode as <code>+/8=</code> with standard Base64 and <code>-_8=</code> with Base64URL. After choosing the matching alphabet, both strings decode to exactly the same two bytes.</p>
+            <p>Do not call Base64URL merely “Base64” in a protocol contract. A value that happens to contain only letters and digits looks valid under both alphabets, so the text alone cannot always identify its variant. The field definition, media format, or protocol must say which alphabet and padding policy apply.</p>
+
+            <h2 id="padding">How Base64 padding works</h2>
+            <p>The <code>=</code> character is not encoded payload. It completes the final four-character output quantum when the input byte count is not divisible by three. With padded Base64, the output length is <code>4 × ceil(input bytes / 3)</code>. The encoder can encounter only three ending cases:</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Input bytes modulo 3</th><th scope="col">Useful Base64 characters</th><th scope="col">Padding</th><th scope="col">Example</th></tr></thead>
+                <tbody>
+                  <tr><td>0</td><td>4 per three bytes</td><td>None</td><td><code>foo → Zm9v</code></td></tr>
+                  <tr><td>1</td><td>2 for the final byte</td><td><code>==</code></td><td><code>f → Zg==</code></td></tr>
+                  <tr><td>2</td><td>3 for the final two bytes</td><td><code>=</code></td><td><code>fo → Zm8=</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>RFC 4648’s general rule is to include appropriate padding unless the specification that uses Base64 explicitly says otherwise. Padding may be omitted when the decoder knows the data length implicitly. Therefore, “Base64URL is always unpadded” is false. Base64URL defines the URL-safe alphabet; a separate protocol defines whether its values retain or omit <code>=</code>.</p>
+            <p>An unpadded decoder can restore the required characters from the encoded length. A length divisible by four needs no padding, a remainder of two needs <code>==</code>, and a remainder of three needs <code>=</code>. A remainder of one is impossible for a valid encoding of whole bytes and should be rejected. Blindly appending a fixed <code>==</code> can conceal malformed input, so calculate the remainder and validate it.</p>
+            <div class="note">
+              <p><strong>Protocol rules win.</strong> MIME may permit line wrapping and ignored whitespace; JWS permits neither whitespace nor padding in its Base64URL values. A general-purpose decoder should offer an explicit mode instead of silently combining every permissive behavior.</p>
+            </div>
+
+            <h2 id="canonical">Canonical encoding and zero pad bits</h2>
+            <p>Padding characters are visible, but another kind of padding exists inside the last six-bit symbol. When only one input byte remains, the second output symbol carries two real bits followed by four unused bits. When two bytes remain, the third output symbol carries four real bits followed by two unused bits. RFC 4648 requires a conforming encoder to set these unused pad bits to zero.</p>
+            <p>Zero pad bits create one canonical string for one byte sequence. The byte <code>ff</code> canonically encodes as <code>/w==</code>. A permissive decoder might also turn <code>/x==</code> into <code>ff</code> because it discards the nonzero unused bits, but <code>/x==</code> is not canonical. RFC 4648 allows decoders to reject such encodings, and security-sensitive protocols often benefit from doing so.</p>
+            <p>A strict validation pattern is: check the expected alphabet and padding shape, decode, re-encode with the required variant and padding policy, then compare the canonical text to the input. This catches nonzero pad bits as well as alternate spellings. Perform the comparison on the original protocol representation; do not first trim whitespace, swap alphabets, or add and remove arbitrary punctuation unless that normalization is explicitly part of the protocol.</p>
+
+            <h2 id="bytes-text">Base64 encodes bytes, while text needs a character encoding</h2>
+            <p>Base64 does not know about Unicode characters, JSON, images, or files. Its input is an octet sequence. To encode text, first choose a character encoding—normally UTF-8—to turn characters into bytes. To recover text, Base64-decode back to bytes and then UTF-8-decode those bytes. If the bytes are a PNG, compressed archive, signature, or encrypted ciphertext, treating them as UTF-8 text is a category error.</p>
+            <p>ASCII can hide this boundary because each ASCII character becomes one UTF-8 byte. Non-ASCII text reveals it. The check mark <code>✓</code> is one Unicode character but three UTF-8 bytes, <code>e2 9c 93</code>, whose Base64 form is <code>4pyT</code>. An implementation that encodes a language runtime’s 16-bit code units or assumes one character equals one byte will produce the wrong result.</p>
+            <p>In browsers, <code>btoa()</code> and <code>atob()</code> operate on a “binary string” whose character values must fit in one byte; they are not UTF-8 text codecs. Calling <code>btoa("✓")</code> throws in conforming browsers. Use <code>TextEncoder</code> before Base64 encoding and <code>TextDecoder</code> after Base64 decoding. For untrusted data, consider <code>new TextDecoder("utf-8", { fatal: true })</code> so invalid UTF-8 becomes an error instead of replacement characters.</p>
+
+            <h2 id="javascript">Browser JavaScript: encode UTF-8 and decode Base64URL</h2>
+            <p>The helpers below keep the byte/text boundary explicit, convert alphabets intentionally, restore only the required padding, and reject an impossible Base64URL length. Chunking avoids passing a very large byte array as one function call.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Browser JavaScript</figcaption>
+              <pre><code>function bytesToBase64(bytes) {
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i &lt; bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
+function base64ToBytes(value) {
+  const binary = atob(value);
+  return Uint8Array.from(binary, char =&gt; char.charCodeAt(0));
+}
+
+function textToBase64Url(text) {
+  return bytesToBase64(new TextEncoder().encode(text))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+function base64UrlToBytes(value) {
+  if (!/^[A-Za-z0-9_-]*$/.test(value)) {
+    throw new TypeError("invalid Base64URL alphabet");
+  }
+  if (value.length % 4 === 1) {
+    throw new TypeError("impossible Base64URL length");
+  }
+  const padLength = (4 - (value.length % 4)) % 4;
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/")
+    + "=".repeat(padLength);
+  return base64ToBytes(base64);
+}
+
+const encoded = textToBase64Url("Hello, ✓");
+const decoded = new TextDecoder("utf-8", { fatal: true })
+  .decode(base64UrlToBytes(encoded));</code></pre>
+            </figure>
+            <p>This decoder is intentionally for unpadded Base64URL. If a field permits padding, validate a grammar that allows exactly the appropriate trailing <code>=</code> characters instead of deleting all equals signs. Also place a size limit before <code>atob()</code>; encoding increases data size, but decoding an attacker-controlled multi-megabyte string can still consume meaningful memory.</p>
+
+            <h2 id="node-python">Node.js and Python examples</h2>
+            <p>Modern Node.js exposes both names directly through <code>Buffer</code>. The <code>base64url</code> output form omits padding, which matches JOSE usage. A decoded buffer remains bytes until <code>toString("utf8")</code> interprets it as text.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Node.js</figcaption>
+              <pre><code>const input = Buffer.from("Hello, ✓", "utf8");
+
+const standard = input.toString("base64");
+const urlSafe = input.toString("base64url");
+
+const rawBytes = Buffer.from(urlSafe, "base64url");
+const text = rawBytes.toString("utf8");
+
+console.log({ standard, urlSafe, text });</code></pre>
+            </figure>
+            <p>Python’s <code>base64</code> module offers URL-safe helpers, but strict validation is clearest with <code>b64decode</code>, an alternate alphabet, and <code>validate=True</code>. The padding formula <code>(-len(value)) % 4</code> adds zero, one, two, or three characters; the explicit remainder-one rejection prevents the otherwise suspicious three-padding case.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Python 3</figcaption>
+              <pre><code>import base64
+
+def encode_base64url(text: str) -&gt; str:
+    raw = text.encode("utf-8")
+    return base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+
+def decode_base64url(value: str) -&gt; bytes:
+    if len(value) % 4 == 1:
+        raise ValueError("impossible Base64URL length")
+    padded = value + "=" * ((-len(value)) % 4)
+    return base64.b64decode(padded, altchars=b"-_", validate=True)
+
+encoded = encode_base64url("Hello, ✓")
+raw = decode_base64url(encoded)
+text = raw.decode("utf-8", errors="strict")</code></pre>
+            </figure>
+            <p>Library defaults differ in how they treat whitespace, missing padding, extra padding, and the other alphabet. Test the exact runtime version used in production and keep protocol validation separate from a forgiving convenience decoder. Interoperability is easiest when encoders emit one canonical representation and decoders accept only the forms the contract names.</p>
+
+            <h2 id="jwt">Why JWTs use unpadded Base64URL</h2>
+            <p>A typical signed JSON Web Token is a JWS Compact Serialization with three dot-separated segments:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">JWT compact shape</figcaption>
+              <pre><code>BASE64URL(UTF8(protected header))
+.
+BASE64URL(payload bytes)
+.
+BASE64URL(signature bytes)</code></pre>
+            </figure>
+            <p>RFC 7515 defines its Base64URL encoding as the RFC 4648 URL-safe alphabet with all trailing <code>=</code> omitted and with no line breaks, whitespace, or other added characters. The header is usually JSON encoded as UTF-8. For a JWT, the payload is normally a UTF-8 JSON claims set. The signature segment is arbitrary signature or MAC bytes, not text.</p>
+            <p>The signing input is the ASCII bytes of the original encoded protected-header segment, a literal period, and the original encoded payload segment. That exact representation matters. If you decode the JSON, pretty-print it, reorder properties, normalize escapes, and Base64URL-encode it again, you have changed the signing input even when the parsed JSON data appears equivalent. Verify against the original segments.</p>
+            <div class="warning">
+              <p><strong>Decoding a JWT does not verify it.</strong> Anyone can construct Base64URL text. Seeing readable claims—or a header that says <code>"alg":"RS256"</code>—proves nothing about who issued the token. Authentication requires cryptographic verification with a trusted key, an allowed algorithm, and application checks for claims such as issuer, audience, expiration, and not-before time.</p>
+            </div>
+            <p>Some compact strings with dots are encrypted JWEs rather than three-part signed JWS objects; their compact form has five segments. Do not assume every JWT exposes readable JSON or that every three-part token is valid. Parse structure, enforce limits, reject unexpected algorithms, and keep decoding status separate from verification status.</p>
+
+            <h2 id="urls-cookies">Base64 in URLs, filenames, and cookies</h2>
+            <p>Standard Base64 characters collide with common transport syntax. A slash can be a path separator. In form-style query parsing, a plus sign is often decoded as a space. An equals sign can act as a name/value separator or require percent-encoding. Base64URL replaces the first two problem characters, and protocols often omit padding to avoid the third.</p>
+            <p>Base64URL is therefore a good alphabet for path components, query values, filenames, and conservative cookie values—but it is not a universal escaping function. The surrounding URL or cookie grammar still applies. Percent-encode a URL component when required, use a proper URL builder, and do not concatenate untrusted strings into paths. For cookies, respect the framework’s serializer, per-cookie size constraints, and security attributes. Unpadded Base64URL reduces syntax friction; it does not make a cookie secret or tamper-proof.</p>
+            <p>If an external API requires standard padded Base64 in a URL, follow that contract and percent-encode the value as a URL component. Do not swap alphabets merely because the value travels over HTTP. Conversely, do not feed a JWT segment to a decoder configured only for standard padded Base64 and hope its permissive fallback guesses correctly.</p>
+
+            <h2 id="security">Security and validation rules</h2>
+            <p>Base64 is reversible encoding, not encryption. It has no key and provides no confidentiality. It also provides no integrity: an attacker can alter the encoded text and produce different decoded bytes. Use authenticated encryption when data must remain secret, and use a signature or MAC when recipients must detect changes. Those cryptographic results may themselves be carried as Base64 or Base64URL.</p>
+            <p>Encoding credentials, access tokens, personal data, or private keys does not make them safe to paste into a public tool, put in a URL, store in logs, or commit to source control. URLs can appear in browser history, analytics, server logs, screenshots, and referrer data. Prefer local processing, minimize retention, and treat every decoded result according to the sensitivity of the original bytes. Review the <a href="/privacy/">LiveParse privacy approach</a> before working with sensitive input.</p>
+            <p>At an untrusted boundary, validate before allocating or interpreting:</p>
+            <ul>
+              <li>Choose one declared variant and padding policy instead of guessing from content.</li>
+              <li>Set a maximum encoded length and a maximum decoded length. Base64 expands data by roughly one third.</li>
+              <li>Reject characters outside the selected alphabet unless the governing specification explicitly permits them.</li>
+              <li>Reject padding in the middle, too much trailing padding, and the impossible unpadded length remainder of one.</li>
+              <li>For canonical protocols, verify zero pad bits by re-encoding and comparing the required representation.</li>
+              <li>Keep bytes as bytes until a content type says they are UTF-8, JSON, an image, or another format.</li>
+              <li>After decoding structured content, apply that format’s own parser, schema, size, nesting, and security checks.</li>
+            </ul>
+            <p>RFC 4648 says decoders must reject non-alphabet characters unless a referring specification explicitly chooses a liberal policy. Silently discarding arbitrary whitespace or punctuation can create covert channels and inconsistent validation between services. A strict boundary parser followed by explicit content handling is safer than “decode whatever the library accepts.”</p>
+
+            <h2 id="decision">Which variant should you use?</h2>
+            <ul>
+              <li><strong>Use standard Base64</strong> when the file format, API, PEM/MIME container, or existing field explicitly requires it.</li>
+              <li><strong>Use Base64URL</strong> when designing a new value for URLs, filenames, JOSE, or another token-oriented ASCII context.</li>
+              <li><strong>Keep padding</strong> by default for RFC 4648 Base64 unless your protocol says it may be omitted.</li>
+              <li><strong>Omit padding</strong> for JWS and JWT because RFC 7515 requires the unpadded form.</li>
+              <li><strong>Specify UTF-8</strong> when your application starts with text; specify raw bytes when it does not.</li>
+              <li><strong>Document strictness</strong> for whitespace, mixed alphabets, padding, canonical bits, empty input, and maximum size.</li>
+            </ul>
+            <div class="tool-callout">
+              <p><strong>Need to inspect or create a value?</strong> The LiveParse <a href="/base64-decoder/">Base64 Decoder</a> and <a href="/base64-encoder/">Base64 Encoder</a> make the alphabet, padding policy, UTF-8 step, and byte output explicit instead of guessing silently.</p>
+              <a class="button" href="/base64-decoder/">Open the Base64 Decoder</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+              <h3>Can one decoder accept both Base64 and Base64URL?</h3>
+              <p>Some libraries do, but a protocol validator usually should not. When a value contains <code>+</code>, <code>/</code>, <code>-</code>, or <code>_</code>, its alphabet may be obvious; an alphanumeric-only value is ambiguous. Accepting both can hide an integration error and create different canonical strings for the same bytes. Select a mode from the field’s contract.</p>
+              <h3>Does Base64URL always remove padding?</h3>
+              <p>No. RFC 4648 defines <code>=</code> for Base64URL too. Its general rule is to include padding unless another specification explicitly permits omission. JWS is such a specification: it defines Base64URL with trailing padding omitted.</p>
+              <h3>Why does <code>btoa()</code> fail on emoji or non-English text?</h3>
+              <p><code>btoa()</code> expects each JavaScript string element it processes to represent a byte-sized value; it does not perform UTF-8 encoding. Convert the text with <code>TextEncoder</code>, encode those bytes, and reverse the sequence with byte decoding plus <code>TextDecoder</code>.</p>
+              <h3>Can I safely put standard Base64 in a URL?</h3>
+              <p>Yes when the API requires it and you encode it as a URL component, but raw <code>+</code>, <code>/</code>, and <code>=</code> can interact with URL syntax or form decoders. Base64URL was designed to reduce those conflicts. The endpoint contract remains authoritative.</p>
+              <h3>How can I tell whether missing padding is valid?</h3>
+              <p>Check the governing format first. For a permitted unpadded value, length modulo four may be zero, two, or three. A remainder of one cannot represent a whole-byte Base64 encoding and is malformed. Restore only the calculated padding before using an API that expects it.</p>
+              <h3>Why can two Base64 strings decode to the same bytes?</h3>
+              <p>A permissive decoder may ignore whitespace, excess padding, a mixed alphabet, or nonzero unused pad bits. Canonical RFC 4648 encoding uses the correct alphabet, padding policy, and zero pad bits. Re-encode the bytes and compare when a unique textual representation matters.</p>
+              <h3>Is a decoded JWT trustworthy?</h3>
+              <p>No. Base64URL decoding only reveals bytes. Trust requires signature or MAC verification with an expected algorithm and trusted key, followed by application-specific claim validation. A readable payload can be completely forged.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary standards</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc4648" rel="external">RFC 4648: Base-N Encodings</a> — alphabets, padding, rejection rules, canonical pad bits, and Base64URL.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7515" rel="external">RFC 7515: JSON Web Signature</a> — unpadded Base64URL and the exact JWS signing input.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7519" rel="external">RFC 7519: JSON Web Token</a> — JWT structure, claims, validation, and security considerations.</li>
+                <li><a href="https://encoding.spec.whatwg.org/" rel="external">WHATWG Encoding Standard</a> — UTF-8 algorithms, <code>TextEncoder</code>, and <code>TextDecoder</code>.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc3986" rel="external">RFC 3986: URI Generic Syntax</a> — reserved characters and percent-encoding rules for URI components.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/base64-decoder/"><strong>Base64 Decoder</strong><span>Decode standard Base64 or Base64URL with explicit byte and UTF-8 handling.</span></a>
+                <a class="related-card" href="/base64-encoder/"><strong>Base64 Encoder</strong><span>Encode text or bytes with the alphabet and padding policy you need.</span></a>
+                <a class="related-card" href="/"><strong>LiveParse developer tools</strong><span>Open private, browser-based tools for structured data and timestamps.</span></a>
+                <a class="related-card" href="/privacy/"><strong>Privacy</strong><span>Learn how LiveParse approaches local processing and sensitive developer data.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#difference">Exact difference</a></li>
+              <li><a href="#padding">Padding rules</a></li>
+              <li><a href="#canonical">Canonical pad bits</a></li>
+              <li><a href="#bytes-text">Bytes and UTF-8</a></li>
+              <li><a href="#javascript">Browser JavaScript</a></li>
+              <li><a href="#node-python">Node.js and Python</a></li>
+              <li><a href="#jwt">JWT segments</a></li>
+              <li><a href="#urls-cookies">URLs and cookies</a></li>
+              <li><a href="#security">Security</a></li>
+              <li><a href="#decision">Which variant?</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">Home</a> · <a href="/base64-decoder/">Base64 Decoder</a> · <a href="/base64-encoder/">Base64 Encoder</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

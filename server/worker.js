@@ -8,6 +8,8 @@ const DIRECTORY_ROUTES = new Set([
   '/json-compare',
   '/unix-timestamp-converter',
   '/discord-timestamp-generator',
+  '/base64-decoder',
+  '/base64-encoder',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
@@ -17,6 +19,7 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/unix-timestamp-seconds-vs-milliseconds',
   '/guides/unix-timestamp-code-examples',
   '/guides/discord-timestamp-formats',
+  '/guides/base64-vs-base64url',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
@@ -39,6 +42,12 @@ const ROUTE_REDIRECTS = new Map([
   ['/discord-time-converter/', '/discord-timestamp-generator/'],
   ['/discord-time-generator', '/discord-timestamp-generator/'],
   ['/discord-time-generator/', '/discord-timestamp-generator/'],
+  ['/base64-decode', '/base64-decoder/'],
+  ['/base64-decode/', '/base64-decoder/'],
+  ['/base64-encode', '/base64-encoder/'],
+  ['/base64-encode/', '/base64-encoder/'],
+  ['/base64-encoder-decoder', '/base64-decoder/'],
+  ['/base64-encoder-decoder/', '/base64-decoder/'],
 ]);
 
 function normalizeKnownRoutePath(pathname) {

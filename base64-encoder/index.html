@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Base64 Encoder – Encode Text &amp; Files Online | LiveParse</title>
+    <meta name="description" content="Free Base64 encoder for UTF-8 text and local files. Create standard Base64, Base64URL, or Data URLs with private in-browser processing." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/base64-encoder/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/base64.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/base64-encoder/" />
+    <meta property="og:title" content="Base64 Encoder – Encode UTF-8 Text, Files &amp; Data URLs" />
+    <meta property="og:description" content="Create padded Base64, unpadded Base64URL, or complete Data URLs from text and files locally in your browser." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based developer data tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Private Base64 Encoder for Text &amp; Files | LiveParse" />
+    <meta name="twitter:description" content="Encode bytes as canonical Base64 or URL-safe Base64, choose padding and wrapping, and download the full result." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#493da9" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/base64-encoder/#application",
+            "name": "LiveParse Base64 Encoder",
+            "url": "https://liveparse.com/base64-encoder/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Base64 encoder",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A private browser-based encoder for converting UTF-8 text and local file bytes to standard Base64, URL-safe Base64, or complete Data URLs with explicit padding and wrapping controls.",
+            "featureList": [
+              "Encode UTF-8 text to standard Base64",
+              "Encode local binary files without a conversion upload",
+              "Generate URL-safe Base64 with optional padding",
+              "Create Base64 Data URLs with an explicit media type",
+              "Choose continuous output or 76-character line wrapping",
+              "Copy or download the complete encoded result"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/base64-encoder/#webpage",
+            "url": "https://liveparse.com/base64-encoder/",
+            "name": "Base64 Encoder – Encode Text and Files Online",
+            "description": "Encode UTF-8 text and local file bytes as standard Base64, Base64URL, or Data URLs in a browser.",
+            "dateModified": "2026-08-03",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/base64-encoder/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/base64-encoder/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/base64-encoder/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Base64 Encoder", "item": "https://liveparse.com/base64-encoder/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="base64-page" data-base64-mode="encode">
+    <a class="skip-link" href="#encoder">Skip to the Base64 encoder</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/base64-decoder/">Base64 Decoder</a>
+          <a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a>
+          <a href="#files">Files &amp; Data URLs</a>
+          <a href="#faq">FAQ</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Free · Byte-exact · Local</p>
+          <h1>Base64 Encoder</h1>
+          <p class="hero-lead">Encode UTF-8 text or the exact bytes of a local file as standard Base64, URL-safe Base64, or a complete Data URL. Choose padding and line wrapping for the system that will consume it.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#encoder">Encode to Base64</a>
+            <span>No sign-up · Files stay in this browser tab</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="Base64 encoding example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>UTF-8 bytes → Base64</strong></div>
+          <pre><code><span class="property">text</span>
+<span class="string">Encode once. Transfer exactly.</span>
+
+<span class="property">base64</span>
+<span class="string">RW5jb2RlIG9uY2UuIFRyYW5zZmVyIGV4YWN0bHku</span></code></pre>
+          <p><strong>Canonical output</strong><span>30 UTF-8 bytes</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="encoder" aria-labelledby="encoder-heading">
+        <div><p class="section-kicker">Encode text and binary data</p><h2 id="encoder-heading">Text or file to Base64 and Base64URL</h2></div>
+        <p>Enter text or choose a local file, select the target alphabet and formatting, then copy the encoded value or download it as a text file.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="Base64 encoder loading">
+          <p><strong>Loading the Base64 encoder…</strong></p>
+          <p>Enable JavaScript to encode text and files, generate Data URLs, copy output, and download results. The guide below remains readable without JavaScript.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-encode" aria-labelledby="how-heading">
+        <div class="section-heading">
+          <p class="section-kicker">A clear three-step workflow</p>
+          <h2 id="how-heading">How to encode text or a file as Base64</h2>
+          <p>Correct output depends on the source bytes and the destination protocol. Decide those explicitly instead of assuming every Base64-looking field follows the same convention.</p>
+        </div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Supply text or exact file bytes</h3><p>Type or paste text to encode it as UTF-8. Choose a file when byte-for-byte binary identity matters; the encoder reads the file without first converting it to text.</p></li>
+          <li><span>2</span><h3>Match the destination format</h3><p>Use standard Base64 for a field that specifies the <code>+</code>/<code>/</code> alphabet. Use Base64URL for URL, filename, JWT, or other protocols that specify <code>-</code>/<code>_</code>.</p></li>
+          <li><span>3</span><h3>Choose padding, wrapping, or a Data URL</h3><p>Retain <code>=</code> padding unless the consuming specification omits it. Add line breaks only when a MIME-style format requires them, or generate a Data URL with a verified media type.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">Transport-friendly, not smaller</p><h2 id="meaning-heading">What Base64 encoding does</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Base64 maps arbitrary bytes to a limited printable ASCII alphabet. It reads 24 source bits at a time, divides them into four six-bit values, and represents those values with characters. This makes binary data easier to carry through text-oriented systems such as JSON, XML, email, configuration files, form fields, and command-line arguments that cannot safely contain every byte value.</p>
+            <p>The transformation is reversible and deterministic: the same byte sequence under the same alphabet and padding convention produces the same canonical output. Base64 does not compress data. Four output characters represent three source bytes, so the core payload is about one third larger, before line breaks or a Data URL header. A 3 MB file becomes roughly 4 MB of Base64 text, and both forms may coexist in memory while a browser encodes it.</p>
+            <p>Encoding also does not attach a filename, MIME type, checksum, signature, or encryption key. If a protocol needs those properties, carry them in explicit fields or in a defined container. A complete Data URL includes a media-type label, but ordinary Base64 is just the encoded payload. Do not guess a destination’s contract from a sample string alone.</p>
+            <p>Base64 is most useful at a boundary that requires text. When a system already accepts binary request bodies, multipart uploads, blobs, or object storage, sending the original bytes is usually smaller and more efficient. Choose Base64 because the receiving format calls for it, not as a universal wrapper for every file.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Source</dt><dd>Any byte sequence: UTF-8 text, an image, a PDF, an archive, or structured binary data.</dd></div>
+            <div><dt>Output</dt><dd>Printable ASCII characters from a standard or URL-safe alphabet.</dd></div>
+            <div><dt>Expansion</dt><dd>Usually four encoded characters for each three source bytes, plus optional formatting.</dd></div>
+            <div><dt>Purpose</dt><dd>Reliable binary-to-text transport where raw bytes are inconvenient or unsupported.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="utf8-heading">
+        <div class="section-heading"><p class="section-kicker">Characters become bytes first</p><h2 id="utf8-heading">UTF-8 text encoding and binary file encoding</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Text is encoded as UTF-8</h3><p>When you enter text, LiveParse converts Unicode code points to UTF-8 bytes and Base64-encodes those bytes. ASCII letters use one byte each, while Korean, emoji, and many other characters use multiple bytes. Two strings that look similar can also contain different Unicode code-point sequences and therefore produce different output.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Files remain byte-for-byte data</h3><p>A selected file is read as raw bytes, not interpreted with a character set. This preserves images, PDFs, fonts, archives, database fixtures, and any other binary format. Reopening a binary file as text before encoding can change bytes through newline conversion or replacement characters.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Charset belongs to the surrounding contract</h3><p>Base64 itself never says “UTF-8.” If a receiver decodes the bytes and applies Latin-1, UTF-16, or a platform default, the visible result may differ. Document UTF-8 in your API schema or media type whenever the original content is text.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Round-trip when exactness matters</h3><p>After encoding a fixture or protocol value, use the <a href="/base64-decoder/">Base64 decoder</a> to recover it. Compare hashes or exact bytes for files and compare explicit UTF-8 bytes for text. Visual equality alone can miss line-ending and Unicode-normalization differences.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="alphabet-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Select the alphabet by protocol</p>
+          <h2 id="alphabet-heading">Choose the output alphabet your protocol requires</h2>
+          <p>The two RFC 4648 alphabets represent the same six-bit values. Base64URL substitutes two characters so encoded data fits URL and filename contexts without the same escaping problems.</p>
+        </div>
+        <div class="error-table" role="table" aria-label="Base64 and Base64URL encoding choices">
+          <div class="error-row error-head" role="row"><span role="columnheader">Decision</span><span role="columnheader">Standard Base64</span><span role="columnheader">Base64URL</span></div>
+          <div class="error-row" role="row"><strong role="cell">Alphabet</strong><code role="cell">A–Z a–z 0–9 + /</code><span role="cell"><code>A–Z a–z 0–9 - _</code>; only positions 62 and 63 change.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Padding convention</strong><code role="cell">= usually included</code><span role="cell">Often omitted in compact formats, but include or remove it only as the target specification directs.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Good fit</strong><code role="cell">JSON fields, MIME, files, Data URLs</code><span role="cell">JWT segments, URLs, cookies, filenames, and protocols that explicitly name base64url.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Common mistake</strong><code role="cell">Inserted into a URL unescaped</code><span role="cell">Assuming “URL-safe” means the entire surrounding value is authenticated, validated, or safe to trust.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/base64-vs-base64url/">Compare alphabets, padding, JWT usage, and migration details →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="canonical-heading">
+        <div class="section-heading"><p class="section-kicker">Stable text for stable bytes</p><h2 id="canonical-heading">Padding, line wrapping, and canonical Base64</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Base64 processes complete three-byte groups cleanly. If one source byte remains, two encoded symbols carry its bits and two <code>=</code> characters complete the four-character group. If two bytes remain, three symbols and one <code>=</code> are used. A source length divisible by three needs no padding. The equals signs are markers, not encrypted content and not additional decoded bytes.</p>
+            <p>RFC 4648 does not add line feeds unless another referring specification requires them. Continuous output is the safest default for JSON, database fields, environment values, HTTP parameters, and most modern APIs. The optional 76-character wrap supports MIME-style contexts that explicitly expect folded lines. Never add line wrapping merely for visual appearance when the receiving parser treats whitespace as an error.</p>
+            <p>A canonical encoder sets unused pad bits to zero and uses the selected alphabet consistently. That guarantees one normalized representation for a given byte sequence under the chosen padding policy. Canonical form matters when encoded text participates in signatures, hashes, cache keys, comparisons, test snapshots, or deduplication. Two permissively decodable strings should not silently become two logical identities.</p>
+            <p>LiveParse generates canonical bit patterns. To audit an external value, use the <a href="/base64-decoder/#validation">decoder’s strict validation</a>, which checks alphabet, length, padding position, whitespace policy, and pad bits. A decode-and-re-encode round trip can normalize a representation, but signature verification must still follow the original protocol’s exact serialization rules.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>No wrap</dt><dd>One uninterrupted value for JSON, APIs, databases, and compact tokens.</dd></div>
+            <div><dt>76 columns</dt><dd>A compatibility option only for specifications that permit or require MIME-style lines.</dd></div>
+            <div><dt>Padded</dt><dd>Explicit four-character groups using zero, one, or two trailing equals signs.</dd></div>
+            <div><dt>Canonical</dt><dd>Correct alphabet, consistent padding policy, and zero unused bits in the final symbol.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="files" aria-labelledby="files-heading">
+        <div class="section-heading"><p class="section-kicker">From local bytes to portable text</p><h2 id="files-heading">Encode files and create Base64 Data URLs</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Choose a local file when you need its exact bytes. The browser reads up to 10 MB in the current tab and produces Base64 without posting the file to a conversion endpoint. The limit protects browser responsiveness because the source bytes, encoded string, and visible output can occupy memory at the same time. For very large assets, use a streaming command-line tool or application code instead.</p>
+            <p>A Data URL embeds content directly in a URL-shaped string: <code>data:</code>, a media type and optional parameters, the <code>;base64</code> marker, a comma, and standard padded Base64. For example, a small PNG can begin with <code>data:image/png;base64,</code>. Data URLs are convenient for tiny self-contained fixtures, CSS assets, demonstrations, and clipboard exchange, but their size makes them poor substitutes for ordinary hosted files.</p>
+            <p>Set the media type from a trustworthy source. A filename extension and browser-provided type can be missing or wrong, and typing <code>image/png</code> does not convert arbitrary bytes into a PNG. The label tells a consumer how to interpret content; it does not validate that content. Avoid embedding untrusted HTML or SVG in a page, because those formats can contain active behavior depending on context.</p>
+            <p>The encoder does not execute or preview the selected file. If you later inspect a Data URL with LiveParse, the <a href="/base64-decoder/">decoder</a> previews only recognized PNG, JPEG, GIF, and WebP raster bytes. It never renders decoded HTML or SVG. This narrow preview policy keeps byte conversion separate from content execution.</p>
+            <p>For long results, the interface shortens only the on-page preview to protect the tab. Copy and download use the complete encoded output. The downloaded text retains the alphabet, padding, wrapping, and Data URL options you chose.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>File mode</dt><dd>Reads raw bytes instead of applying a character encoding.</dd></div>
+            <div><dt>10 MB limit</dt><dd>A browser resource safeguard, not a limit imposed by RFC 4648.</dd></div>
+            <div><dt>Data URL</dt><dd>A media-type header and Base64 payload combined into one self-contained value.</dd></div>
+            <div><dt>Restricted preview</dt><dd>Available in the decoder only for recognized raster signatures, never active HTML or SVG.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="security-heading">
+        <div class="section-heading"><p class="section-kicker">Visible data in another alphabet</p><h2 id="security-heading">Base64 encoding is not encryption</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Base64 uses a public, reversible mapping and no secret key. Anyone who can read an encoded value can usually recover the original bytes immediately. It does not hide passwords, API keys, session cookies, personal data, proprietary documents, or internal endpoints. The fact that the text is unfamiliar to a person does not make it confidential.</p>
+            <p>Base64 also provides no integrity or authenticity. An attacker can alter encoded text and produce different decoded bytes, often without an obvious visual clue. Use an authenticated encryption scheme when content needs confidentiality and tamper detection, or a digital signature or message authentication code when integrity and sender authenticity are the goal. Transport encryption such as HTTPS protects data in transit but does not change what Base64 itself provides.</p>
+            <p>This encoder performs conversion locally: entered text and selected file contents are not uploaded to a Base64 API. That reduces disclosure to a remote conversion service, but it does not control browser extensions, clipboard history, downloaded files, screenshots, backups, or other software on the device. Work on a trusted device, clear sensitive input afterward, and see the <a href="/privacy/">privacy page</a> for the full processing model.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Encoding</dt><dd>Changes representation so bytes travel through a text-oriented channel.</dd></div>
+            <div><dt>Encryption</dt><dd>Uses a key and algorithm to protect confidentiality, usually with authentication.</dd></div>
+            <div><dt>Hashing</dt><dd>Produces a one-way digest for comparison or integrity constructions, not recovery.</dd></div>
+            <div><dt>Local</dt><dd>The conversion data remains in this tab rather than going to a server-side encoder.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Avoid integration surprises</p><h2 id="errors-heading">Common Base64 encoding mistakes</h2></div>
+        <div class="error-table" role="table" aria-label="Common Base64 encoding mistakes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Symptom</span><span role="columnheader">Likely cause</span><span role="columnheader">Reliable fix</span></div>
+          <div class="error-row" role="row"><strong role="cell">Different output for the same-looking text</strong><code role="cell">Charset, normalization, or newline difference</code><span role="cell">Specify UTF-8, compare code points and bytes, and normalize Unicode or line endings only when the application contract requires it.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Value breaks in a URL</strong><code role="cell">Standard + / = characters</code><span role="cell">Use Base64URL when the protocol permits it, or percent-encode standard Base64 as part of constructing the complete URL.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Receiver rejects valid output</strong><code role="cell">Wrong padding or wrapping convention</code><span role="cell">Follow the receiving specification exactly. Do not remove <code>=</code> or insert line feeds simply because another parser accepts both.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Decoded file is corrupted</strong><code role="cell">Binary was converted through text</code><span role="cell">Encode the original file bytes directly, then decode and compare a cryptographic hash or exact byte length.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Purposeful use cases</p><h2 id="uses-heading">When a Base64 encoder is useful</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Create an API test fixture</h3><p>Encode a small UTF-8 or binary sample exactly as the API schema requires, keep the alphabet and padding documented, and verify it with a round trip before adding it to tests or documentation.</p></article>
+          <article><h3>Prepare a Base64URL value</h3><p>Generate URL-safe output for a field that explicitly uses RFC 4648’s URL alphabet. For JWT work, remember that encoding a header or payload is only serialization; signing and validating the complete token are separate security operations.</p></article>
+          <article><h3>Build a small Data URL</h3><p>Embed a trusted tiny raster image or fixture with an accurate media type. Measure the expanded size and prefer a normal asset URL when caching, readability, updateability, or page weight matters.</p></article>
+          <article><h3>Move binary through a text-only field</h3><p>Represent bytes in JSON, XML, SQL text, or a configuration format when the contract has no binary type. Store content length, media type, and integrity information separately if consumers need them.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Base64 encoder FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How do I encode text to Base64?</summary><p>Enter the text in the encoder. LiveParse converts it to UTF-8 bytes and encodes those bytes with the alphabet, padding, and wrapping options you select. Copy the result or download it as a text file, then document UTF-8 for the receiving system.</p></details>
+          <details><summary>Can I encode an image, PDF, ZIP, or other binary file?</summary><p>Yes. Choose the local file and the encoder reads its raw bytes rather than treating it as text. Files are limited to 10 MB to protect browser responsiveness. For large files, prefer a streaming CLI or application library and transfer raw binary when possible.</p></details>
+          <details><summary>Should I use Base64 or Base64URL?</summary><p>Use the format named by the destination. Standard Base64 uses <code>+</code> and <code>/</code>; Base64URL replaces them with <code>-</code> and <code>_</code>. Base64URL often omits padding in compact protocols. The <a href="/guides/base64-vs-base64url/">comparison guide</a> shows the exact differences.</p></details>
+          <details><summary>Should Base64 output include equals-sign padding?</summary><p>Standard canonical Base64 normally includes the necessary <code>=</code> markers. Some protocols, including common Base64URL uses, explicitly omit them. Keep padding unless the receiver’s specification says otherwise; parser tolerance is not a substitute for a defined wire format.</p></details>
+          <details><summary>Why is the Base64 output larger than my file?</summary><p>Each three source bytes become four encoded characters, so the payload expands by about 33 percent before line wrapping or a Data URL header. Padding adds at most two characters. Base64 improves text compatibility, not compression.</p></details>
+          <details><summary>What media type should I use in a Data URL?</summary><p>Use the verified type of the source bytes, such as <code>image/png</code> for a real PNG or <code>text/plain;charset=utf-8</code> for UTF-8 plain text. A label does not inspect or convert content, so do not trust a filename extension alone for untrusted files.</p></details>
+          <details><summary>Does Base64 protect passwords or secrets?</summary><p>No. Anyone can reverse ordinary Base64 without a key, and it does not detect modification. Use authenticated encryption, secret storage, access controls, and secure transport appropriate to the threat model. Base64 may carry ciphertext, but it does not create it.</p></details>
+          <details><summary>Are my text and files uploaded?</summary><p>The encoding operation reads input in the current browser tab and does not send it to a conversion API. Clipboard managers, downloads, extensions, and other device software remain outside that boundary. Review the <a href="/privacy/">LiveParse privacy page</a> for details.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Verify and implement</p><h2 id="references-heading">Related Base64 resources</h2></div>
+        <ul>
+          <li><a href="/base64-decoder/">Decode and validate Base64</a></li>
+          <li><a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noreferrer">RFC 4648 canonical encoding</a></li>
+          <li><a href="/privacy/">Local processing and privacy</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, text, and binary conversions.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/base64-decoder/">Base64 Decoder</a><a href="/guides/base64-vs-base64url/">Base64URL Guide</a><a href="/json-to-csv/">JSON to CSV</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. Text and files are encoded locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive Base64 encoding. The format, UTF-8, file, padding, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/base64.tsx" data-mode="encode"></script>
+  </body>
+</html>
