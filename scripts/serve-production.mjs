@@ -24,6 +24,9 @@ const DIRECTORY_ROUTES = new Set([
   '/discord-timestamp-generator',
   '/base64-decoder',
   '/base64-encoder',
+  '/uuid-generator',
+  '/uuid-v7-generator',
+  '/uuid-validator',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
@@ -34,6 +37,7 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/unix-timestamp-code-examples',
   '/guides/discord-timestamp-formats',
   '/guides/base64-vs-base64url',
+  '/guides/uuid-v4-vs-v7',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
@@ -62,6 +66,18 @@ const ROUTE_REDIRECTS = new Map([
   ['/base64-encode/', '/base64-encoder/'],
   ['/base64-encoder-decoder', '/base64-decoder/'],
   ['/base64-encoder-decoder/', '/base64-decoder/'],
+  ['/guid-generator', '/uuid-generator/'],
+  ['/guid-generator/', '/uuid-generator/'],
+  ['/uuid-v4-generator', '/uuid-generator/'],
+  ['/uuid-v4-generator/', '/uuid-generator/'],
+  ['/generate-uuid', '/uuid-generator/'],
+  ['/generate-uuid/', '/uuid-generator/'],
+  ['/uuid-generator-online', '/uuid-generator/'],
+  ['/uuid-generator-online/', '/uuid-generator/'],
+  ['/uuid-v7', '/uuid-v7-generator/'],
+  ['/uuid-v7/', '/uuid-v7-generator/'],
+  ['/uuid-checker', '/uuid-validator/'],
+  ['/uuid-checker/', '/uuid-validator/'],
 ]);
 const CANONICAL_METRIC_PATHS = new Set(['/', ...[...DIRECTORY_ROUTES].map((pathname) => `${pathname}/`)]);
 

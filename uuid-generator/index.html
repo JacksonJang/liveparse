@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID Generator (GUID) – UUID v4 &amp; v7 | LiveParse</title>
+    <meta name="description" content="UUID Generator for bulk UUID v4, UUID v7, and GUID values with RFC 9562 layout, local secure randomness, copy, JSON, SQL, and downloads." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/uuid-generator/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/uuid-generator/" />
+    <meta property="og:title" content="UUID Generator (GUID) – UUID v4 &amp; v7" />
+    <meta property="og:description" content="Generate secure random UUID v4 or time-ordered UUID v7 values locally, then copy or download the exact format your project needs." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID Generator (GUID) – v4 &amp; v7" />
+    <meta name="twitter:description" content="Generate UUIDs locally with RFC 9562 version and variant bits, bulk output, formatting, validation, and no upload." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for structured data, identifiers, encoding, and timestamps.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/uuid-generator/#application",
+            "name": "LiveParse UUID Generator",
+            "url": "https://liveparse.com/uuid-generator/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "UUID and GUID generator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and the Web Cryptography API",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A local browser UUID generator for RFC 9562 UUID v4 and UUID v7 values, bulk output, GUID formatting, validation, copy, and download.",
+            "featureList": [
+              "Generate UUID v4 with 122 random payload bits",
+              "Generate time-ordered UUID v7 values",
+              "Generate as many as 10000 values per batch",
+              "Format as hyphenated, compact, braced, or UUID URN text",
+              "Export line, comma, JSON array, or SQL VALUES output",
+              "Validate UUID version, variant, and v7 timestamp",
+              "Process generated and inspected values in the browser"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/uuid-generator/#webpage",
+            "url": "https://liveparse.com/uuid-generator/",
+            "name": "UUID Generator (GUID) – UUID v4 & v7",
+            "description": "Generate and inspect RFC 9562 UUID v4, UUID v7, and GUID values locally.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/uuid-generator/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/uuid-generator/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/uuid-generator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "UUID Generator", "item": "https://liveparse.com/uuid-generator/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="uuid-page" data-mode="generator">
+    <a class="skip-link" href="#generator">Skip to the UUID generator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON Formatter</a>
+          <a href="/uuid-v7-generator/">UUID v7</a>
+          <a href="/uuid-validator/">UUID Validator</a>
+          <a href="#faq">FAQ</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">RFC 9562 · Local CSPRNG · Bulk output</p>
+          <h1>UUID Generator (GUID) – UUID v4 &amp; v7</h1>
+          <p class="hero-lead">Generate random UUID v4 or time-ordered UUID v7 identifiers in your browser. Choose standard, compact, braced, uppercase, JSON, CSV-style, or SQL-ready output without sending generated values to an API.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#generator">Generate UUIDs</a>
+            <span>Free · No sign-up · Up to 10,000 per batch</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="UUID version 4 and version 7 examples">
+          <div class="example-bar"><span></span><span></span><span></span><strong>identifiers.txt</strong></div>
+          <pre><code><span class="property">v4</span> 919108f7-52d1-<span class="string">4</span>320-<span class="boolean">9</span>bac-f847db4148a8
+<span class="property">v7</span> 017f22e2-79b0-<span class="string">7</span>cc3-<span class="boolean">9</span>8c4-dc0c0c07398f</code></pre>
+          <p><strong>128-bit identifiers</strong><span>Version and variant shown in color</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="generator" aria-labelledby="generator-intro-heading">
+        <div><p class="section-kicker">Generate and inspect</p><h2 id="generator-intro-heading">Create UUID and GUID values in the exact output you need</h2></div>
+        <p>Select v4 or v7, choose a batch size and text format, then copy or download the result. The validator reports structure, version, variant, special Nil or Max values, and the embedded UTC time of UUID v7.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="UUID generator loading">
+          <p><strong>Loading the UUID generator…</strong></p>
+          <p>Enable JavaScript to generate secure UUIDs, create bulk output, and inspect UUID structure.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Three deliberate choices</p><h2 id="how-heading">How to generate a UUID online</h2><p>A UUID is easy to copy, but the version and output convention still need to match the system that will store or exchange it.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Choose UUID v4 or v7</h3><p>Use v4 when you want an opaque identifier made from random bits. Use v7 when chronological byte and text ordering is useful and exposing millisecond creation time is acceptable.</p></li>
+          <li><span>2</span><h3>Choose count and format</h3><p>Generate one value or a batch. Standard hyphenated lowercase is the most interoperable default; braces and uppercase are common presentation choices in Microsoft-oriented workflows.</p></li>
+          <li><span>3</span><h3>Copy, download, and validate</h3><p>Export lines, comma-separated text, a JSON array, or SQL <code>VALUES</code> rows. Validate the receiving system’s type and constraints before using generated IDs in production data.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="uuid-guid" aria-labelledby="uuid-guid-heading">
+        <div class="section-heading"><p class="section-kicker">Two names, one identifier family</p><h2 id="uuid-guid-heading">What is the difference between a UUID and a GUID?</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p><strong>UUID</strong> means Universally Unique Identifier. <strong>GUID</strong> means Globally Unique Identifier. RFC 9562 explicitly notes that UUIDs are also known as GUIDs, and both terms usually refer to the same 128-bit identifier family. “GUID” is especially common in Microsoft and .NET documentation, while “UUID” is the standard’s term and is common across databases, web APIs, operating systems, and other language ecosystems.</p>
+            <p>The familiar text form contains 32 hexadecimal digits divided as <code>8-4-4-4-12</code>: <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>. Uppercase and lowercase hexadecimal letters are allowed by the RFC. Braces, a compact string without hyphens, and a <code>urn:uuid:</code> prefix are useful in particular interfaces, but the plain hyphenated form is the safest general exchange default.</p>
+            <p>A label does not change the bits. A GUID written as <code>{919108F7-52D1-4320-9BAC-F847DB4148A8}</code> and the lowercase UUID <code>919108f7-52d1-4320-9bac-f847db4148a8</code> can represent the same 128-bit value. Be careful when converting a Microsoft COM GUID to raw bytes: RFC 9562 identifies a known COM little-endian storage caveat. Compare documented byte order rather than assuming that formatting a string and serializing a platform structure are identical operations.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Size</dt><dd>16 octets, or 128 bits.</dd></div>
+            <div><dt>Standard text</dt><dd>32 hexadecimal digits in five hyphen-separated groups.</dd></div>
+            <div><dt>Version field</dt><dd>The high four bits of octet 6; visible as the first hex digit of group three.</dd></div>
+            <div><dt>RFC variant</dt><dd>Bits <code>10</code> at the start of octet 8; group four starts with 8, 9, A, or B.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="versions" aria-labelledby="versions-heading">
+        <div class="section-heading"><p class="section-kicker">Choose from the workload</p><h2 id="versions-heading">UUID v4 vs UUID v7</h2><p>Both versions use the RFC variant and fit the same 128-bit UUID type. Their payload layout and operational tradeoffs are different.</p></div>
+        <div class="error-table" role="table" aria-label="UUID version 4 and version 7 comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Property</span><span role="columnheader">UUID v4</span><span role="columnheader">UUID v7</span></div>
+          <div class="error-row" role="row"><strong role="cell">Primary data</strong><span role="cell">122 random or pseudorandom bits after version and variant.</span><span role="cell">48-bit Unix millisecond timestamp plus 74 remaining bits after version and variant.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Ordering</strong><span role="cell">Random values do not carry creation order.</span><span role="cell">The leading timestamp supports chronological byte and standard-text order across milliseconds.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Information exposure</strong><span role="cell">Does not intentionally embed a timestamp.</span><span role="cell">Reveals a millisecond timestamp that can be extracted by anyone holding the value.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Typical fit</strong><span role="cell">General opaque IDs, externally visible IDs, and established v4 schemas.</span><span role="cell">New event or database IDs where time ordering and index locality matter.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/uuid-v4-vs-v7/">Read the complete UUID v4 vs v7 guide →</a></p>
+      </section>
+
+      <section class="content-section alt" id="bulk" aria-labelledby="bulk-heading">
+        <div class="section-heading"><p class="section-kicker">Useful output, not just one button</p><h2 id="bulk-heading">Bulk UUID generation and formatting</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>One per line</h3><p>Use newline output for fixtures, shell input, spreadsheet pasting, or a text file. Each identifier remains easy to scan and diff.</p></article>
+          <article><span aria-hidden="true">02</span><h3>JSON array</h3><p>Produce quoted JSON strings with valid brackets and commas for a seed file, test fixture, or request body. Validate the surrounding application schema separately.</p></article>
+          <article><span aria-hidden="true">03</span><h3>SQL VALUES rows</h3><p>Generate parenthesized string rows as a starting point for an insert statement. Prefer your database’s native UUID column type and parameterized queries over assembling SQL from untrusted text.</p></article>
+          <article><span aria-hidden="true">04</span><h3>GUID presentation</h3><p>Select uppercase, braces, or compact text when an interface requests that presentation. These choices format the same bytes and do not create a different UUID version.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" id="rfc-layout" aria-labelledby="layout-heading">
+        <div class="section-heading"><p class="section-kicker">Read the important bits</p><h2 id="layout-heading">RFC 9562 UUID version and variant layout</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>RFC 9562 replaced RFC 4122 as the current IETF UUID standard in May 2024. It keeps the familiar text layout and existing versions, clarifies bit and byte order, and standardizes newer sortable versions. The version occupies bits 48 through 51. That is why a v4 string has <code>4</code> as the first character of its third group and a v7 string has <code>7</code> there.</p>
+            <p>The RFC variant used by versions 1 through 8 begins with bits <code>10</code> in octet 8. In hexadecimal text, the first character of the fourth group is therefore <code>8</code>, <code>9</code>, <code>a</code>, or <code>b</code>. Checking only those two visible characters is useful but incomplete: a proper parser must also confirm all 32 hex digits and the exact group boundaries.</p>
+            <p>LiveParse generates sixteen secure random bytes for v4 and then sets the version and variant bits. For an individual v7 value it writes the current Unix millisecond timestamp into the leading six bytes, sets version and variant, and keeps the remaining payload from the browser cryptography source. A v7 batch instead uses a randomly seeded 14-bit counter followed by 60 fresh random bits so values stay increasing when several are minted in one millisecond.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>v4 shape</dt><dd><code>xxxxxxxx-xxxx-4xxx-[89ab]xxx-xxxxxxxxxxxx</code></dd></div>
+            <div><dt>v7 shape</dt><dd><code>tttttttt-tttt-7xxx-[89ab]xxx-xxxxxxxxxxxx</code></dd></div>
+            <div><dt>Nil UUID</dt><dd><code>00000000-0000-0000-0000-000000000000</code>, a special all-zero value.</dd></div>
+            <div><dt>Max UUID</dt><dd><code>ffffffff-ffff-ffff-ffff-ffffffffffff</code>, a special all-one value.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="security" aria-labelledby="security-heading">
+        <div class="section-heading"><p class="section-kicker">Identifiers are not credentials</p><h2 id="security-heading">UUID uniqueness, randomness, and security</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>RFC 9562 recommends a cryptographically secure pseudorandom number generator when an implementation needs values that are hard to predict and unlikely to collide. This page uses the browser Web Cryptography API and never substitutes <code>Math.random()</code>. Generation fails instead of quietly falling back to a weaker source when secure randomness is unavailable.</p>
+            <p>No UUID generator can promise absolute global uniqueness without shared knowledge of every value ever created. UUIDs provide practical uniqueness through a large bit space, sound algorithms, and reliable randomness. If a duplicate would create unacceptable harm, enforce a unique constraint, handle insertion conflicts, and apply application-specific coordination or verification rather than treating probability as an absolute guarantee.</p>
+            <p>A UUID is not automatically a password, API key, session secret, signature, authorization decision, or proof of origin. UUID v7 openly contains creation time, and even a securely generated v4 should not replace a purpose-built token with adequate entropy, rotation, expiration, and server-side validation. Do not expose a database row merely because a caller can guess or present its UUID.</p>
+          </div>
+          <div class="callout-card"><strong>Local processing boundary</strong><p>Generated UUIDs and values pasted into the inspector are processed in the current tab and are not submitted to a UUID API. Clipboard history, downloaded files, extensions, screen sharing, and other software on your device remain outside this boundary.</p><a href="/privacy/">Read the complete privacy explanation →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="uses" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Common developer workflows</p><h2 id="uses-heading">When to use a UUID generator</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Database seed data</h3><p>Create IDs for fixtures and migrations without coordinating an auto-increment service. Keep foreign-key relationships explicit and use native UUID storage where the database provides it.</p></article>
+          <article><h3>Distributed resource creation</h3><p>Mint an identifier before a record reaches a central database. Unique constraints and retry handling remain important at the persistence boundary.</p></article>
+          <article><h3>API examples and tests</h3><p>Generate realistic identifiers for documentation, mocks, idempotency tests, and request payloads. Do not reuse production secrets or imply that a UUID proves authorization.</p></article>
+          <article><h3>Time-ordered event IDs</h3><p>Use <a href="/uuid-v7-generator/">UUID v7</a> when leading Unix milliseconds and chronological ordering help with logs, events, or database indexes and timestamp exposure is acceptable.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">UUID and GUID generator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Is a GUID the same as a UUID?</summary><p>Usually, yes. RFC 9562 says UUIDs are also known as GUIDs. GUID is common in Microsoft ecosystems, while UUID is the standard term. Formatting conventions such as braces or uppercase do not change the underlying 128-bit value.</p></details>
+          <details><summary>Which should I generate: UUID v4 or UUID v7?</summary><p>Choose v4 for a random, opaque general-purpose identifier and for systems already standardized on v4. Choose v7 when time order is useful for database or event IDs and exposing millisecond creation time is acceptable. Read the <a href="/guides/uuid-v4-vs-v7/">detailed comparison</a> before changing a production key strategy.</p></details>
+          <details><summary>Are generated UUIDs guaranteed to be unique?</summary><p>No decentralized generator can give an absolute global guarantee. Correct UUID generation makes collision probability extremely low for ordinary use. A system where duplication has serious consequences should also use a unique constraint, conflict handling, and any domain-specific coordination required.</p></details>
+          <details><summary>How many random bits are in UUID v4?</summary><p>UUID v4 has 122 random or pseudorandom bits. Six of the 128 total bits carry the four-bit version and two-bit RFC variant. The generator fills bytes from the browser cryptography source before applying those required bits.</p></details>
+          <details><summary>Can I generate multiple UUIDs at once?</summary><p>Yes. Choose a whole count from 1 through 10,000, then export one-per-line, comma-separated, JSON array, or SQL <code>VALUES</code> output. Large production batches are usually better generated inside the application or database transaction that consumes them.</p></details>
+          <details><summary>Why does the fourth UUID group start with 8, 9, a, or b?</summary><p>Those hexadecimal digits all begin with binary bits <code>10</code>, the variant defined by RFC 9562. The first hex digit of the third group identifies the version. Both fields must appear at their exact positions.</p></details>
+          <details><summary>Can a UUID be used as a secure token?</summary><p>Do not assume so. UUID structure defines an identifier, not authentication, confidentiality, expiration, scope, or authorization. Use a purpose-built token system and enforce access on the server even when resource URLs contain unpredictable identifiers.</p></details>
+          <details><summary>Are generated values uploaded or stored?</summary><p>No UUID generation or inspection request is sent to a LiveParse conversion API. Values remain in page memory until replaced, reloaded, or the tab closes. Copying, downloading, extensions, and device software have their own privacy boundaries.</p></details>
+          <details><summary>How can I check an existing UUID?</summary><p>Paste it into the inspector above or open the dedicated <a href="/uuid-validator/">UUID Validator</a>. Strict mode requires the standard hyphenated form; normalized mode also accepts compact text, braces, and a UUID URN while reporting a normalized lowercase standard value.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and next steps</p><h2 id="references-heading">UUID resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562" target="_blank" rel="noreferrer">RFC 9562: Universally Unique Identifiers</a></li>
+          <li><a href="https://www.w3.org/TR/webcrypto-2/#Crypto-method-randomUUID" target="_blank" rel="noreferrer">Web Cryptography: crypto.randomUUID()</a></li>
+          <li><a href="/uuid-v7-generator/">UUID v7 Generator and timestamp inspector</a></li>
+          <li><a href="/uuid-validator/">UUID Validator and normalizer</a></li>
+          <li><a href="/guides/uuid-v4-vs-v7/">UUID v4 vs v7 guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/uuid-v7-generator/">UUID v7</a><a href="/uuid-validator/">UUID Validator</a><a href="/guides/uuid-v4-vs-v7/">v4 vs v7 Guide</a><a href="/base64-decoder/">Base64 Decoder</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. UUID generation and inspection run locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive UUID generation and validation. The UUID format, version, security, and selection guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/uuid.tsx"></script>
+  </body>
+</html>

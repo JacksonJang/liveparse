@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID v4 vs UUID v7: Differences, Ordering, and Code | LiveParse</title>
+    <meta name="description" content="Compare UUID v4 and UUID v7: RFC 9562 layouts, ordering, database locality, security, validation, migration, and current code examples." />
+    <link rel="canonical" href="https://liveparse.com/guides/uuid-v4-vs-v7/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="UUID v4 vs UUID v7: Differences, Ordering, and Code" />
+    <meta property="og:description" content="A standards-focused guide to UUID v4 randomness, UUID v7 time ordering, database storage, security, and implementation choices." />
+    <meta property="og:url" content="https://liveparse.com/guides/uuid-v4-vs-v7/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide comparing UUID version 4 and UUID version 7" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID v4 vs UUID v7" />
+    <meta name="twitter:description" content="Understand random UUIDs, time-ordered UUIDs, RFC 9562 layouts, database tradeoffs, and version-aware code." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["WebPage", "TechArticle"],
+            "@id": "https://liveparse.com/guides/uuid-v4-vs-v7/#webpage",
+            "name": "UUID v4 vs UUID v7: Differences, Ordering, and Code",
+            "headline": "UUID v4 vs UUID v7: Differences, Ordering, and Code",
+            "description": "Compare UUID v4 and UUID v7: RFC 9562 layouts, ordering, database locality, security, validation, migration, and current code examples.",
+            "url": "https://liveparse.com/guides/uuid-v4-vs-v7/",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@type": "WebSite",
+              "@id": "https://liveparse.com/#website",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "breadcrumb": {
+              "@id": "https://liveparse.com/guides/uuid-v4-vs-v7/#breadcrumb"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/uuid-v4-vs-v7/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "LiveParse",
+                "item": "https://liveparse.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "UUID v4 vs UUID v7",
+                "item": "https://liveparse.com/guides/uuid-v4-vs-v7/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/uuid-generator/">UUID Generator</a>
+        <a href="/uuid-v7-generator/">UUID v7 Generator</a>
+        <a href="/uuid-validator/">UUID Validator</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">UUID v4 vs UUID v7</span></nav>
+          <p class="eyebrow">Identifier guide</p>
+          <h1>UUID v4 vs UUID v7</h1>
+          <p class="dek">Both are 128-bit identifiers standardized by RFC 9562. Version 4 spends its payload on randomness; version 7 places a Unix-millisecond timestamp first, then fills the remaining field with random data or optional monotonic structure.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>20 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>The short answer:</strong> choose UUID v4 when you want a simple, widely supported random identifier and its random sort order is acceptable. Choose UUID v7 when chronological ordering and index locality matter. A UUID v4 has 122 random bits after the required version and variant bits. A UUID v7 has a 48-bit Unix timestamp in milliseconds followed by 74 bits available for randomness and optional monotonic schemes, with the version and variant between them. Neither version guarantees global uniqueness, and neither should be treated as an authorization token.</p>
+            </div>
+
+            <h2 id="comparison">UUID v4 vs v7 at a glance</h2>
+            <p>UUID version 4 and version 7 share the same outer container: 128 bits, the same RFC variant marker, and the familiar hexadecimal string form. The meaningful difference is how those bits are assigned. Version 4 deliberately reveals no creation time and gets collision resistance from random bits. Version 7 puts time in the most significant 48 bits so ordinary bytewise ordering is primarily chronological, then uses the remaining space to reduce collision risk and, in some implementations, improve ordering among values created during one clock tick.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Property</th><th scope="col">UUID v4</th><th scope="col">UUID v7</th></tr></thead>
+                <tbody>
+                  <tr><td>RFC 9562 section</td><td>Section 5.4</td><td>Section 5.7</td></tr>
+                  <tr><td>Total size</td><td>128 bits</td><td>128 bits</td></tr>
+                  <tr><td>Defining input</td><td>Random or pseudorandom bits</td><td>Unix epoch milliseconds plus a remaining field</td></tr>
+                  <tr><td>Random capacity</td><td>122 bits after version and variant</td><td>Up to 74 bits when the remaining field is random</td></tr>
+                  <tr><td>Natural RFC byte order</td><td>Random</td><td>Time-ordered across differing millisecond values</td></tr>
+                  <tr><td>Same-millisecond order</td><td>Not meaningful</td><td>Not guaranteed by a random-tail generator</td></tr>
+                  <tr><td>Time disclosure</td><td>No timestamp field</td><td>Approximate creation time is visible</td></tr>
+                  <tr><td>Typical reason to choose it</td><td>Simplicity and broad runtime support</td><td>Chronological sortability and better insertion locality</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Neither row should be read as an absolute performance promise. RFC 9562 explains why time-ordered values can improve database-index behavior, but the result depends on the engine, UUID comparison rules, page layout, fill factor, workload, replication strategy, and whether the primary key is clustered. Benchmark the database configuration that will actually store the identifiers.</p>
+
+            <h2 id="format">The shared 128-bit UUID format</h2>
+            <p>The standard textual representation contains 32 hexadecimal digits separated into groups of 8, 4, 4, 4, and 12 characters:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">RFC UUID text shape</figcaption>
+              <pre><code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+
+M = version nibble
+N = first hexadecimal digit containing the variant bits</code></pre>
+            </figure>
+            <p>The full string is 36 characters including four hyphens. Hexadecimal digits may be uppercase or lowercase when parsed, although lowercase output is a useful normalization convention. For v4, the first digit in the third group is <code>4</code>. For v7, it is <code>7</code>. Under the RFC variant used by both versions, the first digit in the fourth group is normally <code>8</code>, <code>9</code>, <code>a</code>, or <code>b</code> because its two highest bits are <code>10</code>.</p>
+            <p>A pattern match can confirm the text shape, version nibble, and variant nibble. It cannot prove that a value came from a compliant generator, that its random source was strong, that a v7 timestamp is truthful, or that the value is unique. Those are provenance and implementation questions, not properties encoded in the string.</p>
+            <div class="note">
+              <p><strong>Byte order matters at system boundaries.</strong> RFC 9562 specifies UUID fields in network byte order. Some Microsoft COM GUID binary representations have historical little-endian field behavior. Text round-trips often hide this difference, so verify the exact byte contract before moving a UUID between raw buffers, database drivers, COM APIs, and network protocols.</p>
+            </div>
+
+            <h2 id="v4">How UUID v4 works</h2>
+            <p>A version 4 UUID is the random UUID. An implementation may start with 128 random or pseudorandom bits and overwrite the fixed fields, or generate exactly the unfixed bits and place them around those fields. Four bits identify version 4, and two bits identify the RFC variant. That leaves <strong>122 random bits</strong>.</p>
+            <p>The standard does not require a central service, a machine address, or a timestamp. This makes v4 easy to generate independently in browsers, application servers, command-line tools, and offline clients. It also means the value has no useful chronological relationship to the next value. Sorting v4 identifiers sorts random values, not records by creation time.</p>
+            <p>The RFC says random-number generation should use a cryptographically secure pseudorandom number generator when one is available. That requirement is about reliable random UUID generation; it does not turn the resulting identifier into a secret. Use the platform UUID API or a well-maintained library rather than <code>Math.random()</code>, an ad hoc linear generator, or random bytes from an unclear source.</p>
+            <p>Version 4 is a strong default when compatibility is more important than time ordering, when IDs may be generated in many disconnected systems, or when exposing creation time would be undesirable. It is also useful when an older language or database has a trustworthy v4 primitive but no reviewed v7 implementation. The tradeoff is that random primary-key inserts may touch widely separated index pages.</p>
+
+            <h2 id="v7">How UUID v7 works</h2>
+            <p>Version 7 is the time-ordered UUID recommended by RFC 9562 for new time-based use cases. Its first 48 bits contain an unsigned Unix epoch timestamp in milliseconds, with leap seconds excluded. The next four bits are the version value <code>0111</code>. A 12-bit field called <code>rand_a</code> follows, then the two-bit RFC variant, then a 62-bit <code>rand_b</code> field.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Bit range</th><th scope="col">Width</th><th scope="col">UUID v7 field</th></tr></thead>
+                <tbody>
+                  <tr><td>0–47</td><td>48 bits</td><td><code>unix_ts_ms</code>: Unix epoch milliseconds</td></tr>
+                  <tr><td>48–51</td><td>4 bits</td><td><code>ver</code>: the value 7</td></tr>
+                  <tr><td>52–63</td><td>12 bits</td><td><code>rand_a</code>: random data or optional monotonic structure</td></tr>
+                  <tr><td>64–65</td><td>2 bits</td><td><code>var</code>: the RFC variant value</td></tr>
+                  <tr><td>66–127</td><td>62 bits</td><td><code>rand_b</code>: random data or optional monotonic structure</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>After subtracting the timestamp, version, and variant, 74 bits remain. The simplest compliant design fills all 74 with pseudorandom data. RFC 9562 also permits optional sub-millisecond timestamp fractions and counters, in a specified order, to create stronger monotonic behavior. Those options are generator policies; they are not extra fields that every v7 parser can assume are present.</p>
+            <p>The time prefix means UUIDs from later millisecond timestamps sort after earlier ones when compared in RFC byte order. But <strong>random-tail v7 values created in the same millisecond are not guaranteed to follow generation order</strong>. Their equal timestamp prefixes leave random suffixes to decide the comparison. A generator that promises strict or monotonic ordering needs documented state, counter, clock rollback, overflow, and concurrency behavior.</p>
+            <p>System clocks can repeat or move backward. RFC 9562 describes approaches for monotonicity, but it does not make wall clocks infallible. If ordering is a business invariant, do not infer it solely from arbitrary v7 strings. Store an authoritative creation timestamp, transaction sequence, or log position as a separate field and define how ties and clock anomalies are handled.</p>
+
+            <h2 id="requirements">Standard requirements versus implementation choices</h2>
+            <p>Many UUID comparisons accidentally turn a library behavior into a claim about the standard. Keep the two layers separate:</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">RFC-defined property</th><th scope="col">Implementation choice</th></tr></thead>
+                <tbody>
+                  <tr><td>A UUID occupies 128 bits.</td><td>Whether an API exposes bytes, two integers, a native UUID object, or a string.</td></tr>
+                  <tr><td>v4 fixes version and variant, leaving 122 random bits.</td><td>Which approved CSPRNG, entropy cache, or operating-system source supplies them.</td></tr>
+                  <tr><td>v7 starts with a 48-bit Unix-millisecond timestamp.</td><td>How the clock is sampled and what happens if it moves backward.</td></tr>
+                  <tr><td>v7 has 74 remaining bits around the variant marker.</td><td>Whether those bits are all random or include a fraction and/or counter.</td></tr>
+                  <tr><td>RFC byte order supports v7 time sorting across timestamps.</td><td>How a particular database or language compares its native UUID values.</td></tr>
+                  <tr><td>Text accepts hexadecimal UUID notation.</td><td>Whether an application emits lowercase, accepts braces, or tolerates alternate formats.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>A library can offer guarantees beyond the base format, such as process-local monotonic output. Record the library name and version when relying on one. Test generation under concurrent threads, multiple processes, clock rollback, and sustained same-millisecond load. A parser should still treat unfamiliar v7 suffix bits as opaque instead of assuming another generator used the same counter design.</p>
+
+            <h2 id="database">Database indexes, locality, and storage</h2>
+            <p>Random v4 inserts tend to distribute new keys throughout the index keyspace. With an ordered tree index, that can lead to page splits, cache churn, and less predictable write locality. Because v7 starts with time, newly generated values usually land near other recent values. This is the principal database motivation for v7.</p>
+            <p>“Usually” is important. Values generated during the same millisecond may have random order, imported historical rows can target older ranges, and a clock that moves backward can produce an earlier prefix. Database-specific comparison is equally important. PostgreSQL’s native <code>uuid</code> ordering works with the UUID value, while Microsoft SQL Server’s <code>uniqueidentifier</code> comparison rules and some GUID byte conversions should be tested rather than assumed to match RFC lexical order.</p>
+            <p>Use a database’s native UUID type when it has one. RFC 9562 recommends storing UUIDs as the binary 128-bit value where feasible instead of a textual representation. Native storage avoids spending space on 36-character formatting and lets the database validate the basic type. Text may still be appropriate in systems without a native type, in human-facing interchange, or where a schema contract explicitly requires it.</p>
+            <p>Do not remove a separate <code>created_at</code> column merely because v7 contains time. A creation timestamp can have declared precision, time-zone semantics, indexing policy, correction rules, and application meaning. The embedded v7 timestamp is useful for coarse ordering and diagnostics, but it is not a complete audit record. It may reflect client clock time rather than database commit time.</p>
+            <p>For a migration, avoid rewriting every existing v4 key only to make it look like v7. Existing identifiers remain valid UUIDs. A common approach is to generate v7 for new rows, keep the column type unchanged, and let both versions coexist. Audit foreign keys, serializers, caches, partitioning, sharding, and code that incorrectly assumes every UUID has version 4 before switching the default.</p>
+
+            <h2 id="guid">Is a GUID different from a UUID?</h2>
+            <p>In ordinary developer usage, GUID is Microsoft’s name for the same broad family of 128-bit identifiers, and RFC 9562 notes that UUIDs are also known as GUIDs. A .NET <code>Guid</code> can hold an RFC variant version 4 or version 7 value. The word “GUID” by itself does not identify an algorithm or version.</p>
+            <p>The important differences appear in APIs, binary serialization, and database ordering—not in a magical extra uniqueness property. A tool labeled “GUID generator” often generates UUID v4. A UUID v4 generator is therefore usually the appropriate choice when a system simply asks for a new random GUID. When interoperability matters, specify the version, RFC variant, textual form, and binary byte order instead of relying on the label alone. The canonical LiveParse <a href="/uuid-generator/">UUID Generator</a> covers random UUID generation, including the use case commonly described as GUID generation.</p>
+
+            <h2 id="validation">Validation, version detection, and opacity</h2>
+            <p>A useful validator answers separate questions. Does the input have an accepted textual form? Does it decode to 128 bits? Does it use the RFC variant? Which version nibble does it contain? Is that version allowed by this field’s contract? The LiveParse <a href="/uuid-validator/">UUID Validator</a> can help inspect those structural properties.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Strict lowercase v4 or v7 text patterns</figcaption>
+              <pre><code>v4: ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+v7: ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$</code></pre>
+            </figure>
+            <p>Those expressions intentionally accept only lowercase standard text. Add case-insensitive matching if the protocol accepts uppercase. Do not add optional braces, <code>urn:uuid:</code>, missing hyphens, or whitespace unless the surrounding contract permits those forms. A generic UUID parser may accept more representations than a public API should.</p>
+            <p>Applications should otherwise treat UUIDs as opaque identifiers. It can be legitimate for version-aware infrastructure to extract a v7 timestamp, but ordinary domain logic should not split strings, attach meaning to suffixes, or assume that a visible prefix identifies a tenant or machine. The format can evolve, and optional v7 suffix construction is deliberately generator-specific.</p>
+
+            <h2 id="security">Security and privacy limits</h2>
+            <p>A UUID is an identifier, not proof of permission. RFC 9562 warns against assuming UUIDs are hard to guess and says they must not be used as security capabilities. Knowing a record’s UUID must not be the only condition for reading, modifying, or deleting it. Apply authentication and authorization independently.</p>
+            <p>Version 4 has a large random field, but its formatted value still provides no integrity, signature, expiry, audience restriction, or revocation mechanism. A weak or compromised random source can further reduce unpredictability. Version 7 exposes an approximate creation time and narrows the search space to values associated with that time window; that is intentional metadata, not a vulnerability that can be fixed while preserving the format.</p>
+            <p>For password-reset links, session credentials, API secrets, email-verification links, and object capabilities, use a purpose-built high-entropy token design with the necessary lifecycle and server-side controls. If a UUID is included inside a signed token or authenticated message, the surrounding cryptography provides authenticity—the UUID itself does not.</p>
+            <p>Neither v4 nor v7 includes tamper detection. Changing one hexadecimal digit usually produces another structurally valid-looking identifier. Never use format validation as evidence that a request came from a trusted party. Avoid placing sensitive UUID-associated data in logs or URLs merely because the identifier looks random, and review the <a href="/privacy/">LiveParse privacy approach</a> before handling production values.</p>
+
+            <h2 id="javascript">JavaScript and Node.js examples</h2>
+            <p>In a secure browser context, <code>crypto.randomUUID()</code> generates a standards-form version 4 UUID. Browsers do not currently expose a matching standardized <code>randomUUIDv7()</code> Web API. The small example below demonstrates the RFC v7 layout using <code>Date.now()</code> and <code>crypto.getRandomValues()</code>. It uses an all-random 74-bit tail, so it is not monotonic for calls within the same millisecond.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Browser JavaScript</figcaption>
+              <pre><code>const id4 = crypto.randomUUID();
+
+function uuidv7RandomTail() {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  const ms = BigInt(Date.now());
+
+  bytes[0] = Number((ms &gt;&gt; 40n) &amp; 0xffn);
+  bytes[1] = Number((ms &gt;&gt; 32n) &amp; 0xffn);
+  bytes[2] = Number((ms &gt;&gt; 24n) &amp; 0xffn);
+  bytes[3] = Number((ms &gt;&gt; 16n) &amp; 0xffn);
+  bytes[4] = Number((ms &gt;&gt; 8n) &amp; 0xffn);
+  bytes[5] = Number(ms &amp; 0xffn);
+  bytes[6] = (bytes[6] &amp; 0x0f) | 0x70;
+  bytes[8] = (bytes[8] &amp; 0x3f) | 0x80;
+
+  const hex = [...bytes].map(byte =&gt;
+    byte.toString(16).padStart(2, "0")
+  ).join("");
+
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${
+    hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+const id7 = uuidv7RandomTail();</code></pre>
+            </figure>
+            <p>This is educational code, not a promise of process-wide monotonicity or a substitute for a reviewed library policy. A production generator may need concurrency coordination and clock rollback handling. Use the <a href="/uuid-v7-generator/">UUID v7 Generator</a> to inspect the layout, and choose a maintained RFC 9562 implementation when stronger operational guarantees matter.</p>
+            <p>Node.js has different support by release. <code>randomUUID()</code> has generated v4 UUIDs since Node 14.17.0 and 15.6.0. <code>randomUUIDv7()</code> is available in Node 24.16.0 and Node 26.1.0 or newer releases on those lines. The Node documentation explicitly notes that its clock is not guaranteed to be monotonic, so increasing output is not an unconditional guarantee.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Node.js 24.16+ or 26.1+</figcaption>
+              <pre><code>import { randomUUID, randomUUIDv7 } from "node:crypto";
+
+const id4 = randomUUID();
+const id7 = randomUUIDv7();
+
+console.log({ id4, id7 });</code></pre>
+            </figure>
+            <p>Do not paste <code>randomUUIDv7()</code> into an older Node runtime and assume a polyfill exists. Check the exact runtime version: Node 24 needs 24.16.0 or newer and Node 26 needs 26.1.0 or newer. For unsupported releases, use a maintained library that explicitly implements RFC 9562 v7, or generate the value in another trusted system component.</p>
+
+            <h2 id="python">Python example</h2>
+            <p>Python has long provided <code>uuid.uuid4()</code>. Python 3.14 added <code>uuid.uuid7()</code>, so the standard-library v7 call is version-dependent. Python documents <code>uuid4()</code> as cryptographically secure and exposes the embedded millisecond timestamp of a v7 object through its <code>time</code> attribute.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Python 3.14 or newer</figcaption>
+              <pre><code>import uuid
+
+id4 = uuid.uuid4()
+id7 = uuid.uuid7()
+
+assert id4.version == 4
+assert id7.version == 7
+created_ms = id7.time
+
+print(id4, id7, created_ms)</code></pre>
+            </figure>
+            <p>Python 3.13 and earlier do not have <code>uuid.uuid7()</code> in the standard library. Select a vetted RFC 9562 package and pin its version rather than inventing a method name or silently falling back to v4. Also confirm whether the chosen package promises monotonic output, random-tail output, or merely format compliance.</p>
+
+            <h2 id="postgresql">PostgreSQL example</h2>
+            <p>PostgreSQL 18 includes built-in <code>uuidv4()</code> and <code>uuidv7()</code> generation functions. <code>gen_random_uuid()</code> remains an alias-style route to a v4 value. PostgreSQL can also extract an RFC UUID version and extract the timestamp from v1 or v7 values.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">PostgreSQL 18</figcaption>
+              <pre><code>CREATE TABLE events (
+  id uuid PRIMARY KEY DEFAULT uuidv7(),
+  created_at timestamptz NOT NULL DEFAULT now(),
+  payload jsonb NOT NULL
+);
+
+SELECT uuidv4() AS random_id,
+       uuidv7() AS time_ordered_id;
+
+SELECT uuid_extract_version(id),
+       uuid_extract_timestamp(id)
+FROM events;</code></pre>
+            </figure>
+            <p>The built-in <code>uuidv7()</code> call shown here is specific to PostgreSQL 18. On PostgreSQL 17 and earlier, generate v7 in the application or deliberately choose an audited extension; do not assume the function exists. Keep <code>created_at</code> when it has application or audit meaning. PostgreSQL also offers an optional timestamp-shift argument, but changing the embedded time is a specialized implementation feature, not a way to make identifiers private.</p>
+
+            <h2 id="java-csharp">Java and C# examples</h2>
+            <p>Java’s <code>UUID.randomUUID()</code> generates v4 using a cryptographically strong pseudorandom number generator. Java SE 26 added <code>UUID.ofEpochMillis(long)</code> for v7. The caller supplies the timestamp, and Java fills the remaining 74 bits with cryptographically strong random data. Callers that require monotonic timestamps must enforce that property themselves.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Java SE 26 or newer</figcaption>
+              <pre><code>import java.util.UUID;
+
+UUID id4 = UUID.randomUUID();
+UUID id7 = UUID.ofEpochMillis(System.currentTimeMillis());
+
+System.out.println(id4 + " version=" + id4.version());
+System.out.println(id7 + " version=" + id7.version());</code></pre>
+            </figure>
+            <p>Java 25 and earlier do not provide <code>ofEpochMillis</code>. Use a maintained RFC 9562 library on those releases. Note also that the older <code>UUID.timestamp()</code> instance method is defined for v1 and is not the matching v7 extractor; do not call it on the v7 object shown above.</p>
+            <p>In .NET, <code>Guid.NewGuid()</code> creates a version 4 value. .NET 9 added <code>Guid.CreateVersion7()</code>, which uses UTC time and random data for the v7 random fields. The return type is still <code>Guid</code> because that is the platform’s long-standing type name.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">C# on .NET 9 or newer</figcaption>
+              <pre><code>Guid id4 = Guid.NewGuid();
+Guid id7 = Guid.CreateVersion7();
+
+Console.WriteLine($"v4: {id4}");
+Console.WriteLine($"v7: {id7}");</code></pre>
+            </figure>
+            <p>Earlier .NET versions do not have <code>CreateVersion7()</code>. Use a reviewed library or keep generating v4 until the runtime upgrade. When serializing raw <code>Guid</code> bytes, verify the receiving system’s expected field order; the textual form is often the safer interoperability contract.</p>
+
+            <h2 id="decision">How to choose and migrate</h2>
+            <ul>
+              <li><strong>Choose v4</strong> for the broadest built-in support, simple decentralized generation, and no embedded creation time.</li>
+              <li><strong>Choose v7</strong> when time-oriented sorting and database insertion locality are useful and revealing millisecond time is acceptable.</li>
+              <li><strong>Keep a real timestamp column</strong> when the application needs authoritative creation, update, event, or commit time.</li>
+              <li><strong>Document same-tick behavior</strong> if callers expect monotonic output; “v7” alone does not make random tails sequential.</li>
+              <li><strong>Use a native UUID database type</strong> where available, and test the engine’s actual comparison and clustering behavior.</li>
+              <li><strong>Allow both versions during migration</strong> unless a field has a genuine reason to reject older identifiers.</li>
+              <li><strong>Pin runtime and library requirements</strong> because v7 standard-library APIs arrived in different versions of Node, Python, Java, .NET, and PostgreSQL.</li>
+              <li><strong>Keep access control separate</strong> because neither UUID version is a security token.</li>
+            </ul>
+            <p>For a greenfield service using a current runtime and an ordered primary index, v7 is often the more operationally convenient default. For an integration with mixed clients or older platforms, v4 may be the safer compatibility choice. The right answer is the smallest set of guarantees the system truly needs—not the newest version number.</p>
+            <div class="tool-callout">
+              <p><strong>Generate or inspect a UUID locally.</strong> Use the LiveParse <a href="/uuid-generator/">UUID Generator</a> for random UUIDs, the <a href="/uuid-v7-generator/">UUID v7 Generator</a> for time-ordered values, or the <a href="/uuid-validator/">UUID Validator</a> to check format, variant, and version.</p>
+              <a class="button" href="/uuid-v7-generator/">Open the UUID v7 Generator</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>Is UUID v7 better than UUID v4?</h3>
+              <p>Not universally. Version 7 is usually better when chronological ordering and index locality matter. Version 4 is simpler, more widely available in older runtimes, and does not reveal a timestamp. Both fit in the same 128-bit UUID type and both can be generated without a central allocator.</p>
+
+              <h3>Is UUID v7 guaranteed to be unique?</h3>
+              <p>No UUID version can guarantee global uniqueness without shared knowledge of every generated value. A compliant generator makes collisions practically unlikely through its timestamp and remaining bits, but applications that require an absolute uniqueness invariant must still enforce it, typically with a unique constraint and a defined retry policy.</p>
+
+              <h3>Is UUID v7 always monotonic?</h3>
+              <p>No. Values with different increasing millisecond timestamps have chronological order in RFC byte order. Values produced within the same millisecond by a generator that fills all 74 remaining bits randomly are not guaranteed to preserve call order. Clock rollback can also disturb order. A stronger claim requires a specific generator’s documented counter and clock policy.</p>
+
+              <h3>How many random bits are in UUID v4 and v7?</h3>
+              <p>UUID v4 has 122 random bits because six of the 128 bits encode the version and variant. UUID v7 has 74 bits remaining after its 48-bit timestamp, four-bit version, and two-bit variant. A v7 implementation may use all 74 randomly or allocate part of that space to optional sub-millisecond or counter logic.</p>
+
+              <h3>Can UUID v4 and UUID v7 share one database column?</h3>
+              <p>Yes. They are both 128-bit UUIDs and can coexist in a native UUID column. Check application validators that may have been hard-coded for the v4 nibble, and remember that old random rows will not become time-sortable. A separate creation-time column remains useful.</p>
+
+              <h3>Can I extract the creation time from UUID v7?</h3>
+              <p>You can extract its 48-bit Unix-millisecond field, but describe it as the timestamp embedded by the generator. It may come from a client clock, may be shifted by a particular API, and may not equal database commit or business-event time. It should not replace an authoritative audit timestamp.</p>
+
+              <h3>Does GUID mean UUID v4?</h3>
+              <p>No. GUID is a common platform term for a 128-bit identifier, not a version. Many “new GUID” APIs historically produced v4, while modern .NET can also return an RFC 9562 v7 value in a <code>Guid</code>. Inspect or require the version when the distinction matters.</p>
+
+              <h3>Can I use a UUID as an API key or reset token?</h3>
+              <p>Do not rely on a UUID as a security capability. UUIDs provide identification, not authorization, integrity, expiry, or revocation. Use a purpose-built token system and enforce access control even if resource identifiers are difficult to guess.</p>
+
+              <h3>Should UUIDs be stored as text or binary?</h3>
+              <p>Prefer the database’s native UUID type or a 128-bit binary representation when practical. Text is convenient for logs and interchange but includes formatting overhead and may invite inconsistent casing or punctuation. Define byte order whenever raw binary crosses a system boundary.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9562.html" rel="external">RFC 9562: Universally Unique IDentifiers</a> — the current UUID layouts, generation requirements, monotonicity methods, storage guidance, and security considerations.</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" rel="external">MDN: <code>Crypto.randomUUID()</code></a> — browser v4 generation and secure-context availability.</li>
+                <li><a href="https://nodejs.org/api/crypto.html" rel="external">Node.js Crypto documentation</a> — version-specific <code>randomUUID()</code> and <code>randomUUIDv7()</code> behavior.</li>
+                <li><a href="https://docs.python.org/3/library/uuid.html" rel="external">Python <code>uuid</code> documentation</a> — v4 and Python 3.14 v7 APIs.</li>
+                <li><a href="https://www.postgresql.org/docs/current/functions-uuid.html" rel="external">PostgreSQL 18 UUID functions</a> — built-in generators and extraction functions.</li>
+                <li><a href="https://docs.oracle.com/en/java/javase/26/docs/api/java.base/java/util/UUID.html" rel="external">Java SE 26 <code>UUID</code></a> — v4 generation and <code>ofEpochMillis</code> v7 construction.</li>
+                <li><a href="https://learn.microsoft.com/en-us/dotnet/api/system.guid.createversion7?view=net-9.0" rel="external">.NET 9 <code>Guid.CreateVersion7</code></a> — RFC 9562 v7 generation in C# and other .NET languages.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/uuid-generator/"><strong>UUID Generator</strong><span>Create random UUIDs for applications, test data, and GUID-compatible workflows.</span></a>
+                <a class="related-card" href="/uuid-v7-generator/"><strong>UUID v7 Generator</strong><span>Create and inspect RFC 9562 time-ordered UUID values.</span></a>
+                <a class="related-card" href="/uuid-validator/"><strong>UUID Validator</strong><span>Check UUID text, RFC variant, version, and embedded v7 time.</span></a>
+                <a class="related-card" href="/"><strong>LiveParse developer tools</strong><span>Explore private, browser-based utilities for everyday development work.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#comparison">v4 vs v7</a></li>
+              <li><a href="#format">UUID format</a></li>
+              <li><a href="#v4">How v4 works</a></li>
+              <li><a href="#v7">How v7 works</a></li>
+              <li><a href="#requirements">Requirements vs choices</a></li>
+              <li><a href="#database">Database storage</a></li>
+              <li><a href="#guid">GUID terminology</a></li>
+              <li><a href="#validation">Validation</a></li>
+              <li><a href="#security">Security</a></li>
+              <li><a href="#javascript">JavaScript and Node.js</a></li>
+              <li><a href="#python">Python</a></li>
+              <li><a href="#postgresql">PostgreSQL</a></li>
+              <li><a href="#java-csharp">Java and C#</a></li>
+              <li><a href="#decision">How to choose</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">Home</a> · <a href="/uuid-generator/">UUID Generator</a> · <a href="/uuid-v7-generator/">UUID v7 Generator</a> · <a href="/uuid-validator/">UUID Validator</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

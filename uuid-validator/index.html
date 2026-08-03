@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID Validator &amp; Checker – Version, Variant, v7 Time | LiveParse</title>
+    <meta name="description" content="UUID Validator and GUID checker for version, variant, Nil and Max values, lowercase standard-form normalization, exact errors, and UUID v7 timestamp decoding." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/uuid-validator/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/uuid-validator/" />
+    <meta property="og:title" content="UUID Validator &amp; Checker – Version, Variant, v7 Time" />
+    <meta property="og:description" content="Check UUID structure with strict or normalized input, exact error details, RFC 9562 version and variant, special values, and UUID v7 UTC time." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID Validator &amp; Checker" />
+    <meta name="twitter:description" content="Validate UUID text, version, variant, Nil and Max values, and UUID v7 timestamp locally." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for structured data, identifiers, encoding, and timestamps.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/uuid-validator/#application",
+            "name": "LiveParse UUID Validator",
+            "url": "https://liveparse.com/uuid-validator/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "UUID and GUID validator, normalizer, and inspector",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Validate UUID and GUID text, inspect RFC 9562 version and variant fields, identify Nil and Max UUIDs, normalize alternate presentation, and decode UUID v7 timestamps locally.",
+            "featureList": [
+              "Strict standard UUID text validation",
+              "Optional normalization for compact, braced, and UUID URN input",
+              "Exact malformed-character and structure diagnostics",
+              "UUID version and variant identification",
+              "Nil and Max UUID recognition",
+              "UUID v7 Unix millisecond decoding",
+              "Batch validation and normalized copy"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/uuid-validator/#webpage",
+            "url": "https://liveparse.com/uuid-validator/",
+            "name": "UUID Validator & Checker – Version, Variant, v7 Time",
+            "description": "Validate, normalize, and inspect UUID and GUID text under RFC 9562.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/uuid-validator/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/uuid-validator/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/uuid-validator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "UUID Validator", "item": "https://liveparse.com/uuid-validator/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="uuid-page" data-mode="validator">
+    <a class="skip-link" href="#validator">Skip to the UUID validator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/uuid-generator/">UUID Generator</a>
+          <a href="/uuid-v7-generator/">UUID v7</a>
+          <a href="#strict-normalize">Input modes</a>
+          <a href="#faq">FAQ</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Strict or normalized · RFC 9562 · Batch checker</p>
+          <h1>UUID Validator &amp; Checker</h1>
+          <p class="hero-lead">Paste one UUID or a batch. Check the exact text structure, version, variant, Nil or Max status, normalized lowercase standard value, and embedded UUID v7 UTC timestamp—all without uploading the identifiers.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#validator">Validate UUIDs</a><span>GUID · URN · Braces · Compact · Standard</span></div>
+        </div>
+        <div class="hero-example" aria-label="UUID validation result example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>uuid-check.txt</strong></div>
+          <pre><code>0191f7d0-e7b7-<span class="string">7</span>cc3-<span class="boolean">9</span>8c4-dc0c0c07398f
+<span class="property">valid</span>  RFC variant · UUID v7</code></pre>
+          <p><strong>Structure checked</strong><span>Not a uniqueness or trust claim</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="validator" aria-labelledby="validator-intro-heading">
+        <div><p class="section-kicker">Parse before you trust a regex</p><h2 id="validator-intro-heading">Validate UUID structure, version, and variant</h2></div>
+        <p>Strict mode accepts only the ordinary 8-4-4-4-12 form. Normalize mode intentionally unwraps compact, braced, and <code>urn:uuid:</code> presentation before reporting one normalized lowercase standard value.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="UUID validator loading"><p><strong>Loading the UUID validator…</strong></p><p>Enable JavaScript to inspect UUID structure, normalize text, and decode version 7 timestamps.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">One value or a batch</p><h2 id="how-heading">How to validate a UUID</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Choose the input policy</h3><p>Select Strict when a protocol requires standard hyphenated text. Select Normalize when your ingestion boundary deliberately accepts braces, compact hexadecimal text, or a UUID URN.</p></li>
+          <li><span>2</span><h3>Paste the values</h3><p>Enter one UUID per line, comma-separated values, or a JSON array of strings. The checker examines up to 10,000 values and keeps the text in this browser tab.</p></li>
+          <li><span>3</span><h3>Read the diagnosis</h3><p>Review normalized text, version, variant, special-value status, and v7 time. Fix the producer rather than silently normalizing when exact wire syntax is part of the contract.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="strict-normalize" aria-labelledby="modes-heading">
+        <div class="section-heading"><p class="section-kicker">Acceptance policy is part of validation</p><h2 id="modes-heading">Strict UUID validation vs normalized input</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p><strong>Strict mode</strong> requires 32 hexadecimal digits in five groups of 8, 4, 4, 4, and 12 characters separated by four hyphens. Letter case may be upper, lower, or mixed because RFC hexadecimal text is case-insensitive. Leading or trailing whitespace, braces, a URN prefix, missing hyphens, extra punctuation, and malformed group boundaries are rejected.</p>
+            <p><strong>Normalize mode</strong> accepts a deliberately limited set of common presentation wrappers: the standard form, 32 compact hexadecimal digits, one matching pair of braces around a standard value, or a case-insensitive <code>urn:uuid:</code> prefix followed by the standard value. It then reports the same standard lowercase form. This mode is useful at human input boundaries, but it should not be described as strict protocol validation.</p>
+            <p>Do not make a parser permissive merely because an example can be repaired. A signed message, database constraint, cache key, routing rule, or interoperable wire format may require one exact representation. Apply normalization before signing only when the governing protocol defines that transformation, and retain the original input if audit or error reporting needs it.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Strict accepted</dt><dd><code>919108f7-52d1-4320-9bac-f847db4148a8</code></dd></div>
+            <div><dt>Normalize accepted</dt><dd><code>{919108F7-52D1-4320-9BAC-F847DB4148A8}</code></dd></div>
+            <div><dt>Normalize accepted</dt><dd><code>urn:uuid:919108f7-52d1-4320-9bac-f847db4148a8</code></dd></div>
+            <div><dt>Always rejected</dt><dd>Non-hex characters, mismatched wrappers, missing digits, or extra suffix data.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="checks" aria-labelledby="checks-heading">
+        <div class="section-heading"><p class="section-kicker">Four separate questions</p><h2 id="checks-heading">What a complete UUID checker validates</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Text structure</h3><p>Confirm the exact wrapper, number of hexadecimal digits, and hyphen positions. A substring match is not enough; the entire value must be consumed.</p></article>
+          <article><span aria-hidden="true">02</span><h3>128-bit value</h3><p>Decode exactly sixteen octets in network byte order. The same bytes can be presented with different permitted letter case or optional application wrappers.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Variant and version</h3><p>Read the high bits of octets 8 and 6 rather than guessing from length. RFC versions use the <code>10</code> variant and version values 1 through 8.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Version-specific meaning</h3><p>Only decode a v7 Unix timestamp after confirming version 7. Nil and Max are special all-zero and all-one UUIDs, not ordinary generated version values.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="errors" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Fix the actual failure</p><h2 id="errors-heading">Common invalid UUID errors</h2></div>
+        <div class="error-table" role="table" aria-label="Common UUID validation errors and fixes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Problem</span><span role="columnheader">Example</span><span role="columnheader">What to check</span></div>
+          <div class="error-row" role="row"><strong role="cell">Wrong length</strong><code role="cell">123e4567-e89b-12d3-a456</code><span role="cell">The value is truncated. A standard UUID needs 32 hexadecimal digits plus four hyphens.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Bad character</strong><code role="cell">…-g456-…</code><span role="cell"><code>g</code> is outside hexadecimal 0-9 and A-F. Check copying, OCR, or an incorrect source encoding.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Hyphen misplaced</strong><code role="cell">123e4567e89b-…</code><span role="cell">Strict text requires boundaries after 8, 12, 16, and 20 hex digits.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Wrapper not allowed</strong><code role="cell">{123e…}</code><span role="cell">Use Normalize only if the receiving boundary intentionally permits a braced GUID presentation.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Wrong version</strong><code role="cell">…-4xxx-…</code><span role="cell">The structure may be a valid UUID v4 but invalid for a field specifically requiring UUID v7.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Wrong variant</strong><code role="cell">fourth group starts with c</code><span role="cell">That is Microsoft-reserved variant space, not the RFC <code>10</code> variant used by UUID versions 1-8.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="version-variant" aria-labelledby="version-heading">
+        <div class="section-heading"><p class="section-kicker">Bits, not labels</p><h2 id="version-heading">How UUID version and variant detection works</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The version is stored in the most significant four bits of octet 6, visible as the first hexadecimal character in group three of standard text. RFC 9562 defines versions 1 through 8 for the RFC variant. A value beginning its third group with <code>4</code> carries the v4 version field; <code>7</code> carries v7. That field describes layout, not whether the value came from a trustworthy generator.</p>
+            <p>The variant begins with a variable number of high bits in octet 8. Values whose fourth group begins with hexadecimal 8, 9, A, or B all begin with binary <code>10</code>, the variant used by the current RFC. A leading 0 through 7 is NCS-reserved space, C or D is Microsoft-reserved space, and E or F is reserved for future definition.</p>
+            <p>Nil and Max require special handling. The Nil UUID is all zero bits and the Max UUID is all one bits. Their variant bit patterns fall in reserved ranges, but RFC 9562 defines them as special values. A generic checker should report them accurately; a field that requires a generated v4 or v7 should reject them for not being that required version.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Versions 1-8</dt><dd>Read from the high four bits of octet 6 for the RFC variant.</dd></div>
+            <div><dt>RFC variant</dt><dd>Fourth group begins with 8, 9, A, or B.</dd></div>
+            <div><dt>Nil</dt><dd><code>00000000-0000-0000-0000-000000000000</code></dd></div>
+            <div><dt>Max</dt><dd><code>ffffffff-ffff-ffff-ffff-ffffffffffff</code></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="v7-time" aria-labelledby="v7-time-heading">
+        <div class="section-heading"><p class="section-kicker">Timestamp inspection after structural validation</p><h2 id="v7-time-heading">Decode a UUID v7 timestamp</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>After confirming RFC variant and version 7, interpret the first six bytes as an unsigned big-endian Unix millisecond value. RFC 9562’s Appendix A.6 example begins with hexadecimal <code>017f22e279b0</code>, which equals decimal <code>1645557742000</code> and formats as <code>2022-02-22T19:22:22.000Z</code>.</p>
+            <p>The inspector reports this value in UTC. It does not infer a local timezone because the UUID contains an epoch instant, not a zone name or offset. It also does not claim the timestamp is accurate or authentic: system clocks can be wrong, implementations may alter time according to the RFC’s timestamp guidance, and any caller can construct arbitrary UUID bits.</p>
+            <p>Use the embedded time for debugging, approximate ordering, or format inspection. Keep trusted application timestamps for access control, expiration, audit, billing, compliance, or event semantics. For generation details and monotonicity limits, open the <a href="/uuid-v7-generator/">UUID v7 Generator</a>.</p>
+          </div>
+          <div class="callout-card"><strong>RFC v7 test vector</strong><p><code>017f22e2-79b0-7cc3-98c4-dc0c0c07398f</code><br />Timestamp: <code>1645557742000</code><br />UTC: <code>2022-02-22T19:22:22.000Z</code></p><a href="https://www.rfc-editor.org/rfc/rfc9562#appendix-A.6" target="_blank" rel="noreferrer">Check the primary test vector →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="regex" aria-labelledby="regex-heading">
+        <div class="section-heading"><p class="section-kicker">Syntax patterns have a limited job</p><h2 id="regex-heading">Why one UUID regex is not the whole validator</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A regular expression can enforce the standard text width and group positions. A version-specific pattern can also require <code>4</code> or <code>7</code> in group three and <code>[89ab]</code> in group four. That is useful at a form boundary, but it does not decode bytes, identify every variant, recognize the semantic role of Nil and Max, extract v7 time, or prove how the ID was generated.</p>
+            <p>Patterns also become misleading when they are not anchored. A search regex can find a valid-looking UUID inside a larger malicious or malformed string while the application assumes it validated the entire field. Unicode character classes, whitespace trimming, wrapper handling, and case rules should be chosen explicitly rather than inherited accidentally from a generic library pattern.</p>
+            <p>For application code, prefer a well-maintained UUID parser that documents supported versions and RFC 9562 behavior. Validate the surrounding contract after parsing: permitted version, required non-Nil value, tenant or database existence, ownership, authorization, and any business constraint are separate checks.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Regex can check</dt><dd>Whole-string character count, hex alphabet, group positions, selected visible version and variant nibbles.</dd></div>
+            <div><dt>Parsing can add</dt><dd>Exact bytes, variant classification, version, special values, normalization, and v7 timestamp.</dd></div>
+            <div><dt>Application must add</dt><dd>Existence, uniqueness constraints, ownership, authenticity, authorization, and domain rules.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="limits" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">A valid shape proves only a valid shape</p><h2 id="limits-heading">What UUID validation cannot prove</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Not guaranteed unique</h3><p>Syntax cannot search every generated value or your database. Enforce unique constraints and define conflict behavior where duplicates matter.</p></article>
+          <article><h3>Not proof of existence</h3><p>A caller can construct a structurally valid identifier for a record that does not exist. Query the authoritative data source using proper access controls.</p></article>
+          <article><h3>Not proof of authenticity</h3><p>Version and variant bits are public and easy to set. Use a signature, MAC, authenticated session, or another trusted mechanism when origin matters.</p></article>
+          <article><h3>Not authorization</h3><p>Possessing or guessing an identifier must not grant access to someone else’s resource. Check the authenticated principal and policy on every operation.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">UUID validator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What makes a UUID valid?</summary><p>That depends on the field’s contract. Generic RFC inspection requires a 128-bit value in an accepted presentation, then reports variant, version, or special Nil/Max status. A field that specifically requires UUID v4 or v7 must additionally require that version and usually the RFC variant.</p></details>
+          <details><summary>Are uppercase UUIDs valid?</summary><p>Yes. RFC 9562 permits upper, lower, or mixed hexadecimal case. LiveParse reports a lowercase standard form for consistent comparison, but case normalization does not change the underlying bytes.</p></details>
+          <details><summary>Is a UUID without hyphens valid?</summary><p>It can be a presentation accepted by a particular application, but it is not the ordinary RFC hex-and-dash text form. Strict mode rejects it. Normalize mode accepts exactly 32 hexadecimal digits and reports the standard hyphenated form.</p></details>
+          <details><summary>Can the validator check GUID values in braces?</summary><p>Yes in Normalize mode. A matching brace pair around a standard 8-4-4-4-12 value is unwrapped and normalized. Strict mode rejects braces so you can enforce a protocol that does not permit them.</p></details>
+          <details><summary>How do I tell UUID v4 from v7?</summary><p>After parsing the full value and confirming the RFC variant, read the high four bits of octet 6. In standard text that is the first hex character of group three: <code>4</code> means v4 and <code>7</code> means v7.</p></details>
+          <details><summary>Why does a UUID start group four with 8, 9, a, or b?</summary><p>All four digits begin with binary <code>10</code>, the variant used by RFC 9562 layouts. C or D belongs to Microsoft-reserved variant space, while E or F is reserved for future definition.</p></details>
+          <details><summary>Are the Nil and Max UUIDs valid?</summary><p>RFC 9562 defines both as special UUID values. A generic checker should recognize them. They are not generated UUID v4 or v7 values, so an application field requiring one of those versions should reject them.</p></details>
+          <details><summary>Does a valid UUID prove the record exists?</summary><p>No. It proves only the checked structure and fields. Existence, uniqueness, ownership, authenticity, and authorization require checks against trusted application state.</p></details>
+          <details><summary>Are pasted UUIDs uploaded?</summary><p>No. Parsing, normalization, batch results, and v7 time conversion happen in the current browser tab. Clipboard history, extensions, downloaded output, and other device software remain separate privacy boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary standard and related tools</p><h2 id="references-heading">UUID validation resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-4" target="_blank" rel="noreferrer">RFC 9562 Section 4: UUID Format, Variant, and Version</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.9" target="_blank" rel="noreferrer">RFC 9562 Section 5.9: Nil UUID</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.10" target="_blank" rel="noreferrer">RFC 9562 Section 5.10: Max UUID</a></li>
+          <li><a href="/uuid-generator/">UUID and GUID Generator</a></li>
+          <li><a href="/uuid-v7-generator/">UUID v7 Generator</a></li>
+          <li><a href="/guides/uuid-v4-vs-v7/">UUID v4 vs v7 guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/uuid-generator/">UUID Generator</a><a href="/uuid-v7-generator/">UUID v7</a><a href="/guides/uuid-v4-vs-v7/">v4 vs v7 Guide</a><a href="/json-compare/">JSON Compare</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. UUID validation and normalization run locally in your browser.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive UUID validation. The strict input, variant, version, special-value, timestamp, regex, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/uuid.tsx"></script>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://liveparse.com/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/ko/json-parser/</loc>
@@ -45,8 +45,20 @@
     <lastmod>2026-08-03</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/uuid-generator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/uuid-v7-generator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/uuid-validator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/guides/what-is-a-json-parser/</loc>
@@ -83,5 +95,9 @@
   <url>
     <loc>https://liveparse.com/guides/base64-vs-base64url/</loc>
     <lastmod>2026-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/uuid-v4-vs-v7/</loc>
+    <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

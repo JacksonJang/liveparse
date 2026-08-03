@@ -19,6 +19,9 @@ const requiredPages = [
   { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
+  { relativePath: 'uuid-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-generator/`, label: 'UUID Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:and\s+guid\s+)?generator\b/i, topicLabel: 'UUID generator' },
+  { relativePath: 'uuid-v7-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v7-generator/`, label: 'UUID v7 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:version\s+)?v?7\s+generator\b/i, topicLabel: 'UUID v7 generator' },
+  { relativePath: 'uuid-validator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-validator/`, label: 'UUID Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:validator|checker|validation)\b/i, topicLabel: 'UUID validation' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -220,6 +223,14 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('uuid')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      topicPattern: /\buuid\s+v(?:4|7)\b/i,
+      topicLabel: 'UUID v4 or UUID v7',
+    };
+  }
   if (normalized.includes('base64')) {
     return {
       requireJson: false,
