@@ -5,12 +5,14 @@ import { realpath, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SearchReferralCounter, searchReferralFromRequest } from '../server/search-referrals.js';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(PROJECT_ROOT, 'dist');
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parsePort(process.env.PORT || '4173');
+const SEARCH_REFERRAL_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_REFERRAL_DIR || '.runtime/search-referrals');
 const DIRECTORY_ROUTES = new Set([
   '/ko/json-parser',
   '/json-repair',
@@ -42,6 +44,7 @@ const ROUTE_REDIRECTS = new Map([
   ['/unix-time-converter', '/unix-timestamp-converter/'],
   ['/unix-time-converter/', '/unix-timestamp-converter/'],
 ]);
+const CANONICAL_METRIC_PATHS = new Set(['/', ...[...DIRECTORY_ROUTES].map((pathname) => `${pathname}/`)]);
 
 const MIME_TYPES = new Map([
   ['.avif', 'image/avif'],
@@ -278,7 +281,7 @@ function isNotModified(request, fileStat, etag) {
   return false;
 }
 
-async function handleRequest(distRoot, request, response) {
+async function handleRequest(distRoot, searchReferralCounter, request, response) {
   if (requestProtocol(request) !== 'https' || requestHostname(request) !== 'liveparse.com') {
     redirectToCanonical(request, response);
     return;
@@ -323,6 +326,19 @@ async function handleRequest(distRoot, request, response) {
   response.setHeader('ETag', etag);
   response.setHeader('Last-Modified', fileStat.mtime.toUTCString());
 
+  const referral = searchReferralFromRequest({
+    method: request.method,
+    isHtml: ['.htm', '.html'].includes(extname(filePath).toLowerCase()),
+    requestPath,
+    referrer: firstHeaderValue(request.headers.referer),
+    userAgent: firstHeaderValue(request.headers['user-agent']),
+    allowedPaths: CANONICAL_METRIC_PATHS,
+    purpose: firstHeaderValue(request.headers.purpose),
+    secPurpose: firstHeaderValue(request.headers['sec-purpose']),
+    secFetchDest: firstHeaderValue(request.headers['sec-fetch-dest']),
+  });
+  if (referral) void searchReferralCounter.record(referral);
+
   if (isNotModified(request, fileStat, etag)) {
     response.statusCode = 304;
     response.removeHeader('Content-Length');
@@ -356,8 +372,13 @@ async function main() {
     return;
   }
 
+  const searchReferralCounter = new SearchReferralCounter({
+    directory: SEARCH_REFERRAL_DIR,
+    onError: (...details) => console.error(...details),
+  });
+
   const server = createServer((request, response) => {
-    handleRequest(distRoot, request, response).catch((error) => {
+    handleRequest(distRoot, searchReferralCounter, request, response).catch((error) => {
       console.error('Unhandled request error:', error);
       if (!response.headersSent) sendText(request, response, 500, 'Internal Server Error');
       else response.destroy(error);
@@ -375,10 +396,14 @@ async function main() {
   server.listen(PORT, HOST, () => {
     console.log(`Serving ${distRoot} on http://${HOST}:${PORT}`);
     console.log(`Canonical origin: ${CANONICAL_ORIGIN}`);
+    console.log('Cookie-free search referral aggregation: enabled');
   });
 
   for (const signal of ['SIGINT', 'SIGTERM']) {
-    process.once(signal, () => server.close(() => process.exit(0)));
+    process.once(signal, () => server.close(async () => {
+      await searchReferralCounter.flush();
+      process.exit(0);
+    }));
   }
 }
 

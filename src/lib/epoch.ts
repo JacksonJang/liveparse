@@ -150,7 +150,7 @@ function buildSuccess(
   const subMillisecondNanoseconds = floorModulo(epochNanoseconds, NANOSECONDS_PER_MILLISECOND);
   if (subMillisecondNanoseconds !== 0n) {
     warningParts.push(
-      'The Date object, local time, and RFC display use the containing millisecond; ISO/UTC and exact epoch values preserve nanoseconds.',
+      'The Date object and local time use millisecond precision, while the JavaScript UTC string uses whole seconds; ISO/UTC and exact epoch values preserve nanoseconds.',
     );
   }
 
@@ -170,6 +170,7 @@ function buildSuccess(
       minute: '2-digit',
       second: '2-digit',
       timeZoneName: 'short',
+      era: date.getFullYear() <= 0 ? 'short' : undefined,
     }),
     rfc: date.toUTCString(),
     relative: formatRelative(date.getTime()),

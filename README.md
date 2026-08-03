@@ -18,7 +18,8 @@ LiveParse is a local-first developer data toolkit for validating, formatting, co
 - Local file input, output copying, and JSON download
 - Optional type labels, array indexes, and sample payloads
 - No server-side JSON processing; pasted data remains local to the browser
-- No advertising, affiliate widgets, analytics, or optional third-party cookies in the current build
+- No advertising, affiliate widgets, client-side analytics, or optional third-party cookies in the current build
+- Cookie-free daily search-referral aggregates on the primary server, storing only search engine and landing-page counts
 - Crawlable, independent tool pages, a privacy notice, and in-depth guides
 
 ## Local run
@@ -51,6 +52,12 @@ Run the SEO checks again without rebuilding:
 
 ```bash
 npm run check:seo
+```
+
+Report recent search-engine referral landing visits (an aggregate operational metric, not unique visitors or Search Console clicks):
+
+```bash
+npm run report:search-referrals -- 30
 ```
 
 ## Cloudflare Tunnel deployment for liveparse.com

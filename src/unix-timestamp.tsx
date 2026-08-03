@@ -399,7 +399,7 @@ function UnixTimestampApp() {
             )}
           </div>
           {!timestampResult ? (
-            <div className="epoch-empty"><span aria-hidden="true">t</span><strong>Paste a timestamp to begin</strong><p>The readable UTC, local, ISO, RFC, and exact Unix values will appear here.</p></div>
+            <div className="epoch-empty"><span aria-hidden="true">t</span><strong>Paste a timestamp to begin</strong><p>The readable UTC, local, ISO, JavaScript UTC, and exact Unix values will appear here.</p></div>
           ) : timestampResult.ok ? (
             <TimestampResults result={timestampResult} copyValue={copyValue} copiedKey={copiedKey} />
           ) : (
