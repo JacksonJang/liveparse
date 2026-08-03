@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Server Formatter Online – Beautify T-SQL Locally | LiveParse</title>
+    <meta name="description" content="A SQL Server T-SQL formatter for bracket identifiers, TOP, CTEs, variables, windows, and layout controls. Queries stay in your browser." />
+    <link rel="canonical" href="https://liveparse.com/sql-server-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#087f78" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="SQL Server T-SQL Formatter Online" />
+    <meta property="og:description" content="Beautify Transact-SQL locally with a SQL Server-aware formatting profile and explicit layout controls." />
+    <meta property="og:url" content="https://liveparse.com/sql-server-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse SQL Server T-SQL formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SQL Server T-SQL Formatter Online" />
+    <meta name="twitter:description" content="Format T-SQL locally without connecting to or executing on SQL Server." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/sql-server-formatter/#app",
+            "name": "LiveParse SQL Server T-SQL Formatter",
+            "url": "https://liveparse.com/sql-server-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "SQL Server Transact-SQL formatter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and Web Workers",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A private browser formatter for SQL Server Transact-SQL with bracket identifiers, variables, TOP, CTEs, windows, and offset pagination.",
+            "featureList": ["SQL Server T-SQL profile", "Bracket identifier preservation", "Keyword case controls", "Configurable indentation", "Local Web Worker", "SQL file download"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/sql-server-formatter/#webpage",
+            "url": "https://liveparse.com/sql-server-formatter/",
+            "name": "SQL Server Formatter Online",
+            "description": "Format SQL Server Transact-SQL locally with a T-SQL-aware layout engine.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/sql-server-formatter/#app" },
+            "breadcrumb": { "@id": "https://liveparse.com/sql-server-formatter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/sql-server-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Formatter", "item": "https://liveparse.com/sql-formatter/" },
+              { "@type": "ListItem", "position": 3, "name": "SQL Server Formatter", "item": "https://liveparse.com/sql-server-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/sql-server-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does this T-SQL formatter connect to SQL Server?", "acceptedAnswer": { "@type": "Answer", "text": "No. It formats text locally and has no server, database, credentials, schema, or execution connection." } },
+              { "@type": "Question", "name": "Does it preserve bracketed identifiers and variables?", "acceptedAnswer": { "@type": "Answer", "text": "The T-SQL profile recognizes square-bracket identifiers, at-sign variables, temporary object names, and SQL Server vocabulary." } },
+              { "@type": "Question", "name": "Is GO a Transact-SQL statement?", "acceptedAnswer": { "@type": "Answer", "text": "No. GO is a batch separator recognized by client tools such as SSMS and sqlcmd, not a Transact-SQL statement sent to the server." } },
+              { "@type": "Question", "name": "Does successful formatting validate T-SQL?", "acceptedAnswer": { "@type": "Answer", "text": "No. Validate syntax, objects, types, compatibility level, permissions, plans, and results with the intended SQL Server environment." } },
+              { "@type": "Question", "name": "Can I format a stored procedure?", "acceptedAnswer": { "@type": "Answer", "text": "No. Stored procedures and custom-delimiter scripts, including MySQL DELIMITER directives, are not supported. Use SQL Server- and client-aware tooling for routines and deployment scripts." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="sql-page" data-default-dialect="transactsql">
+    <a class="skip-link" href="#formatter">Skip to the SQL Server formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="#formatter">SQL Server</a><a href="/guides/sql-dialect-formatting/">Guide</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">T-SQL profile · Browser-only · No database connection</p>
+          <h1>SQL Server T-SQL Formatter Online</h1>
+          <p class="hero-lead">Beautify Transact-SQL with dialect-aware handling for bracketed identifiers, variables, temporary objects, <code>TOP</code>, CTEs, windows, and offset pagination. Nothing is sent to SQL Server.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format T-SQL</a><span>Free · No sign-up · 50,000-character limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="Formatted SQL Server query example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>orders.sql</strong></div>
+          <pre><code><span class="property">SELECT TOP</span> (25)
+  [OrderID],
+  [TotalDue]
+<span class="property">FROM</span> [Sales].[Orders]
+<span class="property">WHERE</span> [Status] = <span class="boolean">@status</span>
+<span class="property">ORDER BY</span> [TotalDue] <span class="string">DESC</span>;</code></pre>
+          <p><strong>T-SQL-aware layout</strong><span>Formatting, not execution</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">Transact-SQL query beautifier</p><h2 id="formatter-heading">Format SQL Server queries without uploading them</h2></div>
+        <p>The SQL Server / T-SQL profile loads automatically. Control indentation, keyword case, expression width, logical-operator breaks, and statement spacing before a disposable local worker formats the text.</p>
+      </section>
+      <div id="sql-root"><section class="parser-fallback" aria-label="SQL Server formatter loading"><p><strong>Loading the T-SQL formatter…</strong></p><p>Enable JavaScript to format Transact-SQL locally. SQL Server syntax and review guidance remains readable below.</p></section></div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Keep formatting reversible</p><h2 id="how-heading">How to format a SQL Server query</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Keep the original T-SQL</h3><p>Start from version-controlled source or save an untouched copy. Queries can contain sensitive object names and filters even when no row data is present.</p></li>
+          <li><span>2</span><h3>Use the T-SQL profile</h3><p>Select SQL Server / T-SQL because that is the execution target. The formatter then recognizes SQL Server vocabulary and token conventions instead of trying to translate them.</p></li>
+          <li><span>3</span><h3>Diff and test on the target</h3><p>Review bracket identifiers, variables, hints, comments, strings, batches, and every filter. Then parse and test with the exact SQL Server version, compatibility level, database, and permissions.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="dialect" aria-labelledby="dialect-heading">
+        <div class="section-heading"><p class="section-kicker">T-SQL has its own lexical edges</p><h2 id="dialect-heading">Why SQL Server needs a Transact-SQL formatter</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Transact-SQL extends SQL with variables, procedural control flow, system functions, temporary objects, table and query hints, error handling, batch-oriented tooling, and SQL Server-specific DDL and DML. A generic formatter may recognize the main clauses but misread punctuation or place a vendor extension as though it were an identifier.</p>
+            <p>Square brackets delimit identifiers such as <code>[Order]</code> or names containing spaces. Double-quoted identifier behavior depends on <code>QUOTED_IDENTIFIER</code>. Variables generally begin with <code>@</code>, temporary object names can begin with <code>#</code>, and global temporary objects with <code>##</code>. Those characters are not generic decoration and must remain attached to the intended token.</p>
+            <p>Unicode character strings commonly use an <code>N</code> prefix. SQL Server also supports multipart names and specific conventions for system and user-defined objects. This tool can change recognized keyword case but keeps function, type, identifier, and quoted text spelling unchanged. That is safer for user-defined functions and case-sensitive collations, but it is still necessary to inspect the diff.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Identifiers</dt><dd>Square brackets commonly delimit names; double quotes depend on settings.</dd></div>
+            <div><dt>Variables</dt><dd>Local variables and parameters commonly begin with <code>@</code>.</dd></div>
+            <div><dt>Temporary objects</dt><dd>Names beginning with <code>#</code> or <code>##</code> have session scope behavior.</dd></div>
+            <div><dt>Compatibility</dt><dd>Grammar and behavior depend on product version and database compatibility level.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="pagination" aria-labelledby="pagination-heading">
+        <div class="section-heading"><p class="section-kicker">Do not translate while formatting</p><h2 id="pagination-heading">TOP, OFFSET/FETCH, hints, and T-SQL structure</h2></div>
+        <div class="use-case-grid">
+          <article><h3>TOP expressions</h3><p><code>TOP</code> belongs near <code>SELECT</code> and can use parentheses, percentages, and ties. A formatter may expose its structure but must not replace it with another dialect's <code>LIMIT</code>.</p></article>
+          <article><h3>OFFSET and FETCH</h3><p>SQL Server offset pagination follows <code>ORDER BY</code> with row counts and an optional next-page count. Layout cannot prove that the ordering is deterministic.</p></article>
+          <article><h3>Table hints</h3><p>Hints such as <code>WITH (...)</code> can affect locking, access paths, and consistency. They must stay with the table reference and receive expert review.</p></article>
+          <article><h3>Query hints</h3><p><code>OPTION (...)</code> appears at a query boundary. Moving or dropping a hint is a semantic change, not beautification.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="go-batches" aria-labelledby="go-heading">
+        <div class="section-heading"><p class="section-kicker">Client tooling adds another layer</p><h2 id="go-heading">GO batches, stored procedures, and templates</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p><code>GO</code> is recognized as a batch separator by tools such as SQL Server Management Studio and sqlcmd. It is not a Transact-SQL statement sent to the database engine like <code>SELECT</code>. A formatter focused on SQL tokens may preserve a familiar <code>GO</code> line without understanding every client rule, repeat count, or surrounding deployment tool.</p>
+            <p>Stored procedures, functions, triggers, dynamic SQL, TRY/CATCH blocks, cursor operations, and control flow create a broader formatting problem than a single query. Stored procedures and custom-delimiter scripts, including MySQL <code>DELIMITER</code> directives, are not supported here; use SQL Server- and client-aware tooling for routines and deployment scripts.</p>
+            <p>SQL projects and deployment pipelines may add SQLCMD variables, preprocessor directives, migration annotations, or template syntax. Format with a tool that knows that outer layer, or format a representative rendered artifact. Never delete unfamiliar markers simply because they produce an unattractive formatter result.</p>
+          </div>
+          <div class="callout-card"><strong>GO is a client command</strong><p>Review batch separators in the context of SSMS, sqlcmd, Azure Data Studio, a database project, migration runner, or whichever client will consume the script. Server-side grammar alone is not enough.</p><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/sql-server-utilities-statements-go" target="_blank" rel="noreferrer">Microsoft documentation for GO →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">No connection string required</p><h2 id="privacy-heading">Private T-SQL formatting in a browser worker</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>No SQL Server session</h3><p>The page has no instance, database, login, access token, connection string, catalog, transaction, or query window. It cannot execute the text.</p></article>
+          <article><span aria-hidden="true">02</span><h3>No formatter upload</h3><p>Text goes only to a worker created by the page. It is not submitted to a query service, proxy, telemetry endpoint, or remote formatter.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Bounded resource use</h3><p>Input is capped at 50,000 characters, a warning appears at 25,000, the worker stops after 2 seconds, and output beyond 200,000 characters is discarded.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Explicit copy or file</h3><p>Only your button press copies the result or downloads a local <code>.sql</code> file. Clipboard tools, files, extensions, and device policies remain outside this page.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="validation" aria-labelledby="validation-heading">
+        <div class="section-heading"><p class="section-kicker">Pretty T-SQL can still be wrong</p><h2 id="validation-heading">Formatting vs SQL Server validation and execution</h2></div>
+        <div class="error-table" role="table" aria-label="SQL Server formatting and validation comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Evidence</span><span role="columnheader">What it tells you</span><span role="columnheader">What remains unknown</span></div>
+          <div class="error-row" role="row"><strong role="cell">Formatted output</strong><span role="cell">A readable layout for tokens recognized by this formatter version.</span><span role="cell">Whether SQL Server accepts it or the operation is safe.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Target parser</strong><span role="cell">Syntax acceptance under a product version and compatibility context.</span><span role="cell">Objects, permissions, results, side effects, and performance in every case.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Estimated plan</strong><span role="cell">A plan based on available catalog, statistics, and parameter assumptions.</span><span role="cell">Exact runtime under production concurrency and data.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Controlled tests</strong><span role="cell">Expected rows and side effects for representative inputs and permissions.</span><span role="cell">Every future schema, statistic, workload, or operational change.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">SQL Server formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does this T-SQL formatter connect to SQL Server?</summary><p>No. It formats text locally and has no server, database, credentials, schema, compatibility level, session settings, plan cache, or execution connection.</p></details>
+          <details><summary>Does it preserve bracketed identifiers and variables?</summary><p>The T-SQL profile recognizes square-bracket identifiers, at-sign variables, temporary object names, and SQL Server vocabulary. Review every automated rewrite because settings, extensions, client commands, and new syntax can affect tokenization.</p></details>
+          <details><summary>Is GO a Transact-SQL statement?</summary><p>No. <code>GO</code> is a batch separator recognized by client tools such as SSMS and sqlcmd, not a Transact-SQL statement sent to the server. Scripts with batches need client-aware review.</p></details>
+          <details><summary>Does successful formatting validate T-SQL?</summary><p>No. Validate syntax, objects, types, compatibility level, permissions, row-level behavior, plans, and results with the intended SQL Server environment and application tests.</p></details>
+          <details><summary>Can the formatter convert LIMIT to TOP?</summary><p>No. That would be dialect translation and can require semantic decisions. This page formats existing T-SQL; it does not convert MySQL, PostgreSQL, BigQuery, or another dialect into SQL Server syntax.</p></details>
+          <details><summary>Can I format a stored procedure?</summary><p>No. Stored procedures and custom-delimiter scripts, including scripts using MySQL's <code>DELIMITER</code> client directive, are not supported. Use SQL Server- and client-aware tooling for routines and deployment scripts, and keep the original unchanged.</p></details>
+          <details><summary>Why does a large script stop after two seconds?</summary><p>Pathological formatting can consume significant memory. LiveParse terminates its disposable worker to protect the tab. Split scripts only at safe batch or statement boundaries and preserve dependencies and transactional meaning.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary Microsoft references</p><h2 id="references-heading">SQL Server formatting resources</h2></div>
+        <ul>
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-reference" target="_blank" rel="noreferrer">Transact-SQL reference</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transact-sql-syntax-conventions-transact-sql" target="_blank" rel="noreferrer">Transact-SQL syntax conventions</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/sql-server-utilities-statements-go" target="_blank" rel="noreferrer">GO batch separator</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql" target="_blank" rel="noreferrer">SELECT (Transact-SQL)</a></li>
+          <li><a href="/guides/sql-dialect-formatting/">SQL Dialect Formatting Guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser tools for structured data and developer queries.</p></div>
+      <div class="footer-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">Dialect Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · T-SQL formatting runs locally · No database connection</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive T-SQL formatting. The SQL Server syntax, batch, privacy, and validation guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/sql.tsx"></script>
+  </body>
+</html>

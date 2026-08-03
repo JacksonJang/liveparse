@@ -1,6 +1,6 @@
 # LiveParse
 
-LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, generating, encoding, decoding, converting, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation, its Base64 tools handle text, files, Base64URL, and Data URLs with RFC diagnostics, its UUID tools generate and inspect RFC 9562 UUID v4 and v7 values, and its JWT tools decode strict compact JWS input while keeping cryptographic verification separate. The production site is available at [liveparse.com](https://liveparse.com/).
+LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, generating, encoding, decoding, converting, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, its SQL tools format fifteen database dialects in a time-bounded Web Worker without executing queries, its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation, its Base64 tools handle text, files, Base64URL, and Data URLs with RFC diagnostics, its UUID tools generate and inspect RFC 9562 UUID v4 and v7 values, and its JWT tools decode strict compact JWS input while keeping cryptographic verification separate. The production site is available at [liveparse.com](https://liveparse.com/).
 
 ## Features
 
@@ -19,9 +19,10 @@ LiveParse is a local-first developer data toolkit for validating, formatting, co
 - Separate Base64 decoder and encoder pages with strict canonical validation, Base64URL conversion, local file handling, Data URLs, UTF-8/hex output, and safe raster previews
 - UUID v4 and v7 generation with browser CSPRNG, monotonic v7 batches, GUID-compatible text formatting, bulk export, strict or normalized validation, version and variant inspection, and v7 timestamp decoding
 - Strict local JWT decoding with unpadded Base64URL validation, fatal UTF-8, lossless JSON numbers, duplicate claim diagnostics, signature-not-verified status, and exact exp/nbf/iat evaluation
+- SQL formatting for Standard SQL, MySQL, MariaDB, PostgreSQL, SQLite, SQL Server, BigQuery, Snowflake, Redshift, Oracle PL/SQL, DuckDB, ClickHouse, Spark, Trino, and DB2, with an exact-pinned engine, explicit layout controls, a 50,000-character cap, and a two-second disposable-worker watchdog
 - Local file input, output copying, and JSON download
 - Optional type labels, array indexes, and sample payloads
-- No server-side JSON processing; pasted data remains local to the browser
+- No server-side tool-input processing; pasted JSON, SQL, tokens, identifiers, and files remain local to the browser
 - No advertising, affiliate widgets, client-side analytics, or optional third-party cookies in the current build
 - Cookie-free daily search-referral aggregates on the primary server, storing only search engine and landing-page counts
 - Crawlable, independent tool pages, a privacy notice, and in-depth guides
@@ -35,7 +36,7 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-The main routes are `/`, `/json-compare/`, `/json-repair/`, `/jsonl-parser/`, `/json-to-csv/`, `/csv-to-json/`, `/unix-timestamp-converter/`, `/discord-timestamp-generator/`, `/base64-decoder/`, `/base64-encoder/`, `/uuid-generator/`, `/uuid-v7-generator/`, `/uuid-validator/`, `/jwt-decoder/`, `/jwt-expiration-checker/`, `/ko/json-parser/`, and `/privacy/`.
+The main routes are `/`, `/json-compare/`, `/json-repair/`, `/jsonl-parser/`, `/json-to-csv/`, `/csv-to-json/`, `/unix-timestamp-converter/`, `/discord-timestamp-generator/`, `/base64-decoder/`, `/base64-encoder/`, `/uuid-generator/`, `/uuid-v7-generator/`, `/uuid-validator/`, `/jwt-decoder/`, `/jwt-expiration-checker/`, `/sql-formatter/`, `/mysql-sql-formatter/`, `/postgresql-sql-formatter/`, `/bigquery-sql-formatter/`, `/sql-server-formatter/`, `/ko/json-parser/`, and `/privacy/`.
 
 Run the parser and UI utility tests with:
 

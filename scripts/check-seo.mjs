@@ -24,6 +24,11 @@ const requiredPages = [
   { relativePath: 'uuid-validator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-validator/`, label: 'UUID Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:validator|checker|validation)\b/i, topicLabel: 'UUID validation' },
   { relativePath: 'jwt-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-decoder/`, label: 'JWT Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:decode|decoder|decoding)\b/i, topicLabel: 'JWT decoding' },
   { relativePath: 'jwt-expiration-checker/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-expiration-checker/`, label: 'JWT Expiration Checker tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:expiration|expiry|exp)\s+(?:checker|check|checking)\b/i, topicLabel: 'JWT expiration checking' },
+  { relativePath: 'sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/sql-formatter/`, label: 'SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bsql\s+(?:query\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'SQL formatting' },
+  { relativePath: 'mysql-sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/mysql-sql-formatter/`, label: 'MySQL SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bmysql\s+(?:sql\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'MySQL SQL formatting' },
+  { relativePath: 'postgresql-sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/postgresql-sql-formatter/`, label: 'PostgreSQL SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bpostgres(?:ql)?\s+(?:sql\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'PostgreSQL SQL formatting' },
+  { relativePath: 'bigquery-sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/bigquery-sql-formatter/`, label: 'BigQuery SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbigquery\s+(?:google)?sql\s+(?:formatter|formatting|beautifier)\b/i, topicLabel: 'BigQuery SQL formatting' },
+  { relativePath: 'sql-server-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/sql-server-formatter/`, label: 'SQL Server Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bsql\s+server\s+(?:t-sql\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'SQL Server formatting' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -225,6 +230,14 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('sql-dialect')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      topicPattern: /(?=.*\bsql\b)(?=.*\bdialects?\b)(?=.*\bformat(?:ter|ting)?\b)/i,
+      topicLabel: 'SQL dialect formatting',
+    };
+  }
   if (normalized.includes('jwt')) {
     return {
       requireJson: false,
@@ -266,6 +279,31 @@ function guideValidationProfile(relativePath) {
     };
   }
   return { requireJson: true, requireParsing: true, topicPattern: /\bjson\b/i, topicLabel: 'JSON' };
+}
+
+function validateMetadataUniqueness(htmlByPath, distRoot) {
+  const fields = [
+    ['title', (html) => titleValues(html)[0] || ''],
+    ['meta description', (html) => descriptionValues(html)[0] || ''],
+    ['H1', (html) => h1Values(html)[0] || ''],
+    ['canonical', (html) => canonicalValues(html)[0] || ''],
+  ];
+
+  for (const [label, readValue] of fields) {
+    const seen = new Map();
+    for (const [path, html] of htmlByPath) {
+      const value = readValue(html).replace(/\s+/g, ' ').trim();
+      if (!value) continue;
+      const key = value.toLocaleLowerCase('en-US');
+      const publicPath = publicPathForHtml(relative(distRoot, path));
+      const previousPath = seen.get(key);
+      if (previousPath) {
+        fail(`${label}: duplicate value on ${previousPath} and ${publicPath} (${JSON.stringify(value)})`);
+      } else {
+        seen.set(key, publicPath);
+      }
+    }
+  }
 }
 
 async function staticFileForUrl(distRoot, url) {
@@ -332,6 +370,7 @@ async function main() {
   const htmlFiles = allFiles.filter((path) => path.toLowerCase().endsWith('.html'));
   const htmlByPath = new Map();
   for (const path of htmlFiles) htmlByPath.set(path, await readFile(path, 'utf8'));
+  validateMetadataUniqueness(htmlByPath, distRoot);
 
   const homepagePath = join(distRoot, 'index.html');
   const homepage = htmlByPath.get(homepagePath) ?? (await readRequired(homepagePath, 'homepage'));

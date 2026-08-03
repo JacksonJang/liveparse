@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Formatter &amp; Beautifier Online – Format SQL Locally | LiveParse</title>
+    <meta name="description" content="A free SQL formatter and beautifier for MySQL, PostgreSQL, BigQuery, SQL Server, Snowflake, SQLite, and more. Queries stay in your browser." />
+    <link rel="canonical" href="https://liveparse.com/sql-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#087f78" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="SQL Formatter &amp; Beautifier Online" />
+    <meta property="og:description" content="Make SQL readable with dialect-aware layout and explicit formatting controls. The query never leaves your browser." />
+    <meta property="og:url" content="https://liveparse.com/sql-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based SQL formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SQL Formatter &amp; Beautifier Online" />
+    <meta name="twitter:description" content="Format SQL locally with support for major database dialects and configurable layout." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based developer data tools."
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/sql-formatter/#app",
+            "name": "LiveParse SQL Formatter and Beautifier",
+            "url": "https://liveparse.com/sql-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "SQL formatter and query beautifier",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and Web Workers",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A local browser SQL formatter for Standard SQL, MySQL, PostgreSQL, BigQuery, SQL Server, Snowflake, SQLite, and other dialects.",
+            "featureList": [
+              "Fifteen SQL dialect profiles",
+              "Uppercase, lowercase, or preserved keyword case",
+              "Spaces or tabs indentation",
+              "Configurable expression width and statement spacing",
+              "Local Web Worker formatting",
+              "Copy and SQL file download"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/sql-formatter/#webpage",
+            "url": "https://liveparse.com/sql-formatter/",
+            "name": "SQL Formatter & Beautifier Online",
+            "description": "Format and beautify SQL locally with dialect-aware layout controls.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/sql-formatter/#app" },
+            "breadcrumb": { "@id": "https://liveparse.com/sql-formatter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/sql-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Formatter", "item": "https://liveparse.com/sql-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/sql-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does this SQL formatter upload my query?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting runs in a Web Worker in the current browser tab. LiveParse does not send the SQL to a formatter API or database." } },
+              { "@type": "Question", "name": "Is formatted SQL guaranteed to be valid?", "acceptedAnswer": { "@type": "Answer", "text": "No. A formatter changes layout. It does not verify schemas, permissions, types, engine versions, query plans, results, or safety." } },
+              { "@type": "Question", "name": "Which SQL dialect should I choose?", "acceptedAnswer": { "@type": "Answer", "text": "Choose the database product and version that will execute the query. Do not infer the dialect only from one quote character or keyword." } },
+              { "@type": "Question", "name": "Can I format multiple SQL statements?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, for ordinary semicolon-delimited statements. Stored procedures and custom-delimiter scripts, including MySQL DELIMITER directives, are not supported." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="sql-page" data-default-dialect="sql">
+    <a class="skip-link" href="#formatter">Skip to the SQL formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON</a>
+          <a href="#formatter">SQL Formatter</a>
+          <a href="/mysql-sql-formatter/">MySQL</a>
+          <a href="/postgresql-sql-formatter/">PostgreSQL</a>
+          <a href="/bigquery-sql-formatter/">BigQuery</a>
+          <a href="/sql-server-formatter/">SQL Server</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">15 dialects · Browser-only · No sign-up</p>
+          <h1>SQL Formatter &amp; Beautifier Online</h1>
+          <p class="hero-lead">Turn compressed or inconsistent SQL into a readable query with explicit dialect, indentation, keyword-case, operator, and statement-spacing controls. Your SQL stays in this tab and is never executed.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format SQL now</a><span>Free · Local worker · Up to 50,000 characters</span></div>
+        </div>
+        <div class="hero-example" aria-label="Unformatted and formatted SQL example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>query.sql</strong></div>
+          <pre><code><span class="property">SELECT</span>
+  customer_id,
+  <span class="string">SUM</span>(total) <span class="property">AS</span> revenue
+<span class="property">FROM</span> orders
+<span class="property">WHERE</span> status = <span class="boolean">'paid'</span>
+<span class="property">GROUP BY</span> customer_id;</code></pre>
+          <p><strong>Readable layout</strong><span>Dialect-aware, not executed</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">Format queries locally</p><h2 id="formatter-heading">Paste SQL, choose its dialect, and control the layout</h2></div>
+        <p>The formatting engine runs in an isolated browser worker. It can make a query easier to read and review, but it does not connect to a database or certify that the statement is valid.</p>
+      </section>
+      <div id="sql-root">
+        <section class="parser-fallback" aria-label="SQL formatter loading"><p><strong>Loading the private SQL formatter…</strong></p><p>Enable JavaScript to format SQL locally. The dialect guide and examples below remain readable without it.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-format" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A deliberate three-step workflow</p><h2 id="how-heading">How to format SQL online</h2><p>Readable output begins with the dialect that will actually execute the statement.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Select the database dialect</h3><p>Choose Standard SQL, MySQL, PostgreSQL, SQLite, SQL Server, BigQuery, Snowflake, Redshift, Oracle PL/SQL, DuckDB, ClickHouse, Spark, Trino, DB2, or MariaDB. The selection controls token and keyword recognition.</p></li>
+          <li><span>2</span><h3>Choose layout rules</h3><p>Set spaces or tabs, keyword case, expression width, logical-operator line breaks, blank lines between statements, compact operators, and semicolon placement.</p></li>
+          <li><span>3</span><h3>Format, diff, and verify</h3><p>Copy or download the result, compare it with the original, then use the target database's own parser, tests, and review process. A clean layout is not an execution approval.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="what-is" aria-labelledby="what-heading">
+        <div class="section-heading"><p class="section-kicker">Pretty-print without translation</p><h2 id="what-heading">What is a SQL formatter or SQL beautifier?</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A <strong>SQL formatter</strong>—also called a SQL beautifier, query formatter, or SQL pretty printer—rewrites whitespace and the presentation of recognized tokens so a query is easier to scan. It can place major clauses on separate lines, indent nested expressions, normalize recognized keyword case, and separate multiple statements. Formatting should preserve the query's literals, identifiers, comments, parameters, clauses, and logical order.</p>
+            <p>SQL formatting is not the same as translating between database products. Replacing MySQL <code>LIMIT</code> with SQL Server <code>TOP</code>, changing PostgreSQL operators, or rewriting BigQuery arrays would be a semantic conversion. This tool does not attempt that. It applies the selected dialect's layout rules while leaving the query in that dialect.</p>
+            <p>It is also not a database parser with a live catalog. A formatter can make an unknown table, misspelled column, incompatible function, dangerous update, or wrong join look polished. Review every meaningful token, especially after formatting generated SQL, template output, or a feature introduced by a recent database release. Stored procedures and custom-delimiter scripts, including MySQL <code>DELIMITER</code> directives, are not supported.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Formatter</dt><dd>Changes whitespace and presentation for readability.</dd></div>
+            <div><dt>Beautifier</dt><dd>A common name for the same pretty-printing task.</dd></div>
+            <div><dt>Validator</dt><dd>Checks syntax or deeper rules; this tool does not claim that result.</dd></div>
+            <div><dt>Executor</dt><dd>Runs a statement against a database; LiveParse never does this.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="dialects" aria-labelledby="dialects-heading">
+        <div class="section-heading"><p class="section-kicker">One family, many grammars</p><h2 id="dialects-heading">Use a dialect-aware SQL query formatter</h2><p>Quote characters, literals, operators, row limits, procedural blocks, and vendor clauses are not interchangeable.</p></div>
+        <div class="use-case-grid">
+          <article><h3><a href="/mysql-sql-formatter/">MySQL SQL Formatter</a></h3><p>Recognize backtick identifiers, MySQL keywords, JSON functions, executable comments, and <code>LIMIT</code> without treating the query as generic text.</p></article>
+          <article><h3><a href="/postgresql-sql-formatter/">PostgreSQL SQL Formatter</a></h3><p>Preserve double-quoted identifiers, dollar-quoted strings, casts, JSON operators, filters, window expressions, and PostgreSQL extensions.</p></article>
+          <article><h3><a href="/bigquery-sql-formatter/">BigQuery SQL Formatter</a></h3><p>Format GoogleSQL with backtick table paths, arrays, structs, <code>UNNEST</code>, named parameters, window functions, and <code>QUALIFY</code>.</p></article>
+          <article><h3><a href="/sql-server-formatter/">SQL Server Formatter</a></h3><p>Lay out T-SQL with bracketed identifiers, variables, <code>TOP</code>, common table expressions, window functions, and offset pagination.</p></article>
+          <article><h3>Analytics dialects</h3><p>Profiles for Snowflake, Redshift, DuckDB, ClickHouse, Spark SQL, and Trino help retain warehouse-specific vocabulary and operators.</p></article>
+          <article><h3>Application databases</h3><p>Standard SQL, SQLite, MariaDB, DB2, and Oracle PL/SQL profiles cover common application and enterprise query formats.</p></article>
+        </div>
+        <p class="text-link"><a href="/guides/sql-dialect-formatting/">Read the full SQL dialect formatting guide →</a></p>
+      </section>
+
+      <section class="content-section alt" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Sensitive query text stays local</p><h2 id="privacy-heading">Private SQL formatting in a browser worker</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Queries can reveal table names, business logic, tenant identifiers, security filters, incident details, and product strategy even when they contain no rows. LiveParse sends no query to a formatting API. When you press the format button, a worker created by this page performs the calculation locally and returns only to the page in the same tab.</p>
+            <p>The input is capped at 50,000 characters, the page warns above 25,000, formatting is stopped after 2 seconds, and excessively large output is discarded. Starting a new run terminates the previous worker so a slow query cannot overwrite a newer result. The page does not place SQL in the URL or browser storage. Copy and download occur only when you choose them.</p>
+            <p>This boundary does not control your clipboard manager, downloaded files, browser extensions, screen sharing, device backups, or other software. Remove secrets where possible and follow your organization's handling rules. Read the <a href="/privacy/">privacy explanation</a> for the site's limited search-referral measurement.</p>
+          </div>
+          <div class="callout-card"><strong>No database connection</strong><p>LiveParse has no database hostname, credentials, schema catalog, session settings, or permission context. It cannot run <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, DDL, or procedural code.</p><a href="#formatter">Return to the formatter →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="style-controls" aria-labelledby="style-heading">
+        <div class="section-heading"><p class="section-kicker">Readable without pretending there is one style</p><h2 id="style-heading">SQL formatting options explained</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Keyword case</h3><p>Uppercase, lowercase, or preserve recognized SQL keywords. Function names, data types, identifiers, quoted text, and user-defined names retain their spelling to reduce accidental changes.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Indentation</h3><p>Choose two spaces, four spaces, or tabs. Indentation exposes nested subqueries, joins, common table expressions, lists, and parenthesized conditions.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Expression width</h3><p>A narrower width expands complex expressions sooner; a wider width keeps small expressions together. It is a readability preference, not a server limit.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Statement spacing</h3><p>Control blank lines between multiple queries and semicolon placement. Semicolons inside recognized strings and comments remain part of their token.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="review" aria-labelledby="review-heading">
+        <div class="section-heading"><p class="section-kicker">Formatting is one review stage</p><h2 id="review-heading">What to check after beautifying SQL</h2></div>
+        <div class="error-table" role="table" aria-label="SQL formatting review checklist">
+          <div class="error-row error-head" role="row"><span role="columnheader">Review</span><span role="columnheader">Why it matters</span><span role="columnheader">Next evidence</span></div>
+          <div class="error-row" role="row"><strong role="cell">Literals and parameters</strong><span role="cell">Quoted text, JSON paths, regular expressions, and placeholders must remain exact.</span><span role="cell">Compare a token-aware diff with the original.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Comments and hints</strong><span role="cell">A comment may be executable, version-gated, or tied to an optimizer.</span><span role="cell">Check placement against the engine documentation.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Dialect and version</strong><span role="cell">A formatter can lag a newly introduced keyword or procedural form.</span><span role="cell">Parse or prepare with the exact target engine and version.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Meaning and safety</strong><span role="cell">Layout cannot reveal a missing filter, wrong join, privilege issue, or destructive side effect.</span><span role="cell">Review, explain, test, and execute in the appropriate environment.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">SQL formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does this SQL formatter upload my query?</summary><p>No. Formatting runs in a Web Worker in the current browser tab. LiveParse does not send the SQL to a formatter API or database, put it in the URL, or save it in browser storage.</p></details>
+          <details><summary>Is formatted SQL guaranteed to be valid?</summary><p>No. A formatter changes layout and recognizes tokens for a selected dialect. It does not verify schemas, permissions, data types, engine versions, query plans, returned rows, side effects, or security. Validate with the exact target system.</p></details>
+          <details><summary>Which SQL dialect should I choose?</summary><p>Choose the database product and version that will execute the query. MySQL, PostgreSQL, BigQuery, SQL Server, SQLite, Snowflake, and other systems share core syntax but differ at important edges. Do not infer the dialect only from one quote character or keyword.</p></details>
+          <details><summary>Can I format multiple SQL statements?</summary><p>Yes, for ordinary semicolon-delimited statements. The formatter lets you choose one, two, or three blank lines between them. Stored procedures and custom-delimiter scripts, including MySQL <code>DELIMITER</code> directives, are not supported; use engine- and client-aware tooling for those inputs.</p></details>
+          <details><summary>Does changing keyword case rename columns or functions?</summary><p>The option applies to recognized SQL keywords. Function names, data types, identifiers, strings, and user-defined names are configured to preserve their original spelling. Always review the result because dialect extensions can be newer than a formatter.</p></details>
+          <details><summary>Can formatting change how a query performs?</summary><p>Whitespace and keyword case normally do not change a database plan, but comments, hints, string contents, batch separators, and tokens can matter. The tool aims to preserve them; you still need a diff, the target parser, and query-plan or application tests where performance matters.</p></details>
+          <details><summary>What happens with a very large query?</summary><p>Input is limited to 50,000 characters and a warning appears above 25,000. The formatting worker is stopped after 2 seconds, and output beyond 200,000 characters is discarded. These limits protect page responsiveness; split very large generated scripts at safe statement boundaries.</p></details>
+          <details><summary>Can I use this as a SQL minifier or translator?</summary><p>No. This page focuses on readable formatting. Dense operator spacing is only one presentation control. It does not promise minimum-size output and does not translate statements between database products.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Engine and syntax references</p><h2 id="references-heading">SQL formatting resources</h2></div>
+        <ul>
+          <li><a href="https://www.npmjs.com/package/sql-formatter" target="_blank" rel="noreferrer">sql-formatter open-source package documentation</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/language-structure.html" target="_blank" rel="noreferrer">MySQL 8.4 Language Structure</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/sql-syntax-lexical.html" target="_blank" rel="noreferrer">PostgreSQL lexical structure</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical" target="_blank" rel="noreferrer">BigQuery GoogleSQL lexical structure</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transact-sql-syntax-conventions-transact-sql" target="_blank" rel="noreferrer">Transact-SQL syntax conventions</a></li>
+          <li><a href="/guides/sql-dialect-formatting/">SQL dialect formatting guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">JSON Formatter</a><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">SQL Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · SQL formatting runs locally · No query execution</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive SQL formatting. The dialect, privacy, validation, and review guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/sql.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BigQuery SQL Formatter Online – Format GoogleSQL Locally | LiveParse</title>
+    <meta name="description" content="A BigQuery SQL formatter for GoogleSQL backtick paths, arrays, UNNEST, QUALIFY, CTEs, and windows. SQL stays in your browser." />
+    <link rel="canonical" href="https://liveparse.com/bigquery-sql-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#087f78" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="BigQuery SQL Formatter Online" />
+    <meta property="og:description" content="Beautify GoogleSQL for BigQuery locally with a dialect-aware worker and explicit layout controls." />
+    <meta property="og:url" content="https://liveparse.com/bigquery-sql-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse BigQuery GoogleSQL formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BigQuery SQL Formatter Online" />
+    <meta name="twitter:description" content="Format GoogleSQL locally without uploading or executing a BigQuery query." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/bigquery-sql-formatter/#app",
+            "name": "LiveParse BigQuery SQL Formatter",
+            "url": "https://liveparse.com/bigquery-sql-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "BigQuery GoogleSQL formatter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and Web Workers",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A local browser formatter for BigQuery GoogleSQL queries, arrays, structs, UNNEST, QUALIFY, window functions, and backtick table paths.",
+            "featureList": ["BigQuery GoogleSQL profile", "Backtick path preservation", "Keyword case controls", "Configurable indentation", "Local Web Worker", "SQL download"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/bigquery-sql-formatter/#webpage",
+            "url": "https://liveparse.com/bigquery-sql-formatter/",
+            "name": "BigQuery SQL Formatter Online",
+            "description": "Format BigQuery GoogleSQL locally with a dialect-aware layout engine.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/bigquery-sql-formatter/#app" },
+            "breadcrumb": { "@id": "https://liveparse.com/bigquery-sql-formatter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/bigquery-sql-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Formatter", "item": "https://liveparse.com/sql-formatter/" },
+              { "@type": "ListItem", "position": 3, "name": "BigQuery SQL Formatter", "item": "https://liveparse.com/bigquery-sql-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/bigquery-sql-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does this formatter send a query to BigQuery?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting runs inside the current browser tab and makes no BigQuery API request." } },
+              { "@type": "Question", "name": "Does it support UNNEST and QUALIFY?", "acceptedAnswer": { "@type": "Answer", "text": "The BigQuery profile recognizes common GoogleSQL vocabulary including arrays, structs, UNNEST, window functions, and QUALIFY." } },
+              { "@type": "Question", "name": "Does formatting estimate BigQuery cost?", "acceptedAnswer": { "@type": "Answer", "text": "No. It has no table metadata, partition statistics, dry-run result, billing project, or execution plan." } },
+              { "@type": "Question", "name": "Is formatted GoogleSQL guaranteed valid?", "acceptedAnswer": { "@type": "Answer", "text": "No. Verify syntax, resources, types, permissions, bytes processed, and results with the intended BigQuery project and tooling." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="sql-page" data-default-dialect="bigquery">
+    <a class="skip-link" href="#formatter">Skip to the BigQuery SQL formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="#formatter">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">Guide</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">GoogleSQL profile · Local worker · No API request</p>
+          <h1>BigQuery SQL Formatter Online</h1>
+          <p class="hero-lead">Beautify GoogleSQL with dialect-aware handling for project paths, arrays, structs, <code>UNNEST</code>, named parameters, window functions, and <code>QUALIFY</code>. Your query never reaches BigQuery.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format BigQuery SQL</a><span>Free · No sign-up · 50,000-character limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="Formatted BigQuery SQL example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>events.sql</strong></div>
+          <pre><code><span class="property">SELECT</span>
+  user_pseudo_id,
+  event.key <span class="property">AS</span> parameter_name
+<span class="property">FROM</span> <span class="string">`project.analytics.events`</span>,
+  <span class="property">UNNEST</span>(event_params) <span class="property">AS</span> event
+<span class="property">QUALIFY</span> <span class="boolean">ROW_NUMBER</span>() <span class="property">OVER</span> (
+  <span class="property">PARTITION BY</span> user_pseudo_id
+  <span class="property">ORDER BY</span> event_timestamp <span class="property">DESC</span>
+) = 1;</code></pre>
+          <p><strong>GoogleSQL layout</strong><span>Not submitted or billed</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">BigQuery query beautifier</p><h2 id="formatter-heading">Format GoogleSQL privately in your browser</h2></div>
+        <p>The BigQuery profile loads by default. Choose your style, press Format SQL, and review the result without sending the query to a Google Cloud project or a remote formatting service.</p>
+      </section>
+      <div id="sql-root"><section class="parser-fallback" aria-label="BigQuery formatter loading"><p><strong>Loading the BigQuery SQL formatter…</strong></p><p>Enable JavaScript to format GoogleSQL locally. BigQuery syntax and review guidance remains readable below.</p></section></div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Readable queries without a cloud round trip</p><h2 id="how-heading">How to format BigQuery SQL</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste the GoogleSQL source</h3><p>Keep the original in version control and remove secrets or sensitive identifiers where practical. The editor accepts a query or script up to the documented local limit.</p></li>
+          <li><span>2</span><h3>Confirm the BigQuery profile</h3><p>Backticks occur in both BigQuery and MySQL, so punctuation alone is not reliable detection. Choose GoogleSQL because BigQuery is the actual target.</p></li>
+          <li><span>3</span><h3>Review, dry run, and test</h3><p>Diff the formatted text, then use BigQuery's validator or dry-run features and the intended project context to inspect syntax, referenced resources, permissions, and bytes processed.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="googlesql" aria-labelledby="googlesql-heading">
+        <div class="section-heading"><p class="section-kicker">GoogleSQL is not MySQL with cloud tables</p><h2 id="googlesql-heading">Why BigQuery needs a dialect-aware SQL formatter</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>BigQuery's GoogleSQL dialect combines familiar relational clauses with nested and repeated data, cloud resource paths, analytic functions, scripting constructs, and warehouse-specific DDL and DML. A formatter must recognize the complete token before deciding where a comma, period, at sign, backtick, quote, or comment begins and ends.</p>
+            <p>Quoted identifiers use backticks. A fully qualified table can appear as <code>`project-id.dataset.table`</code>, where the project segment may contain a dash that would be an operator outside the quoted path. The formatter must preserve the backticks and path text. Changing those characters is not beautification; it can select another resource or produce invalid GoogleSQL.</p>
+            <p>GoogleSQL also supports raw, bytes, quoted, and triple-quoted literal forms. Literal chunks follow documented rules and may contain whitespace or punctuation that resembles SQL structure. The format engine should treat recognized literals as units and never alter their content. A diff remains necessary for newer features and templated code.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Resource paths</dt><dd>Backticks preserve project, dataset, table, and field identifiers.</dd></div>
+            <div><dt>Named parameters</dt><dd><code>@name</code> can supply expression values, not identifiers.</dd></div>
+            <div><dt>Nested data</dt><dd><code>ARRAY</code>, <code>STRUCT</code>, and repeated fields need visible nesting.</dd></div>
+            <div><dt>Post-window filter</dt><dd><code>QUALIFY</code> filters rows after window evaluation.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="nested-data" aria-labelledby="nested-heading">
+        <div class="section-heading"><p class="section-kicker">Make hierarchy visible</p><h2 id="nested-heading">Format BigQuery arrays, structs, and UNNEST</h2></div>
+        <div class="use-case-grid">
+          <article><h3>ARRAY expressions</h3><p>Array literals, subqueries, offsets, safe offsets, and array functions can nest deeply. Indentation reveals which bracket or subquery belongs to each expression.</p></article>
+          <article><h3>STRUCT values</h3><p>Typed and inferred structs group fields inside one value. Formatting should retain field order, aliases, types, and every nested expression.</p></article>
+          <article><h3>UNNEST joins</h3><p><code>UNNEST</code> turns an array into rows and often appears with correlated joins. Layout can clarify the relationship but cannot prove that cardinality or null handling is intended.</p></article>
+          <article><h3>Wildcard tables</h3><p>Table wildcards and <code>_TABLE_SUFFIX</code> filters can affect scan scope. A formatter preserves them; BigQuery must determine which tables and bytes are touched.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="analytics" aria-labelledby="analytics-heading">
+        <div class="section-heading"><p class="section-kicker">Window-heavy queries benefit from structure</p><h2 id="analytics-heading">CTEs, windows, QUALIFY, and multi-statement scripts</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Analytic workloads often layer common table expressions before a final aggregation or window calculation. Formatting can give each CTE a stable visual boundary and indent its select list, filters, joins, and grouping. It does not evaluate whether a CTE scans an avoidable partition range or whether a repeated transformation should be materialized.</p>
+            <p><code>QUALIFY</code> filters the result of window functions and follows a different role than <code>WHERE</code> or <code>HAVING</code>. A BigQuery profile knows the keyword belongs to GoogleSQL query structure, while a generic formatter may treat it as an identifier. Window definitions should keep partitions, ordering, and frames visibly associated with the function they control.</p>
+            <p>BigQuery scripting adds declarations, variables, control flow, temporary functions, and multiple statements. The page can separate recognized statements, but it is not a full script debugger. Template layers such as dbt or Jinja should be formatted by tooling that understands the template, or after rendering representative compiled GoogleSQL.</p>
+          </div>
+          <div class="callout-card"><strong>No cost or bytes estimate</strong><p>LiveParse has no project, table metadata, partitions, cluster columns, dry-run response, billing account, reservation, cache state, or query plan. Formatting cannot estimate bytes processed or cost.</p><a href="https://cloud.google.com/bigquery/docs/best-practices-costs" target="_blank" rel="noreferrer">Review Google's cost guidance →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">No BigQuery API call</p><h2 id="privacy-heading">Private formatting for warehouse queries</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Local worker</h3><p>Formatting happens in a disposable worker created by the page. It does not use the BigQuery REST API, Storage API, console, JDBC, ODBC, or a third-party query service.</p></article>
+          <article><span aria-hidden="true">02</span><h3>No credentials</h3><p>The page never asks for a Google Cloud account, service account, project, token, dataset, location, or billing configuration.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Resource limits</h3><p>Input stops at 50,000 characters, a warning appears at 25,000, the worker is terminated after 2 seconds, and output above 200,000 characters is discarded.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Explicit export</h3><p>The formatted result enters the clipboard or a local <code>.sql</code> file only when you choose those actions. Clipboard managers and device software are separate boundaries.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="validation" aria-labelledby="validation-heading">
+        <div class="section-heading"><p class="section-kicker">Formatting is presentation</p><h2 id="validation-heading">What this BigQuery formatter does not validate</h2></div>
+        <div class="error-table" role="table" aria-label="BigQuery formatter limits">
+          <div class="error-row error-head" role="row"><span role="columnheader">Question</span><span role="columnheader">Formatter evidence</span><span role="columnheader">Authoritative check</span></div>
+          <div class="error-row" role="row"><strong role="cell">Is the grammar accepted?</strong><span role="cell">Only that the local formatter recognized enough tokens to lay out text.</span><span role="cell">BigQuery validation or a dry run in the intended location and project.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Do resources exist?</strong><span role="cell">No dataset, table, routine, model, connection, or column catalog is available.</span><span role="cell">The target project's metadata and permissions.</span></div>
+          <div class="error-row" role="row"><strong role="cell">How much will it scan?</strong><span role="cell">No partitions, wildcard expansion, cache, or plan is known.</span><span role="cell">Dry-run bytes plus query and cost controls.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Are results correct?</strong><span role="cell">Layout does not evaluate joins, nulls, cardinality, time zones, or business rules.</span><span role="cell">Tests against representative data and reviewed expected results.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">BigQuery SQL formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does this formatter send a query to BigQuery?</summary><p>No. Formatting runs inside the current browser tab and makes no BigQuery API request. The page has no project identity, credentials, dataset access, execution job, or billing context.</p></details>
+          <details><summary>Does it support UNNEST and QUALIFY?</summary><p>The BigQuery profile recognizes common GoogleSQL vocabulary including arrays, structs, <code>UNNEST</code>, window functions, and <code>QUALIFY</code>. New features and complex scripts can exceed a formatter's grammar, so inspect the diff and validate with BigQuery.</p></details>
+          <details><summary>Does formatting estimate BigQuery cost?</summary><p>No. The formatter has no table metadata, partitions, wildcard expansion, dry-run result, billing project, reservation, cache status, or execution plan. Use a BigQuery dry run and organizational cost controls.</p></details>
+          <details><summary>Is formatted GoogleSQL guaranteed valid?</summary><p>No. Verify syntax, datasets, tables, routines, types, locations, permissions, bytes processed, and results with the intended BigQuery project and supported tooling.</p></details>
+          <details><summary>Why not use the MySQL profile for backticks?</summary><p>Both dialects use backticks, but BigQuery adds cloud resource paths, nested data, <code>UNNEST</code>, GoogleSQL literal forms, <code>QUALIFY</code>, and other vocabulary that is not MySQL. Select the actual execution engine.</p></details>
+          <details><summary>Can I format dbt or Jinja templates?</summary><p>Template delimiters are a separate language layer. Format with template-aware tooling or format representative compiled GoogleSQL. Do not assume a query formatter understands macros, control flow, or compile-time substitutions.</p></details>
+          <details><summary>Why does the tool stop on a large generated query?</summary><p>Pathological inputs can use large amounts of memory. The page caps text at 50,000 characters and stops formatting after 2 seconds. Split a script only at safe statement boundaries and preserve dependency and transaction order.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary GoogleSQL references</p><h2 id="references-heading">BigQuery formatting resources</h2></div>
+        <ul>
+          <li><a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical" target="_blank" rel="noreferrer">GoogleSQL lexical structure and syntax</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/arrays" target="_blank" rel="noreferrer">BigQuery: Work with arrays</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax" target="_blank" rel="noreferrer">GoogleSQL query syntax</a></li>
+          <li><a href="https://cloud.google.com/bigquery/docs/running-queries" target="_blank" rel="noreferrer">BigQuery query jobs and dry runs</a></li>
+          <li><a href="/guides/sql-dialect-formatting/">SQL Dialect Formatting Guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser tools for structured data and developer queries.</p></div>
+      <div class="footer-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">Dialect Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · BigQuery SQL formatting runs locally · No cloud job</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive BigQuery formatting. The GoogleSQL, privacy, validation, and cost guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/sql.tsx"></script>
+  </body>
+</html>

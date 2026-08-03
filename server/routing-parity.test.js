@@ -60,4 +60,28 @@ describe('production routing parity', () => {
     expect(redirects.has('/jwt-validator')).toBe(false);
     expect(redirects.has('/jwt-verify')).toBe(false);
   });
+
+  it('includes the SQL formatter cluster with synonym and dialect aliases but no validation claims', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/sql-formatter',
+      '/mysql-sql-formatter',
+      '/postgresql-sql-formatter',
+      '/bigquery-sql-formatter',
+      '/sql-server-formatter',
+      '/guides/sql-dialect-formatting',
+    ]));
+    expect(redirects.get('/sql-beautifier')).toBe('/sql-formatter/');
+    expect(redirects.get('/format-sql')).toBe('/sql-formatter/');
+    expect(redirects.get('/mysql-formatter')).toBe('/mysql-sql-formatter/');
+    expect(redirects.get('/postgres-formatter')).toBe('/postgresql-sql-formatter/');
+    expect(redirects.get('/google-sql-formatter')).toBe('/bigquery-sql-formatter/');
+    expect(redirects.get('/tsql-formatter')).toBe('/sql-server-formatter/');
+    expect(redirects.has('/sql-validator')).toBe(false);
+    expect(redirects.has('/sql-parser')).toBe(false);
+    expect(redirects.has('/sql-linter')).toBe(false);
+  });
 });

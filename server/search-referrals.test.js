@@ -45,6 +45,12 @@ describe('request eligibility', () => {
     '/base64-decoder/',
     '/jwt-decoder/',
     '/jwt-expiration-checker/',
+    '/sql-formatter/',
+    '/mysql-sql-formatter/',
+    '/postgresql-sql-formatter/',
+    '/bigquery-sql-formatter/',
+    '/sql-server-formatter/',
+    '/guides/sql-dialect-formatting/',
   ]);
 
   it('counts only GET HTML landings from a recognized search engine', () => {
@@ -76,6 +82,19 @@ describe('request eligibility', () => {
       method: 'GET', isHtml: false, requestPath: '/og.png',
       referrer: 'https://www.google.com/search?q=json+compare', userAgent: browser, allowedPaths,
     })).toBeNull();
+  });
+
+  it.each([
+    ['/sql-formatter/', 'https://www.google.com/search?q=sql+formatter', 'google'],
+    ['/mysql-sql-formatter/', 'https://www.bing.com/search?q=mysql+sql+formatter', 'bing'],
+    ['/postgresql-sql-formatter/', 'https://duckduckgo.com/?q=postgresql+sql+formatter', 'duckduckgo'],
+    ['/bigquery-sql-formatter/', 'https://search.yahoo.com/search?p=bigquery+sql+formatter', 'yahoo'],
+    ['/sql-server-formatter/', 'https://search.brave.com/search?q=sql+server+formatter', 'brave'],
+    ['/guides/sql-dialect-formatting/', 'https://www.google.co.kr/search?q=sql+dialect+formatting', 'google'],
+  ])('counts the canonical SQL landing %s', (requestPath, referrer, engine) => {
+    expect(searchReferralFromRequest({
+      method: 'GET', isHtml: true, requestPath, referrer, userAgent: browser, allowedPaths,
+    })).toEqual({ engine, path: requestPath });
   });
 
   it('rejects non-canonical pages, prefetches, prerenders, and non-document fetches', () => {

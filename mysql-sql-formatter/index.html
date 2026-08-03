@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MySQL Formatter Online – Beautify MySQL Queries Locally | LiveParse</title>
+    <meta name="description" content="A MySQL SQL formatter for backticks, comments, hints, LIMIT, placeholders, and JSON-aware layout. Your SQL stays in your browser." />
+    <link rel="canonical" href="https://liveparse.com/mysql-sql-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#087f78" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="MySQL SQL Formatter &amp; Beautifier Online" />
+    <meta property="og:description" content="Format MySQL locally while preserving backtick identifiers, MySQL comments and hints, LIMIT clauses, placeholders, and JSON expressions." />
+    <meta property="og:url" content="https://liveparse.com/mysql-sql-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based MySQL SQL formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MySQL SQL Formatter Online" />
+    <meta name="twitter:description" content="Beautify MySQL queries locally with a MySQL dialect profile and explicit layout controls." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based developer data tools."
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/mysql-sql-formatter/#app",
+            "name": "LiveParse MySQL SQL Formatter",
+            "url": "https://liveparse.com/mysql-sql-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "MySQL formatter and query beautifier",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and Web Workers",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A private browser-based formatter for MySQL queries, selected in MySQL dialect mode by default.",
+            "featureList": [
+              "MySQL dialect selected by default",
+              "Backtick identifier and MySQL keyword recognition",
+              "Preservation of MySQL comments and optimizer hints",
+              "Uppercase, lowercase, or preserved keyword case",
+              "Spaces or tabs indentation and configurable expression width",
+              "Local Web Worker formatting for input up to 50,000 characters"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/mysql-sql-formatter/#webpage",
+            "url": "https://liveparse.com/mysql-sql-formatter/",
+            "name": "MySQL SQL Formatter and Beautifier Online",
+            "description": "Format and beautify MySQL queries locally with a MySQL-aware dialect profile.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/mysql-sql-formatter/#app" },
+            "breadcrumb": { "@id": "https://liveparse.com/mysql-sql-formatter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/mysql-sql-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Formatter", "item": "https://liveparse.com/sql-formatter/" },
+              { "@type": "ListItem", "position": 3, "name": "MySQL SQL Formatter", "item": "https://liveparse.com/mysql-sql-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/mysql-sql-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the MySQL formatter upload or execute my query?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting runs in a Web Worker in the current browser tab. LiveParse does not send the query to a formatting API or connect to MySQL." } },
+              { "@type": "Question", "name": "Does formatting prove that MySQL will accept the query?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting changes layout. It does not validate the exact server version, SQL mode, schema, data types, privileges, query plan, results, or safety." } },
+              { "@type": "Question", "name": "Does the formatter preserve MySQL backtick identifiers?", "acceptedAnswer": { "@type": "Answer", "text": "The MySQL dialect profile recognizes backtick-delimited identifiers and keeps their spelling and quoting. Review the result whenever SQL mode or generated syntax changes token meaning." } },
+              { "@type": "Question", "name": "What happens to MySQL comments and optimizer hints?", "acceptedAnswer": { "@type": "Answer", "text": "The formatter is designed to preserve line comments, block comments, executable version comments, and optimizer hints. Always inspect their placement because some MySQL comment forms can affect execution." } },
+              { "@type": "Question", "name": "Can it format LIMIT, placeholders, and MySQL JSON functions?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The MySQL profile recognizes common LIMIT forms, question-mark placeholders, and MySQL JSON function syntax while preserving literal JSON paths and parameters." } },
+              { "@type": "Question", "name": "Can it format stored procedures or DELIMITER scripts?", "acceptedAnswer": { "@type": "Answer", "text": "No. Stored procedures and custom-delimiter scripts that use the MySQL DELIMITER client directive are not supported. Use stored-program and client-aware tooling instead." } },
+              { "@type": "Question", "name": "How large can a MySQL query be?", "acceptedAnswer": { "@type": "Answer", "text": "Input is limited to 50,000 characters. The worker is stopped if formatting exceeds 2 seconds so the page remains responsive." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="sql-page" data-default-dialect="mysql">
+    <a class="skip-link" href="#formatter">Skip to the MySQL formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">JSON</a>
+          <a href="/sql-formatter/">SQL Formatter</a>
+          <a href="#formatter">MySQL</a>
+          <a href="/postgresql-sql-formatter/">PostgreSQL</a>
+          <a href="/bigquery-sql-formatter/">BigQuery</a>
+          <a href="/sql-server-formatter/">SQL Server</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">MySQL dialect · Browser-only · No sign-up</p>
+          <h1>MySQL SQL Formatter &amp; Beautifier Online</h1>
+          <p class="hero-lead">Turn compact MySQL into readable SQL with a dialect profile that recognizes backticks, MySQL comments and hints, <code>LIMIT</code>, placeholders, and JSON expressions. Your query stays in this tab and is never executed.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format MySQL now</a><span>Free · Local worker · Up to 50,000 characters</span></div>
+        </div>
+        <div class="hero-example" aria-label="Formatted MySQL query example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>orders.mysql.sql</strong></div>
+          <pre><code><span class="property">SELECT</span>
+  o.`order`,
+  <span class="string">JSON_UNQUOTE</span>(o.payload -&gt; <span class="boolean">'$.customer.id'</span>) <span class="property">AS</span> customer_id
+<span class="property">FROM</span> `sales`.`orders` <span class="property">AS</span> o
+<span class="property">WHERE</span> o.status = ?
+<span class="property">ORDER BY</span> o.created_at <span class="property">DESC</span>
+<span class="property">LIMIT</span> 25 <span class="property">OFFSET</span> 50;</code></pre>
+          <p><strong>MySQL-aware layout</strong><span>Formatted locally, not executed</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">MySQL is selected by default</p><h2 id="formatter-heading">Paste a MySQL query and control its layout</h2></div>
+        <p>The formatting engine runs in an isolated browser worker. It can improve presentation while retaining MySQL-oriented token rules, but it does not connect to a server or certify the statement.</p>
+      </section>
+      <div id="sql-root">
+        <section class="parser-fallback" aria-label="MySQL formatter loading"><p><strong>Loading the private MySQL formatter…</strong></p><p>Enable JavaScript to format MySQL locally. The SQL mode, comment, JSON, privacy, and validation guidance below remains readable without it.</p></section>
+      </div>
+
+      <section class="content-section" id="how-to-format" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">A focused three-step workflow</p><h2 id="how-heading">How to format MySQL online</h2><p>Keep the dialect explicit, choose presentation rules, and verify correctness separately.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste recoverable MySQL</h3><p>Start from version-controlled or otherwise recoverable SQL. This page opens with the MySQL dialect selected, so backticks, MySQL keywords, comments, operators, and clauses receive the matching formatter profile.</p></li>
+          <li><span>2</span><h3>Choose a readable style</h3><p>Set spaces or tabs, keyword case, expression width, logical-operator line breaks, statement spacing, compact operators, and semicolon placement. These are layout choices rather than server settings.</p></li>
+          <li><span>3</span><h3>Format, diff, and test</h3><p>Compare the output with the original. Then parse, prepare, explain, and test through the exact MySQL version, session SQL mode, schema, credentials, and application path that matter.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="mysql-dialect" aria-labelledby="dialect-heading">
+        <div class="section-heading"><p class="section-kicker">Why generic SQL is not enough</p><h2 id="dialect-heading">What makes MySQL formatting dialect-specific?</h2><p>MySQL shares core SQL clauses with other databases, but important tokens and modes differ at the edges.</p></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Backtick identifiers</h3><p>MySQL commonly uses backticks around identifiers, including reserved words and names with special characters. Each component of a qualified name is quoted separately, as in <code>`sales`.`order`</code>.</p></article>
+          <article><span aria-hidden="true">02</span><h3>SQL modes</h3><p><code>ANSI_QUOTES</code>, <code>NO_BACKSLASH_ESCAPES</code>, <code>IGNORE_SPACE</code>, and other modes can affect syntax or validation. A formatter has no access to the current session mode.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Comments and hints</h3><p><code>#</code>, whitespace-sensitive <code>-- </code>, block comments, executable <code>/*! ... */</code> forms, and <code>/*+ ... */</code> hints must not be treated as interchangeable decoration.</p></article>
+          <article><span aria-hidden="true">04</span><h3>MySQL clauses and functions</h3><p><code>LIMIT</code>, question-mark parameters, JSON functions and operators, <code>ON DUPLICATE KEY UPDATE</code>, and other extensions need a MySQL-aware vocabulary and layout.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" id="quotes-modes" aria-labelledby="quotes-heading">
+        <div class="section-heading"><p class="section-kicker">Preserve tokens before changing whitespace</p><h2 id="quotes-heading">Backticks, strings, and MySQL SQL modes</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Backticks delimit MySQL identifiers. They can protect a reserved word such as <code>`order`</code> or retain characters that are not permitted in a plain identifier. For a qualified object, quote the components independently: <code>`analytics-prod`.`orders`</code> is a database identifier, a separator, and a table identifier, whereas one quoted string containing the dot would name a different object. Formatting should retain both the quote marks and the exact identifier text.</p>
+            <p>Quote interpretation can depend on <code>sql_mode</code>. With <code>ANSI_QUOTES</code>, double quotes delimit identifiers and cannot delimit string literals. With <code>NO_BACKSLASH_ESCAPES</code>, the backslash is an ordinary character in strings instead of introducing MySQL escape sequences. <code>IGNORE_SPACE</code> changes how certain built-in function names followed by whitespace are parsed and makes affected names reserved. A local formatter cannot discover the global or session value of these modes.</p>
+            <p>For that reason, the formatter should not convert one quote style to another or claim that successful tokenization proves server acceptance. Select MySQL, preserve original literals and identifiers, and validate under the same SQL mode as the application connection. The official <a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html" target="_blank" rel="noreferrer">MySQL 8.4 SQL mode reference</a> explains which modes affect supported syntax and data checks.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt><code>`name`</code></dt><dd>The usual MySQL form for a delimited identifier.</dd></div>
+            <div><dt><code>ANSI_QUOTES</code></dt><dd>Makes double quotes identifier quotes rather than string quotes.</dd></div>
+            <div><dt><code>NO_BACKSLASH_ESCAPES</code></dt><dd>Disables special backslash escape handling in strings.</dd></div>
+            <div><dt><code>IGNORE_SPACE</code></dt><dd>Changes whitespace-sensitive built-in function name parsing.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="comments" aria-labelledby="comments-heading">
+        <div class="section-heading"><p class="section-kicker">Some comments can affect execution</p><h2 id="comments-heading">Preserve MySQL comments and optimizer hints</h2><p>Comment placement is part of a trustworthy formatting diff.</p></div>
+        <div class="error-table" role="table" aria-label="MySQL comment and hint forms">
+          <div class="error-row error-head" role="row"><span role="columnheader">Form</span><span role="columnheader">MySQL meaning</span><span role="columnheader">Formatting rule</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code># comment</code></strong><span role="cell">A MySQL line comment through the end of the line.</span><span role="cell">Keep its text and line association.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>-- comment</code></strong><span role="cell">A line comment only when the second dash is followed by whitespace or a control character.</span><span role="cell">Do not remove the required separator.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>/* comment */</code></strong><span role="cell">A block comment; nested block comments are not supported for ordinary use.</span><span role="cell">Retain delimiters, contents, and position.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>/*! code */</code></strong><span role="cell">A MySQL extension comment whose contents may be parsed and executed by MySQL.</span><span role="cell">Never discard it as decorative text.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>/*+ hint */</code></strong><span role="cell">An optimizer-hint comment tied to a statement or query block.</span><span role="cell">Keep it attached to the intended structure.</span></div>
+        </div>
+        <p>A generic pretty printer may see all block comments as equivalent whitespace. MySQL does not. Version-qualified executable comments can gate syntax by server version, and optimizer hints can influence plans. The MySQL profile aims to preserve these tokens, but you should still compare the original and formatted query and consult the official <a href="https://dev.mysql.com/doc/refman/8.4/en/comments.html" target="_blank" rel="noreferrer">MySQL 8.4 comment syntax</a>.</p>
+      </section>
+
+      <section class="content-section" id="limit-parameters-json" aria-labelledby="features-heading">
+        <div class="section-heading"><p class="section-kicker">Common MySQL query details</p><h2 id="features-heading">LIMIT, placeholders, and JSON functions</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>MySQL accepts familiar row-limit forms including <code>LIMIT row_count</code>, <code>LIMIT offset, row_count</code>, and <code>LIMIT row_count OFFSET offset</code>. The comma form deliberately places the offset first, while the <code>OFFSET</code> form places the row count first. A formatter should make the chosen form readable without swapping numbers or translating it into SQL Server <code>TOP</code> or another dialect.</p>
+            <p>A question mark is the parameter marker in MySQL prepared statements. Named placeholders such as <code>:status</code> can be conventions implemented by a connector, query builder, or template system before the server sees SQL. Formatting should preserve either form exactly; it does not bind values or make string concatenation safe. Use the connector's parameter API and review the compiled query where templates are involved.</p>
+            <p>MySQL JSON functions and operators combine SQL syntax with JSON path strings. Functions include <code>JSON_EXTRACT</code>, <code>JSON_SET</code>, <code>JSON_OBJECT</code>, and <code>JSON_TABLE</code>; the <code>-&gt;</code> and <code>-&gt;&gt;</code> operators provide extraction forms in supported contexts. A formatter may wrap the surrounding expression, but it must not rewrite a quoted path such as <code>'$.customer.id'</code> or assume the path is an identifier.</p>
+          </div>
+          <div class="callout-card"><strong>Formatting is not translation</strong><p>Changing <code>LIMIT</code>, placeholder conventions, JSON functions, identifier quotes, or upsert syntax for another database would be a semantic conversion. This page keeps MySQL selected and changes presentation only.</p><a href="/guides/sql-dialect-formatting/">Compare SQL dialect formatting →</a></div>
+        </div>
+        <pre class="code-sample"><code>SELECT /*+ BKA(o) */
+  o.`order`,
+  JSON_UNQUOTE(JSON_EXTRACT(o.payload, '$.customer.id')) AS customer_id,
+  JSON_LENGTH(o.payload -&gt; '$.items') AS item_count
+FROM `sales`.`orders` AS o
+WHERE o.status = ?
+  AND o.created_at &gt;= ?
+ORDER BY o.created_at DESC
+LIMIT 50 OFFSET 100;</code></pre>
+      </section>
+
+      <section class="content-section alt" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Query text stays in the current browser tab</p><h2 id="privacy-heading">Private MySQL formatting with a local worker</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>MySQL queries can expose database and table names, tenant filters, internal JSON paths, incident evidence, migration plans, and product logic even when no result rows are present. LiveParse does not send the query to a formatter API. Pressing format starts a Web Worker created by this page; the worker returns the formatted text only to this tab.</p>
+            <p>Input is limited to exactly 50,000 characters, and the worker is terminated when a formatting run exceeds exactly 2 seconds. These boundaries protect browser responsiveness. Beginning another run terminates the previous worker so an older result cannot replace newer work. The page does not connect to MySQL, place the query in the URL, or store it in browser storage.</p>
+            <p>Local processing cannot control browser extensions, clipboard history, downloaded files, screen sharing, device backups, or other software on the machine. Remove credentials and unnecessary production values, and follow your organization's data-handling policy. LiveParse's separate, limited search-referral measurement is described on the <a href="/privacy/">privacy page</a>.</p>
+          </div>
+          <div class="callout-card"><strong>No MySQL connection</strong><p>The formatter has no hostname, port, credentials, schema catalog, session SQL mode, character set, collation, permissions, transaction, or server version. It cannot run or approve a statement.</p><a href="#formatter">Return to the formatter →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="validation" aria-labelledby="validation-heading">
+        <div class="section-heading"><p class="section-kicker">Readable is not correct</p><h2 id="validation-heading">MySQL formatting is not validation or execution</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Syntax depends on context</h3><p>The exact MySQL release, SQL mode, character set, stored-program context, and client preprocessing can affect parsing. A formatter's dialect profile cannot reproduce every server and session condition.</p></article>
+          <article><h3>Names and types need a catalog</h3><p>A polished query can reference a missing table, misspell a column, compare incompatible values, or call a function unavailable on the target server. LiveParse has no schema metadata.</p></article>
+          <article><h3>Permissions and safety are separate</h3><p>Formatting does not detect an overprivileged account, missing tenant predicate, destructive update, injection boundary, unintended lock, or excessive scan. Apply least privilege and review.</p></article>
+          <article><h3>Results need tests</h3><p>A statement may parse and execute while returning the wrong rows or changing the wrong records. Use prepared parameters, transactions where appropriate, representative fixtures, assertions, and application tests.</p></article>
+        </div>
+        <p>After formatting, inspect a token-aware diff. Validate or prepare the statement through the target MySQL environment, use <code>EXPLAIN</code> where appropriate, and execute only with the permissions and isolation intended for that query. Do not use “formatted successfully” as a deployment or security decision.</p>
+      </section>
+
+      <section class="content-section alt" id="other-dialects" aria-labelledby="other-heading">
+        <div class="section-heading"><p class="section-kicker">Use the execution target, not visual similarity</p><h2 id="other-heading">Need a different SQL formatter?</h2><p>Backticks and familiar clauses do not prove that a query is MySQL.</p></div>
+        <div class="use-case-grid">
+          <article><h3><a href="/sql-formatter/">General SQL Formatter</a></h3><p>Choose from the full dialect list and configure indentation, keyword case, expression width, operators, and statement spacing.</p></article>
+          <article><h3><a href="/postgresql-sql-formatter/">PostgreSQL SQL Formatter</a></h3><p>Format PostgreSQL double-quoted identifiers, dollar-quoted strings, casts, JSON operators, filters, and window expressions.</p></article>
+          <article><h3><a href="/bigquery-sql-formatter/">BigQuery SQL Formatter</a></h3><p>Format GoogleSQL backtick paths, arrays, structs, <code>UNNEST</code>, query parameters, windows, and <code>QUALIFY</code>.</p></article>
+          <article><h3><a href="/sql-server-formatter/">SQL Server Formatter</a></h3><p>Format T-SQL bracketed identifiers, variables, <code>TOP</code>, common table expressions, and <code>OFFSET … FETCH</code>.</p></article>
+        </div>
+        <p class="text-link"><a href="/guides/sql-dialect-formatting/">Read the MySQL, PostgreSQL, BigQuery, and SQL Server formatting guide →</a></p>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">MySQL formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the MySQL formatter upload or execute my query?</summary><p>No. Formatting runs in a Web Worker in the current browser tab. LiveParse does not send the query to a formatting API, connect to MySQL, put the SQL in the URL, or store it in browser storage.</p></details>
+          <details><summary>Does formatting prove that MySQL will accept the query?</summary><p>No. Formatting changes layout. It does not validate the exact MySQL version, SQL mode, schema, data types, functions, privileges, query plan, returned rows, side effects, or security. Check the statement through the real target and application tests.</p></details>
+          <details><summary>Does the formatter preserve MySQL backtick identifiers?</summary><p>The MySQL dialect profile recognizes backtick-delimited identifiers and keeps their spelling and quoting. It does not convert them to strings or another database's identifier style. Review the result whenever SQL mode or generated syntax changes token meaning.</p></details>
+          <details><summary>What happens to MySQL comments and optimizer hints?</summary><p>The formatter is designed to preserve <code>#</code> and valid double-dash line comments, block comments, executable version comments, and optimizer hints. Always inspect their placement because <code>/*! ... */</code> and <code>/*+ ... */</code> forms can affect execution.</p></details>
+          <details><summary>Can it format LIMIT, placeholders, and MySQL JSON functions?</summary><p>Yes. The MySQL profile recognizes common <code>LIMIT</code> forms, question-mark placeholders, JSON functions, extraction operators, and quoted JSON paths. Formatting preserves these tokens; it does not bind parameters, validate paths, or translate syntax.</p></details>
+          <details><summary>Can it format stored procedures or DELIMITER scripts?</summary><p>No. Stored procedures and custom-delimiter scripts that use the MySQL <code>DELIMITER</code> client directive are not supported. Use stored-program and client-aware tooling instead, and keep the original script unchanged.</p></details>
+          <details><summary>How large can a MySQL query be?</summary><p>Input is limited to 50,000 characters. The formatting worker is stopped if a run exceeds 2 seconds so the page remains responsive. Split unusually large generated scripts only at statement or batch boundaries you have verified.</p></details>
+          <details><summary>Does changing keyword case alter identifiers or JSON paths?</summary><p>The option targets recognized SQL keywords. Identifiers, quoted text, function names, data types, and JSON paths are configured to preserve their spelling. A formatter can lag new MySQL syntax, so a diff and target-server check are still required.</p></details>
+          <details><summary>Can I use this to migrate MySQL to PostgreSQL or SQL Server?</summary><p>No. Formatting is not dialect translation. A migration must address types, functions, quoting, pagination, JSON behavior, upserts, stored programs, indexes, transactions, collations, and application semantics with dedicated tooling and tests.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Official MySQL 8.4 references</p><h2 id="references-heading">MySQL syntax and formatting resources</h2></div>
+        <ul>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/language-structure.html" target="_blank" rel="noreferrer">MySQL 8.4 Language Structure</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/identifier-qualifiers.html" target="_blank" rel="noreferrer">MySQL 8.4 Identifier Qualifiers</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/sql-mode.html" target="_blank" rel="noreferrer">MySQL 8.4 Server SQL Modes</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/comments.html" target="_blank" rel="noreferrer">MySQL 8.4 Comments</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/select.html" target="_blank" rel="noreferrer">MySQL 8.4 SELECT Statement</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/prepare.html" target="_blank" rel="noreferrer">MySQL 8.4 PREPARE Statement</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.4/en/json-function-reference.html" target="_blank" rel="noreferrer">MySQL 8.4 JSON Function Reference</a></li>
+          <li><a href="/guides/sql-dialect-formatting/">LiveParse SQL dialect formatting guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">JSON Formatter</a><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">SQL Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · MySQL formatting runs locally · No query execution</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive MySQL formatting. The SQL mode, comments, privacy, validation, and review guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/sql.tsx"></script>
+  </body>
+</html>

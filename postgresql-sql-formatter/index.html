@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PostgreSQL SQL Formatter Online – Format Postgres Locally | LiveParse</title>
+    <meta name="description" content="A PostgreSQL SQL formatter for Postgres operators, quotes, keywords, CTEs, and layout controls. Queries stay in your browser." />
+    <link rel="canonical" href="https://liveparse.com/postgresql-sql-formatter/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#087f78" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="PostgreSQL SQL Formatter Online" />
+    <meta property="og:description" content="Beautify PostgreSQL queries locally with a Postgres-aware formatting profile and explicit style controls." />
+    <meta property="og:url" content="https://liveparse.com/postgresql-sql-formatter/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse PostgreSQL SQL formatter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PostgreSQL SQL Formatter Online" />
+    <meta name="twitter:description" content="Format Postgres SQL in a private browser worker without executing the query." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/postgresql-sql-formatter/#app",
+            "name": "LiveParse PostgreSQL SQL Formatter",
+            "url": "https://liveparse.com/postgresql-sql-formatter/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "PostgreSQL query formatter",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and Web Workers",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "A private browser formatter for PostgreSQL queries with Postgres-aware token rules and configurable layout.",
+            "featureList": ["PostgreSQL dialect profile", "Keyword case controls", "Spaces or tabs", "Expression width controls", "Local Web Worker formatting", "SQL file download"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/postgresql-sql-formatter/#webpage",
+            "url": "https://liveparse.com/postgresql-sql-formatter/",
+            "name": "PostgreSQL SQL Formatter Online",
+            "description": "Format PostgreSQL SQL locally with a Postgres-aware layout engine.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/postgresql-sql-formatter/#app" },
+            "breadcrumb": { "@id": "https://liveparse.com/postgresql-sql-formatter/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/postgresql-sql-formatter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Formatter", "item": "https://liveparse.com/sql-formatter/" },
+              { "@type": "ListItem", "position": 3, "name": "PostgreSQL SQL Formatter", "item": "https://liveparse.com/postgresql-sql-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/postgresql-sql-formatter/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does the PostgreSQL formatter execute my query?", "acceptedAnswer": { "@type": "Answer", "text": "No. It changes query layout in the browser and never connects to PostgreSQL or another database." } },
+              { "@type": "Question", "name": "Does it preserve PostgreSQL dollar-quoted strings?", "acceptedAnswer": { "@type": "Answer", "text": "The PostgreSQL dialect profile recognizes dollar-quoted strings, but it does not format the embedded body of a stored routine or procedural language." } },
+              { "@type": "Question", "name": "Is successful formatting PostgreSQL validation?", "acceptedAnswer": { "@type": "Answer", "text": "No. Formatting cannot confirm grammar coverage, schemas, extension operators, types, permissions, plans, or results." } },
+              { "@type": "Question", "name": "Can it format CTEs and window functions?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The formatter lays out common table expressions, FILTER clauses, window expressions, nested queries, and other recognized PostgreSQL structures." } },
+              { "@type": "Question", "name": "Can it format stored procedures or PL/pgSQL functions?", "acceptedAnswer": { "@type": "Answer", "text": "No. Stored procedures, embedded procedural bodies, and custom-delimiter scripts, including MySQL DELIMITER directives, are not supported." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="sql-page" data-default-dialect="postgresql">
+    <a class="skip-link" href="#formatter">Skip to the PostgreSQL formatter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="#formatter">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">Guide</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">PostgreSQL profile · Local worker · No execution</p>
+          <h1>PostgreSQL SQL Formatter Online</h1>
+          <p class="hero-lead">Beautify Postgres queries with dialect-aware token handling for quoted identifiers, casts, JSON operators, CTEs, filters, window functions, and dollar-quoted strings. The SQL never leaves your browser.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#formatter">Format PostgreSQL</a><span>Free · No sign-up · 50,000-character limit</span></div>
+        </div>
+        <div class="hero-example" aria-label="Formatted PostgreSQL query example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>report.sql</strong></div>
+          <pre><code><span class="property">SELECT</span>
+  account_id,
+  <span class="string">COUNT</span>(*) <span class="property">FILTER</span> (
+    <span class="property">WHERE</span> status = <span class="boolean">'paid'</span>
+  ) <span class="property">AS</span> paid_orders
+<span class="property">FROM</span> orders
+<span class="property">GROUP BY</span> account_id;</code></pre>
+          <p><strong>Postgres-aware layout</strong><span>Formatting, not validation</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="formatter" aria-labelledby="formatter-heading">
+        <div><p class="section-kicker">PostgreSQL query beautifier</p><h2 id="formatter-heading">Format Postgres SQL without uploading it</h2></div>
+        <p>The PostgreSQL profile is selected when the page loads. Change indentation, keyword case, expression width, logical-operator breaks, and statement spacing before formatting in a local worker.</p>
+      </section>
+      <div id="sql-root"><section class="parser-fallback" aria-label="PostgreSQL formatter loading"><p><strong>Loading the PostgreSQL formatter…</strong></p><p>Enable JavaScript to format queries locally. PostgreSQL syntax guidance remains available below.</p></section></div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Three controlled steps</p><h2 id="how-heading">How to format a PostgreSQL query</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste recoverable source</h3><p>Start from version-controlled SQL or keep the original beside the result. Remove credentials and production values where possible even though formatting stays local.</p></li>
+          <li><span>2</span><h3>Keep PostgreSQL selected</h3><p>The dialect profile distinguishes Postgres tokens from Standard SQL, MySQL, BigQuery, and T-SQL. Choose the actual execution target rather than the mode that produces the prettiest result.</p></li>
+          <li><span>3</span><h3>Review and validate separately</h3><p>Compare every literal, identifier, placeholder, comment, cast, and operator, then parse, prepare, lint, explain, or test with the exact PostgreSQL version and extensions you use.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="lexical" aria-labelledby="lexical-heading">
+        <div class="section-heading"><p class="section-kicker">Dialect choice starts with tokens</p><h2 id="lexical-heading">Why PostgreSQL needs its own SQL formatter</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>PostgreSQL shares familiar SQL clauses but extends the language with distinct literal forms, operators, types, functions, procedural bodies, and commands. A generic formatter can recognize <code>SELECT</code> and <code>WHERE</code> yet still mishandle a dollar-quoted function, JSON containment operator, cast, range expression, or nested block comment.</p>
+            <p>Unquoted PostgreSQL identifiers are folded to lowercase. Double-quoted identifiers preserve their spelling and case, so changing <code>customer</code> to <code>"Customer"</code> is not a style cleanup: it can name a different object. This tool leaves identifier spelling and quote characters alone. The keyword-case option applies to recognized keywords, while data types and function names are preserved to reduce accidental changes to extension and user-defined names.</p>
+            <p>Dollar quoting can delimit strings with <code>$$</code> or matching tags such as <code>$function$</code>. The body can contain single quotes, semicolons, comment markers, and another language. A PostgreSQL-aware tokenizer can keep that region together, but a query formatter is not automatically a PL/pgSQL, PL/Python, or PL/Perl formatter. Treat stored routine bodies as a high-risk diff.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Identifiers</dt><dd>Unquoted names fold to lowercase; double quotes preserve spelling.</dd></div>
+            <div><dt>Casts</dt><dd><code>expression::type</code> is common PostgreSQL syntax.</dd></div>
+            <div><dt>Parameters</dt><dd>Drivers commonly use positional markers such as <code>$1</code>.</dd></div>
+            <div><dt>Dollar quoting</dt><dd>Tagged delimiters can contain procedural or other embedded text.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="operators" aria-labelledby="operators-heading">
+        <div class="section-heading"><p class="section-kicker">Punctuation can carry meaning</p><h2 id="operators-heading">Preserve PostgreSQL JSON, array, range, and text operators</h2></div>
+        <div class="use-case-grid">
+          <article><h3>JSON and JSONB</h3><p>Operators such as <code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>#&gt;</code>, <code>@&gt;</code>, and <code>?</code> work on structured values. They must be tokenized as operators rather than split or mistaken for placeholders.</p></article>
+          <article><h3>Arrays and ranges</h3><p>PostgreSQL defines containment, overlap, concatenation, and comparison behavior across array and range types. Formatting should expose expression structure without rewriting its operator.</p></article>
+          <article><h3>Full-text search</h3><p>Types and operators such as <code>tsvector</code>, <code>tsquery</code>, and <code>@@</code> form expressions that a generic SQL vocabulary may not understand.</p></article>
+          <article><h3>Extensions</h3><p>Installed extensions can add data types, functions, and operators. A formatter version cannot know every local extension, so preserved name case and a careful diff remain essential.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="query-shapes" aria-labelledby="shapes-heading">
+        <div class="section-heading"><p class="section-kicker">Make complex Postgres readable</p><h2 id="shapes-heading">Format CTEs, FILTER clauses, windows, and RETURNING</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Common table expressions become easier to review when each CTE name, column list, and query body has a visible boundary. Recursive CTEs deserve extra attention because the anchor and recursive terms have different roles. Formatting does not detect a non-terminating recursive condition or prove that materialization choices are appropriate.</p>
+            <p>PostgreSQL aggregate <code>FILTER</code> clauses can replace several conditional expressions with explicit per-aggregate predicates. Window functions add partition, ordering, and frame specifications whose nesting benefits from indentation. The formatter can lay these elements out; the database planner and application tests must determine whether the result means and performs what you expect.</p>
+            <p><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, and <code>MERGE</code> can return rows through <code>RETURNING</code>. A polished data-changing statement is still data-changing. Keep the original filter visible, use transactions and appropriate permissions, and never treat a successful format as permission to run it in production.</p>
+          </div>
+          <div class="callout-card"><strong>Formatting does not inspect a schema</strong><p>LiveParse does not know whether a relation, column, cast, function, operator, type, role, row policy, or extension exists. It also cannot see <code>search_path</code>, session settings, transaction state, or parameter types.</p><a href="/guides/sql-dialect-formatting/">Read the dialect guide →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="privacy" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local by design</p><h2 id="privacy-heading">A private PostgreSQL query formatter</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>No query API</h3><p>The query is passed to a worker created by this page and returned to the same page. No PostgreSQL server, formatter service, or database proxy receives it.</p></article>
+          <article><span aria-hidden="true">02</span><h3>No URL or saved draft</h3><p>Input and output are not placed in a shareable URL or browser storage. Reloading or closing the tab clears the working state held by the page.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Bounded work</h3><p>Input is limited to 50,000 characters, a warning appears above 25,000, work stops after 2 seconds, and output beyond 200,000 characters is discarded.</p></article>
+          <article><span aria-hidden="true">04</span><h3>User-controlled export</h3><p>Clipboard and local <code>.sql</code> download actions occur only when you press their buttons. Your device and extensions remain separate privacy boundaries.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="not-validation" aria-labelledby="validation-heading">
+        <div class="section-heading"><p class="section-kicker">Readable is not proven correct</p><h2 id="validation-heading">PostgreSQL formatting vs parsing, validation, and execution</h2></div>
+        <div class="error-table" role="table" aria-label="PostgreSQL formatting and validation comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Stage</span><span role="columnheader">What it can show</span><span role="columnheader">What it cannot prove</span></div>
+          <div class="error-row" role="row"><strong role="cell">Format</strong><span role="cell">A consistent readable layout for recognized tokens.</span><span role="cell">Complete grammar support, valid objects, types, privileges, or safe meaning.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Parse or prepare</strong><span role="cell">Whether the target server accepts syntax in a specific context.</span><span role="cell">Correct returned data, good performance, or harmless side effects.</span></div>
+          <div class="error-row" role="row"><strong role="cell">EXPLAIN</strong><span role="cell">A plan estimate under a database's catalog and statistics.</span><span role="cell">Exact production timing or result correctness.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Test and review</strong><span role="cell">Expected results, boundaries, permissions, and side effects in controlled cases.</span><span role="cell">Every future data distribution or operational condition.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">PostgreSQL SQL formatter FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does the PostgreSQL formatter execute my query?</summary><p>No. It changes query layout in a browser worker and never connects to PostgreSQL or another database. It has no hostname, credentials, schema catalog, session, or execution permission.</p></details>
+          <details><summary>Does it preserve PostgreSQL dollar-quoted strings?</summary><p>The PostgreSQL profile recognizes dollar-quoted strings, including tagged delimiters, but it does not format the embedded body of a stored routine or procedural language. Always inspect the diff rather than assuming embedded text was understood.</p></details>
+          <details><summary>Is successful formatting PostgreSQL validation?</summary><p>No. Formatting cannot confirm full grammar coverage, relation and column names, extension operators, types, permissions, row-level security, plans, results, or side effects. Use the exact server version and established database review process.</p></details>
+          <details><summary>Can it format CTEs and window functions?</summary><p>Yes. It lays out common table expressions, aggregate <code>FILTER</code> clauses, window expressions, nested queries, and other recognized PostgreSQL structures. Formatting does not prove that a recursive CTE terminates or a window frame matches business intent.</p></details>
+          <details><summary>Will uppercase keywords change my identifiers?</summary><p>Recognized keywords can be uppercased, lowercased, or preserved. Identifier, function, and data-type spelling is preserved. Quoted identifiers and string content remain quoted text. Review extension and user-defined names after every automated rewrite.</p></details>
+          <details><summary>Can it format stored procedures or PL/pgSQL functions?</summary><p>No. Stored procedures, embedded procedural bodies, and custom-delimiter scripts—including scripts using MySQL's <code>DELIMITER</code> client directive—are not supported. Use specialized routine tooling and preserve unsupported text rather than trying to repair it automatically.</p></details>
+          <details><summary>Why was a large query stopped?</summary><p>Formatting complex generated text can consume substantial memory. LiveParse limits input to 50,000 characters and terminates the worker after 2 seconds. Split a large script at safe statement boundaries and retain the original transaction and dependency order.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary and implementation references</p><h2 id="references-heading">PostgreSQL formatting resources</h2></div>
+        <ul>
+          <li><a href="https://www.postgresql.org/docs/current/sql-syntax-lexical.html" target="_blank" rel="noreferrer">PostgreSQL: Lexical Structure</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/functions-json.html" target="_blank" rel="noreferrer">PostgreSQL: JSON Functions and Operators</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/sql-expressions.html" target="_blank" rel="noreferrer">PostgreSQL: Value Expressions</a></li>
+          <li><a href="https://www.npmjs.com/package/sql-formatter" target="_blank" rel="noreferrer">sql-formatter package documentation</a></li>
+          <li><a href="/guides/sql-dialect-formatting/">SQL Dialect Formatting Guide</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser tools for structured data and developer queries.</p></div>
+      <div class="footer-links"><a href="/sql-formatter/">SQL Formatter</a><a href="/mysql-sql-formatter/">MySQL</a><a href="/postgresql-sql-formatter/">PostgreSQL</a><a href="/bigquery-sql-formatter/">BigQuery</a><a href="/sql-server-formatter/">SQL Server</a><a href="/guides/sql-dialect-formatting/">Dialect Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">Last reviewed August 4, 2026 · PostgreSQL formatting runs locally · No query execution</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive PostgreSQL formatting. The PostgreSQL syntax, privacy, and validation guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/sql.tsx"></script>
+  </body>
+</html>

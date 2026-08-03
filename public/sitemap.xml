@@ -65,6 +65,26 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/sql-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/mysql-sql-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/postgresql-sql-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/bigquery-sql-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/sql-server-formatter/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/privacy/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
@@ -110,6 +130,10 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/jwt-decode-vs-verify/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/sql-dialect-formatting/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

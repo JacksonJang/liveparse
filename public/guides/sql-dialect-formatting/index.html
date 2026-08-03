@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, and SQL Server | LiveParse</title>
+    <meta name="description" content="A SQL dialect formatting guide for MySQL, PostgreSQL, BigQuery, and SQL Server: preserve syntax and keep formatting separate from validation." />
+    <link rel="canonical" href="https://liveparse.com/guides/sql-dialect-formatting/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, and SQL Server" />
+    <meta property="og:description" content="A practical guide to formatting four major SQL dialects without confusing readable layout with validation or execution." />
+    <meta property="og:url" content="https://liveparse.com/guides/sql-dialect-formatting/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide to formatting MySQL, PostgreSQL, BigQuery, and SQL Server" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SQL Dialect Formatting Guide" />
+    <meta name="twitter:description" content="Format MySQL, PostgreSQL, BigQuery, and SQL Server accurately while preserving dialect-specific syntax, comments, and intent." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/guides/sql-dialect-formatting/#webpage",
+            "name": "SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, and SQL Server",
+            "description": "Learn how SQL formatting differs across MySQL, PostgreSQL, BigQuery, and SQL Server, which syntax must be preserved, and why formatting is not validation.",
+            "url": "https://liveparse.com/guides/sql-dialect-formatting/",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@type": "WebSite",
+              "@id": "https://liveparse.com/#website",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "breadcrumb": { "@id": "https://liveparse.com/guides/sql-dialect-formatting/#breadcrumb" },
+            "mainEntity": { "@id": "https://liveparse.com/guides/sql-dialect-formatting/#article" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/sql-dialect-formatting/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SQL Dialect Formatting", "item": "https://liveparse.com/guides/sql-dialect-formatting/" }
+            ]
+          },
+          {
+            "@type": ["Article", "TechArticle"],
+            "@id": "https://liveparse.com/guides/sql-dialect-formatting/#article",
+            "headline": "SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, and SQL Server",
+            "description": "A practical guide to formatting four major SQL dialects without confusing readable layout with validation or execution.",
+            "url": "https://liveparse.com/guides/sql-dialect-formatting/",
+            "mainEntityOfPage": { "@id": "https://liveparse.com/guides/sql-dialect-formatting/#webpage" },
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "articleSection": "SQL Development",
+            "inLanguage": "en",
+            "author": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/sql-formatter/">SQL Formatter</a>
+        <a href="/mysql-sql-formatter/">MySQL</a>
+        <a href="/postgresql-sql-formatter/">PostgreSQL</a>
+        <a href="/bigquery-sql-formatter/">BigQuery</a>
+        <a href="/sql-server-formatter/">SQL Server</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">SQL Dialect Formatting</span></nav>
+          <p class="eyebrow">SQL formatting guide</p>
+          <h1>SQL Dialect Formatting</h1>
+          <p class="dek">Readable SQL is not one universal layout problem. MySQL, PostgreSQL, BigQuery, and SQL Server share familiar clauses, but their identifiers, literals, comments, operators, extensions, and row-limiting syntax require dialect-aware formatting.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>16 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>The short answer:</strong> select the dialect that will execute the query, then format with rules that recognize that dialect's tokens and grammar. A generic formatter may misread backticks, brackets, dollar-quoted strings, executable comments, <code>QUALIFY</code>, <code>TOP</code>, or vendor-specific operators. Formatting improves presentation; it does not prove that a statement is syntactically valid, that names and types exist, that permissions allow it, that it is safe, or that it returns the intended result. Validation and execution are separate steps.</p>
+            </div>
+
+            <h2 id="why-dialects">Why SQL dialects change formatting</h2>
+            <p>SQL is standardized, but production databases implement families of related languages rather than one interchangeable grammar. A basic <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, and <code>ORDER BY</code> sequence travels well. The edges do not. Each engine adds data types, functions, operators, procedural statements, query clauses, identifier rules, comments, and client commands. Some use the same punctuation for different purposes.</p>
+            <p>A formatter must first recognize tokens: which characters start a string, identifier, parameter, comment, operator, or statement boundary. It then needs enough structural knowledge to indent clauses and expressions without moving text across a meaningful boundary. Choosing the wrong dialect can therefore do more than produce an unfashionable style. It can split one token into several, treat executable text as a comment, change where a statement appears to end, or place a vendor clause in the wrong part of a query.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Feature</th><th scope="col">MySQL</th><th scope="col">PostgreSQL</th><th scope="col">BigQuery GoogleSQL</th><th scope="col">SQL Server T-SQL</th></tr></thead>
+                <tbody>
+                  <tr><td>Common quoted identifier</td><td>Backticks</td><td>Double quotes</td><td>Backticks</td><td>Brackets; double quotes with the relevant setting</td></tr>
+                  <tr><td>Common row limit</td><td><code>LIMIT</code></td><td><code>LIMIT</code></td><td><code>LIMIT</code></td><td><code>TOP</code> or <code>OFFSET … FETCH</code></td></tr>
+                  <tr><td>Notable literal form</td><td>SQL-mode-dependent string behavior</td><td>Dollar-quoted strings</td><td>Raw and triple-quoted strings</td><td>Unicode strings prefixed with <code>N</code></td></tr>
+                  <tr><td>Notable extension</td><td>Executable version comments</td><td><code>::</code> casts and rich operators</td><td><code>ARRAY</code>, <code>STRUCT</code>, <code>UNNEST</code>, <code>QUALIFY</code></td><td>Variables, temporary objects, table hints, batches</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>These are useful recognition clues, not a reliable dialect detector. Backticks occur in both MySQL and BigQuery. Double-quoted identifiers occur in standard SQL and PostgreSQL and can occur in SQL Server. A query may also be valid in multiple engines. The authoritative answer is the destination database and version, plus any compatibility or SQL-mode settings used there.</p>
+
+            <h2 id="formatting-limits">Formatting is not validation or execution</h2>
+            <p>A SQL formatter rearranges presentation. Typical operations include adding line breaks, selecting an indentation width, changing the case of recognized keywords, and aligning or separating clauses. A well-designed formatter preserves string contents, identifiers, comments, parameter markers, and operator meaning. Some formatters build a syntax tree; others use a tolerant tokenizer and layout rules so they can still format incomplete work.</p>
+            <p>That behavior is valuable, but it does not establish correctness. A formatter can produce attractive output from a misspelled column, an inaccessible table, incompatible types, a function absent from the target version, or a query with the wrong join condition. Even a parser-backed formatter usually knows only the grammar it implements. It does not necessarily have the live database catalog, session settings, user privileges, temporary objects, stored routines, or parameter types.</p>
+            <div class="note">
+              <p><strong>Never use “formatted successfully” as an approval signal.</strong> Formatting is not syntax validation, schema validation, query planning, execution, security review, or a test of business intent. Validate with tooling for the exact engine and version, inspect the diff, and execute only in an appropriately isolated environment with the intended parameters and permissions.</p>
+            </div>
+            <p>The reverse is also important: a formatter error does not prove that the database will reject the statement. The formatter may lag a new engine feature, encounter a template directive, or support only a subset of stored-program syntax. Preserve the original query and report the formatting limitation instead of “repairing” unfamiliar text automatically.</p>
+
+            <h2 id="shared-style">Style choices that can be shared safely</h2>
+            <p>Teams can standardize many visual choices across dialects. Uppercase or lowercase keywords, two or four spaces, blank lines between common table expressions, and a target expression width are presentation policies. Some formatters also expose leading- or trailing-comma controls; LiveParse currently follows its formatting engine's comma layout and does not expose a comma-style setting. Consistency reduces review noise and makes joins, filters, grouping, window definitions, and nested subqueries easier to scan.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">A portable-looking core query</figcaption>
+              <pre><code>SELECT
+  customer_id,
+  COUNT(*) AS order_count,
+  SUM(total_amount) AS total_spend
+FROM orders
+WHERE created_at &gt;= :start_time
+GROUP BY customer_id
+HAVING COUNT(*) &gt; 1
+ORDER BY total_spend DESC;</code></pre>
+            </figure>
+            <p>Even this example is not completely portable. The named parameter <code>:start_time</code> is a client convention rather than universal server syntax. A PostgreSQL driver might use <code>$1</code>; BigQuery supports named parameters such as <code>@start_time</code> and positional question marks; SQL Server variables commonly begin with <code>@</code>; another client may substitute values before the database sees the query. Formatting configuration must distinguish placeholders from operators and casts.</p>
+            <p>Keyword case changes are normally safe only for tokens confidently recognized as keywords. Never case-fold quoted identifiers, string literals, JSON paths, regular expressions, aliases, or template expressions. Do not reorder predicates, columns, joins, or common table expressions merely to “normalize” them. Reordering can change evaluation, duplicate-name resolution, volatile function calls, lock behavior, output column order, or simply the intended review history.</p>
+
+            <h2 id="mysql">Formatting MySQL</h2>
+            <p>MySQL commonly quotes identifiers with backticks. Double quotes normally delimit strings, but <code>ANSI_QUOTES</code> changes their role to quoted identifiers. Other SQL modes affect escaping and parsing. A formatter that guesses from punctuation without knowing the configured mode can misclassify text. Preserve the original quote characters unless a separate, deliberate migration is underway.</p>
+            <p>Comments deserve special care. MySQL supports <code>#</code> line comments, block comments, and a double-dash form whose second dash must be followed by whitespace or a control character. It also supports executable comments such as <code>/*! ... */</code>, version-qualified executable comments, and optimizer hints beginning with <code>/*+</code>. These blocks may look decorative to a generic SQL formatter, but the server can act on their contents. They must remain attached to the intended statement and must not be discarded.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">MySQL-specific tokens to preserve</figcaption>
+              <pre><code>SELECT /*+ BKA(o) */
+  o.`order`,
+  JSON_UNQUOTE(JSON_EXTRACT(o.payload, '$.customer.id')) AS customer_id
+FROM `sales`.`orders` AS o
+WHERE o.created_at &gt;= ?
+ORDER BY o.created_at DESC
+LIMIT 25 OFFSET 50;</code></pre>
+            </figure>
+            <p>The formatter can separate the clauses and indent the expressions. It should not convert backticks to double quotes, reinterpret the JSON path, move the hint away from the statement it guides, or replace <code>LIMIT</code> with another engine's syntax. For focused work, use the <a href="/mysql-sql-formatter/">MySQL SQL Formatter</a>. Oracle's official <a href="https://dev.mysql.com/doc/refman/8.4/en/language-structure.html" rel="external">MySQL 8.4 Language Structure</a> documents literals, identifiers, keywords, expressions, and comments; formatting policy should start from those lexical rules.</p>
+
+            <h2 id="postgresql">Formatting PostgreSQL</h2>
+            <p>PostgreSQL folds unquoted identifiers to lowercase, while double-quoted identifiers preserve spelling and case. A formatter may uppercase keywords, but it must not change identifier quoting or case. PostgreSQL also supports dollar-quoted strings, including tagged delimiters such as <code>$function$ ... $function$</code>. Their contents can contain quotes, semicolons, comments, and procedural code without ending the outer string.</p>
+            <p>Operators are another boundary. PostgreSQL uses <code>::</code> casts and has operator families for arrays, ranges, full-text search, JSON, and extensions. The tokens <code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>#&gt;</code>, <code>@&gt;</code>, and others are not arbitrary punctuation to space or split character by character. Nested block comments are supported, so a tokenizer designed around the first closing marker can also end a comment too early.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">PostgreSQL-specific syntax</figcaption>
+              <pre><code>WITH recent_orders AS (
+  SELECT
+    id,
+    payload -&gt;&gt; 'customer_id' AS customer_id,
+    created_at::date AS order_date
+  FROM sales.orders
+  WHERE created_at &gt;= $1::timestamptz
+)
+SELECT customer_id, COUNT(*) AS order_count
+FROM recent_orders
+GROUP BY customer_id
+ORDER BY order_count DESC
+LIMIT 25 OFFSET 50;</code></pre>
+            </figure>
+            <p>Stored functions raise the stakes because a dollar-quoted body may contain PL/pgSQL or even another language. Format the outer SQL and embedded language only when the tool explicitly understands both layers. Otherwise preserve the body as an opaque literal. The <a href="/postgresql-sql-formatter/">PostgreSQL SQL Formatter</a> selects PostgreSQL-aware layout, while the official <a href="https://www.postgresql.org/docs/current/sql-syntax-lexical.html" rel="external">PostgreSQL lexical structure</a> is the primary reference for tokens, quoted identifiers, constants, dollar quoting, comments, and operators.</p>
+
+            <h2 id="bigquery">Formatting BigQuery GoogleSQL</h2>
+            <p>BigQuery's GoogleSQL dialect uses backticks for quoted identifiers, including fully qualified paths such as <code>`project.dataset.table`</code>. That looks superficially like MySQL, but BigQuery's grammar includes nested and repeated data, <code>ARRAY</code> and <code>STRUCT</code> constructors, <code>UNNEST</code>, <code>QUALIFY</code>, wildcard tables, and cloud-specific statements. Selecting MySQL because a query contains backticks will misclassify many of these structures.</p>
+            <p>GoogleSQL string and bytes literals have several prefixes and quoting forms, including raw and triple-quoted literals. Literal chunks can be concatenated under documented separation rules. A formatter must scan the full literal form before interpreting commas, comment markers, backslashes, or newlines within it. Query parameters may be named with <code>@name</code> or positional with <code>?</code>, but they cannot replace identifiers.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">BigQuery-specific nested data and QUALIFY</figcaption>
+              <pre><code>SELECT
+  o.order_id,
+  item.sku,
+  item.quantity,
+  SUM(item.quantity) OVER (
+    PARTITION BY o.customer_id
+  ) AS customer_units
+FROM `analytics-prod.sales.orders` AS o
+CROSS JOIN UNNEST(o.items) AS item
+WHERE o.created_at &gt;= @start_time
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY o.customer_id
+  ORDER BY o.created_at DESC
+) &lt;= 25;</code></pre>
+            </figure>
+            <p>A helpful layout makes nested expressions and window specifications visible without flattening a backtick path or detaching <code>QUALIFY</code> from the query block it filters. Use the <a href="/bigquery-sql-formatter/">BigQuery SQL Formatter</a> for GoogleSQL syntax. Google's official <a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical" rel="external">BigQuery lexical structure and syntax</a> documents identifiers, literal variants, parameters, comments, case sensitivity, and reserved keywords.</p>
+
+            <h2 id="sql-server">Formatting SQL Server T-SQL</h2>
+            <p>SQL Server's Transact-SQL commonly uses square brackets for delimited identifiers, <code>@</code> variables, <code>#</code> temporary table names, <code>TOP</code>, table hints, and procedural control flow. Double-quoted identifier behavior depends on <code>QUOTED_IDENTIFIER</code>. Unicode string constants conventionally use an <code>N</code> prefix. These characters need lexical treatment before a formatter decides how to space an expression.</p>
+            <p>Pagination differs visibly from the other three dialects. <code>TOP (25)</code> restricts a query near <code>SELECT</code>. Offset pagination uses <code>ORDER BY ... OFFSET ... ROWS FETCH NEXT ... ROWS ONLY</code>. Replacing either form with <code>LIMIT</code> is a translation, not formatting. A formatter must also keep table hints and <code>OPTION</code> query hints in their correct structural positions.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">SQL Server offset pagination</figcaption>
+              <pre><code>DECLARE @start_time datetime2 = '2026-08-01T00:00:00';
+
+SELECT
+  o.[order],
+  JSON_VALUE(o.payload, '$.customer.id') AS customer_id,
+  o.created_at
+FROM sales.orders AS o
+WHERE o.created_at &gt;= @start_time
+ORDER BY o.created_at DESC
+OFFSET 50 ROWS
+FETCH NEXT 25 ROWS ONLY;</code></pre>
+            </figure>
+            <p><code>GO</code> is especially easy to misunderstand. It is recognized as a batch separator by tools such as SQL Server Management Studio and sqlcmd; it is not a Transact-SQL statement sent to the server in the same way as <code>SELECT</code>. A formatter that supports scripts may preserve and align batches, while a formatter for one server statement may reject the marker. The <a href="/sql-server-formatter/">SQL Server Formatter</a> targets T-SQL layout. Microsoft's official <a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transact-sql-syntax-conventions-transact-sql?view=sql-server-ver17" rel="external">Transact-SQL syntax conventions</a> explains statement notation, multipart names, terminators, and documented applicability across SQL Server products.</p>
+
+            <h2 id="choosing">How to choose the correct formatter dialect</h2>
+            <ol>
+              <li><strong>Identify the execution target.</strong> Use the database product, major version, compatibility level, and SQL mode from the application configuration or connection—not a guess based on one keyword.</li>
+              <li><strong>Separate generated templates from executable SQL.</strong> dbt, Jinja, application placeholders, migration directives, and ORM annotations may exist before compilation but never reach the database. Choose a formatter that understands the template layer or format the compiled SQL.</li>
+              <li><strong>Preserve comments and hints.</strong> Comments can carry optimizer hints, version gates, migration metadata, or review explanations. Treat unknown comment-like forms as content rather than deleting them.</li>
+              <li><strong>Confirm procedural scope.</strong> LiveParse does not support stored procedures or custom-delimiter scripts, including MySQL <code>DELIMITER</code> directives. Use engine- and client-aware tooling for routines, scripting blocks, and batch commands.</li>
+              <li><strong>Pin a formatter version in automation.</strong> Layout algorithms and grammar support evolve. A pinned version prevents an upgrade from rewriting an entire repository without an intentional review.</li>
+            </ol>
+            <p>If the source is genuinely portable SQL, the generic <a href="/sql-formatter/">online SQL Formatter</a> is a practical starting point. Once a query uses engine-specific syntax, select its matching dialect. Do not create several files formatted under different modes and assume the prettiest output identifies the correct database.</p>
+
+            <h2 id="workflow">A safe formatting workflow</h2>
+            <p>Formatting is most reliable when it is a reversible review step rather than a silent mutation. Start from version-controlled or otherwise recoverable source. Select the known dialect and explicit style options. Format, then inspect a whitespace-aware and token-aware diff. The changed output should retain every literal, identifier, placeholder, comment, hint, and statement in the same logical order.</p>
+            <ol>
+              <li>Save the original SQL and record the intended engine and version.</li>
+              <li>Choose keyword case, indentation, expression width, and blank-line policy. LiveParse does not expose a comma-style control.</li>
+              <li>Format locally when the query may contain production names, filters, customer identifiers, or proprietary logic.</li>
+              <li>Review the diff, paying special attention to quotes, comments, hints, parameters, operators, and batch boundaries.</li>
+              <li>Run the engine's parser, linter, migration check, or prepare mechanism where appropriate.</li>
+              <li>Use <code>EXPLAIN</code> or execute only under the permissions, parameters, transaction controls, and isolated data environment suitable for that query.</li>
+              <li>Run application tests that assert results and side effects, not merely successful parsing.</li>
+            </ol>
+            <p>Do not paste a destructive statement into a production console just to validate formatting. Parsing and planning can also have permissions or locking implications depending on the engine and statement. Use the organization's established database review path. For generated SQL, keep tests against representative outputs so formatter upgrades encounter nested expressions, comments, parameters, and every supported dialect feature.</p>
+            <div class="tool-callout">
+              <p><strong>Format SQL in your browser.</strong> Start with the general SQL formatter, or open the dialect-specific workspace for MySQL, PostgreSQL, BigQuery, or SQL Server. Formatting runs as a presentation step; database validation and execution remain under your control.</p>
+              <a class="button" href="/sql-formatter/">Open the SQL Formatter</a>
+            </div>
+
+            <h2 id="review-checklist">SQL formatting review checklist</h2>
+            <ul>
+              <li><strong>Dialect:</strong> Does the selected mode match the actual database, version, and compatibility settings?</li>
+              <li><strong>Strings:</strong> Are quote delimiters, prefixes, escapes, dollar tags, raw markers, and string contents unchanged?</li>
+              <li><strong>Identifiers:</strong> Are backticks, double quotes, brackets, qualification, and case preserved?</li>
+              <li><strong>Comments and hints:</strong> Did every comment remain in the intended statement and position?</li>
+              <li><strong>Parameters:</strong> Are <code>?</code>, <code>:name</code>, <code>@name</code>, <code>$1</code>, and template placeholders still intact?</li>
+              <li><strong>Operators:</strong> Were multi-character and dialect-specific operators kept as single meaningful tokens?</li>
+              <li><strong>Boundaries:</strong> Does the input avoid unsupported stored procedures, custom delimiter directives, and client batch markers? Are ordinary semicolon-delimited statements unchanged?</li>
+              <li><strong>Scope:</strong> Did the tool format only the SQL language layers it actually supports?</li>
+              <li><strong>Verification:</strong> Was correctness checked independently through review, engine-aware validation, and tests?</li>
+            </ul>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>Can one SQL formatter handle every database?</h3>
+              <p>One interface can support several dialects, but it still needs separate lexical and grammar rules behind each mode. A lowest-common-denominator formatter may handle simple queries, yet it cannot safely infer every vendor extension. Select the target explicitly and verify that the formatter version supports the constructs in the input.</p>
+
+              <h3>Does formatting SQL change how it runs?</h3>
+              <p>Whitespace and keyword case changes outside quoted content normally preserve meaning, but a faulty or mismatched formatter can alter tokens, comments, hints, template expressions, or statement boundaries. Always inspect the diff. Any tool that rewrites expressions, converts functions, changes pagination, or replaces identifier quotes is performing translation or refactoring, not merely formatting.</p>
+
+              <h3>Does a SQL formatter validate syntax?</h3>
+              <p>Not necessarily. Some formatters use parsers and can report certain syntax errors; others deliberately tolerate incomplete SQL. Neither behavior proves acceptance by the target database. Exact syntax depends on engine version and settings, while name resolution, types, privileges, and runtime behavior require more context than a formatter has.</p>
+
+              <h3>Can formatting prove that a query is safe?</h3>
+              <p>No. A cleanly formatted statement can contain SQL injection, excessive access, a destructive operation, an unbounded scan, a Cartesian join, or a subtle authorization failure. Use parameter binding, least privilege, code review, query planning, resource controls, and application tests. Formatting only makes the text easier to inspect.</p>
+
+              <h3>Should SQL keywords be uppercase?</h3>
+              <p>Uppercase keywords are a common convention, not a universal semantic requirement. Lowercase keywords can be equally readable when applied consistently. Configure the team's preferred style, but never apply case changes to string contents or quoted identifiers and avoid guessing whether an ambiguous word is a keyword without dialect context.</p>
+
+              <h3>Should commas be leading or trailing?</h3>
+              <p>Both styles can be readable. Trailing commas resemble many programming languages; leading commas can make selected-column diffs visually obvious. Choose one policy when your formatter exposes that option. LiveParse currently follows its formatting engine's comma layout and does not offer a leading-versus-trailing comma control. Dialect validity still takes precedence, particularly in contexts where a trailing comma is or is not accepted.</p>
+
+              <h3>Can LiveParse format stored procedures or custom-delimiter scripts?</h3>
+              <p>No. LiveParse's SQL formatters do not support stored procedures or custom-delimiter scripts, including MySQL <code>DELIMITER</code> directives. Use engine- and client-aware tooling for routines, procedural bodies, deployment scripts, and batch commands.</p>
+
+              <h3>How should templated SQL be formatted?</h3>
+              <p>Use a formatter that understands both the template language and the SQL dialect, or format the compiled SQL for diagnostics. A generic SQL tokenizer may interpret template braces, control blocks, or macros as operators and identifiers. Do not overwrite the template from compiled output because comments, macros, source mappings, and abstractions may be lost.</p>
+
+              <h3>Which dialect should I select for Amazon-compatible or cloud databases?</h3>
+              <p>Select the documented language of the actual service rather than the vendor it resembles. Cloud warehouses and compatible databases often start from PostgreSQL, MySQL, or another grammar and then add or remove syntax. Use a dedicated dialect when available; otherwise document the closest supported mode and review unsupported extensions carefully.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://dev.mysql.com/doc/refman/8.4/en/language-structure.html" rel="external">MySQL 8.4 Reference Manual: Language Structure</a> — official rules for literals, identifiers, keywords, expressions, and comments.</li>
+                <li><a href="https://dev.mysql.com/doc/refman/8.4/en/comments.html" rel="external">MySQL 8.4 Reference Manual: Comments</a> — line comments, block comments, executable version comments, and optimizer-hint comments.</li>
+                <li><a href="https://www.postgresql.org/docs/current/sql-syntax-lexical.html" rel="external">PostgreSQL: Lexical Structure</a> — official documentation for tokens, identifiers, constants, dollar quoting, comments, and operators.</li>
+                <li><a href="https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical" rel="external">BigQuery GoogleSQL: Lexical Structure and Syntax</a> — official rules for identifiers, literal forms, parameters, comments, and reserved keywords.</li>
+                <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transact-sql-syntax-conventions-transact-sql?view=sql-server-ver17" rel="external">Microsoft Transact-SQL Syntax Conventions</a> — official reference notation, multipart names, statement terminators, and product applicability.</li>
+                <li><a href="https://learn.microsoft.com/en-us/sql/t-sql/language-elements/sql-server-utilities-statements-go?view=sql-server-ver17" rel="external">Microsoft: GO command</a> — the client-tool batch separator and its distinction from a Transact-SQL statement.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Format SQL by dialect</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/sql-formatter/"><strong>SQL Formatter</strong><span>Format SQL locally with explicit layout and dialect options.</span></a>
+                <a class="related-card" href="/mysql-sql-formatter/"><strong>MySQL SQL Formatter</strong><span>Preserve MySQL backticks, comments, hints, and LIMIT syntax.</span></a>
+                <a class="related-card" href="/postgresql-sql-formatter/"><strong>PostgreSQL SQL Formatter</strong><span>Format PostgreSQL casts, operators, dollar quoting, and query clauses.</span></a>
+                <a class="related-card" href="/bigquery-sql-formatter/"><strong>BigQuery SQL Formatter</strong><span>Format GoogleSQL paths, arrays, structs, UNNEST, windows, and QUALIFY.</span></a>
+                <a class="related-card" href="/sql-server-formatter/"><strong>SQL Server Formatter</strong><span>Format T-SQL variables, bracketed names, TOP, OFFSET/FETCH, and query hints.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#why-dialects">Why dialects matter</a></li>
+              <li><a href="#formatting-limits">Formatting limits</a></li>
+              <li><a href="#shared-style">Shared style choices</a></li>
+              <li><a href="#mysql">MySQL</a></li>
+              <li><a href="#postgresql">PostgreSQL</a></li>
+              <li><a href="#bigquery">BigQuery</a></li>
+              <li><a href="#sql-server">SQL Server</a></li>
+              <li><a href="#choosing">Choose a dialect</a></li>
+              <li><a href="#workflow">Safe workflow</a></li>
+              <li><a href="#review-checklist">Review checklist</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+              <li><a href="#references-title">References</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">Home</a> · <a href="/sql-formatter/">SQL Formatter</a> · <a href="/mysql-sql-formatter/">MySQL</a> · <a href="/postgresql-sql-formatter/">PostgreSQL</a> · <a href="/bigquery-sql-formatter/">BigQuery</a> · <a href="/sql-server-formatter/">SQL Server</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>
