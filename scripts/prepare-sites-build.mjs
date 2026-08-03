@@ -1,14 +1,24 @@
 #!/usr/bin/env node
 
-import { copyFile, mkdir } from 'node:fs/promises';
+import { cp, copyFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const distDirectory = resolve(projectRoot, 'dist');
 const source = resolve(projectRoot, 'server/worker.js');
-const serverDirectory = resolve(projectRoot, 'dist/server');
+const serverDirectory = resolve(distDirectory, 'server');
 const destination = resolve(serverDirectory, 'index.js');
+const clientDirectory = resolve(distDirectory, 'client');
 
 await mkdir(serverDirectory, { recursive: true });
 await copyFile(source, destination);
+await rm(clientDirectory, { recursive: true, force: true });
+await mkdir(clientDirectory, { recursive: true });
+
+for (const entry of await readdir(distDirectory, { withFileTypes: true })) {
+  if (entry.name === 'client' || entry.name === 'server' || entry.name === '.openai') continue;
+  await cp(resolve(distDirectory, entry.name), resolve(clientDirectory, entry.name), { recursive: true });
+}
+
 console.log('Prepared Cloudflare Worker entry for Sites hosting.');

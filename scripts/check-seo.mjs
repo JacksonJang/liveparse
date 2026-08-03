@@ -192,6 +192,7 @@ async function walkFiles(root) {
   const files = [];
   async function visit(directory) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
+      if (directory === root && entry.isDirectory() && entry.name === 'client') continue;
       const entryPath = join(directory, entry.name);
       if (entry.isDirectory()) await visit(entryPath);
       else if (entry.isFile()) files.push(entryPath);
