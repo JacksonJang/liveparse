@@ -43,6 +43,10 @@ describe('request eligibility', () => {
     '/json-compare/',
     '/discord-timestamp-generator/',
     '/base64-decoder/',
+    '/uuid-v4-generator/',
+    '/uuid-decoder/',
+    '/guides/uuid-versions-explained/',
+    '/guides/uuid-collision-probability/',
     '/jwt-decoder/',
     '/jwt-expiration-checker/',
     '/sql-formatter/',
@@ -92,6 +96,17 @@ describe('request eligibility', () => {
     ['/sql-server-formatter/', 'https://search.brave.com/search?q=sql+server+formatter', 'brave'],
     ['/guides/sql-dialect-formatting/', 'https://www.google.co.kr/search?q=sql+dialect+formatting', 'google'],
   ])('counts the canonical SQL landing %s', (requestPath, referrer, engine) => {
+    expect(searchReferralFromRequest({
+      method: 'GET', isHtml: true, requestPath, referrer, userAgent: browser, allowedPaths,
+    })).toEqual({ engine, path: requestPath });
+  });
+
+  it.each([
+    ['/uuid-v4-generator/', 'https://www.google.com/search?q=uuid+v4+generator', 'google'],
+    ['/uuid-decoder/', 'https://www.bing.com/search?q=uuid+decoder', 'bing'],
+    ['/guides/uuid-versions-explained/', 'https://duckduckgo.com/?q=uuid+versions', 'duckduckgo'],
+    ['/guides/uuid-collision-probability/', 'https://search.yahoo.com/search?p=uuid+collision+probability', 'yahoo'],
+  ])('counts the canonical UUID landing %s', (requestPath, referrer, engine) => {
     expect(searchReferralFromRequest({
       method: 'GET', isHtml: true, requestPath, referrer, userAgent: browser, allowedPaths,
     })).toEqual({ engine, path: requestPath });

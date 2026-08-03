@@ -102,6 +102,16 @@
 .uuid-output-summary span { color: var(--uuid-muted); font-size: 9px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .uuid-output-summary strong { overflow: hidden; color: var(--uuid-deep); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .uuid-panel-note { margin: 0; padding: 10px 12px; border-radius: 11px; color: var(--uuid-muted); background: #f2f5f8; font-size: 11px; line-height: 1.55; }
+.uuid-collision-estimate { display: grid; gap: 12px; padding: 15px; border: 1px solid rgba(52, 88, 212, .2); border-radius: 15px; background: linear-gradient(145deg, #f7f9ff, #fffdf8); }
+.uuid-collision-estimate > div > p { margin: 0 0 3px; color: var(--uuid-blue-dark); font-size: 9px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.uuid-collision-estimate h3 { margin: 0; color: var(--uuid-deep); font-size: 15px; }
+.uuid-collision-estimate dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; margin: 0; border: 1px solid var(--uuid-line); border-radius: 12px; background: var(--uuid-line); }
+.uuid-collision-estimate dl div { min-width: 0; padding: 10px; background: #fff; }
+.uuid-collision-estimate dt { color: var(--uuid-muted); font-size: 9px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.uuid-collision-estimate dd { margin: 4px 0 0; color: var(--uuid-deep); font-size: 12px; font-weight: 900; overflow-wrap: anywhere; }
+.uuid-collision-estimate > p { margin: 0; color: var(--uuid-muted); font-size: 11px; line-height: 1.55; }
+.uuid-collision-estimate > a { color: var(--uuid-blue-dark); font-size: 11px; font-weight: 900; text-decoration: none; }
+.uuid-collision-estimate > a:hover { text-decoration: underline; }
 
 .uuid-alert { margin: 0; padding: 10px 12px; border-radius: 11px; font-size: 12px; line-height: 1.5; }
 .uuid-alert.error { color: var(--uuid-red); background: var(--uuid-red-pale); }
@@ -140,7 +150,7 @@
 
 @media (max-width: 520px) {
   .uuid-toolbar, .uuid-panel-heading, .uuid-panel-body { padding-inline: 13px; }
-  .uuid-control-grid, .uuid-output-summary, .uuid-result dl { grid-template-columns: 1fr; }
+  .uuid-control-grid, .uuid-output-summary, .uuid-result dl, .uuid-collision-estimate dl { grid-template-columns: 1fr; }
   .uuid-actions { display: grid; grid-template-columns: 1fr; }
 }
 

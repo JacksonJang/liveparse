@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID Versions 1–8 Explained: RFC 9562 Guide | LiveParse</title>
+    <meta name="description" content="Compare UUID versions 1 through 8 under RFC 9562, including timestamps, randomness, name hashing, ordering, privacy, variants, Nil, and Max UUIDs." />
+    <link rel="canonical" href="https://liveparse.com/guides/uuid-versions-explained/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#3458d4" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="UUID Versions 1–8 Explained" />
+    <meta property="og:description" content="A standards-focused comparison of every UUID version defined or reserved by RFC 9562, plus variants, Nil, Max, timestamps, and privacy." />
+    <meta property="og:url" content="https://liveparse.com/guides/uuid-versions-explained/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide to UUID versions 1 through 8" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID Versions 1–8 Explained" />
+    <meta name="twitter:description" content="Compare time-based, name-based, random, reordered, Unix-time, and custom UUID formats under RFC 9562." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/uuid-versions-explained/#article",
+            "headline": "UUID Versions 1–8 Explained: RFC 9562 Guide",
+            "description": "Compare UUID versions 1 through 8 under RFC 9562, including timestamps, randomness, name hashing, ordering, privacy, variants, Nil, and Max UUIDs.",
+            "mainEntityOfPage": "https://liveparse.com/guides/uuid-versions-explained/",
+            "url": "https://liveparse.com/guides/uuid-versions-explained/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "UUID formats",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/uuid-versions-explained/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "UUID Versions Explained", "item": "https://liveparse.com/guides/uuid-versions-explained/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/uuid-versions-explained/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Which UUID version should I use for a new application?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Use UUIDv4 when a simple random identifier and broad support are the priorities. Use UUIDv7 when new identifiers should sort approximately by creation time and improve index locality. Use UUIDv5 when the same namespace and name must deterministically produce the same identifier. The surrounding system still needs validation, uniqueness handling, and authorization." }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between a UUID variant and a UUID version?",
+                "acceptedAnswer": { "@type": "Answer", "text": "The variant selects the broad UUID layout and therefore controls how the remaining bits are interpreted. Within the RFC 9562 variant, the four-bit version field selects a particular layout such as v4 or v7. Reading a version without first recognizing the variant can misinterpret a non-RFC UUID." }
+              },
+              {
+                "@type": "Question",
+                "name": "Do UUIDv1, UUIDv6, and UUIDv7 reveal creation time?",
+                "acceptedAnswer": { "@type": "Answer", "text": "They contain timestamp fields, so a decoder can recover a time value. UUIDv1 and UUIDv6 use a 60-bit Gregorian-epoch timestamp, while UUIDv7 uses 48-bit Unix epoch milliseconds. The timestamp may be altered by a generator and is not an authenticated audit record." }
+              },
+              {
+                "@type": "Question",
+                "name": "Is UUIDv2 defined by RFC 9562?",
+                "acceptedAnswer": { "@type": "Answer", "text": "RFC 9562 reserves version 2 for DCE Security UUIDs but explicitly leaves their definition outside the specification. Do not invent a v2 layout or assume a generic UUID library implements the DCE Security format." }
+              },
+              {
+                "@type": "Question",
+                "name": "Are the Nil and Max UUIDs ordinary versioned UUIDs?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. The Nil UUID has all 128 bits set to zero, and the Max UUID has all 128 bits set to one. They are special sentinel values and fall in reserved variant ranges rather than the RFC 9562 variant used by versions 1 through 8." }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the UUID version guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/uuid-generator/">UUID Generator</a>
+        <a href="/uuid-v7-generator/">UUID v7 Generator</a>
+        <a href="/uuid-validator/">UUID Validator</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">UUID Versions Explained</span></nav>
+          <p class="eyebrow">RFC 9562 identifier guide</p>
+          <h1>UUID Versions 1–8 Explained</h1>
+          <p class="dek">A UUID version tells you how one RFC-variant 128-bit value was laid out. Compare the time-based, name-based, random, reordered, Unix-time, and custom formats without confusing a version nibble with a uniqueness guarantee.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>16 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> UUIDv1 and UUIDv6 are Gregorian-time formats; v3 and v5 deterministically hash a namespace and name; v4 is random; v7 begins with Unix epoch milliseconds; and v8 is application-defined. Version 2 is reserved for DCE Security but is not defined by RFC 9562. For new systems, v4 is the simple random default, v7 is the standard time-ordered choice, and v5 is useful for deterministic naming. A version identifies a layout—not authenticity, secrecy, or guaranteed global uniqueness.</p>
+            </div>
+
+            <h2 id="format">Start with the shared 128-bit format</h2>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc9562.html" rel="external">RFC 9562</a> defines a UUID as 16 octets, or 128 bits. The familiar text form contains 32 hexadecimal digits in five groups separated by four hyphens:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Canonical UUID text shape</figcaption>
+              <pre><code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+
+M = four-bit version field
+N = hexadecimal digit containing the leading variant bits</code></pre>
+            </figure>
+            <p>The version occupies bits 48 through 51, which appear as the first hexadecimal digit of the third group in standard text. Under the variant defined by RFC 9562, bits 64 and 65 are <code>10</code>, so the first hexadecimal digit of the fourth group is <code>8</code>, <code>9</code>, <code>a</code>, or <code>b</code>. Those fixed fields consume six bits; each version assigns the other 122 bits differently.</p>
+            <p>Hexadecimal case is not semantic. A normalized lowercase string and an uppercase string can represent the same 128-bit value. Hyphens are presentation, while the bit positions determine the format. Raw binary interchange requires extra care because Microsoft COM GUID serialization has a historical byte-order caveat that text often hides.</p>
+
+            <h2 id="variant-version">Variant and version answer different questions</h2>
+            <p>The <strong>variant</strong> chooses the broad layout family. RFC 9562 preserves older and vendor-specific variant ranges for compatibility: an NCS-reserved range, the variant defined by the RFC, a Microsoft-reserved range, and a future-reserved range. The interpretation of every other bit depends on this first classification.</p>
+            <p>The <strong>version</strong> is a four-bit subtype within the RFC variant. It identifies layouts 1 through 8, while values 9 through 15 remain reserved for future definitions. A parser should therefore identify the variant before presenting a version-specific interpretation. Merely seeing <code>4</code> in the third group does not prove that an arbitrary 128-bit string is a compliant UUIDv4.</p>
+
+            <h2 id="comparison">UUID versions at a glance</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Version</th><th scope="col">Source and layout</th><th scope="col">Deterministic?</th><th scope="col">Typical role and caution</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>v1</strong></td><td>Gregorian timestamp, clock sequence, and 48-bit node field</td><td>State-based</td><td>Legacy time-based UUID; can expose time and a hardware-derived node identifier.</td></tr>
+                  <tr><td><strong>v2</strong></td><td>Reserved for DCE Security with embedded POSIX identifiers</td><td>Format outside RFC 9562</td><td>Do not infer or implement its omitted layout from the version nibble alone.</td></tr>
+                  <tr><td><strong>v3</strong></td><td>MD5 of a namespace ID and canonical name</td><td>Yes</td><td>Legacy name-based UUID; RFC 9562 says to use v5 where possible.</td></tr>
+                  <tr><td><strong>v4</strong></td><td>122 random or pseudorandom bits plus fixed fields</td><td>No</td><td>General-purpose independent IDs; generation quality depends on the random source.</td></tr>
+                  <tr><td><strong>v5</strong></td><td>SHA-1 of a namespace ID and canonical name, truncated into the UUID layout</td><td>Yes</td><td>Standard deterministic mapping; not a signature or password hash.</td></tr>
+                  <tr><td><strong>v6</strong></td><td>v1-compatible Gregorian fields reordered with timestamp first</td><td>State-based</td><td>Migration-oriented time ordering for v1 contexts; new systems should generally prefer v7.</td></tr>
+                  <tr><td><strong>v7</strong></td><td>48-bit Unix epoch milliseconds followed by 74 payload bits</td><td>Usually randomized/stateful</td><td>Standard time-ordered choice; exposes an approximate timestamp.</td></tr>
+                  <tr><td><strong>v8</strong></td><td>122 implementation-specific bits plus fixed fields</td><td>Scheme-specific</td><td>Experimental or vendor-defined format; uniqueness must not be assumed.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="v1">UUIDv1: Gregorian time, clock sequence, and node</h2>
+            <p>UUIDv1 contains a 60-bit count of 100-nanosecond intervals since 00:00:00 UTC on October 15, 1582. A 14-bit clock sequence helps avoid duplicates when the clock moves backward or the node identifier changes. The last 48 bits hold a spatially unique node identifier, traditionally an IEEE 802 MAC address but optionally a properly marked random value.</p>
+            <p>The timestamp is split across fields in an order inherited from the original format, so raw byte sorting does not place the most significant time bits first. That awkward ordering and the uncommon Gregorian epoch are two reasons RFC 9562 introduced newer time layouts.</p>
+            <p>Privacy is the major operational concern. A hardware MAC address can expose a network-interface identifier and potentially its manufacturer. RFC 9562 advises against embedding MAC addresses and describes randomized node identifiers instead. Even with a randomized node, the timestamp remains visible and can reveal approximately when an object was created.</p>
+
+            <h2 id="v2">UUIDv2: reserved, but outside RFC 9562</h2>
+            <p>Version 2 is assigned to DCE Security UUIDs with embedded POSIX identifiers. RFC 9562 deliberately does not define that format; it points to external DCE specifications and leaves the details out of scope. The version table therefore records the reservation without providing an interoperable generation algorithm.</p>
+            <p>A generic UUID validator can recognize a version nibble of <code>2</code>, but that observation cannot verify DCE Security fields or semantics. Avoid inventing field positions, truncation rules, or security properties. If a legacy environment truly requires v2, use its authoritative platform specification and implementation.</p>
+
+            <h2 id="v3-v5">UUIDv3 and UUIDv5: deterministic namespace names</h2>
+            <p>Name-based UUIDs map a namespace ID plus a canonical byte representation of a name to the same UUID every time. Version 3 uses MD5; version 5 uses SHA-1. RFC 9562 says v5 should be used instead of v3 where possible. Both algorithms place hash output into the UUID and then overwrite the required version and variant bits.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Conceptual name-based input</figcaption>
+              <pre><code>UUIDv5(namespace_uuid, canonical_name_bytes)
+
+same namespace + same bytes  → same UUID
+different namespace or bytes → generally different UUID</code></pre>
+            </figure>
+            <p>Canonicalization is part of the contract. The text <code>Example.com</code>, <code>example.com</code>, a Unicode normalization difference, or a different character encoding can produce a different result unless the namespace's rules normalize them first. Store or document the exact namespace UUID, encoding, normalization, and case policy.</p>
+            <p>Version 5's use of SHA-1 does not make a UUID a digital signature, authenticated identifier, or secure password hash. It is a deterministic identifier construction with only 122 effective output bits after the fixed fields. RFC 9562 directs schemes that need SHA-256 or a newer hash to define a compatible UUIDv8 construction rather than labeling it v5.</p>
+
+            <h2 id="v4">UUIDv4: 122 random bits</h2>
+            <p>UUIDv4 fills the non-fixed fields with truly random or pseudorandom data. After four version bits and two variant bits are set, 122 random bits remain. It needs no clock, node address, namespace, or central allocator, which makes it the broadly supported general-purpose choice for independently generated identifiers.</p>
+            <p>A good implementation uses the platform's cryptographically secure random source. Ad hoc generators, predictable seeds, cloned generator state, or failure to reseed after a process fork can undermine both collision resistance and unpredictability. The <a href="/uuid-v4-generator/">LiveParse UUID v4 Generator</a> creates random IDs in the browser, while the <a href="/guides/uuid-collision-probability/">UUID collision probability guide</a> explains why the ideal mathematical risk and real generator failures must be analyzed separately.</p>
+            <p>Randomness does not provide ordering. Two successive v4 values have no chronological relationship, and random primary-key inserts can have weaker index locality than a time-ordered design. They also have no embedded timestamp, which is helpful when disclosing creation time is undesirable.</p>
+
+            <h2 id="v6">UUIDv6: v1 fields reordered for sorting</h2>
+            <p>UUIDv6 reorders the v1-compatible 60-bit Gregorian timestamp from most significant to least significant position. The clock sequence and node concepts remain, but putting time first allows opaque byte comparison to follow timestamp order more naturally and improves locality for many ordered indexes.</p>
+            <p>The standard expects v6 primarily where v1 compatibility matters. Systems without that legacy requirement should use v7 instead. Because v6 retains v1's timestamp source and node field, it shares the same time-disclosure and potential host-identifier concerns. A random node reduces host identification but does not hide creation time.</p>
+
+            <h2 id="v7">UUIDv7: Unix milliseconds first</h2>
+            <p>UUIDv7 begins with an unsigned 48-bit count of Unix epoch milliseconds. After the version field, 12 bits called <code>rand_a</code> appear; the variant is followed by 62 bits called <code>rand_b</code>. Together those two payload fields provide 74 bits that a basic generator can fill with random data. RFC 9562 also permits carefully ordered sub-millisecond fractions and counters for stronger monotonic behavior.</p>
+            <p>Across different millisecond values, RFC bytewise and standard textual ordering are primarily chronological. Within the same millisecond, an all-random-tail generator does not guarantee generation order. A stateful generator can add monotonic behavior, but it must define counter overflow, concurrent calls, process boundaries, and clocks that move backward.</p>
+            <p>The first 48 bits are decodable, so v7 exposes an approximate creation time. RFC 9562 also allows timestamp alteration, fuzzing, or smearing, and the clock may simply be wrong. Treat the decoded time as format metadata, not authenticated evidence of when a database committed a record. Keep a separate authoritative timestamp where audit semantics matter. Generate and inspect the layout with the <a href="/uuid-v7-generator/">UUID v7 Generator</a>, or compare tradeoffs in the <a href="/guides/uuid-v4-vs-v7/">UUID v4 vs v7 guide</a>.</p>
+
+            <h2 id="v8">UUIDv8: custom or experimental layouts</h2>
+            <p>UUIDv8 reserves the version and RFC variant fields, leaving 122 bits for an implementation-specific layout. It exists for experimental, vendor-specific, or standards-defined schemes that do not fit versions 1 through 7. Examples include a custom timestamp source or a name-based construction using SHA-256.</p>
+            <p>The version number alone says nothing about how those 122 bits are divided. Two unrelated v8 schemes can produce strings that look structurally valid yet cannot interpret each other's payload. A v8 design needs a published bit layout, generation algorithm, byte order, collision strategy, security analysis, and interoperability boundary.</p>
+            <p>RFC 9562 explicitly says v8 uniqueness is implementation-specific and must not be assumed. It is not “v4 with extra freedom,” nor does the higher version number make it stronger. If 122 random bits are the requirement, use v4. If Unix-millisecond ordering is the requirement, use v7.</p>
+
+            <h2 id="nil-max">Nil and Max are special sentinel UUIDs</h2>
+            <p>The <strong>Nil UUID</strong> has every bit set to zero. It can represent the absence of another UUID in a field that must remain 128 bits wide:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Nil UUID</figcaption>
+              <pre><code>00000000-0000-0000-0000-000000000000</code></pre>
+            </figure>
+            <p>The <strong>Max UUID</strong> has every bit set to one and can serve as an application-defined upper or end sentinel:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Max UUID</figcaption>
+              <pre><code>ffffffff-ffff-ffff-ffff-ffffffffffff</code></pre>
+            </figure>
+            <p>Neither is an ordinary instance of versions 1 through 8. Nil falls in the reserved NCS variant range and Max in the future-reserved variant range. Decide explicitly whether an API accepts these sentinels; “valid UUID-shaped text” and “valid identifier for this record” are different validations.</p>
+
+            <h2 id="privacy">Timestamp and privacy comparison</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Version</th><th scope="col">Time visible?</th><th scope="col">Host identity risk?</th><th scope="col">What decoding can establish</th></tr></thead>
+                <tbody>
+                  <tr><td>v1</td><td>Yes, Gregorian 100 ns field</td><td>Yes if a real MAC address is used</td><td>A represented timestamp, clock sequence, and node bits—not authenticated provenance.</td></tr>
+                  <tr><td>v4</td><td>No timestamp field</td><td>No node field</td><td>Version, variant, and random payload bits—not how good the random source was.</td></tr>
+                  <tr><td>v6</td><td>Yes, reordered Gregorian field</td><td>Yes if a real MAC address is used</td><td>A sortable represented timestamp and node bits—not trustworthy audit time.</td></tr>
+                  <tr><td>v7</td><td>Yes, Unix milliseconds</td><td>No node field</td><td>An approximate represented time—not a guaranteed creation or commit event.</td></tr>
+                  <tr><td>v8</td><td>Scheme-specific</td><td>Scheme-specific</td><td>Only what the documented custom scheme defines.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Any exposed identifier can support correlation across logs, URLs, exports, and services. Avoid embedding sensitive business facts in a custom v8 layout, and do not treat opacity as access control. RFC 9562 warns that UUIDs must not be used as security capabilities whose mere possession grants access.</p>
+
+            <h2 id="choose">How to choose a UUID version</h2>
+            <ol class="steps">
+              <li><strong>Choose v4 for independent random IDs.</strong> Use a vetted CSPRNG-backed platform API and enforce uniqueness where records are stored.</li>
+              <li><strong>Choose v7 for new time-ordered IDs.</strong> Confirm the library's same-millisecond, rollback, and concurrency behavior; retain a separate business timestamp.</li>
+              <li><strong>Choose v5 for deterministic names.</strong> Freeze the namespace and canonical byte rules before generating persistent values.</li>
+              <li><strong>Use v6 for v1-oriented compatibility.</strong> Do not select it merely because six is higher than four.</li>
+              <li><strong>Use v8 only with a documented scheme.</strong> Give consumers a specification and collision/security analysis, not just a version label.</li>
+              <li><strong>Treat v1, v2, and v3 as compatibility formats.</strong> Understand their legacy requirements before introducing them into a new protocol.</li>
+            </ol>
+            <p>Whatever version you select, validate the expected variant and version at input boundaries. Add a database <code>UNIQUE</code> or primary-key constraint when duplicate records would be harmful. Keep authentication, authorization, integrity, and audit timestamps separate from the identifier.</p>
+
+            <div class="tool-callout">
+              <p><strong>Need to inspect an identifier?</strong> Decode its text form, variant, version, and supported timestamp fields locally in your browser.</p>
+              <a class="button" href="/uuid-decoder/">Open the UUID Decoder</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>Which UUID version should I use for a new application?</h3>
+              <p>Use UUIDv4 when a simple random identifier and broad support are the priorities. Use UUIDv7 when new identifiers should sort approximately by creation time and improve index locality. Use UUIDv5 when the same namespace and name must deterministically produce the same identifier. The surrounding system still needs validation, uniqueness handling, and authorization.</p>
+
+              <h3>What is the difference between a UUID variant and a UUID version?</h3>
+              <p>The variant selects the broad UUID layout and therefore controls how the remaining bits are interpreted. Within the RFC 9562 variant, the four-bit version field selects a particular layout such as v4 or v7. Reading a version without first recognizing the variant can misinterpret a non-RFC UUID.</p>
+
+              <h3>Do UUIDv1, UUIDv6, and UUIDv7 reveal creation time?</h3>
+              <p>They contain timestamp fields, so a decoder can recover a time value. UUIDv1 and UUIDv6 use a 60-bit Gregorian-epoch timestamp, while UUIDv7 uses 48-bit Unix epoch milliseconds. The timestamp may be altered by a generator and is not an authenticated audit record.</p>
+
+              <h3>Is UUIDv2 defined by RFC 9562?</h3>
+              <p>RFC 9562 reserves version 2 for DCE Security UUIDs but explicitly leaves their definition outside the specification. Do not invent a v2 layout or assume a generic UUID library implements the DCE Security format.</p>
+
+              <h3>Are the Nil and Max UUIDs ordinary versioned UUIDs?</h3>
+              <p>No. The Nil UUID has all 128 bits set to zero, and the Max UUID has all 128 bits set to one. They are special sentinel values and fall in reserved variant ranges rather than the RFC 9562 variant used by versions 1 through 8.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary reference</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9562.html" rel="external">RFC 9562: Universally Unique IDentifiers (UUIDs)</a> — current IETF standard for UUID format, variants, versions 1 through 8, Nil and Max values, generation guidance, and security considerations.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools and guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/uuid-generator/"><strong>UUID Generator</strong><span>Generate UUIDs locally with version-aware output.</span></a>
+                <a class="related-card" href="/uuid-v4-generator/"><strong>UUID v4 Generator</strong><span>Create random RFC-variant UUIDs with 122 random bits.</span></a>
+                <a class="related-card" href="/uuid-v7-generator/"><strong>UUID v7 Generator</strong><span>Create and inspect Unix-millisecond time-ordered UUIDs.</span></a>
+                <a class="related-card" href="/uuid-validator/"><strong>UUID Validator</strong><span>Check text shape, variant, version, and special values.</span></a>
+                <a class="related-card" href="/uuid-decoder/"><strong>UUID Decoder</strong><span>Read fields and timestamps without uploading the value.</span></a>
+                <a class="related-card" href="/guides/uuid-v4-vs-v7/"><strong>UUID v4 vs v7</strong><span>Compare randomness, ordering, databases, and migration.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#format">128-bit format</a></li>
+              <li><a href="#variant-version">Variant vs version</a></li>
+              <li><a href="#comparison">Version comparison</a></li>
+              <li><a href="#v1">UUIDv1</a></li>
+              <li><a href="#v2">UUIDv2</a></li>
+              <li><a href="#v3-v5">UUIDv3 and v5</a></li>
+              <li><a href="#v4">UUIDv4</a></li>
+              <li><a href="#v6">UUIDv6</a></li>
+              <li><a href="#v7">UUIDv7</a></li>
+              <li><a href="#v8">UUIDv8</a></li>
+              <li><a href="#nil-max">Nil and Max</a></li>
+              <li><a href="#privacy">Privacy</a></li>
+              <li><a href="#choose">Choosing a version</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/uuid-generator/">UUID Generator</a> · <a href="/uuid-validator/">UUID Validator</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID Collision Probability: The v4 Math | LiveParse</title>
+    <meta name="description" content="Calculate UUID v4 collision probability from 122 random bits, understand the birthday bound, compare real scales, and design database defenses." />
+    <link rel="canonical" href="https://liveparse.com/guides/uuid-collision-probability/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#3458d4" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="UUID Collision Probability: The v4 Math" />
+    <meta property="og:description" content="Work through the 122-bit UUID v4 birthday bound, realistic orders of magnitude, random-source failures, unique constraints, and retry design." />
+    <meta property="og:url" content="https://liveparse.com/guides/uuid-collision-probability/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide to UUID version 4 collision probability" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID Collision Probability" />
+    <meta name="twitter:description" content="Understand the UUID v4 birthday bound, practical database safeguards, and why generator quality matters more than the ideal headline number." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/uuid-collision-probability/#article",
+            "headline": "UUID Collision Probability: The UUIDv4 Birthday-Bound Math",
+            "description": "Calculate UUID v4 collision probability from 122 random bits, understand the birthday bound, compare real scales, and design database defenses.",
+            "mainEntityOfPage": "https://liveparse.com/guides/uuid-collision-probability/",
+            "url": "https://liveparse.com/guides/uuid-collision-probability/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "UUID engineering",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/uuid-collision-probability/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "UUID Collision Probability", "item": "https://liveparse.com/guides/uuid-collision-probability/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/uuid-collision-probability/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How likely is a duplicate UUIDv4?",
+                "acceptedAnswer": { "@type": "Answer", "text": "For independent, uniformly distributed UUIDv4 values, one billion generated values have an approximate collision probability of 9.4 × 10^-20. The risk grows with the square of the count, and real systems can have a much higher risk when the random generator, state handling, or storage pipeline is defective." }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does UUIDv4 have 122 random bits instead of 128?",
+                "acceptedAnswer": { "@type": "Answer", "text": "A UUID is 128 bits, but UUIDv4 fixes four bits to the version value 4 and two bits to the RFC 9562 variant. The other 122 bits carry random or pseudorandom data, giving 2^122 possible UUIDv4 values." }
+              },
+              {
+                "@type": "Question",
+                "name": "Should a UUID column still have a unique constraint?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes when duplicate identifiers would violate the data model. A primary-key or unique constraint turns a rare collision or generator defect into a detectable write failure. It also handles concurrent inserts atomically, which an application-level check before insertion cannot do by itself." }
+              },
+              {
+                "@type": "Question",
+                "name": "What should an application do after a UUID collision?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Catch the specific unique-constraint failure, generate a completely new UUID from the trusted source, and retry a small bounded number of times. Repeated collisions are evidence of a generator, deployment, or data-flow defect and should stop the operation and trigger investigation rather than an endless retry loop." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a UUIDv4 be used as a secret access token?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. RFC 9562 says implementations must not assume UUIDs are hard to guess and must not use them as security capabilities whose possession grants access. Use authentication and authorization, and use a purpose-built high-entropy token when a secret bearer credential is required." }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the UUIDv4 collision formula apply to UUIDv7?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Not directly. UUIDv7 divides its payload between a millisecond timestamp and 74 remaining bits that may contain randomness, a sub-millisecond fraction, a counter, or a combination. Collision analysis must use the actual generator policy, generation rate per timestamp bucket, node coordination, and rollback behavior." }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the UUID collision guide</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/uuid-v4-generator/">UUID v4 Generator</a>
+        <a href="/uuid-decoder/">UUID Decoder</a>
+        <a href="/uuid-validator/">UUID Validator</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">UUID Collision Probability</span></nav>
+          <p class="eyebrow">UUIDv4 probability guide</p>
+          <h1>UUID Collision Probability: The v4 Math</h1>
+          <p class="dek">The UUIDv4 space is enormous, but “practically unique” is not the same as mathematically impossible. Calculate the birthday-bound risk, then protect the real system from weak randomness, concurrency, and storage failures.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>13 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>Short answer:</strong> a compliant UUIDv4 has 122 random bits, so its ideal sample space contains 2<sup>122</sup>, or about 5.3 × 10<sup>36</sup>, values. For <em>n</em> independent uniform UUIDv4 values, the birthday-bound approximation is <code>p ≈ 1 − exp(−n(n−1)/(2·2^122))</code>. At one billion values, that is about 9.4 × 10<sup>−20</sup>. The probability is tiny, not zero—and generator failures are more plausible than the ideal model suggests. Keep a unique constraint and handle its failure.</p>
+            </div>
+
+            <h2 id="random-bits">Why UUIDv4 has 122 random bits</h2>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc9562.html#section-5.4" rel="external">RFC 9562 Section 5.4</a> defines UUIDv4 as a random or pseudorandom UUID. The complete value is 128 bits, but six positions are fixed: four bits identify version 4 and two leading variant bits select the layout defined by the RFC. The remaining fields contain 48 + 12 + 62 = <strong>122 random bits</strong>.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">UUIDv4 text layout</figcaption>
+              <pre><code>xxxxxxxx-xxxx-4xxx-Nxxx-xxxxxxxxxxxx
+
+4 = fixed version nibble
+N = 8, 9, a, or b for the RFC variant
+x = random hexadecimal bits, subject to field boundaries</code></pre>
+            </figure>
+            <p>The size of the v4 sample space is therefore:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Number of possible UUIDv4 values</figcaption>
+              <pre><code>N = 2^122
+  = 5,316,911,983,139,663,491,615,228,241,121,378,304
+  ≈ 5.3 × 10^36</code></pre>
+            </figure>
+            <p>This is not the space of every 128-bit string, nor the space of every UUID version. The calculation below assumes that each generation independently chooses one of these v4 values with equal probability and replacement.</p>
+
+            <h2 id="birthday-bound">The birthday-bound collision formula</h2>
+            <p>A collision means that at least two generated values in the same comparison pool are equal. After the first value, the second must avoid one occupied value, the third must avoid two, and so on. Under the ideal independent-uniform model, the exact no-collision probability is a product:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Exact model and useful approximation</figcaption>
+              <pre><code>P(no collision) = ∏ from k=0 to n−1 of (1 − k / 2^122)
+
+p(collision) = 1 − P(no collision)
+
+p ≈ 1 − exp(−n(n−1) / (2 · 2^122))</code></pre>
+            </figure>
+            <p>The exponential expression is the birthday-bound approximation. It is accurate over the practical counts in this guide and avoids multiplying an enormous series of numbers close to one. When the result is very small, another approximation is useful:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Small-probability shortcut</figcaption>
+              <pre><code>p ≈ n(n−1) / (2 · 2^122) ≈ n² / 2^123</code></pre>
+            </figure>
+            <p>The square is why “one chance in 2<sup>122</sup>” is not the collision probability of a collection. Every pair is another opportunity to match. Doubling the number of generated IDs makes the small-probability estimate roughly four times larger.</p>
+
+            <h2 id="worked-examples">Worked UUIDv4 orders of magnitude</h2>
+            <p>The following figures use the exponential approximation and count all generated values in one collision domain. They describe ideal UUIDv4 output, not a service-level guarantee.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">UUIDv4 values generated</th><th scope="col">Approximate probability of at least one collision</th><th scope="col">Interpretation</th></tr></thead>
+                <tbody>
+                  <tr><td>1 million (10<sup>6</sup>)</td><td>9.4 × 10<sup>−26</sup></td><td>About 9.4 × 10<sup>−24</sup> percent</td></tr>
+                  <tr><td>1 billion (10<sup>9</sup>)</td><td>9.4 × 10<sup>−20</sup></td><td>About 9.4 × 10<sup>−18</sup> percent</td></tr>
+                  <tr><td>1 trillion (10<sup>12</sup>)</td><td>9.4 × 10<sup>−14</sup></td><td>Roughly one chance in 10.6 trillion</td></tr>
+                  <tr><td>1 quadrillion (10<sup>15</sup>)</td><td>9.4 × 10<sup>−8</sup></td><td>About 0.0000094 percent, or roughly one in 10.6 million</td></tr>
+                  <tr><td>About 3.27 × 10<sup>17</sup></td><td>1 percent</td><td>The count at which the model reaches approximately 1 in 100</td></tr>
+                  <tr><td>About 2.71 × 10<sup>18</sup></td><td>50 percent</td><td>The familiar birthday-bound midpoint, not certainty</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>At a sustained million UUIDs per second, generating one trillion takes about 11.6 days; one quadrillion takes about 31.7 years. That illustrates the size of the ideal space, but it does not justify removing safeguards. A malformed generator can repeat values immediately, while a database constraint is cheap compared with repairing silently misassociated records.</p>
+            <p>A 50 percent probability does not mean the first collision occurs at exactly 2.71 × 10<sup>18</sup> values. It describes repeated hypothetical experiments: about half of equally sized ideal runs would contain at least one collision. No finite count below exhausting the space makes a random collision impossible, and a low probability does not guarantee that a particular run will be collision-free.</p>
+
+            <h2 id="scope">Define the collision domain before using the formula</h2>
+            <p>The <em>n</em> in the formula is the number of independent UUIDv4 values that can meet in the same uniqueness domain. If ten services write to one globally unique table, use their combined lifetime count—not the count of one service for one day. If databases later merge during replication, backup restoration, tenant consolidation, or offline synchronization, those previously separate pools may become one domain.</p>
+            <p>Conversely, a composite key such as <code>(tenant_id, uuid)</code> can make each tenant a local uniqueness domain if the application contract never treats the UUID alone as global. RFC 9562 recognizes practical local uniqueness, while noting that true global uniqueness cannot be guaranteed without shared knowledge. State the scope in the schema and API instead of relying on the word “universally.”</p>
+            <p>Do not apply the 122-bit figure after truncating or transforming an identifier. Keeping only the first 12 hexadecimal digits leaves at most 48 bits before other restrictions, radically increasing the birthday risk. Case normalization and hyphen removal preserve all bits when done correctly; substring IDs, decimal rounding, lossy database columns, and case-insensitive encodings that discard information do not.</p>
+
+            <h2 id="assumptions">The ideal calculation has strict assumptions</h2>
+            <ul>
+              <li><strong>Uniformity:</strong> every one of the 2<sup>122</sup> possible v4 payloads is equally likely.</li>
+              <li><strong>Independence:</strong> one output does not make another output more or less likely, across calls, processes, hosts, containers, and restarts.</li>
+              <li><strong>Correct fixed bits:</strong> the generator sets the version and variant without accidentally overwriting or freezing additional random positions.</li>
+              <li><strong>Full preservation:</strong> serialization, transport, database storage, and normalization retain the complete 128-bit UUID value.</li>
+              <li><strong>One defined pool:</strong> the count includes every value that must be mutually unique for the application.</li>
+            </ul>
+            <p>The formula cannot inspect any of these properties from a UUID string. A validator can confirm the text form and fixed fields, but it cannot prove that the payload came from a secure source or was sampled independently. Generator provenance and operational tests are separate evidence.</p>
+
+            <h2 id="rng-failures">Random-generator failures dominate practical concern</h2>
+            <p>RFC 9562 recommends a cryptographically secure pseudorandom number generator and specifically warns about reseeding when generator state changes, such as after process forks. Real collisions can become much more likely than the birthday model when an implementation violates its assumptions:</p>
+            <ul>
+              <li><strong>Predictable or repeated seeds:</strong> instances initialized from a low-resolution clock, process ID, or fixed configuration can replay the same sequence.</li>
+              <li><strong>Cloned state:</strong> virtual-machine snapshots, container images, forked workers, or restored checkpoints can duplicate pseudorandom state unless the platform handles reseeding correctly.</li>
+              <li><strong>Non-cryptographic APIs:</strong> a homemade generator or a function such as <code>Math.random()</code> may have a much smaller internal state and weaker independence than the UUID field suggests.</li>
+              <li><strong>Test doubles in production:</strong> deterministic mocks, fixtures, or patched entropy functions can escape a test boundary and repeat known values.</li>
+              <li><strong>Error-handling bugs:</strong> code may reuse a previous buffer when the random source fails, ignore partial reads, or initialize bytes to zero.</li>
+              <li><strong>Lossy storage:</strong> a short column, prefix index treated as unique, incorrect byte conversion, or application truncation can collapse different UUIDs into the same stored key.</li>
+            </ul>
+            <p>Use the operating system or runtime's reviewed UUID/CSPRNG primitive, keep dependencies current, and test across concurrency, forks, snapshots, and restarts appropriate to the deployment. The <a href="/uuid-v4-generator/">UUID v4 Generator</a> is useful for local ad hoc values; production code should use its platform's direct secure API rather than scrape or call a web page.</p>
+
+            <h2 id="constraints">Use a unique constraint as the final authority</h2>
+            <p>If two rows must never share an identifier, express that rule in the database with a primary key or <code>UNIQUE</code> constraint. The constraint protects against both a genuine random collision and more ordinary causes such as duplicate messages, buggy retries, stale imports, or a broken generator.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Example relational schema</figcaption>
+              <pre><code>CREATE TABLE events (
+  id uuid PRIMARY KEY,
+  payload jsonb NOT NULL
+);</code></pre>
+            </figure>
+            <p>An application-level “does this ID exist?” query followed by an insert is not an equivalent substitute. Another transaction can insert the same key after the check and before the write. Let the database decide atomically, then map its specific duplicate-key result to controlled retry logic.</p>
+            <p>The scope of the constraint must match the data model. Use a global unique key when UUIDs identify records across all tenants, or an intentional composite constraint when uniqueness is tenant-local. Replication and offline merge systems need conflict policy at the point where independently accepted writes converge.</p>
+
+            <h2 id="retry">Retry collisions carefully and observably</h2>
+            <ol class="steps">
+              <li><strong>Attempt the insert with a newly generated UUID.</strong> Avoid a separate existence pre-check.</li>
+              <li><strong>Recognize only the expected unique-key violation.</strong> Do not turn network errors, schema errors, or unrelated constraints into silent retries.</li>
+              <li><strong>Generate a completely new UUID.</strong> Do not increment, edit one digit, or recycle the rejected value.</li>
+              <li><strong>Retry a small bounded number of times.</strong> A second collision under an ideal generator is extraordinarily suspicious.</li>
+              <li><strong>Record a safe diagnostic signal.</strong> Alert on repeated collisions and inspect the entropy source, cloned state, import path, idempotency logic, and storage width.</li>
+            </ol>
+            <p>Retries are a resilience mechanism, not proof that the random source is healthy. An unbounded loop can conceal a constant-output generator and consume resources indefinitely. High-impact systems may need stronger coordination or a different allocation design in addition to UUIDs; RFC 9562 recommends choosing collision resistance according to the consequence of failure.</p>
+
+            <h2 id="other-versions">Do not reuse the v4 formula for every UUID version</h2>
+            <p>The 2<sup>122</sup> calculation applies to v4 only when all non-fixed bits are independently uniform. Other versions allocate their payload differently:</p>
+            <ul>
+              <li><strong>UUIDv1 and UUIDv6</strong> combine timestamp, clock sequence, and node state. Analyze clock behavior, node allocation, rollback, and shared state—not a 122-bit random pool.</li>
+              <li><strong>UUIDv3 and UUIDv5</strong> deterministically map namespace and name through a truncated hash layout. Their collision analysis involves both duplicate canonical inputs and hash collisions.</li>
+              <li><strong>UUIDv7</strong> has a 48-bit millisecond timestamp and 74 remaining bits that may be random or partly stateful. Analyze values per millisecond, generator policy, counters, nodes, and clock rollback.</li>
+              <li><strong>UUIDv8</strong> is scheme-specific. RFC 9562 explicitly says its uniqueness must not be assumed.</li>
+            </ul>
+            <p>Use the <a href="/uuid-decoder/">UUID Decoder</a> or <a href="/uuid-validator/">UUID Validator</a> to identify the variant and version before choosing a risk model. The <a href="/guides/uuid-versions-explained/">UUID versions guide</a> compares all layouts, and the <a href="/guides/uuid-v4-vs-v7/">v4 vs v7 guide</a> covers the random-versus-time-ordered decision in depth.</p>
+
+            <h2 id="security">Collision resistance does not make a UUID a secret</h2>
+            <p>A low collision probability answers “how likely are two generated identifiers to match?” It does not answer “can an attacker guess a valid identifier?”, “does possession authorize access?”, or “has this value been modified?” Those are different security properties.</p>
+            <p>RFC 9562 says implementations must not assume UUIDs are hard to guess and must not use them as security capabilities. Even a well-generated v4 UUID has no signature, expiry, audience, revocation, or authorization context. Protect every object lookup with authentication and authorization. Use a purpose-built, high-entropy bearer token when secrecy is part of the protocol, and store or transmit it according to that threat model.</p>
+            <p>UUID text also has no error-detection code. A one-character change can produce another structurally valid UUID, so visual inspection and regex validation cannot establish integrity. Use an authenticated message, digital signature, or trusted database relationship when tamper detection matters.</p>
+
+            <div class="tool-callout">
+              <p><strong>Need fresh random identifiers?</strong> Generate standards-shaped UUIDv4 values locally, then enforce the real uniqueness rule in your application database.</p>
+              <a class="button" href="/uuid-v4-generator/">Open the UUID v4 Generator</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>How likely is a duplicate UUIDv4?</h3>
+              <p>For independent, uniformly distributed UUIDv4 values, one billion generated values have an approximate collision probability of 9.4 × 10^-20. The risk grows with the square of the count, and real systems can have a much higher risk when the random generator, state handling, or storage pipeline is defective.</p>
+
+              <h3>Why does UUIDv4 have 122 random bits instead of 128?</h3>
+              <p>A UUID is 128 bits, but UUIDv4 fixes four bits to the version value 4 and two bits to the RFC 9562 variant. The other 122 bits carry random or pseudorandom data, giving 2^122 possible UUIDv4 values.</p>
+
+              <h3>Should a UUID column still have a unique constraint?</h3>
+              <p>Yes when duplicate identifiers would violate the data model. A primary-key or unique constraint turns a rare collision or generator defect into a detectable write failure. It also handles concurrent inserts atomically, which an application-level check before insertion cannot do by itself.</p>
+
+              <h3>What should an application do after a UUID collision?</h3>
+              <p>Catch the specific unique-constraint failure, generate a completely new UUID from the trusted source, and retry a small bounded number of times. Repeated collisions are evidence of a generator, deployment, or data-flow defect and should stop the operation and trigger investigation rather than an endless retry loop.</p>
+
+              <h3>Can a UUIDv4 be used as a secret access token?</h3>
+              <p>No. RFC 9562 says implementations must not assume UUIDs are hard to guess and must not use them as security capabilities whose possession grants access. Use authentication and authorization, and use a purpose-built high-entropy token when a secret bearer credential is required.</p>
+
+              <h3>Does the UUIDv4 collision formula apply to UUIDv7?</h3>
+              <p>Not directly. UUIDv7 divides its payload between a millisecond timestamp and 74 remaining bits that may contain randomness, a sub-millisecond fraction, a counter, or a combination. Collision analysis must use the actual generator policy, generation rate per timestamp bucket, node coordination, and rollback behavior.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary reference</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc9562.html" rel="external">RFC 9562: Universally Unique IDentifiers (UUIDs)</a> — UUIDv4's 122 random bits, CSPRNG guidance, collision-resistance considerations, local and global uniqueness, unguessability, and security requirements.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools and guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/uuid-v4-generator/"><strong>UUID v4 Generator</strong><span>Create fresh random UUIDs locally in your browser.</span></a>
+                <a class="related-card" href="/uuid-generator/"><strong>UUID Generator</strong><span>Generate version-aware identifiers and compare output.</span></a>
+                <a class="related-card" href="/uuid-validator/"><strong>UUID Validator</strong><span>Check standard text form, variant, version, and special values.</span></a>
+                <a class="related-card" href="/uuid-decoder/"><strong>UUID Decoder</strong><span>Inspect UUID fields without treating the value as a secret.</span></a>
+                <a class="related-card" href="/guides/uuid-versions-explained/"><strong>UUID versions explained</strong><span>Compare v1 through v8, Nil, Max, ordering, and privacy.</span></a>
+                <a class="related-card" href="/guides/uuid-v4-vs-v7/"><strong>UUID v4 vs v7</strong><span>Choose between random and time-ordered identifiers.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#random-bits">122 random bits</a></li>
+              <li><a href="#birthday-bound">Birthday-bound formula</a></li>
+              <li><a href="#worked-examples">Worked examples</a></li>
+              <li><a href="#scope">Collision domain</a></li>
+              <li><a href="#assumptions">Model assumptions</a></li>
+              <li><a href="#rng-failures">Generator failures</a></li>
+              <li><a href="#constraints">Unique constraints</a></li>
+              <li><a href="#retry">Retry design</a></li>
+              <li><a href="#other-versions">Other versions</a></li>
+              <li><a href="#security">Security limits</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="https://liveparse.com/">Home</a> · <a href="/uuid-v4-generator/">UUID v4 Generator</a> · <a href="/uuid-validator/">UUID Validator</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

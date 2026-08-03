@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  estimateUuidV4Collision,
   formatUuid,
   generateUuidBatch,
   generateUuidV4,
@@ -11,7 +12,9 @@ import {
   type UuidParseErrorCode,
 } from './uuid';
 
+const RFC_V1 = 'c232ab00-9414-11ec-b3c8-9f6bdeced846';
 const RFC_V4 = '919108f7-52d1-4320-9bac-f847db4148a8';
+const RFC_V6 = '1ec9414c-232a-6b00-b3c8-9f6bdeced846';
 const RFC_V7 = '017f22e2-79b0-7cc3-98c4-dc0c0c07398f';
 const RFC_V7_TIME = 1_645_557_742_000;
 
@@ -41,6 +44,10 @@ describe('UUID parsing and RFC 9562 fields', () => {
     expect(parsed.isMax).toBe(false);
     expect(parsed.timestampMs).toBeNull();
     expect(parsed.timestampIso).toBeNull();
+    expect(parsed.timestampPrecision).toBeNull();
+    expect(parsed.gregorianTimestamp100ns).toBeNull();
+    expect(parsed.clockSequence).toBeNull();
+    expect(parsed.node).toBeNull();
   });
 
   it('parses the RFC version 7 test vector and its timestamp', () => {
@@ -49,6 +56,31 @@ describe('UUID parsing and RFC 9562 fields', () => {
     expect(parsed.variant).toBe('rfc9562');
     expect(parsed.timestampMs).toBe(RFC_V7_TIME);
     expect(parsed.timestampIso).toBe('2022-02-22T19:22:22.000Z');
+    expect(parsed.timestampPrecision).toBe('millisecond');
+    expect(parsed.gregorianTimestamp100ns).toBeNull();
+    expect(parsed.clockSequence).toBeNull();
+    expect(parsed.node).toBeNull();
+  });
+
+  it.each([
+    [1, RFC_V1],
+    [6, RFC_V6],
+  ] as const)('decodes RFC version %i Gregorian time, clock sequence, and node fields', (version, input) => {
+    const parsed = parseUuid(input);
+    expect(parsed.version).toBe(version);
+    expect(parsed.timestampMs).toBe(RFC_V7_TIME);
+    expect(parsed.timestampIso).toBe('2022-02-22T19:22:22.000Z');
+    expect(parsed.timestampPrecision).toBe('100ns');
+    expect(parsed.gregorianTimestamp100ns).toBe(138648505420000000n);
+    expect(parsed.clockSequence).toBe(13_256);
+    expect(parsed.node).toBe('9f:6b:de:ce:d8:46');
+  });
+
+  it('decodes the Gregorian epoch without rounding negative time toward zero', () => {
+    const parsed = parseUuid('00000000-0000-1000-8000-000000000000');
+    expect(parsed.timestampMs).toBe(-12_219_292_800_000);
+    expect(parsed.timestampIso).toBe('1582-10-15T00:00:00.000Z');
+    expect(parsed.gregorianTimestamp100ns).toBe(0n);
   });
 
   it.each([
@@ -153,6 +185,28 @@ describe('UUID formatting', () => {
         }
       }
     }
+  });
+});
+
+describe('UUID v4 collision estimates', () => {
+  it('uses the 122-bit birthday-bound model without losing tiny probabilities', () => {
+    expect(estimateUuidV4Collision(1)).toEqual({ probability: 0, expectedPairs: 0 });
+    const two = estimateUuidV4Collision(2);
+    expect(two.expectedPairs).toBe(1 / 2 ** 122);
+    expect(two.probability).toBeCloseTo(two.expectedPairs, 30);
+
+    const billion = estimateUuidV4Collision(1_000_000_000);
+    expect(billion.expectedPairs).toBeCloseTo(9.403954797174345e-20, 30);
+    expect(billion.probability).toBeCloseTo(billion.expectedPairs, 30);
+  });
+
+  it('approaches one half near the birthday-bound median', () => {
+    const medianCount = Math.round(Math.sqrt(2 * 2 ** 122 * Math.log(2)));
+    expect(estimateUuidV4Collision(medianCount).probability).toBeCloseTo(0.5, 12);
+  });
+
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, 1e31])('rejects an invalid count %s', (count) => {
+    expect(() => estimateUuidV4Collision(count)).toThrow(RangeError);
   });
 });
 

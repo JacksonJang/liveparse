@@ -9,6 +9,10 @@ const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(process.argv[2] || process.env.DIST_DIR || join(PROJECT_ROOT, 'dist'));
 const failures = [];
 const FAQ_PARITY_PATHS = new Set([
+  '/uuid-v4-generator/',
+  '/uuid-decoder/',
+  '/guides/uuid-versions-explained/',
+  '/guides/uuid-collision-probability/',
   '/yaml-to-json/',
   '/guides/yaml-1-1-vs-1-2/',
   '/guides/yaml-to-json-types/',
@@ -27,8 +31,10 @@ const requiredPages = [
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
   { relativePath: 'uuid-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-generator/`, label: 'UUID Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:and\s+guid\s+)?generator\b/i, topicLabel: 'UUID generator' },
+  { relativePath: 'uuid-v4-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v4-generator/`, label: 'UUID v4 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\buuid\b)(?=.*\bv?4\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'UUID v4 generation' },
   { relativePath: 'uuid-v7-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v7-generator/`, label: 'UUID v7 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:version\s+)?v?7\s+generator\b/i, topicLabel: 'UUID v7 generator' },
   { relativePath: 'uuid-validator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-validator/`, label: 'UUID Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:validator|checker|validation)\b/i, topicLabel: 'UUID validation' },
+  { relativePath: 'uuid-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-decoder/`, label: 'UUID Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\buuid\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'UUID decoding' },
   { relativePath: 'jwt-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-decoder/`, label: 'JWT Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:decode|decoder|decoding)\b/i, topicLabel: 'JWT decoding' },
   { relativePath: 'jwt-expiration-checker/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-expiration-checker/`, label: 'JWT Expiration Checker tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:expiration|expiry|exp)\s+(?:checker|check|checking)\b/i, topicLabel: 'JWT expiration checking' },
   { relativePath: 'sql-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/sql-formatter/`, label: 'SQL Formatter tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bsql\s+(?:query\s+)?(?:formatter|formatting|beautifier)\b/i, topicLabel: 'SQL formatting' },
@@ -379,6 +385,24 @@ function guideValidationProfile(relativePath) {
       requireParsing: false,
       topicPattern: /(?=.*\bjwt\b)(?=.*\bdecod(?:e|ing)\b)(?=.*\bverif(?:y|ication)\b)/i,
       topicLabel: 'JWT decoding and verification',
+    };
+  }
+  if (normalized.includes('uuid-versions-explained')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\buuid\b)(?=.*\bversions?\b)/i,
+      topicLabel: 'UUID versions',
+    };
+  }
+  if (normalized.includes('uuid-collision-probability')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\buuid\b)(?=.*\bcollisions?\b)(?=.*\bprobabilit(?:y|ies)\b)/i,
+      topicLabel: 'UUID collision probability',
     };
   }
   if (normalized.includes('uuid')) {

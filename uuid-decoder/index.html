@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UUID Decoder – Version, Variant &amp; Timestamp Inspector | LiveParse</title>
+    <meta name="description" content="Decode UUID structure locally: version, variant, v1/v6/v7 timestamps, v1/v6 clock sequence and node, canonical text, and honest limits for v3, v5, and v8." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/uuid-decoder/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/uuid-decoder/" />
+    <meta property="og:title" content="UUID Decoder – Version, Variant &amp; Timestamp Inspector" />
+    <meta property="og:description" content="Inspect RFC 9562 UUID fields, decode v1, v6, and v7 time, and understand exactly which original inputs a UUID cannot reveal." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UUID Decoder – Inspect RFC 9562 Fields" />
+    <meta name="twitter:description" content="Decode UUID version, variant, timestamps, clock sequence, and node fields locally with explicit version-specific limits." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Private browser-based tools for structured data, identifiers, encoding, and timestamps.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/uuid-decoder/#application",
+            "name": "LiveParse UUID Decoder",
+            "url": "https://liveparse.com/uuid-decoder/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "RFC 9562 UUID structure and timestamp decoder",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Decode RFC 9562 UUID text locally, including version and variant, UUID v1 and v6 Gregorian timestamps, UUID v7 Unix milliseconds, v1 and v6 clock sequence and node fields, and special Nil and Max values.",
+            "featureList": [
+              "Parse standard, compact, braced, and UUID URN text",
+              "Report RFC 9562 version and variant fields",
+              "Decode UUID v1 and UUID v6 timestamps from 100-nanosecond Gregorian intervals",
+              "Decode UUID v7 timestamps from Unix milliseconds",
+              "Read UUID v1 and UUID v6 clock sequence and node fields",
+              "Recognize Nil and Max UUID values",
+              "Explain non-reversible UUID v3 and v5 name hashes",
+              "Avoid inferring application-defined UUID v8 payload meaning"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/uuid-decoder/#webpage",
+            "url": "https://liveparse.com/uuid-decoder/",
+            "name": "UUID Decoder – Version, Variant & Timestamp Inspector",
+            "description": "Decode RFC 9562 UUID structure and supported version-specific fields locally.",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/uuid-decoder/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/uuid-decoder/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/uuid-decoder/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "UUID Tools", "item": "https://liveparse.com/uuid-generator/" },
+              { "@type": "ListItem", "position": 3, "name": "UUID Decoder", "item": "https://liveparse.com/uuid-decoder/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/uuid-decoder/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What information can a UUID decoder read?",
+                "acceptedAnswer": { "@type": "Answer", "text": "It can parse the 128-bit value, normalize supported text forms, classify the variant, report the RFC version, recognize Nil and Max, and decode fields whose meanings RFC 9562 defines for that version. It cannot prove who created the UUID or whether a referenced record exists." }
+              },
+              {
+                "@type": "Question",
+                "name": "Which UUID versions contain a decodable timestamp?",
+                "acceptedAnswer": { "@type": "Answer", "text": "UUID v1 and v6 contain a 60-bit count of 100-nanosecond intervals since 1582-10-15 00:00:00 UTC. UUID v7 contains a 48-bit unsigned Unix millisecond value. The decoder converts those fields to UTC after confirming the RFC variant and version." }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the UUID v1 or v6 node field always reveal a MAC address?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. The 48-bit node field can be derived from an IEEE address or generated as a random or pseudorandom node identifier. Treat it as raw UUID data, not reliable proof of a device, network interface, location, or owner." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a UUID decoder recover the original UUID v3 or v5 name?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. UUID v3 and v5 are created from a namespace UUID and a name using MD5 or SHA-1, then version and variant bits are set. The resulting truncated hash does not contain a reversible copy of those inputs, so a decoder cannot recover them." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a generic decoder explain every UUID v8 field?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. RFC 9562 reserves UUID v8 for custom or experimental layouts. A generic decoder can identify version 8, the variant, and the raw 128-bit value, but only the producing specification or application can define the custom payload meaning." }
+              },
+              {
+                "@type": "Question",
+                "name": "What can be decoded from a UUID v4?",
+                "acceptedAnswer": { "@type": "Answer", "text": "A decoder can confirm the text structure, RFC variant, version 4 field, canonical bytes, and special-value status. UUID v4 defines 122 random or pseudorandom payload bits, so it has no standard timestamp, clock sequence, node, namespace, or name to extract." }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a decoded UUID timestamp trustworthy?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Not by itself. The timestamp accurately reflects the parsed bits, but any caller can construct UUID bits and a generator clock can be wrong. Do not use an untrusted UUID timestamp alone for authorization, expiration, billing, audit, or legal event time." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can the decoder read compact UUIDs, braces, and UUID URNs?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes in normalized input mode. It accepts exactly 32 hexadecimal digits, a matching brace pair around standard text, or a case-insensitive urn:uuid: prefix, then reports the lowercase 8-4-4-4-12 canonical form. Strict mode requires that canonical text shape directly." }
+              },
+              {
+                "@type": "Question",
+                "name": "Are pasted UUIDs uploaded for decoding?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing, field extraction, UTC conversion, normalization, and result rendering happen in the current browser tab. Clipboard history, extensions, screen sharing, and other device software remain separate privacy boundaries." }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="uuid-page" data-mode="decoder">
+    <a class="skip-link" href="#decoder">Skip to the UUID decoder</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/uuid-generator/">UUID Generator</a>
+          <a href="/uuid-v4-generator/">UUID v4</a>
+          <a href="/uuid-v7-generator/">UUID v7</a>
+          <a href="#faq">FAQ</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">RFC 9562 fields · v1/v6/v7 time · Local parsing</p>
+          <h1>UUID Decoder</h1>
+          <p class="hero-lead">Inspect a UUID’s canonical value, variant, version, and version-specific fields. Decode v1, v6, and v7 timestamps plus v1 and v6 clock sequence and node data—without inventing meaning that the bits do not contain.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#decoder">Decode a UUID</a><span>Standard · Compact · Braces · URN</span></div>
+        </div>
+        <div class="hero-example" aria-label="UUID decoder field example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>uuid-v7.decode</strong></div>
+          <pre><code><span class="property">017f22e2-79b0</span>-<span class="string">7</span>cc3-<span class="boolean">9</span>8c4-dc0c0c07398f
+<span class="property">time</span>  2022-02-22T19:22:22.000Z</code></pre>
+          <p><strong>Version 7 · RFC variant</strong><span>Decoded structure is not proof of origin</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="decoder" aria-labelledby="decoder-intro-heading">
+        <div><p class="section-kicker">Read defined fields, preserve uncertainty</p><h2 id="decoder-intro-heading">Decode UUID structure and timestamps</h2></div>
+        <p>Paste one UUID or a batch. The decoder validates the complete 128-bit representation before interpreting the RFC variant, version, special values, supported timestamps, clock sequence, and node fields.</p>
+      </section>
+      <div id="root">
+        <section class="parser-fallback" aria-label="UUID decoder loading"><p><strong>Loading the UUID decoder…</strong></p><p>Enable JavaScript to inspect UUID fields and convert supported timestamps to UTC.</p></section>
+      </div>
+
+      <section class="content-section" id="what-it-decodes" aria-labelledby="what-heading">
+        <div class="section-heading"><p class="section-kicker">Meaning depends on the version</p><h2 id="what-heading">What an RFC 9562 UUID decoder can read</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Every UUID is 16 octets, commonly written as 32 hexadecimal digits in an <code>8-4-4-4-12</code> pattern. The variant is identified from the highest bits of octet 8. For the RFC <code>10</code> variant, the high four bits of octet 6 carry a version from 1 through 8. Nil and Max are special all-zero and all-one values rather than ordinary generated versions.</p>
+            <p>Version is the key to interpretation. UUID v1 and v6 define time, clock sequence, and node fields. UUID v7 defines a leading Unix-millisecond timestamp. UUID v4 assigns its payload to randomness. UUID v3 and v5 hold name-based hash output, not the original name. UUID v8 leaves payload semantics to another specification or application.</p>
+            <p>A decoder reports what the bits encode under the standard. It does not decrypt the value, contact a database, search for an issuing system, verify randomness, or authenticate the data. A well-formed UUID can be copied, fabricated, stale, unauthorized, or unrelated to any real record.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Always inspectable</dt><dd>Canonical bytes, text structure, variant, special status, and RFC version when applicable.</dd></div>
+            <div><dt>v1 and v6</dt><dd>Timestamp, clock sequence, and 48-bit node field.</dd></div>
+            <div><dt>v7</dt><dd>Leading 48-bit Unix millisecond timestamp.</dd></div>
+            <div><dt>Not reversible</dt><dd>Original namespace and name behind UUID v3 or v5 hash output.</dd></div>
+            <div><dt>Application-defined</dt><dd>Meaning of the custom payload in UUID v8.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="timestamps" aria-labelledby="timestamps-heading">
+        <div class="section-heading"><p class="section-kicker">Two epochs, three decodable versions</p><h2 id="timestamps-heading">Decode UUID v1, v6, and v7 timestamps</h2></div>
+        <div class="error-table" role="table" aria-label="Timestamp fields in UUID versions 1, 6, and 7">
+          <div class="error-row error-head" role="row"><span role="columnheader">Version</span><span role="columnheader">Encoded time</span><span role="columnheader">How it is read</span></div>
+          <div class="error-row" role="row"><strong role="cell">UUID v1</strong><span role="cell">60-bit count of 100-nanosecond intervals since the Gregorian epoch.</span><span role="cell">Reassemble <code>time_high</code>, <code>time_mid</code>, and <code>time_low</code>, then subtract the offset to the Unix epoch.</span></div>
+          <div class="error-row" role="row"><strong role="cell">UUID v6</strong><span role="cell">The same Gregorian 100-nanosecond timestamp basis as v1.</span><span role="cell">Read the reordered high-to-low timestamp fields, designed so the leading bytes sort by time.</span></div>
+          <div class="error-row" role="row"><strong role="cell">UUID v7</strong><span role="cell">48-bit unsigned Unix epoch milliseconds.</span><span role="cell">Interpret the first six octets as one big-endian integer and format that instant in UTC.</span></div>
+        </div>
+        <p>UUID v1 and v6 count from <time datetime="1582-10-15T00:00:00Z">1582-10-15 00:00:00 UTC</time> in 100-nanosecond intervals. UUID v7 counts milliseconds from <time datetime="1970-01-01T00:00:00Z">1970-01-01 00:00:00 UTC</time>, excluding leap seconds. The decoder can preserve the exact v1 or v6 interval count while its ordinary ISO display is limited to JavaScript date range and millisecond precision.</p>
+      </section>
+
+      <section class="content-section" id="v1-v6-fields" aria-labelledby="fields-heading">
+        <div class="section-heading"><p class="section-kicker">Time is only part of the layout</p><h2 id="fields-heading">UUID v1 and v6 clock sequence and node fields</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>For the RFC variant, UUID v1 and v6 allocate 14 bits to <code>clock_seq</code>. The field helps a generator avoid duplicates when the clock moves backward or the node identifier changes. A decoder can report its integer value, but the value is generator state—not a count of UUIDs and not a globally coordinated sequence.</p>
+            <p>The final 48 bits form the <code>node</code> field. Historical UUID v1 implementations often used an IEEE 802 MAC address, but RFC-compliant generation can use a random or pseudorandom node identifier instead. The multicast bit can distinguish a non-MAC construction in applicable methods, yet a decoded node should never be treated as authenticated hardware identity.</p>
+            <p>Version 6 reorders the v1 timestamp so its most significant time bits come first while retaining clock sequence and node concepts. That layout improves sorting, but it does not make the decoded timestamp or node trustworthy. Anyone can construct a UUID with arbitrary values in these fields.</p>
+          </div>
+          <div class="callout-card"><strong>Node is data, not attribution</strong><p>A 48-bit node value may resemble a MAC address. Do not use it to identify a person, locate a device, prove network ownership, or make an access-control decision.</p><a href="https://www.rfc-editor.org/rfc/rfc9562#section-6.10" target="_blank" rel="noreferrer">Read the RFC node-ID guidance →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="name-based" aria-labelledby="name-heading">
+        <div class="section-heading"><p class="section-kicker">Hash output is not stored input</p><h2 id="name-heading">Why UUID v3 and v5 inputs cannot be recovered</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>UUID v3 combines a namespace UUID with a name and hashes the bytes with MD5. UUID v5 follows the same overall idea with SHA-1. Each process retains the required 128-bit portion of hash output and then sets the version and variant bits. The final UUID does not carry a separate copy of the namespace, name, or full digest.</p>
+            <p>Hashing is a one-way transformation, and truncation discards additional information. A decoder therefore cannot extract the original domain name, URL, account ID, path, namespace UUID, or other source text. It can only report that the version field is 3 or 5 and show the resulting bytes.</p>
+            <p>If you already know a candidate namespace and name, an application can recompute the correct version and compare the resulting UUID. That is verification of a candidate, not recovery. Different inputs can theoretically map to the same truncated output, so the UUID alone is not proof of a unique original string.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>UUID v3 algorithm</dt><dd>MD5 over namespace UUID bytes followed by name bytes.</dd></div>
+            <div><dt>UUID v5 algorithm</dt><dd>SHA-1 over namespace UUID bytes followed by name bytes.</dd></div>
+            <div><dt>Decoder can report</dt><dd>Version, variant, normalized UUID, and raw result bytes.</dd></div>
+            <div><dt>Decoder cannot recover</dt><dd>The namespace, original name, encoding choice, or full digest.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="version-limits" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Avoid false precision</p><h2 id="limits-heading">UUID v2, v4, and v8 decoding limits</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">v2</span><h3>DCE Security UUID</h3><p>RFC 9562 records version 2 but leaves its detailed definition outside the standard’s scope. A generic RFC decoder can identify the version nibble without pretending to supply universal DCE semantics.</p></article>
+          <article><span aria-hidden="true">v4</span><h3>Random payload</h3><p>Version 4 has 122 random or pseudorandom payload bits. There is no standard creation time, counter, node, namespace, or original input hidden inside those bits.</p></article>
+          <article><span aria-hidden="true">v8</span><h3>Custom payload</h3><p>Version 8 reserves payload space for experimental or application-specific use. Decode the generic version and variant, then consult the producer’s specification for every custom field.</p></article>
+          <article><span aria-hidden="true">?</span><h3>Unknown provenance</h3><p>Even a familiar layout does not prove the generator, clock quality, entropy source, database record, issuer, or authorization context. Structure and trust are separate questions.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" id="input-forms" aria-labelledby="input-heading">
+        <div class="section-heading"><p class="section-kicker">Presentation and bytes are different layers</p><h2 id="input-heading">Strict and normalized UUID decoding</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Strict input accepts only the ordinary 36-character hex-and-dash form: 32 hexadecimal digits separated after positions 8, 12, 16, and 20. Uppercase and lowercase hexadecimal letters represent the same values, but whitespace, braces, a URN prefix, compact input, and extra suffix text are rejected.</p>
+            <p>Normalized input deliberately accepts four presentations: standard hyphenated text, exactly 32 compact hex digits, one matching pair of braces around standard text, or a case-insensitive <code>urn:uuid:</code> prefix followed by standard text. The decoder then reports lowercase canonical form so byte comparisons are unambiguous.</p>
+            <p>Normalization is useful for human input, but protocols and signatures may require exact source text. Do not silently rewrite a signed field, routing key, cache key, or wire value unless its governing specification defines that normalization.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Standard</dt><dd><code>017f22e2-79b0-7cc3-98c4-dc0c0c07398f</code></dd></div>
+            <div><dt>Compact</dt><dd><code>017f22e279b07cc398c4dc0c0c07398f</code></dd></div>
+            <div><dt>Braced</dt><dd><code>{017F22E2-79B0-7CC3-98C4-DC0C0C07398F}</code></dd></div>
+            <div><dt>URN</dt><dd><code>urn:uuid:017f22e2-79b0-7cc3-98c4-dc0c0c07398f</code></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="trust" aria-labelledby="trust-heading">
+        <div class="section-heading"><p class="section-kicker">Bits can be valid and claims can still be false</p><h2 id="trust-heading">What decoded UUID fields cannot prove</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Not creation evidence</h3><p>A v1, v6, or v7 timestamp is a field value. It does not prove when a record was committed, an event occurred, or a trusted clock observed it.</p></article>
+          <article><h3>Not device identity</h3><p>A node field can be random, reused, copied, or fabricated. Even a MAC-shaped value is not authenticated attribution.</p></article>
+          <article><h3>Not database existence</h3><p>UUID bytes do not contain a live record lookup. Query the authoritative store with proper tenant and access checks.</p></article>
+          <article><h3>Not authorization</h3><p>Knowing an identifier never grants permission by itself. Authenticate the caller and enforce policy for the referenced resource.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">UUID decoder FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What information can a UUID decoder read?</summary><p>It can parse the 128-bit value, normalize supported text forms, classify the variant, report the RFC version, recognize Nil and Max, and decode fields whose meanings RFC 9562 defines for that version. It cannot prove who created the UUID or whether a referenced record exists.</p></details>
+          <details><summary>Which UUID versions contain a decodable timestamp?</summary><p>UUID v1 and v6 contain a 60-bit count of 100-nanosecond intervals since 1582-10-15 00:00:00 UTC. UUID v7 contains a 48-bit unsigned Unix millisecond value. The decoder converts those fields to UTC after confirming the RFC variant and version.</p></details>
+          <details><summary>Does the UUID v1 or v6 node field always reveal a MAC address?</summary><p>No. The 48-bit node field can be derived from an IEEE address or generated as a random or pseudorandom node identifier. Treat it as raw UUID data, not reliable proof of a device, network interface, location, or owner.</p></details>
+          <details><summary>Can a UUID decoder recover the original UUID v3 or v5 name?</summary><p>No. UUID v3 and v5 are created from a namespace UUID and a name using MD5 or SHA-1, then version and variant bits are set. The resulting truncated hash does not contain a reversible copy of those inputs, so a decoder cannot recover them.</p></details>
+          <details><summary>Can a generic decoder explain every UUID v8 field?</summary><p>No. RFC 9562 reserves UUID v8 for custom or experimental layouts. A generic decoder can identify version 8, the variant, and the raw 128-bit value, but only the producing specification or application can define the custom payload meaning.</p></details>
+          <details><summary>What can be decoded from a UUID v4?</summary><p>A decoder can confirm the text structure, RFC variant, version 4 field, canonical bytes, and special-value status. UUID v4 defines 122 random or pseudorandom payload bits, so it has no standard timestamp, clock sequence, node, namespace, or name to extract.</p></details>
+          <details><summary>Is a decoded UUID timestamp trustworthy?</summary><p>Not by itself. The timestamp accurately reflects the parsed bits, but any caller can construct UUID bits and a generator clock can be wrong. Do not use an untrusted UUID timestamp alone for authorization, expiration, billing, audit, or legal event time.</p></details>
+          <details><summary>Can the decoder read compact UUIDs, braces, and UUID URNs?</summary><p>Yes in normalized input mode. It accepts exactly 32 hexadecimal digits, a matching brace pair around standard text, or a case-insensitive urn:uuid: prefix, then reports the lowercase 8-4-4-4-12 canonical form. Strict mode requires that canonical text shape directly.</p></details>
+          <details><summary>Are pasted UUIDs uploaded for decoding?</summary><p>No. Parsing, field extraction, UTC conversion, normalization, and result rendering happen in the current browser tab. Clipboard history, extensions, screen sharing, and other device software remain separate privacy boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Primary standard and related tools</p><h2 id="references-heading">UUID decoding resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-4" target="_blank" rel="noreferrer">RFC 9562 Section 4: UUID Format, Variant, and Version</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.1" target="_blank" rel="noreferrer">RFC 9562 Section 5.1: UUID Version 1</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.6" target="_blank" rel="noreferrer">RFC 9562 Section 5.6: UUID Version 6</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.7" target="_blank" rel="noreferrer">RFC 9562 Section 5.7: UUID Version 7</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.8" target="_blank" rel="noreferrer">RFC 9562 Section 5.8: UUID Version 8</a></li>
+          <li><a href="/uuid-v4-generator/">UUID v4 Generator</a></li>
+          <li><a href="/uuid-v7-generator/">UUID v7 Generator</a></li>
+          <li><a href="/uuid-validator/">UUID Validator</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/uuid-generator/">UUID Generator</a><a href="/uuid-v4-generator/">UUID v4</a><a href="/uuid-v7-generator/">UUID v7</a><a href="/guides/uuid-v4-vs-v7/">v4 vs v7 Guide</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. UUID decoding and field inspection run locally in your browser. Updated August 4, 2026.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive UUID decoding. The version, variant, timestamp, clock sequence, node, hash-limit, and trust guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/uuid.tsx"></script>
+  </body>
+</html>

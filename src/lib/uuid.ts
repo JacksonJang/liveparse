@@ -3,6 +3,9 @@ const UUID_HEX_LENGTH = 32;
 const UUID_TEXT_LENGTH = 36;
 const UUID_V7_TIMESTAMP_MAX = 0xffffffffffff;
 const UUID_V7_BATCH_COUNTER_MAX = 0x3fff;
+const UUID_GREGORIAN_TO_UNIX_100NS = 0x01b21dd213814000n;
+const HUNDRED_NANOSECONDS_PER_MILLISECOND = 10_000n;
+const DATE_MAX_MILLISECONDS = 8_640_000_000_000_000;
 const UINT16_RANGE = 0x1_0000;
 const MAX_COUNTER_SEED_ATTEMPTS = 128;
 const HEX = '0123456789abcdef';
@@ -30,6 +33,10 @@ export interface ParsedUuid {
   isMax: boolean;
   timestampMs: number | null;
   timestampIso: string | null;
+  timestampPrecision: '100ns' | 'millisecond' | null;
+  gregorianTimestamp100ns: bigint | null;
+  clockSequence: number | null;
+  node: string | null;
 }
 
 export type RandomBytes = (length: number) => Uint8Array;
@@ -44,6 +51,11 @@ export interface GenerateUuidBatchOptions extends GenerateUuidV7Options {
   count: number;
   format?: UuidFormat;
   case?: UuidCase;
+}
+
+export interface UuidV4CollisionEstimate {
+  probability: number;
+  expectedPairs: number;
 }
 
 export class UuidParseError extends Error {
@@ -102,6 +114,41 @@ function readTimestamp(bytes: Uint8Array): number {
   let value = 0;
   for (let index = 0; index < 6; index += 1) value = value * 256 + bytes[index];
   return value;
+}
+
+function readUnsignedBigInt(bytes: Uint8Array, start: number, end: number): bigint {
+  let value = 0n;
+  for (let index = start; index < end; index += 1) value = (value << 8n) | BigInt(bytes[index]);
+  return value;
+}
+
+function floorDivide(dividend: bigint, divisor: bigint): bigint {
+  const quotient = dividend / divisor;
+  const remainder = dividend % divisor;
+  return remainder < 0n ? quotient - 1n : quotient;
+}
+
+function isoFromMilliseconds(milliseconds: number): string | null {
+  if (!Number.isSafeInteger(milliseconds) || Math.abs(milliseconds) > DATE_MAX_MILLISECONDS) return null;
+  const date = new Date(milliseconds);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function readGregorianTimestamp100ns(bytes: Uint8Array, version: 1 | 6): bigint {
+  if (version === 1) {
+    const timeLow = readUnsignedBigInt(bytes, 0, 4);
+    const timeMid = readUnsignedBigInt(bytes, 4, 6);
+    const timeHigh = (BigInt(bytes[6] & 0x0f) << 8n) | BigInt(bytes[7]);
+    return (timeHigh << 48n) | (timeMid << 32n) | timeLow;
+  }
+
+  const timeHighAndMid = readUnsignedBigInt(bytes, 0, 6);
+  const timeLow = (BigInt(bytes[6] & 0x0f) << 8n) | BigInt(bytes[7]);
+  return (timeHighAndMid << 12n) | timeLow;
+}
+
+function nodeText(bytes: Uint8Array): string {
+  return Array.from(bytes.slice(10), (byte) => byte.toString(16).padStart(2, '0')).join(':');
 }
 
 function timestampFrom(now: (() => number) | undefined): number {
@@ -267,8 +314,30 @@ export function parseUuid(input: string): ParsedUuid {
   const isMax = bytes.every((byte) => byte === 0xff);
   const { variant, variantBits } = variantFrom(bytes[8]);
   const version = versionFrom(bytes, variant, isNil || isMax);
-  const timestampMs = version === 7 ? readTimestamp(bytes) : null;
-  const timestampIso = timestampMs === null ? null : new Date(timestampMs).toISOString();
+  let timestampMs: number | null = null;
+  let timestampIso: string | null = null;
+  let timestampPrecision: ParsedUuid['timestampPrecision'] = null;
+  let gregorianTimestamp100ns: bigint | null = null;
+  let clockSequence: number | null = null;
+  let node: string | null = null;
+
+  if (version === 7) {
+    timestampMs = readTimestamp(bytes);
+    timestampIso = isoFromMilliseconds(timestampMs);
+    timestampPrecision = 'millisecond';
+  } else if (version === 1 || version === 6) {
+    gregorianTimestamp100ns = readGregorianTimestamp100ns(bytes, version);
+    const unixTimestamp100ns = gregorianTimestamp100ns - UUID_GREGORIAN_TO_UNIX_100NS;
+    const unixMilliseconds = floorDivide(unixTimestamp100ns, HUNDRED_NANOSECONDS_PER_MILLISECOND);
+    const numericMilliseconds = Number(unixMilliseconds);
+    if (Number.isSafeInteger(numericMilliseconds)) {
+      timestampMs = numericMilliseconds;
+      timestampIso = isoFromMilliseconds(numericMilliseconds);
+    }
+    timestampPrecision = '100ns';
+    clockSequence = ((bytes[8] & 0x3f) << 8) | bytes[9];
+    node = nodeText(bytes);
+  }
 
   return {
     bytes,
@@ -280,7 +349,20 @@ export function parseUuid(input: string): ParsedUuid {
     isMax,
     timestampMs,
     timestampIso,
+    timestampPrecision,
+    gregorianTimestamp100ns,
+    clockSequence,
+    node,
   };
+}
+
+export function estimateUuidV4Collision(count: number): UuidV4CollisionEstimate {
+  if (!Number.isFinite(count) || !Number.isInteger(count) || count < 1 || count > 1e30) {
+    throw new RangeError('UUID v4 collision count must be a whole number from 1 through 1e30.');
+  }
+  const expectedPairs = count * (count - 1) / (2 * 2 ** 122);
+  const probability = expectedPairs > 50 ? 1 : -Math.expm1(-expectedPairs);
+  return { probability, expectedPairs };
 }
 
 export function generateUuidV4(randomBytes?: RandomBytes): string {

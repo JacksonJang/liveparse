@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
+  estimateUuidV4Collision,
   generateUuidBatch,
   formatUuid,
   parseUuid,
@@ -12,7 +13,7 @@ import {
 import './styles.css';
 import './uuid.css';
 
-type PageMode = 'generator' | 'v7' | 'validator';
+type PageMode = 'generator' | 'v4' | 'v7' | 'validator' | 'decoder';
 type GeneratorVersion = 4 | 7;
 type OutputShape = 'lines' | 'comma' | 'json' | 'sql';
 type ValidationMode = 'strict' | 'normalized';
@@ -37,7 +38,7 @@ const STRICT_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0
 
 function pageMode(): PageMode {
   const value = document.body.dataset.mode;
-  return value === 'v7' || value === 'validator' ? value : 'generator';
+  return value === 'v4' || value === 'v7' || value === 'validator' || value === 'decoder' ? value : 'generator';
 }
 
 function createInitialGeneration(mode: PageMode): InitialGeneration {
@@ -152,12 +153,49 @@ function variantLabel(parsed: ParsedUuid): string {
   return 'Future reserved (111x)';
 }
 
+function versionDetail(parsed: ParsedUuid): string {
+  if (parsed.isNil) return 'All 128 bits are zero. RFC 9562 defines this special value separately from numbered versions.';
+  if (parsed.isMax) return 'All 128 bits are one. RFC 9562 defines this special value separately from numbered versions.';
+  switch (parsed.version) {
+    case 1: return 'Gregorian time-based layout with a 60-bit timestamp, clock sequence, and node field.';
+    case 2: return 'DCE Security UUID. RFC 9562 reserves the version but leaves its field semantics outside the specification.';
+    case 3: return 'Name-based UUID using MD5. The original namespace and name cannot be recovered from the UUID.';
+    case 4: return 'Random or pseudorandom UUID with 122 payload bits after the version and variant are set.';
+    case 5: return 'Name-based UUID using SHA-1. The original namespace and name cannot be recovered from the UUID.';
+    case 6: return 'Reordered Gregorian time-based layout with a 60-bit timestamp, clock sequence, and node field.';
+    case 7: return 'Unix time-based layout with a 48-bit millisecond timestamp and 74 remaining payload bits.';
+    case 8: return 'Application-defined UUID. RFC 9562 fixes version and variant placement but does not define the custom payload.';
+    default: return 'The value does not carry a numbered RFC 9562 version in the RFC variant space.';
+  }
+}
+
+function uuidBytes(parsed: ParsedUuid): string {
+  return Array.from(parsed.bytes, (byte) => byte.toString(16).padStart(2, '0')).join(' ');
+}
+
+function probabilityText(probability: number): string {
+  if (probability === 0) return '0 for one generated value';
+  if (probability >= 0.999999) return `≈ ${(probability * 100).toFixed(6)}%`;
+  if (probability < 0.000001) return `≈ ${probability.toExponential(4)}`;
+  return `≈ ${(probability * 100).toPrecision(6)}%`;
+}
+
+const DECODER_SAMPLES = [
+  ['RFC v1', 'c232ab00-9414-11ec-b3c8-9f6bdeced846'],
+  ['RFC v4', '919108f7-52d1-4320-9bac-f847db4148a8'],
+  ['RFC v6', '1ec9414c-232a-6b00-b3c8-9f6bdeced846'],
+  ['RFC v7', '017f22e2-79b0-7cc3-98c4-dc0c0c07398f'],
+  ['Nil', '00000000-0000-0000-0000-000000000000'],
+  ['Max', 'ffffffff-ffff-ffff-ffff-ffffffffffff'],
+] as const;
+
 function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneration: InitialGeneration }): React.JSX.Element {
   const [version, setVersion] = useState<GeneratorVersion>(mode === 'v7' ? 7 : 4);
   const [countInput, setCountInput] = useState('1');
   const [format, setFormat] = useState<UuidFormat>('hyphenated');
   const [letterCase, setLetterCase] = useState<UuidCase>('lower');
   const [outputShape, setOutputShape] = useState<OutputShape>('lines');
+  const [collisionCountInput, setCollisionCountInput] = useState('1000000000');
   const [values, setValues] = useState<string[]>(initialGeneration.values);
   const [generatedVersion, setGeneratedVersion] = useState<GeneratorVersion | null>(
     initialGeneration.values.length > 0 ? initialGeneration.version : null,
@@ -165,9 +203,11 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
   const [activity, setActivity] = useState(
     initialGeneration.error ?? 'Ready. UUIDs are generated locally with the browser cryptography API.',
   );
-  const [validationMode, setValidationMode] = useState<ValidationMode>('strict');
+  const [validationMode, setValidationMode] = useState<ValidationMode>(mode === 'decoder' ? 'normalized' : 'strict');
   const [validationInput, setValidationInput] = useState(
-    mode === 'v7'
+    mode === 'decoder'
+      ? '1ec9414c-232a-6b00-b3c8-9f6bdeced846'
+      : mode === 'v7'
       ? '017f22e2-79b0-7cc3-98c4-dc0c0c07398f'
       : '919108f7-52d1-4320-9bac-f847db4148a8',
   );
@@ -185,6 +225,10 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
     try { return parseUuid(values[0]); } catch { return null; }
   })() : null;
   const outputVersion = generatedVersion ?? version;
+  const fixedGeneratorVersion: GeneratorVersion | null = mode === 'v4' ? 4 : mode === 'v7' ? 7 : null;
+  const collisionEstimate = useMemo(() => {
+    try { return estimateUuidV4Collision(Number(collisionCountInput)); } catch { return null; }
+  }, [collisionCountInput]);
 
   const chooseVersion = (nextVersion: GeneratorVersion) => {
     setVersion(nextVersion);
@@ -248,14 +292,14 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
   const generator = (
     <section className="uuid-panel uuid-generator-panel" aria-labelledby="uuid-generator-heading">
       <header className="uuid-panel-heading">
-        <div><p>Generate locally</p><h2 id="uuid-generator-heading">{mode === 'v7' ? 'UUID v7 generator' : mode === 'validator' ? 'Generate a test UUID' : 'UUID v4 and v7 generator'}</h2></div>
+        <div><p>Generate locally</p><h2 id="uuid-generator-heading">{mode === 'v4' ? 'UUID v4 generator' : mode === 'v7' ? 'UUID v7 generator' : mode === 'validator' || mode === 'decoder' ? 'Generate a test UUID' : 'UUID v4 and v7 generator'}</h2></div>
         <span className="uuid-secure-badge">CSPRNG</span>
       </header>
       <div className="uuid-panel-body">
         <fieldset className="uuid-choice-fieldset">
           <legend>UUID version</legend>
-          {mode === 'v7' ? (
-            <div className="uuid-segmented uuid-segmented-single"><div className="uuid-selected-version"><strong>v7</strong><span>Time ordered RFC 9562 layout</span></div></div>
+          {fixedGeneratorVersion !== null ? (
+            <div className="uuid-segmented uuid-segmented-single"><div className="uuid-selected-version"><strong>v{fixedGeneratorVersion}</strong><span>{fixedGeneratorVersion === 4 ? 'Random RFC 9562 layout' : 'Time ordered RFC 9562 layout'}</span></div></div>
           ) : (
             <div className="uuid-segmented">
               <button type="button" aria-pressed={version === 4} onClick={() => chooseVersion(4)}><strong>v4</strong><span>Random</span></button>
@@ -288,6 +332,16 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
         <p className="uuid-panel-note">{outputVersion === 7
           ? 'UUID v7 embeds Unix milliseconds. Each batch uses a randomly seeded 14-bit counter plus 60 fresh random bits to stay lexically increasing; separate tabs and devices do not share generator state.'
           : 'UUID v4 uses 122 random bits after the required version and variant bits. It is an identifier, not a secret or proof of authenticity.'}</p>
+        {mode === 'v4' || mode === 'generator' ? <section className="uuid-collision-estimate" aria-labelledby="uuid-collision-heading">
+          <div><p>Birthday-bound estimate</p><h3 id="uuid-collision-heading">UUID v4 collision probability</h3></div>
+          <label className="uuid-field"><span>Independently generated UUID v4 values</span><input type="number" min="1" max="1e30" step="1" inputMode="numeric" value={collisionCountInput} onChange={(event) => setCollisionCountInput(event.target.value)} /></label>
+          {collisionEstimate ? <dl>
+            <div><dt>At least one collision</dt><dd>{probabilityText(collisionEstimate.probability)}</dd></div>
+            <div><dt>Expected colliding pairs</dt><dd>{collisionEstimate.expectedPairs === 0 ? '0' : collisionEstimate.expectedPairs.toExponential(4)}</dd></div>
+          </dl> : <p className="uuid-alert error" role="alert">Enter a whole count from 1 through 1e30.</p>}
+          <p>The estimate assumes independent, uniformly random 122-bit payloads. Broken random generators, cloned state, bugs, imports, and operational mistakes are separate collision sources. Keep a unique constraint where duplicates matter.</p>
+          <a href="/guides/uuid-collision-probability/">See the formula, assumptions, and worked examples →</a>
+        </section> : null}
       </div>
     </section>
   );
@@ -295,7 +349,7 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
   const validator = (
     <section className="uuid-panel uuid-validator-panel" aria-labelledby="uuid-validator-heading">
       <header className="uuid-panel-heading">
-        <div><p>Validate and inspect</p><h2 id="uuid-validator-heading">UUID checker with exact diagnostics</h2></div>
+        <div><p>Validate and inspect</p><h2 id="uuid-validator-heading">{mode === 'decoder' ? 'UUID decoder and field inspector' : 'UUID checker with exact diagnostics'}</h2></div>
         <span className="uuid-count-badge">{validResults.length} structurally valid · {invalidCount} invalid</span>
       </header>
       <div className="uuid-panel-body">
@@ -307,6 +361,9 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
           </div>
         </fieldset>
         <label className="uuid-output-field"><span>UUID values — one per line, comma separated, or a JSON string array</span><textarea spellCheck={false} maxLength={MAX_VALIDATION_CHARACTERS} value={validationInput} onChange={(event) => setValidationInput(event.target.value)} rows={6} placeholder="0191f7d0-e7b7-7cc3-98c4-dc0c0c07398f" /></label>
+        {mode === 'decoder' ? <div className="uuid-actions" aria-label="RFC 9562 decoder examples">
+          {DECODER_SAMPLES.map(([label, sample]) => <button className="uuid-button quiet" type="button" key={label} onClick={() => setValidationInput(sample)}>{label}</button>)}
+        </div> : null}
         <div className="uuid-actions">
           <button className="uuid-button" type="button" onClick={() => setValidationInput(values.join('\n'))}>Inspect generated</button>
           <button className="uuid-button" type="button" onClick={copyNormalized} disabled={validResults.length === 0}>Copy normalized</button>
@@ -322,10 +379,15 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
                 <header><span>Valid structure</span><strong>{versionLabel(result.parsed)}</strong></header>
                 <code>{result.parsed.canonical}</code>
                 <dl>
+                  <div><dt>Version meaning</dt><dd>{versionDetail(result.parsed)}</dd></div>
                   <div><dt>Variant</dt><dd>{variantLabel(result.parsed)}</dd></div>
                   <div><dt>Variant bits</dt><dd><code>{result.parsed.variantBits}</code></dd></div>
                   <div><dt>Normalized</dt><dd>{result.input === result.parsed.canonical ? 'Already in lowercase standard form' : 'Input normalized'}</dd></div>
-                  {result.parsed.timestampIso && <div><dt>v7 timestamp</dt><dd><time dateTime={result.parsed.timestampIso}>{result.parsed.timestampIso}</time></dd></div>}
+                  {mode === 'decoder' ? <div><dt>Network-order bytes</dt><dd><code>{uuidBytes(result.parsed)}</code></dd></div> : null}
+                  {result.parsed.timestampIso && (mode === 'decoder' || result.parsed.version === 7) && <div><dt>UUID v{result.parsed.version} timestamp</dt><dd><time dateTime={result.parsed.timestampIso}>{result.parsed.timestampIso}</time>{result.parsed.timestampMs !== null ? ` · ${result.parsed.timestampMs.toLocaleString('en-US')} Unix ms` : ''}</dd></div>}
+                  {mode === 'decoder' && result.parsed.gregorianTimestamp100ns !== null && <div><dt>Gregorian timestamp</dt><dd><code>{result.parsed.gregorianTimestamp100ns.toString()}</code> × 100 ns since 1582-10-15</dd></div>}
+                  {mode === 'decoder' && result.parsed.clockSequence !== null && <div><dt>Clock sequence</dt><dd>{result.parsed.clockSequence.toLocaleString('en-US')} (14 bits)</dd></div>}
+                  {mode === 'decoder' && result.parsed.node && <div><dt>Node field</dt><dd><code>{result.parsed.node}</code> (may be an IEEE address or a random node ID)</dd></div>}
                 </dl>
               </article>
             ) : (
@@ -338,18 +400,18 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
             {validationResults.length > MAX_VISIBLE_VALIDATION_RESULTS && <p className="uuid-result-limit">Showing the first {MAX_VISIBLE_VALIDATION_RESULTS} results. The summary and normalized copy action cover all {validationResults.length.toLocaleString('en-US')} checked values.</p>}
           </div>
         )}
-        <p className="uuid-panel-note">A structurally valid UUID is not proof that it was generated randomly, is globally unique, exists in a database, belongs to a trusted issuer, or is safe to use as an authorization token.</p>
+        <p className="uuid-panel-note">{mode === 'decoder' ? 'Decoding exposes only fields defined by the detected layout. It cannot reverse v3 or v5 hashes, assign meaning to a v8 custom payload, prove when a value was actually issued, or establish trust.' : 'A structurally valid UUID is not proof that it was generated randomly, is globally unique, exists in a database, belongs to a trusted issuer, or is safe to use as an authorization token.'}</p>
       </div>
     </section>
   );
 
   return (
-    <section className={`uuid-app ${mode === 'validator' ? 'validator-first' : ''}`} aria-label="UUID generator and validator">
+    <section className={`uuid-app ${mode === 'validator' || mode === 'decoder' ? 'validator-first' : ''}`} aria-label="UUID generator, validator, and decoder">
       <header className="uuid-toolbar">
         <div className="uuid-local-badge"><span aria-hidden="true" /><div><strong>Local UUID workspace</strong><small>Generated and inspected values stay in this browser tab</small></div></div>
         <div className="uuid-rfc"><span>Current standard</span><a href="https://www.rfc-editor.org/rfc/rfc9562" target="_blank" rel="noreferrer">RFC 9562</a></div>
       </header>
-      <div className="uuid-workspace">{mode === 'validator' ? <>{validator}{generator}</> : <>{generator}{validator}</>}</div>
+      <div className="uuid-workspace">{mode === 'validator' || mode === 'decoder' ? <>{validator}{generator}</> : <>{generator}{validator}</>}</div>
       <p className="uuid-activity" role="status" aria-live="polite"><strong>Status</strong><span>{activity}</span></p>
     </section>
   );
