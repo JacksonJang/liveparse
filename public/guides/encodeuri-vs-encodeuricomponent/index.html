@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>encodeURI vs encodeURIComponent in JavaScript | LiveParse</title>
+    <meta name="description" content="Compare encodeURI and encodeURIComponent character by character, avoid query injection, handle URIError, and choose URL or URLSearchParams when appropriate." />
+    <link rel="canonical" href="https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="encodeURI vs encodeURIComponent: The Exact Difference" />
+    <meta property="og:description" content="Choose the correct JavaScript URI function for complete addresses, components, query values, Unicode, and strict RFC 3986 contracts." />
+    <meta property="og:url" content="https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="encodeURI versus encodeURIComponent guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="encodeURI vs encodeURIComponent" />
+    <meta name="twitter:description" content="A precise JavaScript guide to whole-URI and component encoding." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/#article",
+            "headline": "encodeURI vs encodeURIComponent in JavaScript",
+            "description": "Compare JavaScript encodeURI and encodeURIComponent, understand their exact unescaped sets, and choose URL or URLSearchParams when structure matters.",
+            "mainEntityOfPage": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/",
+            "url": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "JavaScript URL encoding",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "encodeURI vs encodeURIComponent", "item": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the main difference between encodeURI and encodeURIComponent?", "acceptedAnswer": { "@type": "Answer", "text": "encodeURI is intended for a complete URI and preserves several structural characters. encodeURIComponent is intended for one component and encodes those characters so data cannot accidentally become separators." } },
+              { "@type": "Question", "name": "Should I use encodeURIComponent for query parameter values?", "acceptedAnswer": { "@type": "Answer", "text": "It can encode one manually assembled value, but URLSearchParams is usually safer for complete query pairs because it owns separators, repeated keys, and application/x-www-form-urlencoded serialization." } },
+              { "@type": "Question", "name": "Does encodeURI encode ampersands and hash signs?", "acceptedAnswer": { "@type": "Answer", "text": "No. encodeURI preserves ampersand and hash because they can be URI structure. That makes it unsuitable for untrusted component data that might contain a new query pair or fragment marker." } },
+              { "@type": "Question", "name": "Is encodeURIComponent exactly the RFC 3986 unreserved set?", "acceptedAnswer": { "@type": "Answer", "text": "No. ECMAScript also leaves exclamation mark, apostrophe, parentheses, and asterisk unescaped for historical compatibility. A protocol requiring strict RFC 3986 component output may encode those five characters afterward." } },
+              { "@type": "Question", "name": "Why can encodeURI or encodeURIComponent throw URIError?", "acceptedAnswer": { "@type": "Answer", "text": "The ECMAScript Encode operation throws URIError for an unpaired UTF-16 surrogate. Its Decode operation also throws for malformed escapes or percent-encoded bytes that are not valid UTF-8." } },
+              { "@type": "Question", "name": "Does LiveParse use a server to encode URL components?", "acceptedAnswer": { "@type": "Answer", "text": "No. The URL tools process entered text locally in the browser and do not fetch a parsed destination. General text input is limited to 200,000 UTF-16 code units; complete URL and base fields are limited to 32,768." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the JavaScript URI guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/query-string-parser/">Query Parser</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">encodeURI vs encodeURIComponent</span></nav><p class="eyebrow">JavaScript URI APIs</p><h1>encodeURI vs encodeURIComponent in JavaScript</h1><p class="dek">The names differ by one word, but the security boundary is important: one assumes reserved characters are structure, while the other treats them as component data.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> use <code>encodeURI</code> only when you already have a complete URI whose delimiters must remain active. Use <code>encodeURIComponent</code> for one component value, not an assembled URL. Prefer <code>URL</code> and <code>URLSearchParams</code> when constructing browser URLs because those APIs keep data separate from syntax. Neither function is an HTML escaper, a form serializer, or permission to decode repeatedly.</p></div>
+
+          <h2 id="intent">The ECMAScript specification defines two different intentions</h2>
+          <p>The <a href="https://tc39.es/ecma262/multipage/global-object.html#sec-uri-handling-functions" rel="external">ECMAScript URI handling section</a> says <code>encodeURI</code> and <code>decodeURI</code> are intended for complete URIs. They assume reserved characters have special delimiter meaning. <code>encodeURIComponent</code> and <code>decodeURIComponent</code> are intended for individual components and assume reserved characters are text that must not gain structural meaning.</p>
+          <p>This distinction is more precise than “one encodes more.” If a search phrase contains <code>&amp;</code>, a whole-URI encoder preserves it and a form-style parser may see a second field. If a return URL contains <code>#</code>, preserving it can move the suffix into the outer URL's fragment. A component encoder turns those data characters into <code>%26</code> and <code>%23</code>.</p>
+
+          <h2 id="sets">Exact characters left unescaped</h2>
+          <p>Both ECMAScript functions leave ASCII letters, digits, underscore, hyphen, period, exclamation mark, tilde, asterisk, apostrophe, and parentheses unescaped. The specification expresses this common set as ASCII word characters plus <code>- . ! ~ * ' ( )</code>. <code>encodeURI</code> additionally preserves <code>; / ? : @ &amp; = + $ , #</code>.</p>
+          <div class="table-wrap"><table><thead><tr><th>Input character class</th><th><code>encodeURI</code></th><th><code>encodeURIComponent</code></th></tr></thead><tbody><tr><td>Letters, digits, <code>_ - . ! ~ * ' ( )</code></td><td>Preserves</td><td>Preserves</td></tr><tr><td><code>; / ? : @ &amp; = + $ , #</code></td><td>Preserves</td><td>Percent-encodes</td></tr><tr><td>Space</td><td><code>%20</code></td><td><code>%20</code></td></tr><tr><td>Non-ASCII scalar value</td><td>UTF-8 percent escapes</td><td>UTF-8 percent escapes</td></tr></tbody></table></div>
+          <p>A subtle point: RFC 3986 classifies square brackets as reserved, but ECMAScript's <code>encodeURI</code> preserved list does not contain them. The ECMAScript standard itself notes that its reserved set is based on the older RFC 2396 and does not reflect all RFC 3986 changes. Describe actual function behavior instead of claiming that <code>encodeURI</code> preserves every modern reserved character.</p>
+
+          <h2 id="example">A complete URL and one query value are different inputs</h2>
+          <figure class="code-example"><figcaption class="code-label">Whole URI versus component</figcaption><pre><code>const whole = "https://example.com/search?q=red blue#top";
+encodeURI(whole);
+// https://example.com/search?q=red%20blue#top
+
+const value = "red &amp; blue#top";
+encodeURIComponent(value);
+// red%20%26%20blue%23top</code></pre></figure>
+          <p>The first result preserves the scheme colon, slashes, query marker, equals sign, and fragment marker because they are structure in the supplied string. The second protects an ampersand and hash because they belong to one value. Calling <code>encodeURIComponent</code> on the complete address would encode the scheme and separators, producing text that is no longer a directly usable absolute URL.</p>
+          <p>Calling <code>encodeURI</code> on a user-controlled value is the more dangerous opposite. A value such as <code>safe&amp;admin=true</code> stays structurally active if appended by string concatenation. Component encoding helps, but a structural API is clearer and handles more cases.</p>
+
+          <h2 id="url-api">Prefer URL and URLSearchParams for composition</h2>
+          <figure class="code-example"><figcaption class="code-label">Let the platform own query separators</figcaption><pre><code>const url = new URL("https://example.com/search");
+url.searchParams.set("q", "red &amp; blue");
+url.searchParams.append("tag", "C++");
+
+url.href;
+// https://example.com/search?q=red+%26+blue&amp;tag=C%2B%2B</code></pre></figure>
+          <p><code>URLSearchParams</code> follows the WHATWG <code>application/x-www-form-urlencoded</code> serializer, so it emits spaces as plus signs. That output is not identical to <code>encodeURIComponent</code>, which emits <code>%20</code> for a space. Both can convey a space in the correct consumer, but they belong to different algorithms. The <a href="/guides/percent20-vs-plus/">%20 versus + guide</a> explains the boundary.</p>
+          <p>The <code>URL</code> constructor also parses and serializes hosts, ports, relative references, paths, queries, and fragments according to the browser URL Standard. Use the <a href="/url-parser/">URL Parser</a> to inspect that structure and the <a href="/query-string-parser/">Query String Parser</a> to inspect ordered name/value pairs without navigating to the address.</p>
+
+          <h2 id="strict-rfc3986">encodeURIComponent is not a strict RFC 3986 encoder</h2>
+          <p>RFC 3986's unreserved set is only letters, digits, hyphen, period, underscore, and tilde. ECMAScript additionally leaves <code>!</code>, apostrophe, parentheses, and <code>*</code> literal for historical compatibility. Many applications accept that output. A signature scheme or protocol that explicitly demands RFC 3986 component encoding may require those five characters to be percent-encoded after <code>encodeURIComponent</code>.</p>
+          <figure class="code-example"><figcaption class="code-label">One explicit strict-RFC adjustment</figcaption><pre><code>function encodeRfc3986Component(value) {
+  return encodeURIComponent(value).replace(
+    /[!'()*]/g,
+    ch =&gt; "%" + ch.charCodeAt(0).toString(16).toUpperCase()
+  );
+}</code></pre></figure>
+          <p>Do not apply that transformation unless the receiving contract calls for it. Browser query construction, OAuth-style signature bases, AWS-style canonical requests, and a custom router can have related but non-identical rules. Name the exact contract instead of inventing one global “strict URL encoding” switch.</p>
+
+          <h2 id="errors">Unicode and malformed input can throw URIError</h2>
+          <p>JavaScript strings use UTF-16. The ECMAScript Encode operation throws <code>URIError</code> if it encounters an unpaired surrogate because that code unit is not a Unicode scalar value that can be transformed to valid UTF-8. A well-formed surrogate pair such as an emoji is encoded into four UTF-8 bytes and four percent escapes.</p>
+          <p>The Decode operation throws for incomplete or non-hex escapes and for byte sequences that are not valid UTF-8, including overlong encodings. Handle failure explicitly. Replacing invalid bytes silently may make a security decision operate on different text than the next component in the request pipeline.</p>
+
+          <h2 id="decode-pair">decodeURI and decodeURIComponent mirror the boundary</h2>
+          <p><code>decodeURI</code> preserves escapes that represent <code>; / ? : @ &amp; = + $ , #</code>, because decoding them could introduce structure into a complete URI. <code>decodeURIComponent</code> uses an empty preservation set and decodes valid escapes for one component. Neither should be placed in a loop that decodes until no percent signs remain.</p>
+          <p>For example, one round of component decoding changes <code>%252F</code> to <code>%2F</code>. A second round changes it to a slash. If only the first layer belongs to the current protocol boundary, the second operation changes meaning and may bypass earlier validation. Review <a href="/guides/double-url-encoding/">double URL encoding</a> before adding fallback decoding.</p>
+
+          <h2 id="tool-boundary">LiveParse tool behavior and limits</h2>
+          <p>The <a href="/url-encoder/">URL Encoder</a> exposes whole-URI and component choices so the difference is visible; the <a href="/url-decoder/">URL Decoder</a> reports strict decoding errors instead of repeatedly transforming an ambiguous value. Processing runs in the browser and does not send the entered value to a server-side encoding API.</p>
+          <p>General input is capped at 200,000 UTF-16 code units. URL and base URL fields are capped at 32,768. Parsing a URL is not a network request: the tool does not resolve its host, follow redirects, or fetch the destination. The limits keep an interactive tab responsive and do not claim that a downstream service accepts the same maximum length.</p>
+
+          <h2 id="references">Primary specifications</h2>
+          <ul><li><a href="https://tc39.es/ecma262/multipage/global-object.html#sec-encodeuri-uri" rel="external">ECMAScript encodeURI</a> and <a href="https://tc39.es/ecma262/multipage/global-object.html#sec-encodeuricomponent-uricomponent" rel="external">encodeURIComponent</a> — normative preserved sets and UTF-8 algorithm.</li><li><a href="https://url.spec.whatwg.org/#api" rel="external">WHATWG URL API</a> — browser URL and URLSearchParams behavior.</li><li><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2" rel="external">RFC 3986 section 2</a> — modern reserved, unreserved, and percent-encoding definitions.</li></ul>
+
+          <div class="tool-callout"><p><strong>Want a side-by-side result?</strong> Encode the same sample as a complete URI and as a component, then inspect which delimiters remain structural.</p><a class="button" href="/url-encoder/">Open the URL Encoder</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is the main difference between encodeURI and encodeURIComponent?</h3><p>encodeURI is intended for a complete URI and preserves several structural characters. encodeURIComponent is intended for one component and encodes those characters so data cannot accidentally become separators.</p>
+            <h3>Should I use encodeURIComponent for query parameter values?</h3><p>It can encode one manually assembled value, but URLSearchParams is usually safer for complete query pairs because it owns separators, repeated keys, and application/x-www-form-urlencoded serialization.</p>
+            <h3>Does encodeURI encode ampersands and hash signs?</h3><p>No. encodeURI preserves ampersand and hash because they can be URI structure. That makes it unsuitable for untrusted component data that might contain a new query pair or fragment marker.</p>
+            <h3>Is encodeURIComponent exactly the RFC 3986 unreserved set?</h3><p>No. ECMAScript also leaves exclamation mark, apostrophe, parentheses, and asterisk unescaped for historical compatibility. A protocol requiring strict RFC 3986 component output may encode those five characters afterward.</p>
+            <h3>Why can encodeURI or encodeURIComponent throw URIError?</h3><p>The ECMAScript Encode operation throws URIError for an unpaired UTF-16 surrogate. Its Decode operation also throws for malformed escapes or percent-encoded bytes that are not valid UTF-8.</p>
+            <h3>Does LiveParse use a server to encode URL components?</h3><p>No. The URL tools process entered text locally in the browser and do not fetch a parsed destination. General text input is limited to 200,000 UTF-16 code units; complete URL and base fields are limited to 32,768.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the URL tools</p><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query String Parser</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/url-percent-encoding/">URL percent-encoding</a><a href="/guides/percent20-vs-plus/">%20 vs +</a><a href="/guides/double-url-encoding/">Double URL encoding</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Strings</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Keep URL structure separate from data.</p></footer>
+  </body>
+</html>

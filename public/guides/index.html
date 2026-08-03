@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Developer Data Format Guides | LiveParse</title>
-    <meta name="description" content="Developer data guides to JSON, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums, with precise examples and local browser tools." />
+    <meta name="description" content="Developer data guides to JSON, URLs, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums, with precise examples and local browser tools." />
     <link rel="canonical" href="https://liveparse.com/guides/" />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
@@ -36,7 +36,7 @@
             "@id": "https://liveparse.com/guides/#page",
             "url": "https://liveparse.com/guides/",
             "name": "Developer Data Format Guides",
-            "description": "Practical guides to JSON, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
+            "description": "Practical guides to JSON, URLs, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
             "inLanguage": "en",
             "isPartOf": { "@type": "WebSite", "name": "LiveParse", "url": "https://liveparse.com/" },
             "mainEntity": { "@id": "https://liveparse.com/guides/#list" },
@@ -54,7 +54,7 @@
             "@type": "ItemList",
             "@id": "https://liveparse.com/guides/#list",
             "name": "LiveParse developer guides",
-            "numberOfItems": 23,
+            "numberOfItems": 27,
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "url": "https://liveparse.com/guides/what-is-a-json-parser/", "name": "What Is a JSON Parser?" },
               { "@type": "ListItem", "position": 2, "url": "https://liveparse.com/guides/common-json-errors/", "name": "Common JSON Errors" },
@@ -78,7 +78,11 @@
               { "@type": "ListItem", "position": 20, "url": "https://liveparse.com/guides/sha256-vs-md5/", "name": "SHA-256 vs MD5" },
               { "@type": "ListItem", "position": 21, "url": "https://liveparse.com/guides/hash-vs-encryption/", "name": "Hashing vs Encryption" },
               { "@type": "ListItem", "position": 22, "url": "https://liveparse.com/guides/how-to-verify-file-checksum/", "name": "How to Verify a File Checksum" },
-              { "@type": "ListItem", "position": 23, "url": "https://liveparse.com/guides/hashing-utf8-newlines/", "name": "UTF-8 and Newline Hashing Pitfalls" }
+              { "@type": "ListItem", "position": 23, "url": "https://liveparse.com/guides/hashing-utf8-newlines/", "name": "UTF-8 and Newline Hashing Pitfalls" },
+              { "@type": "ListItem", "position": 24, "url": "https://liveparse.com/guides/url-percent-encoding/", "name": "URL Percent-Encoding" },
+              { "@type": "ListItem", "position": 25, "url": "https://liveparse.com/guides/encodeuri-vs-encodeuricomponent/", "name": "encodeURI vs encodeURIComponent" },
+              { "@type": "ListItem", "position": 26, "url": "https://liveparse.com/guides/percent20-vs-plus/", "name": "%20 vs Plus in URL Encoding" },
+              { "@type": "ListItem", "position": 27, "url": "https://liveparse.com/guides/double-url-encoding/", "name": "Double URL Encoding" }
             ]
           }
         ]
@@ -102,7 +106,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>23 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>27 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -141,6 +145,18 @@
                 <a class="related-card" href="/guides/base64-vs-base64url/"><strong>Base64 vs Base64URL</strong><span>Alphabets, padding, canonical pad bits, UTF-8, and JWT segments.</span></a>
               </div>
               <p>Transform bytes locally with the <a href="/base64-encoder/">Base64 Encoder</a> and <a href="/base64-decoder/">Base64 Decoder</a>. Encoding changes representation; it does not encrypt or authenticate the data.</p>
+            </section>
+
+            <section aria-labelledby="url-guides">
+              <h2 id="url-guides">URLs, percent-encoding, and query strings</h2>
+              <p>URL components, complete URIs, and form query fields use related but different escaping rules. Decode only at an intentional boundary and keep ordered duplicate query parameters when they carry meaning.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/url-percent-encoding/"><strong>URL Percent-Encoding</strong><span>UTF-8 bytes, percent triplets, reserved delimiters, and unreserved characters.</span></a>
+                <a class="related-card" href="/guides/encodeuri-vs-encodeuricomponent/"><strong>encodeURI vs encodeURIComponent</strong><span>Choose the JavaScript function that matches a whole URI or one component.</span></a>
+                <a class="related-card" href="/guides/percent20-vs-plus/"><strong>%20 vs Plus</strong><span>Why form query encoding treats a plus sign as a space while generic percent-decoding does not.</span></a>
+                <a class="related-card" href="/guides/double-url-encoding/"><strong>Double URL Encoding</strong><span>Recognize repeated encoding, malformed escapes, and unsafe extra decoding.</span></a>
+              </div>
+              <p>Work locally with the <a href="/url-encoder/">URL Encoder</a>, <a href="/url-decoder/">URL Decoder</a>, <a href="/url-parser/">URL Parser</a>, and <a href="/query-string-parser/">Query String Parser</a>.</p>
             </section>
 
             <section aria-labelledby="uuid-guides">
@@ -214,6 +230,7 @@
               <li><a href="#json-guides">JSON and APIs</a></li>
               <li><a href="#time-guides">Time and Discord</a></li>
               <li><a href="#encoding-guides">Base64 encoding</a></li>
+              <li><a href="#url-guides">URLs and queries</a></li>
               <li><a href="#uuid-guides">UUIDs</a></li>
               <li><a href="#jwt-guides">JWTs</a></li>
               <li><a href="#sql-guides">SQL</a></li>

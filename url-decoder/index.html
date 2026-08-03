@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Decoder – Strict Percent-Decoding Locally | LiveParse</title>
+    <meta name="description" content="Decode one strict round of percent-encoded URL text locally. Choose component, full URI, or form rules, inspect errors, and never open the result." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/url-decoder/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/url.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/url-decoder/" />
+    <meta property="og:title" content="URL Decoder – Strict Single-Round Percent-Decoding" />
+    <meta property="og:description" content="Decode component, full-URI, or form-encoded text once in your browser, with malformed input reported instead of repaired." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private browser-based URL decoder" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Strict URL Decoder | LiveParse" />
+    <meta name="twitter:description" content="Decode exactly one URL-encoding layer locally and keep malformed sequences visible as errors." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/url-decoder/#application",
+            "name": "LiveParse URL Decoder",
+            "url": "https://liveparse.com/url-decoder/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Strict URL percent-decoding tool",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Strictly decode one layer of percent-encoded component, full URI, or application/x-www-form-urlencoded text up to 200000 UTF-16 code units without requesting the decoded result.",
+            "featureList": [
+              "Decode exactly one percent-encoding layer per operation",
+              "Decode a URL component with strict UTF-8 validation",
+              "Decode a full URI while preserving reserved escapes defined by that mode",
+              "Decode application/x-www-form-urlencoded input where plus represents space",
+              "Report malformed percent triplets or invalid encoded UTF-8",
+              "Accept up to 200000 UTF-16 code units",
+              "Never request, resolve, or follow the decoded result"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/url-decoder/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "URL Decoder", "item": "https://liveparse.com/url-decoder/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/url-decoder/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a URL decoder do?", "acceptedAnswer": { "@type": "Answer", "text": "A URL decoder interprets valid percent triplets as bytes and decodes the resulting UTF-8 sequence to text under the selected URL context. Form mode also interprets a literal plus sign as a space before percent-decoding." } },
+              { "@type": "Question", "name": "What does strict URL decoding mean here?", "acceptedAnswer": { "@type": "Answer", "text": "Strict decoding reports an error for a stray percent sign, a percent sign without two hexadecimal digits, or percent-encoded bytes that are not valid UTF-8. It does not silently keep, replace, or guess malformed data." } },
+              { "@type": "Question", "name": "Does the decoder automatically decode multiple layers?", "acceptedAnswer": { "@type": "Answer", "text": "No. One operation decodes exactly one layer. For example, %2520 becomes %20, not a space. Inspect that intermediate value before deliberately running another decode, because recursive decoding can change structure or bypass validation assumptions." } },
+              { "@type": "Question", "name": "When does + decode to a space?", "acceptedAnswer": { "@type": "Answer", "text": "A literal plus sign becomes a space only in application/x-www-form-urlencoded form mode. In ordinary URL component and full URI decoding, plus remains plus. A form-encoded literal plus should arrive as %2B." } },
+              { "@type": "Question", "name": "Why does a URL decoder reject some %XX sequences?", "acceptedAnswer": { "@type": "Answer", "text": "Each %XX triplet represents one byte, not necessarily one complete character. The selected bytes must form valid UTF-8 when decoded as component text. Values such as %FF or an incomplete multibyte sequence have no valid UTF-8 text result and are rejected." } },
+              { "@type": "Question", "name": "Does this URL decoder upload or open the decoded value?", "acceptedAnswer": { "@type": "Answer", "text": "No. Decoding runs in the current browser tab. The tool does not upload the input, perform DNS lookup, navigate to the output, follow redirects, fetch remote content, or decide whether the decoded address is safe." } },
+              { "@type": "Question", "name": "What is the URL decoder input limit?", "acceptedAnswer": { "@type": "Answer", "text": "The decoder accepts at most 200,000 UTF-16 code units in one operation. The limit bounds browser conversion and rendering work; it is not a claim about URL length limits in a browser, server, proxy, or application." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="url-page" data-page="url-decoder">
+    <a class="skip-link" href="#url-tool">Skip to the URL decoder</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/url-encoder/">URL Encoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Parser</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">One strict round · UTF-8 · No navigation</p>
+          <h1>URL Decoder</h1>
+          <p class="hero-lead">Decode percent-encoded component, full-URI, or form text once and report malformed escapes instead of repairing them. The value stays in this browser tab and is never opened as a link.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#url-tool">Decode URL text</a><span>Free · No sign-up · No automatic recursion</span></div>
+        </div>
+        <div class="hero-example" aria-label="URL percent-decoding example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>strict component</strong></div>
+          <pre><code><span class="property">input</span>  <span class="string">caf%C3%A9%20%26%20tea</span>
+<span class="property">output</span> <span class="boolean">café &amp; tea</span></code></pre>
+          <p><strong>One layer decoded</strong><span>Malformed UTF-8 is an error</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="url-tool" aria-labelledby="url-tool-heading">
+        <div><p class="section-kicker">Reveal one encoding boundary</p><h2 id="url-tool-heading">Decode percent-encoded URL text online</h2></div>
+        <p>Paste up to 200,000 UTF-16 code units, select the matching component, URI, or form context, and decode exactly one layer. The page reports invalid percent escapes and never visits the output.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="URL decoder loading"><p><strong>Loading the URL decoder…</strong></p><p>Enable JavaScript to decode and copy text. The strictness and security guidance below remains readable.</p></section></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">Triplets become bytes, then UTF-8 text</p><h2 id="meaning-heading">How strict URL decoding works</h2></div>
+        <div class="prose-grid"><div>
+          <p>A percent triplet contains <code>%</code> followed by exactly two hexadecimal digits. Decoding <code>%2F</code> produces byte <code>2F</code>, which is the ASCII slash. Non-ASCII characters require several triplets because their UTF-8 representation contains several bytes. Korean <code>한</code>, for example, is represented by three UTF-8 bytes and therefore three percent triplets.</p>
+          <p>Strict decoding has two useful failure boundaries. First, every percent sign must introduce two hexadecimal digits. Second, the recovered byte sequence must be valid UTF-8 for component text. A forgiving decoder can conceal a damaged log line or create different interpretations between a proxy, framework, and application. This tool makes malformed input visible instead.</p>
+          <p>One click removes only one layer. The encoded text <code>%252F</code> becomes <code>%2F</code> after one round because <code>%25</code> represents a percent sign. It does not immediately become a slash. That intermediate state is important when diagnosing double-encoding and when evaluating validation that occurs before another layer decodes the value.</p>
+          <p>Decoding is not decryption, malware scanning, redirect analysis, or URL validation. The output can contain delimiters, credentials, control characters, or misleading Unicode. Treat decoded text as untrusted data and inspect it before copying it into a browser, command, template, database query, or security decision.</p>
+        </div><dl class="definition-list"><div><dt>Percent triplet</dt><dd>A percent sign followed by exactly two hexadecimal digits representing one byte.</dd></div><div><dt>Character decoding</dt><dd>Recovered bytes are interpreted as UTF-8 in strict component decoding.</dd></div><div><dt>Rounds</dt><dd>Exactly one layer per operation; no automatic recursive decode.</dd></div><div><dt>Limit</dt><dd>200,000 UTF-16 code units per operation.</dd></div><div><dt>Network behavior</dt><dd>No upload, navigation, resolution, fetch, or redirect following.</dd></div></dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="modes-heading">
+        <div class="section-heading"><p class="section-kicker">Decode with the producer's rules</p><h2 id="modes-heading">Component, full URI, and form decoding</h2></div>
+        <div class="error-table" role="table" aria-label="URL decoding mode comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Mode</span><span role="columnheader">Important behavior</span><span role="columnheader">Typical source</span></div>
+          <div class="error-row" role="row"><strong role="cell">URL component</strong><code role="cell">strict percent + UTF-8</code><span role="cell">A path segment, query value, fragment value, or output produced with component encoding.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Full URI</strong><code role="cell">preserves reserved escapes</code><span role="cell">A complete URI encoded with full-URI rules, where decoding reserved delimiters could change its structure.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Form</strong><code role="cell">+ → space, %2B → +</code><span role="cell"><code>application/x-www-form-urlencoded</code> query or form data serialized by a browser API such as <code>URLSearchParams</code>.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/percent20-vs-plus/">See why %20 and + are not interchangeable in every URL context →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="diagnose-heading">
+        <div class="section-heading"><p class="section-kicker">Preserve evidence before changing it</p><h2 id="diagnose-heading">How to diagnose encoded data safely</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Keep the original sample</h3><p>Copy the exact string to a private scratch location before decoding. Do not trim spaces, normalize percent hex case, or replace plus signs until you know the source format.</p></li>
+          <li><span>2</span><h3>Select one known context</h3><p>Use form mode only for form-style data. For an individual percent-encoded value, start with strict component mode. Use full URI mode when reserved escapes must remain encoded.</p></li>
+          <li><span>3</span><h3>Review one-round output</h3><p>If percent triplets remain, determine which application layer created them before decoding again. Never make recursive decoding the default for untrusted input.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Failures carry useful information</p><h2 id="errors-heading">Why malformed encoded URLs should not be guessed</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Incomplete percent triplet</h3><p>A trailing <code>%</code> or value such as <code>%2</code> lacks a full byte. Keeping it silently can make one component disagree with another strict decoder.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Non-hexadecimal escape</h3><p><code>%GG</code> is not a percent-encoded byte. Report it at the source boundary rather than inventing a replacement value.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Invalid UTF-8 bytes</h3><p><code>%FF</code> cannot stand alone as valid UTF-8 text. A replacement character would hide which original bytes were present.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Unexpected second layer</h3><p>A result such as <code>%2E%2E%2F</code> may be intentional data or another encoded path traversal sequence. Pause before decoding it again.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="security-heading">
+        <div class="section-heading"><p class="section-kicker">Readable does not mean safe</p><h2 id="security-heading">Double-decoding and URL security boundaries</h2></div>
+        <div class="prose-grid"><div>
+          <p>Security bugs arise when two layers decode at different times. A front proxy may validate an encoded path while an application server decodes it again, or a router may decode a component before a framework applies another normalization. A value rejected in its final form can sometimes pass an earlier check while still encoded. The defense is a documented canonicalization boundary, not indiscriminate recursive decoding.</p>
+          <p>Query strings and callback URLs often contain OAuth authorization codes, signed parameters, session identifiers, email addresses, and private filters. Processing here stays in the tab and does not call a decoding service, but copied output can still leak through a clipboard manager, screenshot, ticket, prompt, or extension. Redact secrets before sharing.</p>
+          <p>The decoder never makes a network request. It cannot tell whether a hostname exists, a redirect is malicious, a link is a phishing page, or a decoded command is safe. Use an appropriate isolated security workflow when the input comes from an untrusted message or incident.</p>
+        </div><div class="callout-card"><strong>Need structured URL fields?</strong><p>After decoding only the intended layer, use the URL parser to inspect scheme, host, path, query, and fragment without fetching the destination.</p><a href="/url-parser/">Open the URL parser →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">URL decoder FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does a URL decoder do?</summary><p>A URL decoder interprets valid percent triplets as bytes and decodes the resulting UTF-8 sequence to text under the selected URL context. Form mode also interprets a literal plus sign as a space before percent-decoding.</p></details>
+          <details><summary>What does strict URL decoding mean here?</summary><p>Strict decoding reports an error for a stray percent sign, a percent sign without two hexadecimal digits, or percent-encoded bytes that are not valid UTF-8. It does not silently keep, replace, or guess malformed data.</p></details>
+          <details><summary>Does the decoder automatically decode multiple layers?</summary><p>No. One operation decodes exactly one layer. For example, %2520 becomes %20, not a space. Inspect that intermediate value before deliberately running another decode, because recursive decoding can change structure or bypass validation assumptions.</p></details>
+          <details><summary>When does + decode to a space?</summary><p>A literal plus sign becomes a space only in application/x-www-form-urlencoded form mode. In ordinary URL component and full URI decoding, plus remains plus. A form-encoded literal plus should arrive as %2B.</p></details>
+          <details><summary>Why does a URL decoder reject some %XX sequences?</summary><p>Each %XX triplet represents one byte, not necessarily one complete character. The selected bytes must form valid UTF-8 when decoded as component text. Values such as %FF or an incomplete multibyte sequence have no valid UTF-8 text result and are rejected.</p></details>
+          <details><summary>Does this URL decoder upload or open the decoded value?</summary><p>No. Decoding runs in the current browser tab. The tool does not upload the input, perform DNS lookup, navigate to the output, follow redirects, fetch remote content, or decide whether the decoded address is safe.</p></details>
+          <details><summary>What is the URL decoder input limit?</summary><p>The decoder accepts at most 200,000 UTF-16 code units in one operation. The limit bounds browser conversion and rendering work; it is not a claim about URL length limits in a browser, server, proxy, or application.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Standards and next checks</p><h2 id="related-heading">URL decoding resources</h2></div><ul><li><a href="/url-encoder/">URL Encoder</a></li><li><a href="/url-parser/">URL Parser</a></li><li><a href="/query-string-parser/">Query String Parser</a></li><li><a href="/guides/double-url-encoding/">Double URL encoding guide</a></li><li><a href="https://url.spec.whatwg.org/" target="_blank" rel="noreferrer">WHATWG URL Standard</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3986" target="_blank" rel="noreferrer">RFC 3986</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/url-encoder/">URL Encoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Parser</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. URL decoding runs locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive URL decoding. The strictness, encoding-layer, form, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/url.tsx"></script>
+  </body>
+</html>

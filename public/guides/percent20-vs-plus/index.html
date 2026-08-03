@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>%20 vs + for Spaces in URLs and Forms | LiveParse</title>
+    <meta name="description" content="Understand when a space is encoded as %20 or +, why URLSearchParams treats plus specially, and how to preserve literal plus signs in queries and paths." />
+    <link rel="canonical" href="https://liveparse.com/guides/percent20-vs-plus/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="%20 vs +: How Spaces Work in URLs and Form Data" />
+    <meta property="og:description" content="Separate RFC percent-encoding from application/x-www-form-urlencoded rules and keep literal plus signs intact." />
+    <meta property="og:url" content="https://liveparse.com/guides/percent20-vs-plus/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Percent 20 versus plus URL space guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%20 vs + in URLs" />
+    <meta name="twitter:description" content="Know when plus means a space and when it is a literal plus." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/percent20-vs-plus/#article",
+            "headline": "%20 vs + for Spaces in URLs and Forms",
+            "description": "Understand the difference between percent-encoded spaces and plus signs in generic URLs, query strings, URLSearchParams, and application/x-www-form-urlencoded data.",
+            "mainEntityOfPage": "https://liveparse.com/guides/percent20-vs-plus/",
+            "url": "https://liveparse.com/guides/percent20-vs-plus/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Query string encoding",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/percent20-vs-plus/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "%20 vs +", "item": "https://liveparse.com/guides/percent20-vs-plus/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/percent20-vs-plus/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Is %20 or + the correct encoding for a space?", "acceptedAnswer": { "@type": "Answer", "text": "Both can represent a space in the right context. %20 is the percent-encoded space byte. Plus represents space only in application/x-www-form-urlencoded parsing and serialization, including URLSearchParams." } },
+              { "@type": "Question", "name": "Does plus mean space in a URL path?", "acceptedAnswer": { "@type": "Answer", "text": "No. The general URL path rules do not translate plus to space. A path segment containing a literal plus should remain plus unless the application defines an additional nonstandard decoding rule." } },
+              { "@type": "Question", "name": "How do I put a literal plus sign in a query parameter?", "acceptedAnswer": { "@type": "Answer", "text": "In an application/x-www-form-urlencoded query value, encode the literal plus byte as %2B. URLSearchParams does this automatically when given a value such as C++." } },
+              { "@type": "Question", "name": "Why does URLSearchParams convert spaces to plus signs?", "acceptedAnswer": { "@type": "Answer", "text": "URLSearchParams uses the WHATWG application/x-www-form-urlencoded serializer. That algorithm sets spaceAsPlus and emits the space byte as a plus sign for form compatibility." } },
+              { "@type": "Question", "name": "Can I replace every plus sign with a space before decoding?", "acceptedAnswer": { "@type": "Answer", "text": "No. Perform that replacement only inside a known application/x-www-form-urlencoded name or value. A blanket replacement can corrupt literal plus signs in paths, fragments, opaque data, or query formats with different rules." } },
+              { "@type": "Question", "name": "Does LiveParse fetch a URL when parsing its query?", "acceptedAnswer": { "@type": "Answer", "text": "No. Query and URL parsing run locally in the browser without requesting the destination. General text is limited to 200,000 UTF-16 code units, while complete URL and base URL inputs are limited to 32,768." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the space encoding guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/query-string-parser/">Query Parser</a><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">%20 vs +</span></nav><p class="eyebrow">Space and plus semantics</p><h1>%20 vs + for Spaces in URLs and Forms</h1><p class="dek"><code>%20</code> always names the space byte. A plus sign becomes a space only under form-style parsing. The difference is a protocol boundary, not a matter of visual preference.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>10 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> use <code>%20</code> when expressing the UTF-8/ASCII space byte through percent-encoding. Expect <code>+</code> to mean a space only in <code>application/x-www-form-urlencoded</code> names and values, including <code>URLSearchParams</code>. Encode a literal plus as <code>%2B</code> in that format. Never apply form decoding indiscriminately to an entire URL.</p></div>
+
+          <h2 id="percent20">%20 is the percent-encoded space byte</h2>
+          <p>ASCII and UTF-8 represent U+0020 SPACE as byte hexadecimal <code>20</code>. RFC 3986 percent-encoding writes one byte as a percent sign and two hexadecimal digits, so the result is <code>%20</code>. This relationship does not depend on whether the byte appears in a path, query, or fragment; whether a space is allowed or how it should be serialized still depends on that component.</p>
+          <p>The literal plus character U+002B is a different byte, hexadecimal <code>2B</code>. Its percent escape is <code>%2B</code>. A generic percent decoder therefore maps <code>%20</code> to space and <code>%2B</code> to plus. It does not need a rule that raw plus means space.</p>
+
+          <h2 id="form-rule">The plus rule belongs to application/x-www-form-urlencoded</h2>
+          <p>The <a href="https://url.spec.whatwg.org/#application/x-www-form-urlencoded" rel="external">WHATWG URL Standard's form-urlencoded format</a> serializes ordered name/value tuples. During serialization, its percent-encode operation uses a <code>spaceAsPlus</code> flag: byte <code>20</code> is emitted as <code>+</code>. During parsing, every raw plus byte in a name or value is replaced with a space before percent-decoding.</p>
+          <p>This historical form behavior is why HTML form submissions and many server query parsers accept <code>q=red+blue</code> as the value “red blue.” It does not redefine plus throughout every URL component. RFC 3986 lists plus among reserved sub-delimiters; a scheme or application can give it meaning, but the generic URI syntax does not call it a space escape.</p>
+          <div class="table-wrap"><table><thead><tr><th>Input text in a form value</th><th>Serialized bytes</th><th>Parsed value</th></tr></thead><tbody><tr><td><code>red blue</code></td><td><code>red+blue</code> or compatible <code>red%20blue</code></td><td><code>red blue</code></td></tr><tr><td><code>C++</code></td><td><code>C%2B%2B</code></td><td><code>C++</code></td></tr><tr><td><code>a+b c</code></td><td><code>a%2Bb+c</code></td><td><code>a+b c</code></td></tr></tbody></table></div>
+
+          <h2 id="path">A plus in a path stays a plus</h2>
+          <p>Consider <code>https://example.com/docs/C++</code>. Under browser URL path processing, the two plus characters remain literal plus characters; they do not become spaces merely because the address contains a query elsewhere. Replacing plus globally would corrupt the path. The same caution applies to fragments, signatures, Base64 text, and opaque identifiers.</p>
+          <figure class="code-example"><figcaption class="code-label">Component-sensitive interpretation</figcaption><pre><code>/docs/a+b                 # path contains a literal plus
+?q=a+b                    # form-style q value parses as "a b"
+?q=a%2Bb                  # form-style q value parses as "a+b"
+#a+b                      # fragment text contains a literal plus</code></pre></figure>
+          <p>A backend framework may apply its own decoding policy to route parameters, so document and test that layer. Do not infer a standards rule from one framework's convenience behavior. The <a href="/url-parser/">URL Parser</a> separates the path, query, and fragment so the boundary is visible without contacting the destination.</p>
+
+          <h2 id="query">A query is not automatically a form</h2>
+          <p>RFC 3986 defines the query component's allowed syntax but does not require all queries to be name/value tuples or give plus a universal space meaning. Search APIs commonly choose form-style pairs, but another protocol may treat the raw query as one opaque string, use semicolons, preserve order and duplicates specially, or define a signature over exact bytes.</p>
+          <p>Use <code>URLSearchParams</code> only when the query contract is compatible with its form-urlencoded model. It supports ordered pairs and duplicate names, and it converts plus to space while parsing. If a signature protocol defines a different canonical query algorithm, follow that protocol rather than parsing and reserializing with a generic helper.</p>
+
+          <h2 id="urlsearchparams">URL.search and URLSearchParams can serialize differently</h2>
+          <p>The WHATWG URL Standard notes that a URL's direct query serializer and <code>URLSearchParams</code> use different percent-encode sets. A URL may expose an existing space as <code>%20</code>; after changing or sorting <code>searchParams</code>, the form serializer can emit it as <code>+</code>. The decoded name/value may remain the same while the exact URL string changes.</p>
+          <figure class="code-example"><figcaption class="code-label">Equivalent value, different spelling</figcaption><pre><code>const url = new URL("https://example.com/?q=red%20blue");
+url.searchParams.get("q"); // "red blue"
+
+url.searchParams.sort();
+url.search;                // may be "?q=red+blue"</code></pre></figure>
+          <p>That difference matters for cache keys, HMAC inputs, presigned URLs, deduplication, and tests that compare raw strings. Decide whether your contract compares decoded pairs or the original serialization. Do not normalize a signed URL after the signature was computed.</p>
+
+          <h2 id="javascript">encodeURIComponent does not emit form-style plus</h2>
+          <p><code>encodeURIComponent("red blue")</code> returns <code>red%20blue</code>. It encodes a plus in input as <code>%2B</code>, which makes it useful for one manually composed component. <code>URLSearchParams</code> given the same text returns <code>q=red+blue</code>. This is an algorithm difference, not a browser inconsistency.</p>
+          <p>For new code, prefer assigning values through <code>URLSearchParams.set</code> or <code>append</code> instead of manually concatenating <code>&amp;</code> and <code>=</code>. The <a href="/guides/encodeuri-vs-encodeuricomponent/">encodeURI versus encodeURIComponent guide</a> covers the remaining reserved characters and the historical JavaScript unescaped set.</p>
+
+          <h2 id="decode">Decode in the correct order and exactly once</h2>
+          <p>A form-urlencoded parser first splits the byte sequence into fields, replaces raw plus with space within each name and value, then percent-decodes and UTF-8 decodes them. Blindly calling <code>decodeURIComponent</code> on the whole query does not implement all of those steps: it leaves raw plus untouched and can decode an escaped ampersand before a later split.</p>
+          <p>Do not run a second decode because the output still contains <code>%</code>. An originally literal <code>%2B</code> can be transported as <code>%252B</code>; one layer may own the outer escape. A second unplanned decode changes data to a plus and a later form pass can change it again to a space. See <a href="/guides/double-url-encoding/">double URL encoding</a> for the security consequences.</p>
+
+          <h2 id="tool-workflow">A safe diagnostic workflow</h2>
+          <ol class="steps"><li><strong>Keep the raw URL.</strong> Record the exact path, query, and fragment before transforming it.</li><li><strong>Identify the contract.</strong> Confirm whether the query is form-urlencoded or another format.</li><li><strong>Parse structure once.</strong> Split the complete URL before decoding component data.</li><li><strong>Preserve duplicates and order.</strong> They may be semantically or cryptographically significant.</li><li><strong>Decode one round.</strong> Reject malformed escapes and invalid UTF-8 rather than guessing.</li><li><strong>Compare decoded and serialized forms.</strong> A value can remain equal while its raw spelling changes.</li></ol>
+          <p>The <a href="/query-string-parser/">Query String Parser</a>, <a href="/url-encoder/">URL Encoder</a>, <a href="/url-decoder/">URL Decoder</a>, and <a href="/url-parser/">URL Parser</a> perform these inspections in the browser without fetching the address or sending entered text to a processing API. General text input is limited to 200,000 UTF-16 code units; complete URL and base fields are limited to 32,768.</p>
+
+          <h2 id="references">Primary specifications</h2>
+          <ul><li><a href="https://url.spec.whatwg.org/#application/x-www-form-urlencoded" rel="external">WHATWG application/x-www-form-urlencoded</a> — normative plus-to-space parsing and space-as-plus serialization.</li><li><a href="https://url.spec.whatwg.org/#urlsearchparams" rel="external">WHATWG URLSearchParams</a> — query pair API and percent-encode behavior.</li><li><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2" rel="external">RFC 3986 section 2</a> — percent-encoded octets and the reserved plus character.</li><li><a href="https://tc39.es/ecma262/multipage/global-object.html#sec-encodeuricomponent-uricomponent" rel="external">ECMAScript encodeURIComponent</a> — UTF-8 component encoding that emits <code>%20</code>, not form-style plus.</li></ul>
+
+          <div class="tool-callout"><p><strong>Debugging a lost plus sign?</strong> Parse the query as ordered form-style pairs, then compare the raw field with the decoded value.</p><a class="button" href="/query-string-parser/">Open the Query String Parser</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>Is %20 or + the correct encoding for a space?</h3><p>Both can represent a space in the right context. %20 is the percent-encoded space byte. Plus represents space only in application/x-www-form-urlencoded parsing and serialization, including URLSearchParams.</p>
+            <h3>Does plus mean space in a URL path?</h3><p>No. The general URL path rules do not translate plus to space. A path segment containing a literal plus should remain plus unless the application defines an additional nonstandard decoding rule.</p>
+            <h3>How do I put a literal plus sign in a query parameter?</h3><p>In an application/x-www-form-urlencoded query value, encode the literal plus byte as %2B. URLSearchParams does this automatically when given a value such as C++.</p>
+            <h3>Why does URLSearchParams convert spaces to plus signs?</h3><p>URLSearchParams uses the WHATWG application/x-www-form-urlencoded serializer. That algorithm sets spaceAsPlus and emits the space byte as a plus sign for form compatibility.</p>
+            <h3>Can I replace every plus sign with a space before decoding?</h3><p>No. Perform that replacement only inside a known application/x-www-form-urlencoded name or value. A blanket replacement can corrupt literal plus signs in paths, fragments, opaque data, or query formats with different rules.</p>
+            <h3>Does LiveParse fetch a URL when parsing its query?</h3><p>No. Query and URL parsing run locally in the browser without requesting the destination. General text is limited to 200,000 UTF-16 code units, while complete URL and base URL inputs are limited to 32,768.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the URL tools</p><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query String Parser</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/url-percent-encoding/">URL percent-encoding</a><a href="/guides/encodeuri-vs-encodeuricomponent/">encodeURI vs encodeURIComponent</a><a href="/guides/double-url-encoding/">Double URL encoding</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/query-string-parser/">Query Strings</a><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Apply plus-as-space only inside its form boundary.</p></footer>
+  </body>
+</html>

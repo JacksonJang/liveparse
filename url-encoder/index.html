@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Encoder – Percent-Encode Text Locally | LiveParse</title>
+    <meta name="description" content="Encode a URL component, RFC 3986 component, full URI, or form value locally. Compare reserved characters, %20, and + without sending input." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/url-encoder/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/url.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/url-encoder/" />
+    <meta property="og:title" content="URL Encoder – Component, URI, RFC 3986 and Form Modes" />
+    <meta property="og:description" content="Percent-encode text in four explicit browser-local modes and see why the chosen URL context changes the output." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private browser-based URL tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Local URL Encoder | LiveParse" />
+    <meta name="twitter:description" content="Encode URL text with an explicit component, RFC 3986, full URI, or form rule set." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/url-encoder/#application",
+            "name": "LiveParse URL Encoder",
+            "url": "https://liveparse.com/url-encoder/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "URL percent-encoding tool",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Percent-encode up to 200000 UTF-16 code units in URL component, stricter RFC 3986 component, full URI, or application/x-www-form-urlencoded mode without requesting the resulting URL.",
+            "featureList": [
+              "Encode a JavaScript-style URL component",
+              "Encode a stricter RFC 3986 component",
+              "Encode a full URI while preserving structural delimiters",
+              "Serialize a form value with application/x-www-form-urlencoded rules",
+              "Accept up to 200000 UTF-16 code units",
+              "Process the current text in the browser without uploading it",
+              "Never request, resolve, or follow the encoded result"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/url-encoder/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "URL Encoder", "item": "https://liveparse.com/url-encoder/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/url-encoder/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a URL encoder do?", "acceptedAnswer": { "@type": "Answer", "text": "A URL encoder converts text to UTF-8 bytes and replaces bytes that are not allowed or should not be literal in the selected URL context with percent triplets such as %20 or %E3. The correct set of preserved characters depends on whether the text is a component, a complete URI, or form data." } },
+              { "@type": "Question", "name": "Should I encode a URL component or a full URI?", "acceptedAnswer": { "@type": "Answer", "text": "Encode a component when inserting one value into a path segment, query key, query value, or fragment. Full URI mode preserves structural delimiters such as colon, slash, question mark, and ampersand, so it is only appropriate when those characters already form trusted URL structure." } },
+              { "@type": "Question", "name": "How is RFC 3986 component mode different from encodeURIComponent?", "acceptedAnswer": { "@type": "Answer", "text": "JavaScript-style component encoding leaves exclamation mark, apostrophe, parentheses, and asterisk literal. The stricter RFC 3986 component mode percent-encodes those five characters while still leaving ASCII letters, digits, hyphen, period, underscore, and tilde literal." } },
+              { "@type": "Question", "name": "Why can a space become %20 or +?", "acceptedAnswer": { "@type": "Answer", "text": "General URL percent-encoding represents a space as %20. The application/x-www-form-urlencoded format used for form-style query data serializes a space as + and encodes a literal plus sign as %2B. Select the mode required by the receiving parser." } },
+              { "@type": "Question", "name": "Can I safely encode an untrusted value with full URI mode?", "acceptedAnswer": { "@type": "Answer", "text": "Not when the value must remain one component. Full URI mode preserves delimiters that can change URL structure, so an untrusted ampersand could create another query parameter and a question mark could start a query. Encode untrusted component values with component or RFC 3986 component mode." } },
+              { "@type": "Question", "name": "Does this URL encoder upload or open my input?", "acceptedAnswer": { "@type": "Answer", "text": "No. Encoding runs in the current browser tab, and the tool does not send the input to an encoding API, perform DNS lookup, open the result, follow redirects, or check whether the destination exists. Clipboard tools and browser extensions remain separate privacy boundaries." } },
+              { "@type": "Question", "name": "What is the URL encoder input limit?", "acceptedAnswer": { "@type": "Answer", "text": "The encoder accepts at most 200,000 UTF-16 code units in one operation. This explicit browser-side limit keeps interactive conversion and rendering bounded; split larger datasets or use a tested streaming workflow." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="url-page" data-page="url-encoder">
+    <a class="skip-link" href="#url-tool">Skip to the URL encoder</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Parser</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Four explicit contexts · UTF-8 · Browser local</p>
+          <h1>URL Encoder</h1>
+          <p class="hero-lead">Percent-encode text as a URL component, a stricter RFC 3986 component, a complete URI, or form-style data. Compare exactly which delimiters remain literal without uploading the input or requesting the result.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#url-tool">Encode URL text</a><span>Free · No sign-up · No network request</span></div>
+        </div>
+        <div class="hero-example" aria-label="URL percent-encoding example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>component</strong></div>
+          <pre><code><span class="property">input</span>  <span class="string">café &amp; tea</span>
+<span class="property">output</span> <span class="boolean">caf%C3%A9%20%26%20tea</span></code></pre>
+          <p><strong>UTF-8 bytes become %XX</strong><span>Context selects what stays literal</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="url-tool" aria-labelledby="url-tool-heading">
+        <div><p class="section-kicker">Encode the value, not the wrong layer</p><h2 id="url-tool-heading">Percent-encode URL text online</h2></div>
+        <p>Enter up to 200,000 UTF-16 code units, select the context that matches the receiving system, and copy the complete result. Conversion runs in this tab and never navigates to the encoded address.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="URL encoder loading"><p><strong>Loading the URL encoder…</strong></p><p>Enable JavaScript to encode and copy text. The mode comparison and standards guidance below remain readable.</p></section></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">UTF-8 bytes in an ASCII representation</p><h2 id="meaning-heading">How URL percent-encoding works</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Percent-encoding represents one byte as a percent sign followed by two hexadecimal digits. ASCII space is byte <code>20</code>, so general URL encoding writes it as <code>%20</code>. A non-ASCII character is first encoded as one or more UTF-8 bytes. The letter <code>é</code>, for example, becomes bytes <code>C3 A9</code> and is rendered as <code>%C3%A9</code> when the selected context requires encoding it.</p>
+            <p>Encoding is contextual rather than a single universal substitution table. A slash is syntax between path segments in a full URL, but it is data when it belongs inside one path segment. An ampersand separates form-style query parameters, but it may be part of a query value. Preserving a delimiter at the wrong layer can silently change the address the receiving application sees.</p>
+            <p>The interactive tool exposes four modes instead of guessing. URL component mode follows JavaScript-style component encoding. RFC 3986 component mode additionally encodes five punctuation characters that <code>encodeURIComponent()</code> leaves literal. Full URI mode preserves trusted URL structure. Form mode follows <code>application/x-www-form-urlencoded</code>, including its special space-as-plus rule.</p>
+            <p>Percent-encoding does not encrypt, hash, sanitize, validate, shorten, or make a destination trustworthy. Anyone who sees an encoded value can decode it. Apply validation and authorization after decoding on the receiving side, and never rely on an encoded path or query string to hide a credential.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Input</dt><dd>Unicode text, converted through UTF-8 for percent-encoding.</dd></div>
+            <div><dt>General output</dt><dd>Literal allowed characters plus <code>%XX</code> byte triplets.</dd></div>
+            <div><dt>Form output</dt><dd>Form serialization, where space becomes <code>+</code> and literal plus becomes <code>%2B</code>.</dd></div>
+            <div><dt>Limit</dt><dd>200,000 UTF-16 code units per operation.</dd></div>
+            <div><dt>Network behavior</dt><dd>No upload, DNS lookup, navigation, fetch, or redirect following.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="modes-heading">
+        <div class="section-heading"><p class="section-kicker">One input, four intentional outputs</p><h2 id="modes-heading">URL component, RFC 3986, full URI, and form modes</h2></div>
+        <div class="error-table" role="table" aria-label="URL encoding mode comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Mode</span><span role="columnheader">Preserves</span><span role="columnheader">Use it for</span></div>
+          <div class="error-row" role="row"><strong role="cell">URL component</strong><code role="cell">A–Z a–z 0–9 - _ . ! ~ * ' ( )</code><span role="cell">A path segment, query key, query value, or fragment value when JavaScript <code>encodeURIComponent()</code> compatibility is required.</span></div>
+          <div class="error-row" role="row"><strong role="cell">RFC 3986 component</strong><code role="cell">A–Z a–z 0–9 - _ . ~</code><span role="cell">A stricter component representation that also percent-encodes <code>! ' ( ) *</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Full URI</strong><code role="cell">Trusted structural delimiters</code><span role="cell">An already assembled URI whose colon, slashes, query separators, and other syntax must remain structural.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Form</strong><code role="cell">space → +</code><span role="cell">A key or value serialized with <code>application/x-www-form-urlencoded</code> rules, as used by <code>URLSearchParams</code>.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/encodeuri-vs-encodeuricomponent/">Read the encodeURI vs encodeURIComponent decision guide →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="steps-heading">
+        <div class="section-heading"><p class="section-kicker">Choose context before conversion</p><h2 id="steps-heading">How to encode URL data without breaking its structure</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Identify the layer</h3><p>Decide whether the text is one component, an already assembled URI, or a form key or value. Do not choose full URI merely because the input happens to contain <code>https://</code>.</p></li>
+          <li><span>2</span><h3>Encode once</h3><p>Run the conversion at the boundary where raw data enters URL syntax. Check whether a framework, router, or HTTP client will encode again before adding another encoding step.</p></li>
+          <li><span>3</span><h3>Inspect the delimiter result</h3><p>Confirm that data characters such as <code>&amp;</code>, <code>=</code>, <code>/</code>, and <code>?</code> are encoded when they must not alter structure, and preserved only when they are intentional syntax.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="mistakes-heading">
+        <div class="section-heading"><p class="section-kicker">The output can be valid and still be wrong</p><h2 id="mistakes-heading">Common URL encoding mistakes</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Encoding a complete URL as one component</h3><p>Component mode converts structural slashes, colons, and question marks to data. Encode individual values before assembling the URL, or choose full URI mode only for already trusted structure.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Preserving an untrusted ampersand</h3><p>An ampersand left literal inside a query value can start another parameter. Use component or form encoding for keys and values rather than interpolating raw strings.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Encoding an existing percent sign again</h3><p><code>%20</code> becomes <code>%2520</code> when its percent sign is encoded. That may be required when an encoded string becomes data at another layer, but accidental double-encoding creates mismatches.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Mixing plus rules</h3><p>A plus sign is ordinary data in most URL components but means space to form parsers. In form mode, a literal plus must be written as <code>%2B</code>.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local conversion has a clear boundary</p><h2 id="privacy-heading">Encode copied URLs without requesting them</h2></div>
+        <div class="prose-grid"><div>
+          <p>URLs copied from logs, OAuth callbacks, signed download links, error reports, and analytics systems can contain identifiers or credentials. This page performs the transformation in the current browser tab and does not send the entered text to a URL-encoding endpoint. It also does not navigate to the output, resolve the hostname, follow redirects, or test the remote server.</p>
+          <p>Local processing does not make sensitive input harmless. Clipboard history, browser extensions, screenshots, crash reporting, and other software on the device operate outside this page's conversion boundary. Remove secrets before sharing encoded or decoded output in a ticket, chat, public issue, or prompt.</p>
+          <p>The 200,000 UTF-16-code-unit limit is an application bound, not a statement about the maximum URL supported by browsers or servers. Real deployments usually impose much smaller limits at the browser, proxy, CDN, framework, or application layer. Validate the final URL in the exact destination environment.</p>
+        </div><div class="callout-card"><strong>Need to inspect the result?</strong><p>Decode one strict round to review percent triplets, or parse an assembled URL into its WHATWG components without opening it.</p><a href="/url-decoder/">Open the URL decoder →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">URL encoder FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does a URL encoder do?</summary><p>A URL encoder converts text to UTF-8 bytes and replaces bytes that are not allowed or should not be literal in the selected URL context with percent triplets such as %20 or %E3. The correct set of preserved characters depends on whether the text is a component, a complete URI, or form data.</p></details>
+          <details><summary>Should I encode a URL component or a full URI?</summary><p>Encode a component when inserting one value into a path segment, query key, query value, or fragment. Full URI mode preserves structural delimiters such as colon, slash, question mark, and ampersand, so it is only appropriate when those characters already form trusted URL structure.</p></details>
+          <details><summary>How is RFC 3986 component mode different from encodeURIComponent?</summary><p>JavaScript-style component encoding leaves exclamation mark, apostrophe, parentheses, and asterisk literal. The stricter RFC 3986 component mode percent-encodes those five characters while still leaving ASCII letters, digits, hyphen, period, underscore, and tilde literal.</p></details>
+          <details><summary>Why can a space become %20 or +?</summary><p>General URL percent-encoding represents a space as %20. The application/x-www-form-urlencoded format used for form-style query data serializes a space as + and encodes a literal plus sign as %2B. Select the mode required by the receiving parser.</p></details>
+          <details><summary>Can I safely encode an untrusted value with full URI mode?</summary><p>Not when the value must remain one component. Full URI mode preserves delimiters that can change URL structure, so an untrusted ampersand could create another query parameter and a question mark could start a query. Encode untrusted component values with component or RFC 3986 component mode.</p></details>
+          <details><summary>Does this URL encoder upload or open my input?</summary><p>No. Encoding runs in the current browser tab, and the tool does not send the input to an encoding API, perform DNS lookup, open the result, follow redirects, or check whether the destination exists. Clipboard tools and browser extensions remain separate privacy boundaries.</p></details>
+          <details><summary>What is the URL encoder input limit?</summary><p>The encoder accepts at most 200,000 UTF-16 code units in one operation. This explicit browser-side limit keeps interactive conversion and rendering bounded; split larger datasets or use a tested streaming workflow.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Standards and next checks</p><h2 id="related-heading">URL encoding resources</h2></div><ul><li><a href="/url-decoder/">URL Decoder</a></li><li><a href="/url-parser/">URL Parser</a></li><li><a href="/query-string-parser/">Query String Parser</a></li><li><a href="/guides/url-percent-encoding/">Percent-encoding character guide</a></li><li><a href="https://url.spec.whatwg.org/" target="_blank" rel="noreferrer">WHATWG URL Standard</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3986" target="_blank" rel="noreferrer">RFC 3986</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Parser</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. URL encoding runs locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive URL encoding. The context, delimiter, form-encoding, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/url.tsx"></script>
+  </body>
+</html>

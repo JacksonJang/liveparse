@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Parser – Inspect URL Components Locally | LiveParse</title>
+    <meta name="description" content="Strictly validate and parse an absolute URL or resolve a relative reference against a base. Inspect WHATWG URL components locally without opening it." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/url-parser/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/url.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/url-parser/" />
+    <meta property="og:title" content="URL Parser – WHATWG Components and Relative Resolution" />
+    <meta property="og:description" content="Reject malformed escapes, then inspect normalized scheme, origin, host, port, path, query, and fragment fields locally." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based URL component parser" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Local URL Parser | LiveParse" />
+    <meta name="twitter:description" content="Apply a strict text gate, then inspect WHATWG URL fields without fetching or following the address." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/url-parser/#application",
+            "name": "LiveParse URL Parser",
+            "url": "https://liveparse.com/url-parser/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "WHATWG URL parser and component inspector",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and the browser URL API",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Reject malformed percent escapes, invalid percent-encoded UTF-8, and unpaired surrogates before parsing an absolute URL or resolving a relative reference with the browser WHATWG URL implementation, using a 32768 UTF-16-code-unit limit for each field and making no network request.",
+            "featureList": [
+              "Strictly validate percent escapes, percent-encoded UTF-8, and UTF-16 before WHATWG parsing",
+              "Parse an absolute URL with the browser WHATWG URL implementation after that validation gate",
+              "Resolve a relative URL reference against an optional base URL",
+              "Inspect normalized scheme, origin, host, port, path, query, and fragment fields",
+              "Inspect query parameter entries without deduplicating repeated keys",
+              "Accept at most 32768 UTF-16 code units in the URL input",
+              "Accept at most 32768 UTF-16 code units in the optional base URL",
+              "Never request, resolve, or follow the parsed address"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/url-parser/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "URL Parser", "item": "https://liveparse.com/url-parser/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/url-parser/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a URL parser show?", "acceptedAnswer": { "@type": "Answer", "text": "A URL parser applies a defined parsing algorithm and exposes fields such as the normalized URL, scheme, origin, host, hostname, port, path, query, fragment, and query entries. Some fields are empty or have special values for schemes that do not use an HTTP-style authority." } },
+              { "@type": "Question", "name": "How can I parse a relative URL?", "acceptedAnswer": { "@type": "Answer", "text": "Provide a valid absolute base URL together with the relative reference. The WHATWG algorithm resolves paths, query text, and fragments against that base. Without a usable base, input such as ../images/logo.png has no standalone absolute URL to parse." } },
+              { "@type": "Question", "name": "Why can the normalized URL differ from my input?", "acceptedAnswer": { "@type": "Answer", "text": "WHATWG parsing and serialization can lowercase an ASCII scheme or hostname, remove a default port, resolve dot path segments, encode some characters, and serialize an internationalized hostname in ASCII form. A successful parse therefore does not promise byte-for-byte preservation." } },
+              { "@type": "Question", "name": "Is a URL parser the same as a URL decoder?", "acceptedAnswer": { "@type": "Answer", "text": "No. A decoder removes one selected percent-encoding layer from text. A parser interprets the entire URL structure and may preserve or normalize escapes according to each component. Decode only the layer you intend before parsing; do not recursively decode by default." } },
+              { "@type": "Question", "name": "Does a successful parse prove that a URL exists or is safe?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing only means the browser URL algorithm produced a URL record. It does not perform DNS lookup, connect to the host, follow redirects, check an HTTP status, detect phishing, scan content, or establish that the destination is trustworthy." } },
+              { "@type": "Question", "name": "Is the URL or base uploaded when I use this parser?", "acceptedAnswer": { "@type": "Answer", "text": "No. Parsing and relative resolution run in the current browser tab. The page does not upload either field, navigate to the result, resolve the hostname, fetch remote content, or follow redirects. Device software and extensions remain separate privacy boundaries." } },
+              { "@type": "Question", "name": "What are the URL parser input limits?", "acceptedAnswer": { "@type": "Answer", "text": "The URL field and the optional base URL field are each limited to 32,768 UTF-16 code units. These are LiveParse application limits for bounded interactive work, not universal URL-length limits for browsers, servers, proxies, or protocols." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="url-page" data-page="url-parser">
+    <a class="skip-link" href="#url-tool">Skip to the URL parser</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/query-string-parser/">Query Parser</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">WHATWG URL · Optional base · No fetch</p>
+          <h1>URL Parser</h1>
+          <p class="hero-lead">Reject malformed escapes first, then break an absolute URL into normalized components or resolve a relative reference against a base. Inspect the structure without opening the address, resolving its host, or following redirects.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#url-tool">Parse a URL</a><span>Free · No sign-up · URL and base stay local</span></div>
+        </div>
+        <div class="hero-example" aria-label="Parsed URL component example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>url record</strong></div>
+          <pre><code><span class="property">scheme</span>   <span class="string">https:</span>
+<span class="property">host</span>     <span class="boolean">api.example.com</span>
+<span class="property">pathname</span> /v1/items
+<span class="property">search</span>   ?page=2</code></pre>
+          <p><strong>Components, not a network check</strong><span>Serialization can normalize input</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="url-tool" aria-labelledby="url-tool-heading">
+        <div><p class="section-kicker">See the browser's URL record</p><h2 id="url-tool-heading">Parse an absolute or relative URL online</h2></div>
+        <p>Enter an absolute URL, or add an absolute base for a relative reference. LiveParse applies stricter text validation before the browser URL algorithm; each field accepts up to 32,768 UTF-16 code units, and parsing never requests the destination.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="URL parser loading"><p><strong>Loading the URL parser…</strong></p><p>Enable JavaScript to parse and copy URL components. The URL anatomy and normalization guide remains readable below.</p></section></div>
+
+      <section class="content-section" aria-labelledby="anatomy-heading">
+        <div class="section-heading"><p class="section-kicker">One string, several semantic fields</p><h2 id="anatomy-heading">URL anatomy: scheme, authority, path, query, and fragment</h2></div>
+        <div class="prose-grid"><div>
+          <p>A URL is more than text split on punctuation. In <code>https://user:pass@example.com:8443/a/b?q=tea#results</code>, the scheme is <code>https:</code>, the authority contains credentials, host, and port, the path is <code>/a/b</code>, the query is <code>?q=tea</code>, and the fragment is <code>#results</code>. Whether a delimiter is structural depends on the parser state and scheme.</p>
+          <p>LiveParse uses the browser's WHATWG <code>URL</code> implementation rather than a regular expression. That matters for IPv6 brackets, internationalized domain names, backslashes in special URLs, credentials, default ports, percent escapes, relative references, and schemes with opaque paths. The WHATWG living standard aims to match interoperable browser behavior; RFC 3986 remains useful for the generic URI syntax and terminology, but the two models are not identical in every edge case.</p>
+          <p>Before invoking that implementation, LiveParse rejects stray or non-hex percent signs, percent-encoded byte sequences that are not valid UTF-8, and unpaired UTF-16 surrogates. A native <code>URL</code> object can preserve some malformed percent text that this tool deliberately rejects, so the result is WHATWG parsing after a stricter LiveParse input gate rather than an unrestricted wrapper around <code>new URL()</code>.</p>
+          <p>The parser shows a normalized serialization in addition to components. Treat that result as the browser's interpretation, not a byte-preserving transform. If the exact original spelling matters for a signature, cache key, forensic record, or protocol transcript, retain the original string separately.</p>
+          <p>URLs may carry passwords, signed query values, OAuth codes, account identifiers, and private object paths. The component table redacts username and password values, and its copy actions remove URL userinfo, but the original input and non-credential components can still contain secrets. The parser stays local and does not navigate; redact the source and review copied output before sharing.</p>
+        </div><dl class="definition-list"><div><dt>Scheme</dt><dd>The leading protocol label such as <code>https:</code>, interpreted by the URL algorithm.</dd></div><div><dt>Authority</dt><dd>Optional credentials, hostname, and port for URL types that use them.</dd></div><div><dt>Path</dt><dd>Hierarchical segments or an opaque path, depending on the scheme.</dd></div><div><dt>Query</dt><dd>Text after <code>?</code>, also exposed through ordered query entries.</dd></div><div><dt>Fragment</dt><dd>Text after <code>#</code>; normally not sent in an HTTP request.</dd></div></dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="resolution-heading">
+        <div class="section-heading"><p class="section-kicker">Relative references need context</p><h2 id="resolution-heading">How optional base URL resolution works</h2></div>
+        <div class="error-table" role="table" aria-label="Relative URL resolution examples">
+          <div class="error-row error-head" role="row"><span role="columnheader">Relative input</span><span role="columnheader">Base URL</span><span role="columnheader">Resolved result</span></div>
+          <div class="error-row" role="row"><code role="cell">../images/logo.png</code><code role="cell">https://example.com/docs/start/</code><span role="cell"><code>https://example.com/docs/images/logo.png</code></span></div>
+          <div class="error-row" role="row"><code role="cell">?page=2</code><code role="cell">https://example.com/items?sort=name</code><span role="cell"><code>https://example.com/items?page=2</code></span></div>
+          <div class="error-row" role="row"><code role="cell">#details</code><code role="cell">https://example.com/report?year=2026</code><span role="cell"><code>https://example.com/report?year=2026#details</code></span></div>
+          <div class="error-row" role="row"><code role="cell">//cdn.example.net/a.js</code><code role="cell">https://example.com/app/</code><span role="cell"><code>https://cdn.example.net/a.js</code></span></div>
+        </div>
+        <p class="text-link"><a href="/guides/url-percent-encoding/">Review how percent-encoded bytes interact with URL components →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="steps-heading">
+        <div class="section-heading"><p class="section-kicker">Parse, compare, then validate in context</p><h2 id="steps-heading">How to inspect a URL without opening it</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Keep the original string</h3><p>Preserve the source URL exactly when spelling, escaping, or evidence matters. Remove secrets from any sample that will later be shared.</p></li>
+          <li><span>2</span><h3>Add a base only when needed</h3><p>Absolute input parses on its own. For a relative path, query, fragment, or scheme-relative reference, provide the same absolute base the real application uses.</p></li>
+          <li><span>3</span><h3>Compare normalized fields</h3><p>Review host, port, pathname, ordered query entries, fragment, origin, and normalized serialization. Confirm the result in the receiving runtime before making a security decision.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="normalization-heading">
+        <div class="section-heading"><p class="section-kicker">Successful parsing can rewrite presentation</p><h2 id="normalization-heading">WHATWG URL normalization to expect</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Scheme and host case</h3><p>ASCII scheme and hostname letters serialize in lowercase. Path and query case are generally data and must not be normalized the same way.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Default ports</h3><p>A port equal to the special scheme's default can disappear from normalized serialization, such as explicit port 443 on an HTTPS URL.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Dot path segments</h3><p><code>.</code> and <code>..</code> segments in hierarchical URLs can be resolved during parsing, so the serialized path may not retain them.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Internationalized hosts</h3><p>A Unicode hostname can serialize in its ASCII domain form. Similar-looking Unicode characters still require security review; successful IDNA processing is not a trust signal.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Parsing is deliberately narrower than validation</p><h2 id="limits-heading">What this URL parser does not verify</h2></div>
+        <div class="prose-grid"><div>
+          <p>The page creates a URL record and displays its components. It does not resolve DNS, connect to an IP address, send an HTTP request, validate a TLS certificate, follow a redirect, inspect response headers, or load remote content. A syntactically parsed hostname may not exist, and an existing destination may still be malicious.</p>
+          <p>Origin values also need careful interpretation. Some URL schemes produce an opaque origin serialized as <code>null</code>; the literal text <code>null</code> is not a hostname or proof that a page has no security context. Browser same-origin behavior depends on the complete platform rules, document creation, sandboxing, and redirects, not only a pasted string.</p>
+          <p>The 32,768-code-unit limit on each input is a LiveParse responsiveness bound. It does not define an internet-wide maximum. Browsers, proxies, CDNs, application servers, frameworks, databases, and individual protocols can enforce much smaller and different request-target limits.</p>
+        </div><div class="callout-card"><strong>Only need query parameters?</strong><p>Use the focused query parser to preserve ordered entries, repeated names, and empty values under URLSearchParams form rules.</p><a href="/query-string-parser/">Open the Query String Parser →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">URL parser FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does a URL parser show?</summary><p>A URL parser applies a defined parsing algorithm and exposes fields such as the normalized URL, scheme, origin, host, hostname, port, path, query, fragment, and query entries. Some fields are empty or have special values for schemes that do not use an HTTP-style authority.</p></details>
+          <details><summary>How can I parse a relative URL?</summary><p>Provide a valid absolute base URL together with the relative reference. The WHATWG algorithm resolves paths, query text, and fragments against that base. Without a usable base, input such as ../images/logo.png has no standalone absolute URL to parse.</p></details>
+          <details><summary>Why can the normalized URL differ from my input?</summary><p>WHATWG parsing and serialization can lowercase an ASCII scheme or hostname, remove a default port, resolve dot path segments, encode some characters, and serialize an internationalized hostname in ASCII form. A successful parse therefore does not promise byte-for-byte preservation.</p></details>
+          <details><summary>Is a URL parser the same as a URL decoder?</summary><p>No. A decoder removes one selected percent-encoding layer from text. A parser interprets the entire URL structure and may preserve or normalize escapes according to each component. Decode only the layer you intend before parsing; do not recursively decode by default.</p></details>
+          <details><summary>Does a successful parse prove that a URL exists or is safe?</summary><p>No. Parsing only means the browser URL algorithm produced a URL record. It does not perform DNS lookup, connect to the host, follow redirects, check an HTTP status, detect phishing, scan content, or establish that the destination is trustworthy.</p></details>
+          <details><summary>Is the URL or base uploaded when I use this parser?</summary><p>No. Parsing and relative resolution run in the current browser tab. The page does not upload either field, navigate to the result, resolve the hostname, fetch remote content, or follow redirects. Device software and extensions remain separate privacy boundaries.</p></details>
+          <details><summary>What are the URL parser input limits?</summary><p>The URL field and the optional base URL field are each limited to 32,768 UTF-16 code units. These are LiveParse application limits for bounded interactive work, not universal URL-length limits for browsers, servers, proxies, or protocols.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Standards and next checks</p><h2 id="related-heading">URL parsing resources</h2></div><ul><li><a href="/url-encoder/">URL Encoder</a></li><li><a href="/url-decoder/">URL Decoder</a></li><li><a href="/query-string-parser/">Query String Parser</a></li><li><a href="/guides/url-percent-encoding/">URL percent-encoding guide</a></li><li><a href="https://url.spec.whatwg.org/" target="_blank" rel="noreferrer">WHATWG URL Standard</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3986" target="_blank" rel="noreferrer">RFC 3986</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/query-string-parser/">Query Parser</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. URL parsing runs locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive URL parsing. The anatomy, resolution, normalization, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/url.tsx"></script>
+  </body>
+</html>

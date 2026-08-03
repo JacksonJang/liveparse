@@ -153,6 +153,59 @@ describe('production routing parity', () => {
     expect(actualAliases).toEqual(completeExpectedAliases);
   });
 
+  it('includes the URL encoding and parsing cluster with intentional canonical aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/url-encoder/',
+      '/url-decoder/',
+      '/url-parser/',
+      '/query-string-parser/',
+    ]);
+    const expectedAliases = new Map([
+      ['/url-encode', '/url-encoder/'],
+      ['/encode-url', '/url-encoder/'],
+      ['/urlencode', '/url-encoder/'],
+      ['/percent-encoder', '/url-encoder/'],
+      ['/url-decode', '/url-decoder/'],
+      ['/decode-url', '/url-decoder/'],
+      ['/urldecode', '/url-decoder/'],
+      ['/percent-decoder', '/url-decoder/'],
+      ['/parse-url', '/url-parser/'],
+      ['/url-inspector', '/url-parser/'],
+      ['/url-analyzer', '/url-parser/'],
+      ['/query-string', '/query-string-parser/'],
+      ['/query-parser', '/query-string-parser/'],
+      ['/parse-query-string', '/query-string-parser/'],
+      ['/url-query-parser', '/query-string-parser/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/url-encoder',
+      '/url-decoder',
+      '/url-parser',
+      '/query-string-parser',
+      '/guides/url-percent-encoding',
+      '/guides/encodeuri-vs-encodeuricomponent',
+      '/guides/percent20-vs-plus',
+      '/guides/double-url-encoding',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
   it('includes the JWT canonical pages and guide without validator-like aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);

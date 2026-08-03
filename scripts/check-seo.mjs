@@ -17,6 +17,14 @@ const FAQ_PARITY_PATHS = new Set([
   '/guides/hash-vs-encryption/',
   '/guides/how-to-verify-file-checksum/',
   '/guides/hashing-utf8-newlines/',
+  '/url-encoder/',
+  '/url-decoder/',
+  '/url-parser/',
+  '/query-string-parser/',
+  '/guides/url-percent-encoding/',
+  '/guides/encodeuri-vs-encodeuricomponent/',
+  '/guides/percent20-vs-plus/',
+  '/guides/double-url-encoding/',
   '/uuid-v4-generator/',
   '/uuid-decoder/',
   '/guides/uuid-versions-explained/',
@@ -38,6 +46,10 @@ const requiredPages = [
   { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
+  { relativePath: 'url-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-encoder/`, label: 'URL Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bencod(?:e|er|ing)\b)/i, topicLabel: 'URL encoding' },
+  { relativePath: 'url-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-decoder/`, label: 'URL Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'URL decoding' },
+  { relativePath: 'url-parser/index.html', canonical: `${CANONICAL_ORIGIN}/url-parser/`, label: 'URL Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'URL parsing' },
+  { relativePath: 'query-string-parser/index.html', canonical: `${CANONICAL_ORIGIN}/query-string-parser/`, label: 'Query String Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bquery\s+strings?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'query string parsing' },
   { relativePath: 'hash-generator/index.html', canonical: `${CANONICAL_ORIGIN}/hash-generator/`, label: 'Hash Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bhash(?:es|ing)?\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'hash generation' },
   { relativePath: 'sha256-generator/index.html', canonical: `${CANONICAL_ORIGIN}/sha256-generator/`, label: 'SHA-256 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bsha-?256\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'SHA-256 generation' },
   { relativePath: 'md5-generator/index.html', canonical: `${CANONICAL_ORIGIN}/md5-generator/`, label: 'MD5 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bmd5\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'MD5 generation' },
@@ -340,6 +352,42 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('url-percent-encoding')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\burls?\b)(?=.*\bpercent[-\s]?encod(?:e|ed|ing)\b)/i,
+      topicLabel: 'URL percent-encoding',
+    };
+  }
+  if (normalized.includes('encodeuri-vs-encodeuricomponent')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bencodeuri\b)(?=.*\bencodeuricomponent\b)/i,
+      topicLabel: 'encodeURI and encodeURIComponent',
+    };
+  }
+  if (normalized.includes('percent20-vs-plus')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*%20)(?=.*(?:\+|\bplus\b))/i,
+      topicLabel: '%20 and plus',
+    };
+  }
+  if (normalized.includes('double-url-encoding')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bdouble\b)(?=.*\burls?\b)(?=.*\bencod(?:e|ed|ing)\b)/i,
+      topicLabel: 'double URL encoding',
+    };
+  }
   if (normalized.includes('sha256-vs-md5')) {
     return {
       requireJson: false,

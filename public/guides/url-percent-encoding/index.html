@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Percent-Encoding: Reserved vs Unreserved | LiveParse</title>
+    <meta name="description" content="Learn how URL percent-encoding represents UTF-8 bytes, which RFC 3986 characters are reserved or unreserved, and why component context matters." />
+    <link rel="canonical" href="https://liveparse.com/guides/url-percent-encoding/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="URL Percent-Encoding: Reserved and Unreserved Characters" />
+    <meta property="og:description" content="A practical RFC 3986 guide to percent escapes, UTF-8 bytes, URL components, delimiters, and safe one-round decoding." />
+    <meta property="og:url" content="https://liveparse.com/guides/url-percent-encoding/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="URL percent-encoding guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="URL Percent-Encoding Explained" />
+    <meta name="twitter:description" content="Understand UTF-8 percent escapes and the RFC 3986 reserved versus unreserved sets." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/url-percent-encoding/#article",
+            "headline": "URL Percent-Encoding: Reserved vs Unreserved Characters",
+            "description": "Learn how URL percent-encoding represents UTF-8 bytes, which RFC 3986 characters are reserved or unreserved, and why URL component context matters.",
+            "mainEntityOfPage": "https://liveparse.com/guides/url-percent-encoding/",
+            "url": "https://liveparse.com/guides/url-percent-encoding/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "URL encoding",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/url-percent-encoding/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "URL Percent-Encoding", "item": "https://liveparse.com/guides/url-percent-encoding/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/url-percent-encoding/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is URL percent-encoding?", "acceptedAnswer": { "@type": "Answer", "text": "Percent-encoding represents one byte as a percent sign followed by two hexadecimal digits. Non-ASCII text is normally converted to UTF-8 first, so one Unicode character can produce several consecutive percent escapes." } },
+              { "@type": "Question", "name": "Which characters are unreserved in RFC 3986?", "acceptedAnswer": { "@type": "Answer", "text": "RFC 3986 defines ASCII letters, digits, hyphen, period, underscore, and tilde as unreserved. Producers should normally leave them literal because encoding an unreserved character adds no delimiter protection." } },
+              { "@type": "Question", "name": "Should every reserved character be percent-encoded?", "acceptedAnswer": { "@type": "Answer", "text": "No. Keep a reserved character literal when it intentionally acts as syntax, such as a slash between path segments or an ampersand between form fields. Percent-encode it when it is data that would otherwise conflict with that role." } },
+              { "@type": "Question", "name": "Why can one Unicode character become several percent escapes?", "acceptedAnswer": { "@type": "Answer", "text": "Percent escapes represent bytes, not characters. UTF-8 uses multiple bytes for many Unicode code points, and each byte receives its own percent sign and two hexadecimal digits." } },
+              { "@type": "Question", "name": "Does a plus sign always mean a space in a URL?", "acceptedAnswer": { "@type": "Answer", "text": "No. A plus sign is literal in the general URI syntax. It is converted to a space by the application/x-www-form-urlencoded parser used by URLSearchParams and many form-style query parsers." } },
+              { "@type": "Question", "name": "Does LiveParse upload text entered into its URL tools?", "acceptedAnswer": { "@type": "Answer", "text": "No. Encoding, decoding, URL parsing, and query parsing run in the browser without sending the entered value to a processing API or fetching the destination URL. General text input is capped at 200,000 UTF-16 code units, and URL or base fields are capped at 32,768." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the percent-encoding guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">URL Percent-Encoding</span></nav><p class="eyebrow">URI bytes and delimiters</p><h1>URL Percent-Encoding: Reserved vs Unreserved Characters</h1><p class="dek">A percent escape is a byte representation, not a universal “make this URL safe” switch. Correct encoding starts by identifying the URL component and deciding which characters are syntax and which are data.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>11 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> RFC 3986 writes a percent-encoded octet as <code>%HH</code>. Leave ASCII letters, digits, <code>-</code>, <code>.</code>, <code>_</code>, and <code>~</code> unescaped. Reserved characters may be delimiters or data, so encode them according to their component and contract. Convert non-ASCII text to UTF-8 bytes first, decode once at a defined boundary, and never repeatedly decode until a value “looks normal.”</p></div>
+
+          <h2 id="octets">Percent escapes represent octets</h2>
+          <p><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2.1" rel="external">RFC 3986 section 2.1</a> defines the syntax <code>pct-encoded = "%" HEXDIG HEXDIG</code>. Each escape represents one octet, an eight-bit byte. The space byte is hexadecimal <code>20</code>, so its representation is <code>%20</code>. A literal percent sign used as data is byte <code>25</code>, so it becomes <code>%25</code>.</p>
+          <p>Non-ASCII text needs a character encoding before it has bytes. Modern web URL processing uses UTF-8. The word “café” ends with U+00E9, encoded by UTF-8 as bytes <code>C3 A9</code>, so a component encoder produces <code>caf%C3%A9</code>. The Korean syllable “한” is UTF-8 bytes <code>ED 95 9C</code> and becomes <code>%ED%95%9C</code>. One displayed character can therefore require several escapes.</p>
+          <figure class="code-example"><figcaption class="code-label">Text, UTF-8 bytes, and percent-encoding</figcaption><pre><code>space     → 20          → %20
+plus sign → 2B          → %2B
+é         → C3 A9       → %C3%A9
+한        → ED 95 9C    → %ED%95%9C
+😀        → F0 9F 98 80 → %F0%9F%98%80</code></pre></figure>
+          <p>Hexadecimal letters are case-insensitive when parsed, but RFC 3986 recommends uppercase <code>A</code> through <code>F</code> for consistent output. That is why canonical examples usually show <code>%2F</code> instead of <code>%2f</code>.</p>
+
+          <h2 id="unreserved">The RFC 3986 unreserved set</h2>
+          <p>Unreserved characters do not have a reserved delimiter purpose in generic URI syntax. The exact set is <code>ALPHA / DIGIT / "-" / "." / "_" / "~"</code>. Encoding one does not change the resource under RFC syntax-based normalization, but producers should normally emit it literally. For example, <code>%7Ealice</code> and <code>~alice</code> are equivalent at that level, yet not every application normalizes before comparing raw strings.</p>
+          <div class="table-wrap"><table><thead><tr><th>Class</th><th>Characters</th><th>Normal producer behavior</th></tr></thead><tbody><tr><td>Letters</td><td><code>A-Z a-z</code></td><td>Leave literal</td></tr><tr><td>Digits</td><td><code>0-9</code></td><td>Leave literal</td></tr><tr><td>Marks</td><td><code>- . _ ~</code></td><td>Leave literal</td></tr></tbody></table></div>
+          <p>Do not confuse this RFC 3986 set with the characters JavaScript happens to leave unescaped. ECMAScript's URI functions retain a historical set based on RFC 2396, including <code>!</code>, <code>*</code>, single quote, and parentheses. The <a href="/guides/encodeuri-vs-encodeuricomponent/">encodeURI versus encodeURIComponent guide</a> explains that compatibility detail and when stricter component output may be required.</p>
+
+          <h2 id="reserved">Reserved characters can be syntax or data</h2>
+          <p>RFC 3986 divides reserved characters into general delimiters <code>:/?#[]@</code> and sub-delimiters <code>!$&amp;'()*+,;=</code>. Their meaning depends on position and the applicable scheme or application. A slash between path segments is intentional syntax. A slash inside one segment's data must generally be encoded as <code>%2F</code> if the receiving system permits an encoded slash at all.</p>
+          <p>The distinction matters because a literal reserved delimiter and its escaped byte are not generally equivalent. Changing <code>?</code> to <code>%3F</code> can turn the start of a query into data inside a path. Changing <code>&amp;</code> to <code>%26</code> can turn a form field separator into part of a field value. Encode values before composition, then let the URL builder place separators.</p>
+          <figure class="code-example"><figcaption class="code-label">Delimiter versus data</figcaption><pre><code>/products/red/blue       # slash separates path segments
+/products/red%2Fblue     # encoded slash is data if the server accepts it
+
+?q=tea&amp;sort=new          # ampersand separates form-style query pairs
+?q=tea%26coffee          # encoded ampersand belongs to the q value</code></pre></figure>
+
+          <h2 id="component">There is no context-free safe character set</h2>
+          <p>A scheme, host, user information field, path segment, whole path, query, query name, query value, and fragment have different parsing rules. Encoding an entire assembled URL as though it were one component hides structural separators. In the other direction, applying a whole-URI encoder to user data can leave <code>&amp;</code>, <code>=</code>, <code>#</code>, or <code>?</code> active and let the data alter structure.</p>
+          <p>In browser JavaScript, construct a complete URL with the <code>URL</code> API and add query pairs with <code>URLSearchParams</code>. Use a component encoder only when the surrounding protocol calls for that precise representation. Parsing with the <a href="/url-parser/">LiveParse URL Parser</a> can show where the browser places the scheme, authority, path, query, and fragment; it does not visit or fetch the parsed address.</p>
+
+          <h2 id="plus">A plus sign is not a universal space escape</h2>
+          <p>In generic RFC 3986 syntax, plus is a reserved sub-delimiter and remains a plus. The special space conversion belongs to <code>application/x-www-form-urlencoded</code>. The WHATWG form serializer emits a space as <code>+</code>, while its parser changes a raw <code>+</code> to a space before percent-decoding. A literal plus in such a field must be represented as <code>%2B</code>.</p>
+          <p>This is why <code>C++</code> becomes <code>C%2B%2B</code> in a form-style query value. Replacing every plus in a full URL with a space is wrong: a path such as <code>/docs/a+b</code> can use a literal plus. See <a href="/guides/percent20-vs-plus/">%20 versus +</a> for a complete comparison.</p>
+
+          <h2 id="decode">Validate and decode exactly one round</h2>
+          <p>A strict component decoder should reject a stray percent sign, a non-hex pair such as <code>%G0</code>, a truncated escape, and byte sequences that are not valid UTF-8 for the expected text contract. Decoding once turns <code>%252F</code> into <code>%2F</code>, not into <code>/</code>. The remaining escape may be intentional data from an outer layer.</p>
+          <p>RFC 3986 explicitly warns against encoding or decoding the same string more than once. Repeated decoding can change syntax after an earlier validation step and is a common ingredient in path traversal, routing, and filter-bypass bugs. The <a href="/guides/double-url-encoding/">double URL encoding guide</a> shows why each layer needs one owned boundary.</p>
+
+          <h2 id="tools">Use the browser tools within their stated boundary</h2>
+          <p>The <a href="/url-encoder/">URL Encoder</a> and <a href="/url-decoder/">URL Decoder</a> work locally in the browser. The <a href="/query-string-parser/">Query String Parser</a> applies query-pair rules, while the <a href="/url-parser/">URL Parser</a> separates a complete URL and can resolve a relative reference against an explicit base. These tools do not send entered values to an encoding service and do not fetch the destination.</p>
+          <p>General text and component input is limited to 200,000 UTF-16 code units. Complete URL and base URL fields are limited to 32,768 code units. These are responsiveness boundaries for an interactive page, not a statement that downstream servers, browsers, proxies, or frameworks accept URLs of that size. Do not paste secrets from production URLs unless local handling is appropriate for your environment.</p>
+
+          <h2 id="references">Primary specifications</h2>
+          <ul><li><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2" rel="external">RFC 3986 section 2</a> — percent-encoding, reserved and unreserved characters, and when to encode or decode.</li><li><a href="https://url.spec.whatwg.org/#percent-encoded-bytes" rel="external">WHATWG URL Standard</a> — browser URL parsing, percent-encode sets, and UTF-8 processing.</li><li><a href="https://tc39.es/ecma262/multipage/global-object.html#sec-uri-handling-functions" rel="external">ECMAScript URI handling functions</a> — exact JavaScript encoding and decoding algorithms.</li></ul>
+
+          <div class="tool-callout"><p><strong>Need to inspect an encoded value?</strong> Decode one deliberate round, keep the original visible for comparison, and verify whether the input is a complete URL, a component, or form-style query data.</p><a class="button" href="/url-decoder/">Open the URL Decoder</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is URL percent-encoding?</h3><p>Percent-encoding represents one byte as a percent sign followed by two hexadecimal digits. Non-ASCII text is normally converted to UTF-8 first, so one Unicode character can produce several consecutive percent escapes.</p>
+            <h3>Which characters are unreserved in RFC 3986?</h3><p>RFC 3986 defines ASCII letters, digits, hyphen, period, underscore, and tilde as unreserved. Producers should normally leave them literal because encoding an unreserved character adds no delimiter protection.</p>
+            <h3>Should every reserved character be percent-encoded?</h3><p>No. Keep a reserved character literal when it intentionally acts as syntax, such as a slash between path segments or an ampersand between form fields. Percent-encode it when it is data that would otherwise conflict with that role.</p>
+            <h3>Why can one Unicode character become several percent escapes?</h3><p>Percent escapes represent bytes, not characters. UTF-8 uses multiple bytes for many Unicode code points, and each byte receives its own percent sign and two hexadecimal digits.</p>
+            <h3>Does a plus sign always mean a space in a URL?</h3><p>No. A plus sign is literal in the general URI syntax. It is converted to a space by the application/x-www-form-urlencoded parser used by URLSearchParams and many form-style query parsers.</p>
+            <h3>Does LiveParse upload text entered into its URL tools?</h3><p>No. Encoding, decoding, URL parsing, and query parsing run in the browser without sending the entered value to a processing API or fetching the destination URL. General text input is capped at 200,000 UTF-16 code units, and URL or base fields are capped at 32,768.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the URL tools</p><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query String Parser</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/encodeuri-vs-encodeuricomponent/">encodeURI vs encodeURIComponent</a><a href="/guides/percent20-vs-plus/">%20 vs +</a><a href="/guides/double-url-encoding/">Double URL encoding</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Strings</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Encode components according to their context.</p></footer>
+  </body>
+</html>

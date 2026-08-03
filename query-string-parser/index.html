@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Query String Parser – Inspect URL Parameters | LiveParse</title>
+    <meta name="description" content="Parse query strings from a scheme:// URL, leading-? value, or raw input locally. Preserve order, duplicates, raw fields, and empty values without a request." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/query-string-parser/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/url.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/query-string-parser/" />
+    <meta property="og:title" content="Query String Parser – Ordered URL Parameter Inspector" />
+    <meta property="og:description" content="Turn form-encoded query text into ordered key/value entries while retaining repeated names and empty values in your browser." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based query string parser" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Local Query String Parser | LiveParse" />
+    <meta name="twitter:description" content="Inspect ordered URLSearchParams entries, duplicate names, plus signs, and empty values locally." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/query-string-parser/#application",
+            "name": "LiveParse Query String Parser",
+            "url": "https://liveparse.com/query-string-parser/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "URL query parameter parser",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and the browser URLSearchParams API",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Parse a hierarchical scheme:// absolute URL containing a query, a leading-question-mark value, or raw query text with strict percent validation and browser URLSearchParams form rules while making no network request.",
+            "featureList": [
+              "Parse query text with browser URLSearchParams semantics",
+              "Accept a hierarchical scheme:// absolute URL containing a query, a leading-question-mark value, or a raw query string",
+              "Display entries in their parsed insertion order",
+              "Preserve repeated parameter names as separate entries",
+              "Preserve parameters whose decoded value is empty",
+              "Retain original encoded field spellings and whether an equals sign appeared in lossless pair JSON",
+              "Provide map-of-arrays JSON and a canonical rebuilt query",
+              "Apply application/x-www-form-urlencoded plus and percent-decoding rules",
+              "Accept up to 200000 UTF-16 code units",
+              "Accept up to 10000 non-empty query fields",
+              "Never request, resolve, or follow a URL from the input"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/query-string-parser/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Query String Parser", "item": "https://liveparse.com/query-string-parser/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/query-string-parser/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a query string parser do?", "acceptedAnswer": { "@type": "Answer", "text": "A query string parser splits form-style query text into an ordered sequence of decoded name and value entries. It handles ampersand separators, percent-encoded bytes, plus-as-space behavior, repeated names, and empty values according to browser URLSearchParams semantics." } },
+              { "@type": "Question", "name": "Does URLSearchParams preserve parameter order?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Iteration follows the parsed list order, so this tool displays entries in that order rather than sorting them. A receiving application may still sort, group, or ignore parameters, so order should not be treated as a universal business rule." } },
+              { "@type": "Question", "name": "How are repeated query parameter names handled?", "acceptedAnswer": { "@type": "Answer", "text": "Each occurrence remains a separate ordered entry. For tag=red&tag=blue, the parsed sequence contains two tag entries. Do not collapse them to one value unless the destination application's documented rules require that transformation." } },
+              { "@type": "Question", "name": "What happens to empty query values?", "acceptedAnswer": { "@type": "Answer", "text": "An entry such as empty= has an empty decoded value and remains present. A bare name such as flag also has an empty decoded value, but LiveParse lossless pair JSON records whether the equals sign appeared and retains each accepted field's original encoded spelling." } },
+              { "@type": "Question", "name": "Why does a plus sign become a space in query parameters?", "acceptedAnswer": { "@type": "Answer", "text": "URLSearchParams uses application/x-www-form-urlencoded rules, where a literal + in the encoded input represents a space. A data value that actually contains plus must encode it as %2B. General URL components outside form-style query parsing do not always use this rule." } },
+              { "@type": "Question", "name": "Does this query parser reject malformed percent-encoding?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Although URLSearchParams alone has recovery behavior, LiveParse first validates every non-empty field and rejects malformed percent triplets, invalid percent-encoded UTF-8, and unpaired UTF-16 surrogates. It then uses URLSearchParams for form-style decoded values." } },
+              { "@type": "Question", "name": "Does this query parser upload or request the input?", "acceptedAnswer": { "@type": "Answer", "text": "No. Query parsing runs in the current browser tab. The tool does not upload the text, navigate to a pasted address, resolve a hostname, fetch remote content, follow redirects, or validate an analytics destination." } },
+              { "@type": "Question", "name": "What are the query string parser limits?", "acceptedAnswer": { "@type": "Answer", "text": "The parser accepts at most 200,000 UTF-16 code units and 10,000 non-empty fields in one operation. Empty segments between separators are counted and reported but not returned as pairs. Real browsers, proxies, servers, and applications can impose much smaller request-target limits." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="url-page" data-page="query-string-parser">
+    <a class="skip-link" href="#url-tool">Skip to the query string parser</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/url-parser/">URL Parser</a><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Ordered entries · Repeated keys · Empty values</p>
+          <h1>Query String Parser</h1>
+          <p class="hero-lead">Extract query text from a hierarchical <code>scheme://</code> URL, remove a leading question mark, or parse raw query text while retaining order, duplicates, empty values, and original accepted-field spellings. Nothing is opened.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#url-tool">Parse query parameters</a><span>Free · No sign-up · Browser URLSearchParams</span></div>
+        </div>
+        <div class="hero-example" aria-label="Repeated query parameter example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>ordered entries</strong></div>
+          <pre><code><span class="property">tag</span>   <span class="string">red</span>
+<span class="property">tag</span>   <span class="string">blue</span>
+<span class="property">empty</span> <span class="boolean">""</span></code></pre>
+          <p><strong>Duplicates stay separate</strong><span>Empty does not mean absent</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="url-tool" aria-labelledby="url-tool-heading">
+        <div><p class="section-kicker">Inspect the parameter sequence</p><h2 id="url-tool-heading">Parse URL query strings online</h2></div>
+        <p>Paste a hierarchical absolute URL containing <code>://</code>, a value beginning with <code>?</code>, or a raw query. Requiring the authority marker keeps scheme-shaped raw fields such as <code>foo:bar=baz</code> in raw-query mode. Inspect up to 10,000 non-empty fields within a 200,000 UTF-16-code-unit limit.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Query string parser loading"><p><strong>Loading the query string parser…</strong></p><p>Enable JavaScript to inspect ordered parameters. The form-encoding and duplicate-key guide remains readable below.</p></section></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">A list, not a plain object</p><h2 id="meaning-heading">How URLSearchParams parses a query string</h2></div>
+        <div class="prose-grid"><div>
+          <p>A query string commonly contains name/value entries separated by ampersands. Within an entry, the first equals sign separates the encoded name from its encoded value. The same name can appear more than once, an entry can have an empty value, and the order can be meaningful to a particular application even though many servers treat it as insignificant.</p>
+          <p>LiveParse uses browser <code>URLSearchParams</code> semantics, which are based on the WHATWG <code>application/x-www-form-urlencoded</code> parser. Before percent-decoding, each literal plus sign is interpreted as a space. A plus that belongs to the data therefore needs the encoded form <code>%2B</code>. Percent-encoded UTF-8 sequences become Unicode text.</p>
+          <p>The result is an ordered list of pairs rather than a single-value JavaScript object. That distinction prevents repeated names from being overwritten. For <code>tag=red&amp;tag=blue</code>, both entries remain available in their original parsed order. For <code>empty=&amp;flag</code>, both names remain present with empty decoded values.</p>
+          <p>The lossless pair view records each accepted field's original encoded name and value and whether <code>=</code> appeared. The grouped map keeps every decoded value in an array. The rebuilt query is intentionally canonical: equivalent spellings can change, a bare key becomes a key followed by equals, and spaces serialize as plus. Empty separator-only segments are reported but omitted. Keep the complete original input when signatures or forensic evidence depend on characters outside accepted fields.</p>
+        </div><dl class="definition-list"><div><dt>Accepted input</dt><dd>A hierarchical <code>scheme://</code> URL, a leading-<code>?</code> value, or raw query text.</dd></div><div><dt>Data model</dt><dd>An ordered list of decoded pairs with original field spelling metadata.</dd></div><div><dt>Duplicate names</dt><dd>Retained separately and grouped into arrays only in the map view.</dd></div><div><dt>Empty values</dt><dd>Retained, with <code>=</code> presence recorded in lossless pairs.</dd></div><div><dt>Limits</dt><dd>200,000 UTF-16 code units and 10,000 non-empty fields.</dd></div></dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="example-heading">
+        <div class="section-heading"><p class="section-kicker">Read every occurrence before grouping</p><h2 id="example-heading">Query parameter parsing example</h2></div>
+        <div class="error-table" role="table" aria-label="Parsed query string example">
+          <div class="error-row error-head" role="row"><span role="columnheader">Encoded entry</span><span role="columnheader">Decoded name</span><span role="columnheader">Decoded value</span></div>
+          <div class="error-row" role="row"><code role="cell">utm_source=newsletter</code><strong role="cell">utm_source</strong><span role="cell">newsletter</span></div>
+          <div class="error-row" role="row"><code role="cell">tag=red</code><strong role="cell">tag</strong><span role="cell">red</span></div>
+          <div class="error-row" role="row"><code role="cell">tag=blue</code><strong role="cell">tag</strong><span role="cell">blue</span></div>
+          <div class="error-row" role="row"><code role="cell">q=caf%C3%A9+tea</code><strong role="cell">q</strong><span role="cell">café tea</span></div>
+          <div class="error-row" role="row"><code role="cell">empty=</code><strong role="cell">empty</strong><span role="cell">empty string</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/percent20-vs-plus/">Read the %20 vs plus form-encoding guide →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="steps-heading">
+        <div class="section-heading"><p class="section-kicker">Keep context and sequence</p><h2 id="steps-heading">How to inspect URL query parameters</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste one supported input shape</h3><p>Use a hierarchical <code>scheme://</code> URL, query text beginning with <code>?</code>, or a raw query string. For opaque schemes, host, path, or relative resolution, use the full URL parser.</p></li>
+          <li><span>2</span><h3>Review ordered entries</h3><p>Look for repeated names, empty names or values, plus signs, encoded delimiters, and parameters whose position differs from the expected request.</p></li>
+          <li><span>3</span><h3>Apply destination rules separately</h3><p>Confirm whether the receiving framework keeps the first value, last value, every value, or rejects duplicates. URLSearchParams parsing cannot determine that business rule.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="pitfalls-heading">
+        <div class="section-heading"><p class="section-kicker">Decoded pairs do not settle application semantics</p><h2 id="pitfalls-heading">Repeated keys, blank values, and serialization pitfalls</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Duplicate parameter pollution</h3><p>A proxy might use the first value while an application uses the last. Preserve every occurrence and align duplicate handling across security and business layers.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Absent versus empty</h3><p>A missing key, a bare key, and <code>key=</code> are not always the same to application logic, even though URLSearchParams gives the latter two an empty string value.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Literal plus loss</h3><p>Parsing raw <code>C++</code> under form rules yields spaces. A producer must serialize that value as <code>C%2B%2B</code> when plus signs are data.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Signature mismatch</h3><p>Reordering entries or normalizing their serialization can change an HMAC or signed URL. Follow the protocol's exact canonicalization algorithm rather than a generic sort.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="compare-heading">
+        <div class="section-heading"><p class="section-kicker">Choose the tool by the layer you need</p><h2 id="compare-heading">Query parser vs URL parser vs URL decoder</h2></div>
+        <div class="prose-grid"><div>
+          <p>Use this page when the job is to inspect a form-style parameter sequence. Use the <a href="/url-parser/">URL Parser</a> when an absolute or relative URL must be interpreted as scheme, host, path, query, and fragment. Use the <a href="/url-decoder/">strict URL Decoder</a> when malformed percent triplets or invalid UTF-8 must be reported rather than recovered.</p>
+          <p><code>URLSearchParams</code> is designed for interoperable browser form behavior rather than forensic validation. LiveParse therefore performs a strict validation pass first: malformed triplets, invalid percent-encoded UTF-8, and unpaired UTF-16 surrogates stop the operation. It then uses URLSearchParams for form decoding, while the pair output keeps the original encoded field spellings.</p>
+          <p>No mode on this page checks that UTM values are accepted by an analytics platform, that a signed URL is authentic, that an OAuth state parameter matches a session, or that a redirect target is allowed. Those are destination-specific validations.</p>
+        </div><div class="callout-card"><strong>Need to create a safe value?</strong><p>Encode each query name and value with form rules instead of concatenating raw ampersands, equals signs, spaces, or plus signs.</p><a href="/url-encoder/">Open the URL encoder →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Parameters frequently contain private data</p><h2 id="privacy-heading">Parse copied query strings without a network request</h2></div>
+        <div class="prose-grid"><div>
+          <p>Query strings from callback links, server logs, support tickets, and analytics exports may include email addresses, search terms, invite codes, signed expirations, object identifiers, session values, or OAuth authorization data. Parsing takes place in this browser tab and does not send the input to an API or visit a pasted address.</p>
+          <p>Local processing cannot retract data already recorded in browser history, proxy logs, analytics systems, screenshots, or clipboard managers. Redact secrets before copying parsed output into a public issue, chat, documentation example, or prompt. A parameter being readable does not mean it is safe to disclose.</p>
+          <p>The 200,000-code-unit bound is for responsive inspection, not for constructing requests of that size. Actual request-target limits vary widely, and long query data may be rejected or truncated before it reaches an application. Use request bodies and an appropriate protocol when a large structured payload must be transmitted.</p>
+        </div><dl class="definition-list"><div><dt>Runs locally</dt><dd>Parsing and display occur in the current browser tab.</dd></div><div><dt>Does not run</dt><dd>No navigation, DNS lookup, HTTP fetch, redirect following, or analytics validation.</dd></div><div><dt>Still sensitive</dt><dd>Clipboard, screenshots, extensions, logs, and shared output remain outside the parser boundary.</dd></div></dl></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Query string parser FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What does a query string parser do?</summary><p>A query string parser splits form-style query text into an ordered sequence of decoded name and value entries. It handles ampersand separators, percent-encoded bytes, plus-as-space behavior, repeated names, and empty values according to browser URLSearchParams semantics.</p></details>
+          <details><summary>Does URLSearchParams preserve parameter order?</summary><p>Yes. Iteration follows the parsed list order, so this tool displays entries in that order rather than sorting them. A receiving application may still sort, group, or ignore parameters, so order should not be treated as a universal business rule.</p></details>
+          <details><summary>How are repeated query parameter names handled?</summary><p>Each occurrence remains a separate ordered entry. For tag=red&amp;tag=blue, the parsed sequence contains two tag entries. Do not collapse them to one value unless the destination application's documented rules require that transformation.</p></details>
+          <details><summary>What happens to empty query values?</summary><p>An entry such as empty= has an empty decoded value and remains present. A bare name such as flag also has an empty decoded value, but LiveParse lossless pair JSON records whether the equals sign appeared and retains each accepted field's original encoded spelling.</p></details>
+          <details><summary>Why does a plus sign become a space in query parameters?</summary><p>URLSearchParams uses application/x-www-form-urlencoded rules, where a literal + in the encoded input represents a space. A data value that actually contains plus must encode it as %2B. General URL components outside form-style query parsing do not always use this rule.</p></details>
+          <details><summary>Does this query parser reject malformed percent-encoding?</summary><p>Yes. Although URLSearchParams alone has recovery behavior, LiveParse first validates every non-empty field and rejects malformed percent triplets, invalid percent-encoded UTF-8, and unpaired UTF-16 surrogates. It then uses URLSearchParams for form-style decoded values.</p></details>
+          <details><summary>Does this query parser upload or request the input?</summary><p>No. Query parsing runs in the current browser tab. The tool does not upload the text, navigate to a pasted address, resolve a hostname, fetch remote content, follow redirects, or validate an analytics destination.</p></details>
+          <details><summary>What are the query string parser limits?</summary><p>The parser accepts at most 200,000 UTF-16 code units and 10,000 non-empty fields in one operation. Empty segments between separators are counted and reported but not returned as pairs. Real browsers, proxies, servers, and applications can impose much smaller request-target limits.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Standards and next checks</p><h2 id="related-heading">Query string resources</h2></div><ul><li><a href="/url-parser/">URL Parser</a></li><li><a href="/url-encoder/">URL Encoder</a></li><li><a href="/url-decoder/">Strict URL Decoder</a></li><li><a href="/guides/percent20-vs-plus/">%20 vs plus in query strings</a></li><li><a href="https://url.spec.whatwg.org/" target="_blank" rel="noreferrer">WHATWG URL Standard</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3986" target="_blank" rel="noreferrer">RFC 3986</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/url-parser/">URL Parser</a><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Query parsing runs locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive query parsing. The URLSearchParams, duplicate-key, form-encoding, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/url.tsx"></script>
+  </body>
+</html>

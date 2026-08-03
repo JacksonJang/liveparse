@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Double URL Encoding: Detection and Security Risks | LiveParse</title>
+    <meta name="description" content="Understand double URL encoding: how %252F becomes %2F then slash, why repeated decoding bypasses validation, and why strict single-round decoding matters." />
+    <link rel="canonical" href="https://liveparse.com/guides/double-url-encoding/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Double URL Encoding and Safe Single-Round Decoding" />
+    <meta property="og:description" content="Diagnose repeated percent-encoding without creating path traversal, routing, or filter-bypass vulnerabilities." />
+    <meta property="og:url" content="https://liveparse.com/guides/double-url-encoding/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Double URL encoding security guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Double URL Encoding Risks" />
+    <meta name="twitter:description" content="Why safe URL pipelines decode exactly once at an owned boundary." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/double-url-encoding/#article",
+            "headline": "Double URL Encoding: Detection and Security Risks",
+            "description": "Understand repeated percent-encoding, strict one-round decoding, and how inconsistent proxy, router, and application normalization enables security bypasses.",
+            "mainEntityOfPage": "https://liveparse.com/guides/double-url-encoding/",
+            "url": "https://liveparse.com/guides/double-url-encoding/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "URL decoding security",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/double-url-encoding/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "Double URL Encoding", "item": "https://liveparse.com/guides/double-url-encoding/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/double-url-encoding/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is double URL encoding?", "acceptedAnswer": { "@type": "Answer", "text": "Double URL encoding occurs when percent-encoded text is percent-encoded again. The percent sign in %2F becomes %25, producing %252F; one decode yields %2F and a second yields slash." } },
+              { "@type": "Question", "name": "Is double URL encoding always malicious?", "acceptedAnswer": { "@type": "Answer", "text": "No. It can arise legitimately when one encoded component is transported as data inside another layer. It becomes dangerous when system layers disagree about ownership, decoding count, or the point at which validation occurs." } },
+              { "@type": "Question", "name": "Why is repeated URL decoding a security risk?", "acceptedAnswer": { "@type": "Answer", "text": "A validator can approve the first-round text while a later proxy, router, or application decodes hidden delimiters such as slash or dot. The later interpretation may create a path or parameter that the earlier policy never checked." } },
+              { "@type": "Question", "name": "Should a decoder keep decoding until the value stops changing?", "acceptedAnswer": { "@type": "Answer", "text": "No. Decode exactly once at the boundary that owns one encoding layer. A decode-until-stable loop destroys layer information, makes ambiguous input executable, and directly contradicts RFC 3986 guidance." } },
+              { "@type": "Question", "name": "What should strict URL decoding reject?", "acceptedAnswer": { "@type": "Answer", "text": "For a UTF-8 text component, reject stray percent signs, incomplete or non-hex escapes, and percent-encoded byte sequences that are not valid UTF-8. Keep the raw input for diagnosis and do not silently replace errors." } },
+              { "@type": "Question", "name": "Does the LiveParse URL Decoder make an encoded value safe?", "acceptedAnswer": { "@type": "Answer", "text": "No. It performs local, single-round inspection without fetching a destination or sending input to a processing API. It does not authorize a path or sanitize data for a particular server. General input is limited to 200,000 UTF-16 code units; URL and base fields are limited to 32,768." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the double-encoding guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/url-encoder/">URL Encoder</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">Double URL Encoding</span></nav><p class="eyebrow">Normalization security</p><h1>Double URL Encoding: Detection and Security Risks</h1><p class="dek">Repeated escaping is sometimes a legitimate transport layer, but repeated decoding without a contract can reveal syntax after security checks have already passed.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>13 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> <code>%252F</code> is the text <code>%2F</code> encoded as data: <code>%25</code> represents its percent sign. One component decode produces <code>%2F</code>; a second produces slash. Decode exactly one layer at one documented boundary, validate the representation consumed by the privileged operation, and make every proxy, router, framework, and application agree on normalization.</p></div>
+
+          <h2 id="mechanics">How one escape becomes two layers</h2>
+          <p>Percent-encoding represents a byte as <code>%HH</code>. A slash byte becomes <code>%2F</code>. If that three-character text must itself travel inside another encoded component, its percent sign is data and becomes <code>%25</code>. The outer result is <code>%252F</code>. This is not a special double-encoding syntax; it is ordinary component encoding applied to already encoded text.</p>
+          <figure class="code-example"><figcaption class="code-label">Layer-by-layer interpretation</figcaption><pre><code>raw data               /
+after one encode        %2F
+after a second encode   %252F
+
+decode once             %2F
+decode twice            /</code></pre></figure>
+          <p>The same pattern applies to a percent-encoded dot <code>%2E</code>, question mark <code>%3F</code>, ampersand <code>%26</code>, or literal percent <code>%25</code>. Looking for the substring <code>%25</code> can identify candidates, but it does not prove malicious intent. A literal percent sign and a legitimate nested URI also contain that sequence.</p>
+
+          <h2 id="legitimate">Nested layers can be legitimate</h2>
+          <p>An OAuth callback can be a query parameter inside an authorization URL. A source URL can be a value in an image proxy request. A complete link can appear inside a debugging URL. Each outer component must protect the inner percent signs so they survive transport. The correct receiver removes the outer layer once and hands the still-encoded inner value to the component that owns it.</p>
+          <p>Trouble starts when ownership is implicit. If a framework automatically decodes before application code runs and the application calls <code>decodeURIComponent</code> again, two layers disappear even though the programmer sees only one explicit call. Document whether each API returns raw bytes, a URL string, or an already-decoded component.</p>
+
+          <h2 id="security">Why inconsistent decoding bypasses policy</h2>
+          <p>Imagine an edge filter that rejects a literal slash in a user-controlled path token. It sees <code>%252F</code>, decodes once to <code>%2F</code>, finds no literal slash, and allows the request. A backend decodes the value again and now sees <code>/</code>. The filter and backend made decisions about different paths.</p>
+          <p>The same disagreement can expose dot segments, query separators, fragment markers, NUL bytes in unsafe native integrations, or characters meaningful to a downstream interpreter. Encoding is not the vulnerability by itself; mismatched canonicalization plus a privileged operation is. Test the complete deployed chain, including CDN, reverse proxy, web server, router, framework, and business code.</p>
+          <figure class="code-example"><figcaption class="code-label">A dangerous ordering</figcaption><pre><code>request:          %252e%252e%252fprivate
+filter decodes:   %2e%2e%2fprivate      # policy allows encoded-looking text
+router decodes:   ../private            # structure appears after validation</code></pre></figure>
+          <p>This example illustrates a class of risk, not a claim that every server accepts encoded slashes or traverses a filesystem. Many servers reject or preserve them. Security comes from explicit agreement, not from assuming one product's default applies everywhere.</p>
+
+          <h2 id="rfc">RFC 3986 says not to process the same string twice</h2>
+          <p><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2.4" rel="external">RFC 3986 section 2.4</a> states that implementations must not percent-encode or decode the same string more than once. A decoded percent sign can otherwise be misread as the beginning of a new escape, while re-encoding an existing escape turns its percent sign into data.</p>
+          <p>That guidance does not prohibit a documented nested protocol from removing one layer at each separate boundary. It prohibits treating one undifferentiated string as a puzzle to transform repeatedly. Preserve typed boundaries: outer query value, inner URL, inner path segment, and final application identifier are different values even if represented as strings in code.</p>
+
+          <h2 id="strict">Strict single-round component decoding</h2>
+          <p>For a UTF-8 text component, a strict decoder validates every percent sign followed by exactly two hexadecimal digits, collects the represented bytes, and rejects invalid UTF-8. ECMAScript's <code>decodeURIComponent</code> throws <code>URIError</code> for incomplete escapes, non-hex pairs, impossible UTF-8 continuation sequences, and overlong or otherwise invalid encodings.</p>
+          <p>Strict decoding must still happen at the right component boundary. Running <code>decodeURIComponent</code> on an assembled URL can turn an escaped question mark or ampersand into structure before parsing. Parse the complete URL first, select the one component owned by the current code, and decode one expected layer.</p>
+          <ol class="steps"><li><strong>Capture the raw representation.</strong> Preserve it long enough to diagnose which layer arrived.</li><li><strong>Parse URL structure.</strong> Do not decode separators before identifying components.</li><li><strong>Confirm ownership.</strong> Know whether an upstream layer already decoded this value.</li><li><strong>Decode once.</strong> Reject malformed escapes and invalid UTF-8.</li><li><strong>Canonicalize for the sink.</strong> Apply path, identifier, or query rules required by the final operation.</li><li><strong>Validate after final normalization.</strong> The security check and privileged sink must interpret the same value.</li></ol>
+
+          <h2 id="anti-patterns">Avoid permissive recovery anti-patterns</h2>
+          <p>A loop such as “while the text contains a percent sign, decode again” is unsafe and incorrect. Percent can be legitimate data, an inner encoding layer, or malformed input. Catching <code>URIError</code> and returning a partially decoded prefix is also dangerous because different callers can receive different interpretations of the same bytes.</p>
+          <p>Do not normalize by replacing <code>+</code> with space outside a known form-urlencoded field. Plus handling is separate from percent-decoding and is explained in <a href="/guides/percent20-vs-plus/">%20 versus +</a>. Do not encode an entire URL again to “repair” stray characters; use the component model in the <a href="/guides/url-percent-encoding/">percent-encoding guide</a>.</p>
+
+          <h2 id="comparison">Raw, once-decoded, and twice-decoded diagnostics</h2>
+          <div class="table-wrap"><table><thead><tr><th>Raw input</th><th>After one strict component decode</th><th>After an unsafe extra decode</th></tr></thead><tbody><tr><td><code>%252F</code></td><td><code>%2F</code></td><td><code>/</code></td></tr><tr><td><code>%252E</code></td><td><code>%2E</code></td><td><code>.</code></td></tr><tr><td><code>%2526role%253Dadmin</code></td><td><code>%26role%3Dadmin</code></td><td><code>&amp;role=admin</code></td></tr><tr><td><code>100%2525</code></td><td><code>100%25</code></td><td><code>100%</code></td></tr></tbody></table></div>
+          <p>A diagnostic interface may show possible additional rounds to explain an input, but production code must not use that display as authorization. The <a href="/url-decoder/">LiveParse URL Decoder</a> is deliberately a local inspection tool, not a sanitizer. Compare one-round output with the raw string and the actual consuming contract.</p>
+
+          <h2 id="pipeline">Design one canonical request pipeline</h2>
+          <p>Define the representation at every interface. A reverse proxy should either forward a raw request target with documented guarantees or forward structured, normalized values whose status is explicit. An application route should know whether path parameters are decoded. A file or object-store access layer should validate its final canonical identifier and keep it within the intended namespace.</p>
+          <p>Apply allowlists to semantics, not encoded spellings. For a fixed identifier, accept only the expected character set after the one owned decode. For filesystem paths, resolve against a fixed root using the platform's path API and confirm containment after normalization. For redirects or outbound fetches, parse with a standards-based URL parser and enforce scheme, credentials, host, and port policy on the parsed result. Percent-encoding alone neither grants nor removes authority.</p>
+
+          <h2 id="tools">Inspect locally without overstating the result</h2>
+          <p>Use the <a href="/url-parser/">URL Parser</a> to identify structure, the <a href="/query-string-parser/">Query String Parser</a> for form-style pairs, the <a href="/url-decoder/">URL Decoder</a> for one strict component round, and the <a href="/url-encoder/">URL Encoder</a> to reproduce the expected layer. The tools process input in the browser, make no request to the parsed destination, and do not upload values to a processing API.</p>
+          <p>General text/component input is limited to 200,000 UTF-16 code units. Complete URL and base URL fields are limited to 32,768. Those are local responsiveness limits, not an assurance that a proxy or server accepts inputs of that size and not a security certification of decoded output.</p>
+
+          <h2 id="references">Primary specifications</h2>
+          <ul><li><a href="https://www.rfc-editor.org/rfc/rfc3986#section-2.4" rel="external">RFC 3986 section 2.4</a> — normative warning against encoding or decoding the same string more than once.</li><li><a href="https://tc39.es/ecma262/multipage/global-object.html#sec-decodeuricomponent-encodeduricomponent" rel="external">ECMAScript decodeURIComponent</a> — strict percent and UTF-8 decoding behavior.</li><li><a href="https://url.spec.whatwg.org/#url-parsing" rel="external">WHATWG URL parsing</a> — browser parsing and component serialization model.</li></ul>
+
+          <div class="tool-callout"><p><strong>Investigating a repeated escape?</strong> Keep the raw value, decode one component round, and compare it with the layer your application actually owns.</p><a class="button" href="/url-decoder/">Open the URL Decoder</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is double URL encoding?</h3><p>Double URL encoding occurs when percent-encoded text is percent-encoded again. The percent sign in %2F becomes %25, producing %252F; one decode yields %2F and a second yields slash.</p>
+            <h3>Is double URL encoding always malicious?</h3><p>No. It can arise legitimately when one encoded component is transported as data inside another layer. It becomes dangerous when system layers disagree about ownership, decoding count, or the point at which validation occurs.</p>
+            <h3>Why is repeated URL decoding a security risk?</h3><p>A validator can approve the first-round text while a later proxy, router, or application decodes hidden delimiters such as slash or dot. The later interpretation may create a path or parameter that the earlier policy never checked.</p>
+            <h3>Should a decoder keep decoding until the value stops changing?</h3><p>No. Decode exactly once at the boundary that owns one encoding layer. A decode-until-stable loop destroys layer information, makes ambiguous input executable, and directly contradicts RFC 3986 guidance.</p>
+            <h3>What should strict URL decoding reject?</h3><p>For a UTF-8 text component, reject stray percent signs, incomplete or non-hex escapes, and percent-encoded byte sequences that are not valid UTF-8. Keep the raw input for diagnosis and do not silently replace errors.</p>
+            <h3>Does the LiveParse URL Decoder make an encoded value safe?</h3><p>No. It performs local, single-round inspection without fetching a destination or sending input to a processing API. It does not authorize a path or sanitize data for a particular server. General input is limited to 200,000 UTF-16 code units; URL and base fields are limited to 32,768.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the URL tools</p><a href="/url-encoder/">URL Encoder</a><a href="/url-decoder/">URL Decoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query String Parser</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/url-percent-encoding/">URL percent-encoding</a><a href="/guides/encodeuri-vs-encodeuricomponent/">encodeURI vs encodeURIComponent</a><a href="/guides/percent20-vs-plus/">%20 vs +</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/url-decoder/">URL Decoder</a><a href="/url-encoder/">URL Encoder</a><a href="/url-parser/">URL Parser</a><a href="/query-string-parser/">Query Strings</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Decode once at an explicitly owned boundary.</p></footer>
+  </body>
+</html>
