@@ -9,6 +9,14 @@ const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const DIST_ROOT = resolve(process.argv[2] || process.env.DIST_DIR || join(PROJECT_ROOT, 'dist'));
 const failures = [];
 const FAQ_PARITY_PATHS = new Set([
+  '/hash-generator/',
+  '/sha256-generator/',
+  '/md5-generator/',
+  '/file-checksum/',
+  '/guides/sha256-vs-md5/',
+  '/guides/hash-vs-encryption/',
+  '/guides/how-to-verify-file-checksum/',
+  '/guides/hashing-utf8-newlines/',
   '/uuid-v4-generator/',
   '/uuid-decoder/',
   '/guides/uuid-versions-explained/',
@@ -30,6 +38,10 @@ const requiredPages = [
   { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
+  { relativePath: 'hash-generator/index.html', canonical: `${CANONICAL_ORIGIN}/hash-generator/`, label: 'Hash Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bhash(?:es|ing)?\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'hash generation' },
+  { relativePath: 'sha256-generator/index.html', canonical: `${CANONICAL_ORIGIN}/sha256-generator/`, label: 'SHA-256 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bsha-?256\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'SHA-256 generation' },
+  { relativePath: 'md5-generator/index.html', canonical: `${CANONICAL_ORIGIN}/md5-generator/`, label: 'MD5 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bmd5\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'MD5 generation' },
+  { relativePath: 'file-checksum/index.html', canonical: `${CANONICAL_ORIGIN}/file-checksum/`, label: 'File Checksum tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bfiles?\b)(?=.*\bchecksums?\b)/i, topicLabel: 'file checksums' },
   { relativePath: 'uuid-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-generator/`, label: 'UUID Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:and\s+guid\s+)?generator\b/i, topicLabel: 'UUID generator' },
   { relativePath: 'uuid-v4-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v4-generator/`, label: 'UUID v4 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\buuid\b)(?=.*\bv?4\b)(?=.*\bgenerat(?:e|or|ing)\b)/i, topicLabel: 'UUID v4 generation' },
   { relativePath: 'uuid-v7-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v7-generator/`, label: 'UUID v7 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:version\s+)?v?7\s+generator\b/i, topicLabel: 'UUID v7 generator' },
@@ -51,6 +63,7 @@ const requiredPages = [
   { relativePath: 'yaml-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-to-json/`, label: 'YAML to JSON tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\byaml\b)(?=.*\bjson\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'YAML to JSON conversion' },
   { relativePath: 'json-to-yaml/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-yaml/`, label: 'JSON to YAML tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\bjson\b)(?=.*\byaml\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'JSON to YAML conversion' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
+  { relativePath: 'guides/index.html', canonical: `${CANONICAL_ORIGIN}/guides/`, label: 'guides hub', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bdeveloper\b)(?=.*\bdata\b)(?=.*\bguides?\b)/i, topicLabel: 'developer data guides' },
 ];
 
 function fail(message) {
@@ -321,11 +334,48 @@ function publicPathForHtml(relativePath) {
 
 function isGuideHtml(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized === 'guides/index.html') return false;
   return /(?:^|[\/_-])(?:guide|guides|tutorial|tutorials)(?:[\/_.-]|$)/.test(normalized);
 }
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('sha256-vs-md5')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bsha-?256\b)(?=.*\bmd5\b)/i,
+      topicLabel: 'SHA-256 and MD5',
+    };
+  }
+  if (normalized.includes('hash-vs-encryption')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bhash(?:es|ing)?\b)(?=.*\bencrypt(?:ion|ed|ing)?\b)/i,
+      topicLabel: 'hashing and encryption',
+    };
+  }
+  if (normalized.includes('how-to-verify-file-checksum')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bfiles?\b)(?=.*\bchecksums?\b)(?=.*\bverif(?:y|ying|ication)\b)/i,
+      topicLabel: 'file checksum verification',
+    };
+  }
+  if (normalized.includes('hashing-utf8-newlines')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bhash(?:es|ing)?\b)(?=.*\butf-?8\b)(?=.*\bnewlines?\b)/i,
+      topicLabel: 'hashing UTF-8 and newlines',
+    };
+  }
   if (normalized.includes('yaml-1-1-vs-1-2')) {
     return {
       requireJson: false,
@@ -663,7 +713,10 @@ async function main() {
     if (!sitemapUrlSet.has(expectedUrl)) fail(`guide ${publicPath}: missing from sitemap.xml`);
   }
 
-  const inboundGuideLinks = new Map([...expectedGuideUrls.keys()].map((url) => [url, 0]));
+  const guidesHubUrl = `${CANONICAL_ORIGIN}/guides/`;
+  const inboundGuideSources = new Map([...expectedGuideUrls.keys()].map((url) => [url, new Set()]));
+  const canonicalAdjacency = new Map([...sitemapUrlSet].map((url) => [url, new Set()]));
+  const uniqueInternalEdges = new Set();
   let internalLinkCount = 0;
   const checkedTargets = new Map();
   for (const [path, html] of htmlByPath) {
@@ -678,8 +731,12 @@ async function main() {
       const targetWithoutFragment = new URL(target.href);
       targetWithoutFragment.hash = '';
       const guideTarget = targetWithoutFragment.href;
-      if (inboundGuideLinks.has(guideTarget) && guideTarget !== sourceUrl.href) {
-        inboundGuideLinks.set(guideTarget, inboundGuideLinks.get(guideTarget) + 1);
+      if (inboundGuideSources.has(guideTarget) && guideTarget !== sourceUrl.href) {
+        inboundGuideSources.get(guideTarget).add(sourceUrl.href);
+      }
+      if (sitemapUrlSet.has(sourceUrl.href) && sitemapUrlSet.has(targetWithoutFragment.href)) {
+        canonicalAdjacency.get(sourceUrl.href).add(targetWithoutFragment.href);
+        uniqueInternalEdges.add(`${sourceUrl.href}\n${targetWithoutFragment.href}`);
       }
 
       const lookupKey = `${targetWithoutFragment.pathname}${targetWithoutFragment.search}`;
@@ -693,8 +750,31 @@ async function main() {
     validateJsonLd(html, path === homepagePath ? 'homepage' : `page ${sourcePublicPath}`, path === homepagePath);
   }
 
-  for (const [url, inboundCount] of inboundGuideLinks) {
-    if (inboundCount === 0) fail(`guide ${new URL(url).pathname}: has no inbound internal link`);
+  for (const [url, sources] of inboundGuideSources) {
+    const pathname = new URL(url).pathname;
+    if (!sources.has(guidesHubUrl)) fail(`guide ${pathname}: is not linked from the /guides/ hub`);
+    if (sources.size < 2) {
+      fail(`guide ${pathname}: needs at least two unique inbound source pages, found ${sources.size}`);
+    }
+  }
+
+  const homepageUrl = `${CANONICAL_ORIGIN}/`;
+  const clickDepth = new Map([[homepageUrl, 0]]);
+  const queue = [homepageUrl];
+  while (queue.length > 0) {
+    const source = queue.shift();
+    const nextDepth = clickDepth.get(source) + 1;
+    for (const target of canonicalAdjacency.get(source) ?? []) {
+      if (clickDepth.has(target)) continue;
+      clickDepth.set(target, nextDepth);
+      queue.push(target);
+    }
+  }
+  for (const url of sitemapUrlSet) {
+    if (!clickDepth.has(url)) fail(`sitemap page ${new URL(url).pathname}: is not reachable from the homepage`);
+    else if (clickDepth.get(url) > 2) {
+      fail(`sitemap page ${new URL(url).pathname}: is ${clickDepth.get(url)} clicks from the homepage; maximum is 2`);
+    }
   }
 
   if (failures.length > 0) {
@@ -707,7 +787,9 @@ async function main() {
   console.log(
     `SEO smoke check passed: ${htmlFiles.length} HTML file${htmlFiles.length === 1 ? '' : 's'}, ` +
       `${sitemapUrls.length} sitemap URL${sitemapUrls.length === 1 ? '' : 's'}, ` +
-      `${guideFiles.length} guide page${guideFiles.length === 1 ? '' : 's'}, ${internalLinkCount} internal link${internalLinkCount === 1 ? '' : 's'}.`,
+      `${guideFiles.length} guide page${guideFiles.length === 1 ? '' : 's'}, ` +
+      `${uniqueInternalEdges.size} unique canonical edge${uniqueInternalEdges.size === 1 ? '' : 's'}, ` +
+      `${internalLinkCount} internal link${internalLinkCount === 1 ? '' : 's'}.`,
   );
 }
 

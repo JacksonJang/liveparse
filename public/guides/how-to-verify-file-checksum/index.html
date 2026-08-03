@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Verify a File Checksum on Any OS | LiveParse</title>
+    <meta name="description" content="Verify SHA-256 file checksums in a browser, Windows PowerShell, macOS, or Linux, diagnose mismatches, and understand why a checksum is not a signature." />
+    <link rel="canonical" href="https://liveparse.com/guides/how-to-verify-file-checksum/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="How to Verify a File Checksum Safely" />
+    <meta property="og:description" content="Calculate and compare complete SHA-256 values on Windows, macOS, Linux, or in a local browser tool." />
+    <meta property="og:url" content="https://liveparse.com/guides/how-to-verify-file-checksum/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="File checksum verification guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to Verify a File Checksum" />
+    <meta name="twitter:description" content="A complete SHA-256 workflow with browser, PowerShell, macOS, and Linux examples." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/how-to-verify-file-checksum/#article",
+            "headline": "How to Verify a File Checksum on Any OS",
+            "description": "Verify a SHA-256 file checksum in a browser, Windows PowerShell, macOS, or Linux and interpret matches, mismatches, and authenticity limits.",
+            "mainEntityOfPage": "https://liveparse.com/guides/how-to-verify-file-checksum/",
+            "url": "https://liveparse.com/guides/how-to-verify-file-checksum/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "File integrity",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/how-to-verify-file-checksum/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "How to Verify a File Checksum", "item": "https://liveparse.com/guides/how-to-verify-file-checksum/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/how-to-verify-file-checksum/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does a matching file checksum mean?", "acceptedAnswer": { "@type": "Answer", "text": "It means the selected file bytes produce the same digest as the expected value under the same algorithm. With SHA-256, that is strong integrity evidence, but authenticity still depends on whether the expected checksum came from a trustworthy source." } },
+              { "@type": "Question", "name": "How do I check SHA-256 on Windows?", "acceptedAnswer": { "@type": "Answer", "text": "In PowerShell, run Get-FileHash with the file path and SHA256 algorithm, then compare the complete Hash field. For example: Get-FileHash -Algorithm SHA256 .\\download.iso" } },
+              { "@type": "Question", "name": "How do I check SHA-256 on macOS or Linux?", "acceptedAnswer": { "@type": "Answer", "text": "On macOS, run shasum -a 256 followed by the quoted file path. On Linux, run sha256sum followed by the quoted file path. Compare every hexadecimal digit with the trusted expected value." } },
+              { "@type": "Question", "name": "Should I hash the ZIP file or the extracted folder?", "acceptedAnswer": { "@type": "Answer", "text": "Hash the exact artifact named by the publisher. If the checksum list names a ZIP, ISO, installer, or tar archive, verify that original downloaded file before extraction. Extracted files form a different byte sequence." } },
+              { "@type": "Question", "name": "What should I do when a checksum does not match?", "acceptedAnswer": { "@type": "Answer", "text": "Do not install or trust the file. Confirm the algorithm, version, architecture, and exact filename, obtain the expected value again from a trusted source, delete the suspect copy, and download a fresh artifact over a trusted connection." } },
+              { "@type": "Question", "name": "Is SHA-256 enough to prove who published a file?", "acceptedAnswer": { "@type": "Answer", "text": "No. SHA-256 has no signer identity. If an attacker can replace both file and checksum, the values can match. Verify signed release metadata or a digital signature and validate the signing key when publisher authenticity matters." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the file checksum verification guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/file-checksum/">File Checksum</a><a href="/sha256-generator/">SHA-256</a><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Verify a File Checksum</span></nav><p class="eyebrow">Download integrity workflow</p><h1>How to Verify a File Checksum on Any OS</h1><p class="dek">Calculate SHA-256 over the exact file you downloaded, compare the full digest with a trustworthy expected value, and stop on any mismatch. Use a signature when you also need proof of publisher identity.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> obtain the expected SHA-256 value from a trusted publisher channel, hash the original downloaded file, and compare all 64 hexadecimal characters. Use <code>Get-FileHash</code> on Windows, <code>shasum -a 256</code> on macOS, <code>sha256sum</code> on Linux, or a local browser checksum tool. A match verifies equality with the expected digest; it does not authenticate an untrusted checksum source.</p></div>
+
+          <h2 id="before">Before calculating: identify four exact inputs</h2>
+          <ol class="steps"><li><strong>The artifact:</strong> confirm product version, operating system, CPU architecture, language, edition, and compression format.</li><li><strong>The algorithm:</strong> record whether the publisher names SHA-256, SHA-512, SHA-1, or MD5. Digest values from different algorithms cannot be compared.</li><li><strong>The expected digest:</strong> copy the complete value from a trustworthy page, signed manifest, package registry, or separate trusted communication.</li><li><strong>The original file:</strong> verify the downloaded archive or installer before opening, extracting, converting, or resaving it.</li></ol>
+          <p>Filenames are not globally unique. A mirror may reuse <code>download.zip</code> for several versions, and a browser may append <code>(1)</code> after a repeated download without changing the bytes. Verify the release metadata and expected size in addition to selecting the correct local file.</p>
+
+          <h2 id="browser">Verify a checksum in the browser</h2>
+          <p>The <a href="/file-checksum/">LiveParse File Checksum Calculator</a> reads a file you explicitly select, calculates its digest in the current tab, and can compare a pasted hexadecimal checksum. File contents are not sent to a checksum API. This is convenient on a device without a familiar terminal or for a moderate one-off file.</p>
+          <ol class="steps"><li>Open the calculator and choose the algorithm shown beside the publisher's value.</li><li>Select the exact local artifact with the file picker.</li><li>Paste only the complete expected hexadecimal checksum into the comparison field.</li><li>Wait for hashing to finish and confirm that the tool reports a full match.</li><li>Close the workflow without opening the file if it reports a mismatch.</li></ol>
+          <p>Local browser processing reduces exposure to a remote conversion service, but browser extensions, endpoint monitoring, malware, and operating-system services remain separate trust boundaries. Use an approved device for confidential files. Native tools are often better for very large artifacts, repeated automation, or build pipelines.</p>
+
+          <h2 id="windows">Verify SHA-256 on Windows</h2>
+          <p>PowerShell includes <code>Get-FileHash</code>. Open a PowerShell window, provide the exact path, and quote paths that contain spaces:</p>
+          <figure class="code-example"><figcaption class="code-label">PowerShell SHA-256</figcaption><pre><code>Get-FileHash -Algorithm SHA256 "C:\Users\you\Downloads\release.iso"</code></pre></figure>
+          <p>The output includes <code>Algorithm</code>, <code>Hash</code>, and <code>Path</code>. Compare the complete <code>Hash</code> value with the publisher's SHA-256 checksum. PowerShell commonly displays uppercase hex while a website may use lowercase; hexadecimal letter case does not change the bytes.</p>
+          <p>For a different supplied algorithm, use the exact supported name, such as <code>SHA512</code>, <code>SHA1</code>, or <code>MD5</code>. Do not switch to MD5 merely to get shorter output. The older Windows command <code>certutil -hashfile "path" SHA256</code> can also calculate a hash, but PowerShell provides a clearer scripting interface.</p>
+
+          <h2 id="macos">Verify SHA-256 on macOS</h2>
+          <p>macOS ships the <code>shasum</code> utility. Open Terminal and run:</p>
+          <figure class="code-example"><figcaption class="code-label">macOS SHA-256</figcaption><pre><code>shasum -a 256 "/Users/you/Downloads/release.dmg"</code></pre></figure>
+          <p>The command prints the 64-character digest followed by the file path. The <code>-a 256</code> argument is important because the default is not a request for SHA-256. For SHA-512, use <code>-a 512</code>. Quote a path containing spaces or drag the file from Finder into the Terminal window after typing the command and a space.</p>
+          <p>If a publisher provides a checksum file in a compatible format, change into the download directory and use <code>shasum -a 256 -c checksums.txt</code>. Inspect which filenames the list references and verify the checksum file's own provenance before trusting a reported <code>OK</code>.</p>
+
+          <h2 id="linux">Verify SHA-256 on Linux</h2>
+          <p>Many Linux distributions provide GNU coreutils <code>sha256sum</code>:</p>
+          <figure class="code-example"><figcaption class="code-label">Linux SHA-256</figcaption><pre><code>sha256sum "/home/you/Downloads/release.tar.xz"</code></pre></figure>
+          <p>Compare the complete first field with the expected SHA-256 value. Corresponding commands often include <code>sha512sum</code>, <code>sha1sum</code>, and <code>md5sum</code>, but available utilities depend on the distribution. Use SHA-1 or MD5 only when verifying an unavoidable legacy value.</p>
+          <p>For a compatible manifest, run <code>sha256sum -c checksums.txt</code> from the directory that contains the named files. A manifest can list many artifacts, so confirm that the expected row matches the downloaded architecture and version. A valid list format does not authenticate the list.</p>
+
+          <h2 id="manual">Compare the complete digest correctly</h2>
+          <p>SHA-256 produces 64 hexadecimal characters. MD5 produces 32, SHA-1 produces 40, SHA-384 produces 96, and SHA-512 produces 128. A length mismatch usually means the wrong algorithm or an incomplete copied value. Spaces between byte pairs and uppercase letters can be presentation differences, but every hexadecimal digit must remain.</p>
+          <p>Do not compare only the first or last few characters by eye. A shortened prefix reduces the work needed to manufacture or accidentally encounter a matching display. Paste both full values into a trustworthy comparison field or use a checksum manifest command that parses the expected value and filename.</p>
+          <p>Be careful when checksum pages include labels such as <code>SHA256 (release.iso) =</code>. Those words are not digest characters. Conversely, do not accidentally copy a digest from the row above or below the intended architecture. Retain the source URL or signed manifest alongside audit records.</p>
+
+          <h2 id="mismatch">What to do when the checksum does not match</h2>
+          <p>A mismatch means the selected bytes are not the bytes represented by the expected digest under the selected algorithm. Do not run an installer, mount an image, import a container, or bypass a package warning. Work through likely causes without assuming the difference is benign:</p>
+          <ul><li>Confirm the algorithm and expected digest length.</li><li>Verify version, platform, architecture, locale, edition, and filename.</li><li>Check whether the publisher hashed the archive while you selected an extracted file, or vice versa.</li><li>Compare file size and look for an interrupted download or an HTML error page saved under the expected filename.</li><li>Delete the suspect artifact and download a fresh copy through the official HTTPS route.</li><li>Obtain the expected value again, preferably from signed metadata or an independent trusted source.</li><li>If repeated official downloads disagree, stop and report the issue to the publisher.</li></ul>
+
+          <h2 id="authenticity">Checksums verify equality, not publisher identity</h2>
+          <p>SHA-256 is unkeyed. A person who modifies a program can calculate the modified program's SHA-256 checksum. If the same compromised website distributes both file and checksum, a perfect match only proves that the two malicious items agree.</p>
+          <p>A digital signature adds a private signing key and a public verification key. Signed release manifests let you authenticate many artifact names and hashes at once, provided you verify the signature, algorithm, and signing-key identity. Package managers may automate parts of this chain through signed repository metadata; do not disable those checks and replace them with a copied checksum.</p>
+          <p>The level of independent trust should follow risk. A checksum on the publisher's validated HTTPS page may be sufficient for detecting accidental mirror corruption in a low-risk workflow. Operating-system images, privileged software, firmware, and security tools justify stronger signature and key-verification steps.</p>
+
+          <h2 id="automation">Automate without weakening the decision</h2>
+          <p>Continuous integration can download an artifact, calculate SHA-256, and fail closed on a mismatch. Pin the complete value in reviewed configuration, update it through code review, and record the artifact URL and version. Avoid scripts that scrape the newest checksum from the same mutable source immediately before accepting a download; that may let one compromise update both values.</p>
+          <p>Use a package manager's native signature and lockfile features when available. A lockfile checksum can make builds reproducible, but only if the lockfile itself is reviewed and protected. For internal pipelines, publish signed provenance or attestations and restrict who can update expected artifact digests.</p>
+
+          <div class="tool-callout"><p><strong>Ready to compare a local artifact?</strong> Select the file, choose the publisher's algorithm, and paste the complete trusted checksum. The file bytes stay in the browser tab.</p><a class="button" href="/file-checksum/">Open the File Checksum Calculator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What does a matching file checksum mean?</h3><p>It means the selected file bytes produce the same digest as the expected value under the same algorithm. With SHA-256, that is strong integrity evidence, but authenticity still depends on whether the expected checksum came from a trustworthy source.</p>
+            <h3>How do I check SHA-256 on Windows?</h3><p>In PowerShell, run Get-FileHash with the file path and SHA256 algorithm, then compare the complete Hash field. For example: Get-FileHash -Algorithm SHA256 .\download.iso</p>
+            <h3>How do I check SHA-256 on macOS or Linux?</h3><p>On macOS, run shasum -a 256 followed by the quoted file path. On Linux, run sha256sum followed by the quoted file path. Compare every hexadecimal digit with the trusted expected value.</p>
+            <h3>Should I hash the ZIP file or the extracted folder?</h3><p>Hash the exact artifact named by the publisher. If the checksum list names a ZIP, ISO, installer, or tar archive, verify that original downloaded file before extraction. Extracted files form a different byte sequence.</p>
+            <h3>What should I do when a checksum does not match?</h3><p>Do not install or trust the file. Confirm the algorithm, version, architecture, and exact filename, obtain the expected value again from a trusted source, delete the suspect copy, and download a fresh artifact over a trusted connection.</p>
+            <h3>Is SHA-256 enough to prove who published a file?</h3><p>No. SHA-256 has no signer identity. If an attacker can replace both file and checksum, the values can match. Verify signed release metadata or a digital signature and validate the signing key when publisher authenticity matters.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the tools</p><a href="/file-checksum/">File Checksum</a><a href="/sha256-generator/">SHA-256 Generator</a><a href="/hash-generator/">Hash Generator</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a><a href="/guides/hash-vs-encryption/">Hashing vs encryption</a><a href="/guides/hashing-utf8-newlines/">UTF-8 and newlines</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/file-checksum/">File Checksum</a><a href="/sha256-generator/">SHA-256</a><a href="/hash-generator/">Hash Generator</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Compare complete values and verify the source.</p></footer>
+  </body>
+</html>

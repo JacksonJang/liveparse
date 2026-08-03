@@ -45,6 +45,22 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/hash-generator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/sha256-generator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/md5-generator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/file-checksum/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/uuid-generator/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
@@ -129,6 +145,10 @@
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
+    <loc>https://liveparse.com/guides/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
     <loc>https://liveparse.com/guides/what-is-a-json-parser/</loc>
     <lastmod>2026-08-03</lastmod>
   </url>
@@ -202,6 +222,22 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/common-yaml-errors/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/sha256-vs-md5/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/hash-vs-encryption/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/how-to-verify-file-checksum/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/hashing-utf8-newlines/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

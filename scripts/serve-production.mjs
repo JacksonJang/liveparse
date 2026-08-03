@@ -5,6 +5,7 @@ import { realpath, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ClaimedCrawlerCounter } from '../server/search-crawlers.js';
 import { SearchReferralCounter, searchReferralFromRequest } from '../server/search-referrals.js';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
@@ -13,6 +14,7 @@ const DIST_ROOT = resolve(PROJECT_ROOT, 'dist');
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parsePort(process.env.PORT || '4173');
 const SEARCH_REFERRAL_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_REFERRAL_DIR || '.runtime/search-referrals');
+const SEARCH_CRAWLER_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_CRAWLER_DIR || '.runtime/search-crawlers');
 const DIRECTORY_ROUTES = new Set([
   '/ko/json-parser',
   '/json-repair',
@@ -24,6 +26,10 @@ const DIRECTORY_ROUTES = new Set([
   '/discord-timestamp-generator',
   '/base64-decoder',
   '/base64-encoder',
+  '/hash-generator',
+  '/sha256-generator',
+  '/md5-generator',
+  '/file-checksum',
   '/uuid-generator',
   '/uuid-v4-generator',
   '/uuid-v7-generator',
@@ -45,6 +51,7 @@ const DIRECTORY_ROUTES = new Set([
   '/yaml-to-json',
   '/json-to-yaml',
   '/privacy',
+  '/guides',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
   '/guides/json-parser-vs-formatter-validator',
@@ -64,6 +71,10 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/yaml-to-json-types',
   '/guides/yaml-anchors-aliases-merge-keys',
   '/guides/common-yaml-errors',
+  '/guides/sha256-vs-md5',
+  '/guides/hash-vs-encryption',
+  '/guides/how-to-verify-file-checksum',
+  '/guides/hashing-utf8-newlines',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
@@ -92,6 +103,32 @@ const ROUTE_REDIRECTS = new Map([
   ['/base64-encode/', '/base64-encoder/'],
   ['/base64-encoder-decoder', '/base64-decoder/'],
   ['/base64-encoder-decoder/', '/base64-decoder/'],
+  ['/hash', '/hash-generator/'],
+  ['/hash/', '/hash-generator/'],
+  ['/hashing-tool', '/hash-generator/'],
+  ['/hashing-tool/', '/hash-generator/'],
+  ['/online-hash-generator', '/hash-generator/'],
+  ['/online-hash-generator/', '/hash-generator/'],
+  ['/sha-256-generator', '/sha256-generator/'],
+  ['/sha-256-generator/', '/sha256-generator/'],
+  ['/sha256-hash', '/sha256-generator/'],
+  ['/sha256-hash/', '/sha256-generator/'],
+  ['/sha256', '/sha256-generator/'],
+  ['/sha256/', '/sha256-generator/'],
+  ['/md5-hash-generator', '/md5-generator/'],
+  ['/md5-hash-generator/', '/md5-generator/'],
+  ['/md5-hash', '/md5-generator/'],
+  ['/md5-hash/', '/md5-generator/'],
+  ['/md5', '/md5-generator/'],
+  ['/md5/', '/md5-generator/'],
+  ['/checksum', '/file-checksum/'],
+  ['/checksum/', '/file-checksum/'],
+  ['/checksum-calculator', '/file-checksum/'],
+  ['/checksum-calculator/', '/file-checksum/'],
+  ['/file-hash', '/file-checksum/'],
+  ['/file-hash/', '/file-checksum/'],
+  ['/file-hash-calculator', '/file-checksum/'],
+  ['/file-hash-calculator/', '/file-checksum/'],
   ['/guid-generator', '/uuid-generator/'],
   ['/guid-generator/', '/uuid-generator/'],
   ['/generate-uuid', '/uuid-generator/'],
@@ -472,7 +509,7 @@ function isNotModified(request, fileStat, etag) {
   return false;
 }
 
-async function handleRequest(distRoot, searchReferralCounter, request, response) {
+async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCounter, request, response) {
   if (requestProtocol(request) !== 'https' || requestHostname(request) !== 'liveparse.com') {
     redirectToCanonical(request, response);
     return;
@@ -517,9 +554,10 @@ async function handleRequest(distRoot, searchReferralCounter, request, response)
   response.setHeader('ETag', etag);
   response.setHeader('Last-Modified', fileStat.mtime.toUTCString());
 
+  const isHtml = ['.htm', '.html'].includes(extname(filePath).toLowerCase());
   const referral = searchReferralFromRequest({
     method: request.method,
-    isHtml: ['.htm', '.html'].includes(extname(filePath).toLowerCase()),
+    isHtml,
     requestPath,
     referrer: firstHeaderValue(request.headers.referer),
     userAgent: firstHeaderValue(request.headers['user-agent']),
@@ -529,6 +567,12 @@ async function handleRequest(distRoot, searchReferralCounter, request, response)
     secFetchDest: firstHeaderValue(request.headers['sec-fetch-dest']),
   });
   if (referral) void searchReferralCounter.record(referral);
+  void claimedCrawlerCounter.record({
+    method: request.method,
+    isHtml,
+    requestPath,
+    userAgent: firstHeaderValue(request.headers['user-agent']),
+  }).catch(() => {});
 
   if (isNotModified(request, fileStat, etag)) {
     response.statusCode = 304;
@@ -567,9 +611,20 @@ async function main() {
     directory: SEARCH_REFERRAL_DIR,
     onError: (...details) => console.error(...details),
   });
+  const claimedCrawlerCounter = new ClaimedCrawlerCounter({
+    directory: SEARCH_CRAWLER_DIR,
+    allowedPaths: CANONICAL_METRIC_PATHS,
+    onError: (...details) => console.error(...details),
+  });
+  const touchCrawlerCoverage = () => {
+    void claimedCrawlerCounter.touch().catch(() => {});
+  };
+  touchCrawlerCoverage();
+  const crawlerHeartbeat = setInterval(touchCrawlerCoverage, 60 * 60 * 1_000);
+  crawlerHeartbeat.unref();
 
   const server = createServer((request, response) => {
-    handleRequest(distRoot, searchReferralCounter, request, response).catch((error) => {
+    handleRequest(distRoot, searchReferralCounter, claimedCrawlerCounter, request, response).catch((error) => {
       console.error('Unhandled request error:', error);
       if (!response.headersSent) sendText(request, response, 500, 'Internal Server Error');
       else response.destroy(error);
@@ -588,11 +643,13 @@ async function main() {
     console.log(`Serving ${distRoot} on http://${HOST}:${PORT}`);
     console.log(`Canonical origin: ${CANONICAL_ORIGIN}`);
     console.log('Cookie-free search referral aggregation: enabled');
+    console.log('Privacy-preserving claimed crawler and hourly server heartbeat aggregation: enabled');
   });
 
   for (const signal of ['SIGINT', 'SIGTERM']) {
     process.once(signal, () => server.close(async () => {
-      await searchReferralCounter.flush();
+      clearInterval(crawlerHeartbeat);
+      await Promise.all([searchReferralCounter.flush(), claimedCrawlerCounter.flush()]);
       process.exit(0);
     }));
   }

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer Data Format Guides | LiveParse</title>
+    <meta name="description" content="Developer data guides to JSON, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums, with precise examples and local browser tools." />
+    <link rel="canonical" href="https://liveparse.com/guides/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Developer Data Format Guides" />
+    <meta property="og:description" content="Understand data formats, identifiers, encodings, checksums, and common implementation traps before using the related browser tools." />
+    <meta property="og:url" content="https://liveparse.com/guides/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse developer data format guide library" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Developer Data Format Guides" />
+    <meta name="twitter:description" content="Practical explanations for JSON, time, encoding, UUID, JWT, SQL, XML, YAML, hashing, and checksums." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://liveparse.com/guides/#page",
+            "url": "https://liveparse.com/guides/",
+            "name": "Developer Data Format Guides",
+            "description": "Practical guides to JSON, timestamps, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
+            "inLanguage": "en",
+            "isPartOf": { "@type": "WebSite", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "mainEntity": { "@id": "https://liveparse.com/guides/#list" },
+            "breadcrumb": { "@id": "https://liveparse.com/guides/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" }
+            ]
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://liveparse.com/guides/#list",
+            "name": "LiveParse developer guides",
+            "numberOfItems": 23,
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "url": "https://liveparse.com/guides/what-is-a-json-parser/", "name": "What Is a JSON Parser?" },
+              { "@type": "ListItem", "position": 2, "url": "https://liveparse.com/guides/common-json-errors/", "name": "Common JSON Errors" },
+              { "@type": "ListItem", "position": 3, "url": "https://liveparse.com/guides/json-parser-vs-formatter-validator/", "name": "JSON Parser vs Formatter vs Validator" },
+              { "@type": "ListItem", "position": 4, "url": "https://liveparse.com/guides/compare-api-responses/", "name": "How to Compare API Responses" },
+              { "@type": "ListItem", "position": 5, "url": "https://liveparse.com/guides/compare-json-ignore-order/", "name": "Compare JSON While Ignoring Order" },
+              { "@type": "ListItem", "position": 6, "url": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/", "name": "Unix Timestamp Seconds vs Milliseconds" },
+              { "@type": "ListItem", "position": 7, "url": "https://liveparse.com/guides/unix-timestamp-code-examples/", "name": "Unix Timestamp Code Examples" },
+              { "@type": "ListItem", "position": 8, "url": "https://liveparse.com/guides/discord-timestamp-formats/", "name": "Discord Timestamp Formats" },
+              { "@type": "ListItem", "position": 9, "url": "https://liveparse.com/guides/base64-vs-base64url/", "name": "Base64 vs Base64URL" },
+              { "@type": "ListItem", "position": 10, "url": "https://liveparse.com/guides/uuid-v4-vs-v7/", "name": "UUID v4 vs v7" },
+              { "@type": "ListItem", "position": 11, "url": "https://liveparse.com/guides/uuid-versions-explained/", "name": "UUID Versions Explained" },
+              { "@type": "ListItem", "position": 12, "url": "https://liveparse.com/guides/uuid-collision-probability/", "name": "UUID Collision Probability" },
+              { "@type": "ListItem", "position": 13, "url": "https://liveparse.com/guides/jwt-decode-vs-verify/", "name": "JWT Decode vs Verify" },
+              { "@type": "ListItem", "position": 14, "url": "https://liveparse.com/guides/sql-dialect-formatting/", "name": "SQL Dialect Formatting" },
+              { "@type": "ListItem", "position": 15, "url": "https://liveparse.com/guides/xml-well-formed-vs-valid/", "name": "Well-Formed XML vs Valid XML" },
+              { "@type": "ListItem", "position": 16, "url": "https://liveparse.com/guides/yaml-1-1-vs-1-2/", "name": "YAML 1.1 vs YAML 1.2" },
+              { "@type": "ListItem", "position": 17, "url": "https://liveparse.com/guides/yaml-to-json-types/", "name": "YAML to JSON Type Conversion" },
+              { "@type": "ListItem", "position": 18, "url": "https://liveparse.com/guides/yaml-anchors-aliases-merge-keys/", "name": "YAML Anchors, Aliases, and Merge Keys" },
+              { "@type": "ListItem", "position": 19, "url": "https://liveparse.com/guides/common-yaml-errors/", "name": "Common YAML Errors" },
+              { "@type": "ListItem", "position": 20, "url": "https://liveparse.com/guides/sha256-vs-md5/", "name": "SHA-256 vs MD5" },
+              { "@type": "ListItem", "position": 21, "url": "https://liveparse.com/guides/hash-vs-encryption/", "name": "Hashing vs Encryption" },
+              { "@type": "ListItem", "position": 22, "url": "https://liveparse.com/guides/how-to-verify-file-checksum/", "name": "How to Verify a File Checksum" },
+              { "@type": "ListItem", "position": 23, "url": "https://liveparse.com/guides/hashing-utf8-newlines/", "name": "UTF-8 and Newline Hashing Pitfalls" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#guide-library">Skip to guides</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/#tools">Browser Tools</a>
+        <a href="/guides/" aria-current="page">Guides</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Guides</span></nav>
+          <p class="eyebrow">Developer reference library</p>
+          <h1>Developer Data Format Guides</h1>
+          <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>23 practical guides</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="guide-library">
+            <div class="summary">
+              <p><strong>Choose a topic below.</strong> The library separates parsing from formatting, encoding from encryption, identifiers from authentication, syntax validity from schema validity, and checksums from trusted signatures. Those distinctions prevent tools from making claims the underlying format cannot support.</p>
+            </div>
+
+            <section aria-labelledby="json-guides">
+              <h2 id="json-guides">JSON and API data</h2>
+              <p>Start with how JSON text becomes values, then diagnose syntax failures and compare structured API payloads without confusing whitespace with data.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/what-is-a-json-parser/"><strong>What Is a JSON Parser?</strong><span>Parsing, validation, formatting, values, and safe limits.</span></a>
+                <a class="related-card" href="/guides/common-json-errors/"><strong>Common JSON Errors</strong><span>Trailing commas, quotes, escapes, numbers, and location-aware fixes.</span></a>
+                <a class="related-card" href="/guides/json-parser-vs-formatter-validator/"><strong>Parser vs Formatter vs Validator</strong><span>Three related operations with different guarantees.</span></a>
+                <a class="related-card" href="/guides/compare-api-responses/"><strong>Compare API Responses</strong><span>Structural diffs, arrays, missing fields, and numeric values.</span></a>
+                <a class="related-card" href="/guides/compare-json-ignore-order/"><strong>Compare JSON While Ignoring Order</strong><span>Object keys, array semantics, duplicates, and canonicalization.</span></a>
+              </div>
+              <p>Work with the <a href="/">JSON Parser</a>, <a href="/json-repair/">JSON Repair</a>, <a href="/json-compare/">JSON Compare</a>, <a href="/json-to-csv/">JSON to CSV</a>, or <a href="/csv-to-json/">CSV to JSON</a> tools.</p>
+            </section>
+
+            <section aria-labelledby="time-guides">
+              <h2 id="time-guides">Unix time and Discord timestamps</h2>
+              <p>Timestamp bugs often come from mixing units, zones, presentation syntax, or an approximate encoded time with an authoritative business event.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/unix-timestamp-seconds-vs-milliseconds/"><strong>Seconds vs Milliseconds</strong><span>Detect units, ranges, negative epochs, and overflow.</span></a>
+                <a class="related-card" href="/guides/unix-timestamp-code-examples/"><strong>Unix Timestamp Code Examples</strong><span>Convert safely in JavaScript, Python, Java, SQL, and shells.</span></a>
+                <a class="related-card" href="/guides/discord-timestamp-formats/"><strong>Discord Timestamp Formats</strong><span>All style codes, relative display, and epoch input rules.</span></a>
+              </div>
+              <p>Convert values with the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> or build markup with the <a href="/discord-timestamp-generator/">Discord Timestamp Generator</a>.</p>
+            </section>
+
+            <section aria-labelledby="encoding-guides">
+              <h2 id="encoding-guides">Base64 and binary-to-text encoding</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/base64-vs-base64url/"><strong>Base64 vs Base64URL</strong><span>Alphabets, padding, canonical pad bits, UTF-8, and JWT segments.</span></a>
+              </div>
+              <p>Transform bytes locally with the <a href="/base64-encoder/">Base64 Encoder</a> and <a href="/base64-decoder/">Base64 Decoder</a>. Encoding changes representation; it does not encrypt or authenticate the data.</p>
+            </section>
+
+            <section aria-labelledby="uuid-guides">
+              <h2 id="uuid-guides">UUIDs and GUIDs</h2>
+              <p>UUID text always has 128 bits, but versions assign those bits to random data, names, clocks, nodes, or application-defined layouts.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/uuid-v4-vs-v7/"><strong>UUID v4 vs v7</strong><span>Random identifiers compared with Unix-millisecond ordering.</span></a>
+                <a class="related-card" href="/guides/uuid-versions-explained/"><strong>UUID Versions Explained</strong><span>Variants, versions 1–8, Nil, Max, timestamps, and privacy.</span></a>
+                <a class="related-card" href="/guides/uuid-collision-probability/"><strong>UUID Collision Probability</strong><span>The 122-bit v4 space, birthday math, and generator failures.</span></a>
+              </div>
+              <p>Generate and inspect identifiers with the <a href="/uuid-generator/">UUID Generator</a>, <a href="/uuid-v4-generator/">UUID v4 Generator</a>, <a href="/uuid-v7-generator/">UUID v7 Generator</a>, <a href="/uuid-validator/">UUID Validator</a>, and <a href="/uuid-decoder/">UUID Decoder</a>.</p>
+            </section>
+
+            <section aria-labelledby="jwt-guides">
+              <h2 id="jwt-guides">JSON Web Tokens</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/jwt-decode-vs-verify/"><strong>JWT Decode vs Verify</strong><span>Readable claims are not proof of signature, issuer, audience, or trust.</span></a>
+              </div>
+              <p>Inspect untrusted token text with the <a href="/jwt-decoder/">JWT Decoder</a> and examine time claims with the <a href="/jwt-expiration-checker/">JWT Expiration Checker</a>.</p>
+            </section>
+
+            <section aria-labelledby="sql-guides">
+              <h2 id="sql-guides">SQL dialects</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/sql-dialect-formatting/"><strong>SQL Dialect Formatting</strong><span>Quoting, placeholders, operators, clauses, and why formatting is not validation.</span></a>
+              </div>
+              <p>Choose the matching parser mode in the <a href="/sql-formatter/">SQL Formatter</a>, including dedicated MySQL, PostgreSQL, BigQuery, and SQL Server pages.</p>
+            </section>
+
+            <section aria-labelledby="xml-guides">
+              <h2 id="xml-guides">XML structure and validation</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/xml-well-formed-vs-valid/"><strong>Well-Formed XML vs Valid XML</strong><span>Syntax, namespaces, DTDs, XSDs, parsers, and validation scope.</span></a>
+              </div>
+              <p>Use the <a href="/xml-formatter/">XML Formatter</a>, <a href="/xml-validator/">XML Validator</a>, or <a href="/xml-viewer/">XML Viewer</a> while keeping well-formedness separate from schema validity.</p>
+            </section>
+
+            <section aria-labelledby="yaml-guides">
+              <h2 id="yaml-guides">YAML parsing and conversion</h2>
+              <p>YAML has version-dependent scalar resolution, graph features that JSON cannot preserve directly, and failure modes beyond indentation alone.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/yaml-1-1-vs-1-2/"><strong>YAML 1.1 vs YAML 1.2</strong><span>Boolean, number, timestamp, and schema differences.</span></a>
+                <a class="related-card" href="/guides/yaml-to-json-types/"><strong>YAML to JSON Type Conversion</strong><span>Keys, tags, special numbers, dates, aliases, and collisions.</span></a>
+                <a class="related-card" href="/guides/yaml-anchors-aliases-merge-keys/"><strong>Anchors, Aliases, and Merge Keys</strong><span>Graph reuse, precedence, expansion, and safety limits.</span></a>
+                <a class="related-card" href="/guides/common-yaml-errors/"><strong>Common YAML Errors</strong><span>Indentation, tabs, colons, quotes, duplicates, and aliases.</span></a>
+              </div>
+              <p>Inspect or transform documents with the <a href="/yaml-formatter/">YAML Formatter</a>, <a href="/yaml-validator/">YAML Validator</a>, <a href="/yaml-viewer/">YAML Viewer</a>, <a href="/yaml-to-json/">YAML to JSON</a>, and <a href="/json-to-yaml/">JSON to YAML</a>.</p>
+            </section>
+
+            <section aria-labelledby="hash-guides">
+              <h2 id="hash-guides">Hashes and file checksums</h2>
+              <p>Hash results depend on exact bytes. Algorithm choice, UTF-8 encoding, line endings, file integrity, and authenticity are separate decisions.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/sha256-vs-md5/"><strong>SHA-256 vs MD5</strong><span>Digest sizes, collision resistance, legacy compatibility, and safe defaults.</span></a>
+                <a class="related-card" href="/guides/hash-vs-encryption/"><strong>Hashing vs Encryption</strong><span>One-way digests, reversible ciphertext, MACs, signatures, and passwords.</span></a>
+                <a class="related-card" href="/guides/how-to-verify-file-checksum/"><strong>Verify a File Checksum</strong><span>Compare exact downloads while preserving a trusted source for the expected digest.</span></a>
+                <a class="related-card" href="/guides/hashing-utf8-newlines/"><strong>UTF-8 and Newline Pitfalls</strong><span>Byte encodings, BOMs, normalization, CRLF, LF, and trailing newlines.</span></a>
+              </div>
+              <p>Calculate locally with the <a href="/hash-generator/">Hash Generator</a>, <a href="/sha256-generator/">SHA-256 Generator</a>, <a href="/md5-generator/">MD5 Generator</a>, or <a href="/file-checksum/">File Checksum Tool</a>.</p>
+            </section>
+
+            <div class="tool-callout">
+              <p><strong>Prefer hands-on inspection?</strong> LiveParse tools process pasted values and selected files in your browser. The primary tools do not upload the content for calculation.</p>
+              <a class="button" href="/#tools">Browse all browser tools</a>
+            </div>
+          </div>
+
+          <aside class="toc" aria-label="Guide categories">
+            <p class="toc-title">Guide categories</p>
+            <ol>
+              <li><a href="#json-guides">JSON and APIs</a></li>
+              <li><a href="#time-guides">Time and Discord</a></li>
+              <li><a href="#encoding-guides">Base64 encoding</a></li>
+              <li><a href="#uuid-guides">UUIDs</a></li>
+              <li><a href="#jwt-guides">JWTs</a></li>
+              <li><a href="#sql-guides">SQL</a></li>
+              <li><a href="#xml-guides">XML</a></li>
+              <li><a href="#yaml-guides">YAML</a></li>
+              <li><a href="#hash-guides">Hashes</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 LiveParse</p>
+      <p><a href="/privacy/">Privacy</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </footer>
+  </body>
+</html>

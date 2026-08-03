@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why Hashes Differ: UTF-8, Newlines and Unicode | LiveParse</title>
+    <meta name="description" content="Diagnose hashing mismatches caused by UTF-8, LF versus CRLF, trailing newlines, BOMs, Unicode normalization, whitespace, and serialization." />
+    <link rel="canonical" href="https://liveparse.com/guides/hashing-utf8-newlines/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Why the Same Text Produces a Different Hash" />
+    <meta property="og:description" content="Find invisible byte differences in encodings, line endings, trailing newlines, BOMs, Unicode normalization, and serialization." />
+    <meta property="og:url" content="https://liveparse.com/guides/hashing-utf8-newlines/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="UTF-8 and newline hash mismatch guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="UTF-8, Newlines and Hash Mismatches" />
+    <meta name="twitter:description" content="A byte-level checklist for reproducing SHA-256 and other text digests." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/hashing-utf8-newlines/#article",
+            "headline": "Why Hashes Differ: UTF-8, Newlines and Unicode",
+            "description": "Diagnose text hash mismatches caused by encodings, LF and CRLF, trailing newlines, byte-order marks, Unicode normalization, whitespace, and serialization.",
+            "mainEntityOfPage": "https://liveparse.com/guides/hashing-utf8-newlines/",
+            "url": "https://liveparse.com/guides/hashing-utf8-newlines/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Text encoding and hashing",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/hashing-utf8-newlines/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Hashing UTF-8 and Newlines", "item": "https://liveparse.com/guides/hashing-utf8-newlines/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/hashing-utf8-newlines/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Why does the same text produce a different hash?", "acceptedAnswer": { "@type": "Answer", "text": "The visible text may be represented by different bytes. Common causes include UTF-8 versus another encoding, LF versus CRLF, a final newline, Unicode normalization, a byte-order mark, invisible whitespace, or different serialization." } },
+              { "@type": "Question", "name": "Does a trailing newline change SHA-256?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. A trailing LF adds byte 0A, while a Windows-style trailing CRLF adds bytes 0D 0A. Hash functions process those bytes, so text with and without the newline has different digests." } },
+              { "@type": "Question", "name": "What is the difference between LF and CRLF when hashing?", "acceptedAnswer": { "@type": "Answer", "text": "LF is one byte, 0A, in ASCII-compatible encodings. CRLF is two bytes, 0D 0A. Every line ending therefore changes the byte length and digest when one system uses LF and another uses CRLF." } },
+              { "@type": "Question", "name": "Does Unicode normalization affect hashes?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Some visually equivalent text can use a precomposed code point or a base character followed by combining marks. NFC and NFD can encode those forms as different UTF-8 bytes, producing different hashes unless a contract normalizes them first." } },
+              { "@type": "Question", "name": "Should text be normalized before hashing?", "acceptedAnswer": { "@type": "Answer", "text": "Only when the protocol explicitly defines a normalization rule. Silent trimming, newline conversion, case folding, or Unicode normalization can change meaning and make signatures or existing checksums fail. Hash exact bytes by default." } },
+              { "@type": "Question", "name": "How can I reproduce a browser text hash in a terminal?", "acceptedAnswer": { "@type": "Answer", "text": "Write the exact UTF-8 bytes without an unintended newline, then hash them. On common Unix shells, printf %s followed by the value is more predictable than echo, whose newline and escape behavior can vary." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the UTF-8 hashing guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/sha256-generator/">SHA-256 Generator</a><a href="/hash-generator/">Hash Generator</a><a href="/file-checksum/">File Checksum</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Hashing UTF-8 and Newlines</span></nav><p class="eyebrow">Byte mismatch diagnosis</p><h1>Why Hashes Differ: UTF-8, Newlines and Unicode</h1><p class="dek">A hash never sees “the same-looking text.” It sees bytes. Reveal the encoding, newline, normalization, whitespace, and serialization choices before blaming the algorithm.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> two correct SHA-256 implementations disagree only when they receive different bytes or the outputs are interpreted differently. Specify UTF-8, inspect LF versus CRLF and the final newline, check for a UTF-8 BOM, compare Unicode code points and normalization, preserve whitespace, and hash one defined serialization. Do not normalize input unless the protocol explicitly requires it.</p></div>
+
+          <h2 id="bytes">Hash functions process bytes, not visual characters</h2>
+          <p>A SHA-256 implementation receives a sequence of bits. It has no concept of letters, emoji, lines, JSON properties, files, or fonts. Software must first encode text into bytes. The <a href="/sha256-generator/">LiveParse SHA-256 Generator</a> uses UTF-8, which matches much modern web and API data, but a legacy program might use a locale code page, UTF-16, Latin-1, or another encoding.</p>
+          <p>ASCII characters U+0000 through U+007F have the same single-byte values in UTF-8 and ASCII, so simple English samples may hide an encoding mismatch. The difference becomes visible with Korean, accented Latin letters, CJK characters, emoji, smart punctuation, and any other non-ASCII content. UTF-8 uses one to four bytes per Unicode scalar value.</p>
+          <figure class="code-example"><figcaption class="code-label">UTF-8 examples in hexadecimal</figcaption><pre><code>A       → 41
+é       → C3 A9
+한      → ED 95 9C
+😀      → F0 9F 98 80</code></pre></figure>
+          <p>Character count, UTF-16 code-unit count, grapheme count, and UTF-8 byte count are different measurements. An emoji may look like one user-perceived symbol while containing several code points joined into many bytes. A correct hashing tool should report byte length separately from character length.</p>
+
+          <h2 id="newlines">LF, CRLF, and CR are different byte sequences</h2>
+          <p>Unix-style LF is byte <code>0A</code> in UTF-8 and other ASCII-compatible encodings. Windows-style CRLF is the two-byte sequence <code>0D 0A</code>. Historical CR-only text uses <code>0D</code>. If a document has 100 line breaks, converting LF to CRLF adds 100 bytes and necessarily changes its digest.</p>
+          <div class="table-wrap"><table><thead><tr><th>Visible idea</th><th>Escape notation</th><th>UTF-8 bytes</th><th>Byte count</th></tr></thead><tbody><tr><td>Text without newline</td><td><code>hello</code></td><td><code>68 65 6C 6C 6F</code></td><td>5</td></tr><tr><td>Text with LF</td><td><code>hello\n</code></td><td><code>68 65 6C 6C 6F 0A</code></td><td>6</td></tr><tr><td>Text with CRLF</td><td><code>hello\r\n</code></td><td><code>68 65 6C 6C 6F 0D 0A</code></td><td>7</td></tr></tbody></table></div>
+          <p>Editors can display all three versions as one line containing “hello.” Git can convert checked-out line endings according to configuration and attributes. Template strings, text areas, HTTP libraries, and clipboard operations may also normalize or preserve line breaks differently. Compare bytes at the boundary where hashing actually occurs.</p>
+
+          <h2 id="trailing">The invisible trailing newline problem</h2>
+          <p>Command-line <code>echo</code> commonly writes a newline after its arguments. Some implementations accept <code>-n</code> to suppress it, but option and escape handling varies across shells. For a reproducible simple Unix-shell test, <code>printf %s</code> is clearer:</p>
+          <figure class="code-example"><figcaption class="code-label">Two different SHA-256 inputs</figcaption><pre><code>printf %s hello | sha256sum
+# hashes exactly five bytes
+
+printf '%s\n' hello | sha256sum
+# hashes six bytes, including LF</code></pre></figure>
+          <p>On macOS, replace <code>sha256sum</code> with <code>shasum -a 256</code>. PowerShell string output and pipelines involve their own text and encoding behavior, so hashing an existing binary file with <code>Get-FileHash</code> is easier to reason about than piping formatted console text. When testing a cross-language vector, create and inspect one exact byte fixture.</p>
+          <p>Many text editors automatically end files with a newline because POSIX text-file conventions and version-control tooling favor it. A browser text field does not invent that final newline unless it is present in the value. Copying the contents of a file into a text area may therefore omit or retain the ending depending on how it was selected.</p>
+
+          <h2 id="unicode">Visually equivalent Unicode can have different bytes</h2>
+          <p>Unicode can represent some displayed text in more than one canonically equivalent way. The character “é” may be U+00E9 LATIN SMALL LETTER E WITH ACUTE, or U+0065 LATIN SMALL LETTER E followed by U+0301 COMBINING ACUTE ACCENT. Fonts commonly render both similarly, but their UTF-8 bytes differ:</p>
+          <figure class="code-example"><figcaption class="code-label">Precomposed and decomposed forms</figcaption><pre><code>U+00E9          → C3 A9
+U+0065 U+0301   → 65 CC 81</code></pre></figure>
+          <p>Normalization Form C (NFC) generally composes canonical sequences when possible; Normalization Form D (NFD) decomposes them. NFKC and NFKD additionally apply compatibility mappings that can collapse distinctions such as presentation forms. None should be applied silently before hashing. A signature, API, or identifier protocol must state the exact normalization and version assumptions.</p>
+          <p>Case conversion is also not a universal byte normalization. Locale and Unicode rules make case folding more complex than ASCII lowercasing, and changing case changes bytes even when an application treats names case-insensitively. Hash the canonical identifier form owned by that application, not a homemade approximation.</p>
+
+          <h2 id="bom">A UTF-8 byte-order mark changes the hash</h2>
+          <p>UTF-8 does not require a byte-order mark, but some software writes the three-byte prefix <code>EF BB BF</code> at the beginning of a file. Other software may strip it when decoding text. Two files that display identically can therefore differ by three leading bytes and have different checksums.</p>
+          <p>If the task is file verification, hash the raw file exactly as published, BOM included. If the task is a text protocol, follow that protocol's decoding and serialization rules. Do not remove the BOM from a signed file merely to match an expected value; determine which bytes the signer or checksum publisher actually covered.</p>
+
+          <h2 id="whitespace">Spaces, tabs, non-breaking spaces, and zero-width characters</h2>
+          <p>A regular space is UTF-8 byte <code>20</code>; a horizontal tab is <code>09</code>. A non-breaking space U+00A0 encodes as <code>C2 A0</code>, and several Unicode zero-width or directional characters may be invisible. Leading spaces, trailing spaces, indentation, and blank lines all participate in the digest.</p>
+          <p>Copying from rich text, spreadsheets, PDFs, chat tools, or web pages can replace straight quotes, insert non-breaking spaces, or include directionality markers. Inspect code points or a hexadecimal byte dump when pasted values disagree. “Trim the string” is not a neutral fix: it changes data and can break a protocol that treats whitespace as significant.</p>
+
+          <h2 id="serialization">Objects do not have one automatic hash</h2>
+          <p>JSON objects are semantic name/value collections, but their textual forms can differ in whitespace, property order, escaping, and number spelling. These two texts can describe equivalent data while producing different hashes:</p>
+          <figure class="code-example"><figcaption class="code-label">Equivalent data, different bytes</figcaption><pre><code>{"a":1,"b":2}
+{
+  "b": 2,
+  "a": 1
+}</code></pre></figure>
+          <p>If a protocol hashes structured data, it needs a canonical serialization or must hash the exact transported bytes. Parsing and reserializing before verification can change property order, Unicode escapes, negative zero, exponent notation, or whitespace. Digital-signature formats define these rules for a reason; follow the format rather than inventing a local formatter.</p>
+          <p>The same principle applies to YAML, XML, CSV, multipart bodies, archives, and database records. Semantic equality is an application concept. A general hash only answers whether byte sequences agree.</p>
+
+          <h2 id="checklist">A byte-level hash mismatch checklist</h2>
+          <ol class="steps"><li><strong>Confirm the algorithm and digest encoding.</strong> Do not compare SHA-256 with SHA-512, or hex text with undecoded Base64.</li><li><strong>Compare byte length.</strong> A different length immediately proves the inputs differ.</li><li><strong>Specify the character encoding.</strong> Use UTF-8 only when both systems agree.</li><li><strong>Reveal line endings and the final newline.</strong> Inspect LF, CRLF, and CR explicitly.</li><li><strong>Check for BOM and invisible characters.</strong> Use a hex viewer or code-point inspector.</li><li><strong>Compare Unicode normalization.</strong> Apply a form only if the contract defines it.</li><li><strong>Freeze serialization.</strong> Hash the exact source bytes or one defined canonical representation.</li><li><strong>Create a minimal test vector.</strong> Share input bytes in hex plus the complete expected digest.</li></ol>
+
+          <div class="tool-callout"><p><strong>Need to inspect a text digest?</strong> Enter the exact value, compare character and UTF-8 byte counts, and copy the complete SHA-256 result without uploading the text.</p><a class="button" href="/sha256-generator/">Open the SHA-256 Generator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>Why does the same text produce a different hash?</h3><p>The visible text may be represented by different bytes. Common causes include UTF-8 versus another encoding, LF versus CRLF, a final newline, Unicode normalization, a byte-order mark, invisible whitespace, or different serialization.</p>
+            <h3>Does a trailing newline change SHA-256?</h3><p>Yes. A trailing LF adds byte 0A, while a Windows-style trailing CRLF adds bytes 0D 0A. Hash functions process those bytes, so text with and without the newline has different digests.</p>
+            <h3>What is the difference between LF and CRLF when hashing?</h3><p>LF is one byte, 0A, in ASCII-compatible encodings. CRLF is two bytes, 0D 0A. Every line ending therefore changes the byte length and digest when one system uses LF and another uses CRLF.</p>
+            <h3>Does Unicode normalization affect hashes?</h3><p>Yes. Some visually equivalent text can use a precomposed code point or a base character followed by combining marks. NFC and NFD can encode those forms as different UTF-8 bytes, producing different hashes unless a contract normalizes them first.</p>
+            <h3>Should text be normalized before hashing?</h3><p>Only when the protocol explicitly defines a normalization rule. Silent trimming, newline conversion, case folding, or Unicode normalization can change meaning and make signatures or existing checksums fail. Hash exact bytes by default.</p>
+            <h3>How can I reproduce a browser text hash in a terminal?</h3><p>Write the exact UTF-8 bytes without an unintended newline, then hash them. On common Unix shells, printf %s followed by the value is more predictable than echo, whose newline and escape behavior can vary.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the tools</p><a href="/sha256-generator/">SHA-256 Generator</a><a href="/hash-generator/">Hash Generator</a><a href="/file-checksum/">File Checksum</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a><a href="/guides/hash-vs-encryption/">Hashing vs encryption</a><a href="/guides/how-to-verify-file-checksum/">Verify a file checksum</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/sha256-generator/">SHA-256</a><a href="/hash-generator/">Hash Generator</a><a href="/file-checksum/">File Checksum</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Hash exact bytes, not appearances.</p></footer>
+  </body>
+</html>

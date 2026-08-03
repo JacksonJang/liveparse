@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHA-256 Generator – Hash Text Online Locally | LiveParse</title>
+    <meta name="description" content="Generate SHA-256 from UTF-8 text or a local file. Text is limited to 5,000,000 UTF-16 units; files to 64 MiB and whole-file memory processing." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/sha256-generator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/hash.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/sha256-generator/" />
+    <meta property="og:title" content="SHA-256 Generator – Local UTF-8 Hash Calculator" />
+    <meta property="og:description" content="Calculate SHA-256 from UTF-8 text or a file locally with explicit 5,000,000-code-unit and 64 MiB in-memory limits." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based SHA-256 generator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SHA-256 Generator | LiveParse" />
+    <meta name="twitter:description" content="Hash UTF-8 text locally and copy the full hexadecimal or Base64 digest." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/sha256-generator/#application",
+            "name": "LiveParse SHA-256 Generator",
+            "url": "https://liveparse.com/sha256-generator/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "SHA-256 hash generator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and the Web Cryptography API",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Generate a SHA-256 digest from the current textarea value encoded as UTF-8 or from exact local file bytes and render the 256-bit result as lowercase hexadecimal or Base64.",
+            "featureList": ["Calculate SHA-256 from the current textarea value as UTF-8 or from exact local file bytes", "Use the browser Web Cryptography API", "Accept up to 5000000 UTF-16 code units of text", "Accept files up to 64 MiB", "Read the complete file into browser memory before hashing", "Display hexadecimal and Base64 for the same 32 digest bytes", "Copy the digest"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/sha256-generator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Hash Generator", "item": "https://liveparse.com/hash-generator/" },
+              { "@type": "ListItem", "position": 3, "name": "SHA-256 Generator", "item": "https://liveparse.com/sha256-generator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/sha256-generator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How long is a SHA-256 hash?", "acceptedAnswer": { "@type": "Answer", "text": "A SHA-256 digest is 256 bits, or 32 bytes. It is written as 64 hexadecimal characters or as 44 Base64 characters when the standard padded Base64 representation is used." } },
+              { "@type": "Question", "name": "Is SHA-256 still secure?", "acceptedAnswer": { "@type": "Answer", "text": "SHA-256 remains an accepted collision-resistant hash for current general integrity uses when implemented correctly. Security still depends on the surrounding protocol, trusted comparison value, and exact bytes being hashed." } },
+              { "@type": "Question", "name": "Is SHA-256 encryption?", "acceptedAnswer": { "@type": "Answer", "text": "No. SHA-256 is a one-way hash with no decryption key. Encryption is designed to recover plaintext with a key, while a hash is designed to create a deterministic digest for comparison and other constructions." } },
+              { "@type": "Question", "name": "Can SHA-256 verify a downloaded file?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, if you hash the downloaded file bytes and compare the complete result with an expected SHA-256 value obtained through a trustworthy channel. The checksum alone does not authenticate a publisher when both file and checksum can be replaced." } },
+              { "@type": "Question", "name": "Should passwords be stored as SHA-256 hashes?", "acceptedAnswer": { "@type": "Answer", "text": "No. SHA-256 is intentionally fast, which makes large-scale password guessing efficient. Store passwords with a dedicated scheme based on Argon2id, scrypt, bcrypt, or PBKDF2, using unique salts and reviewed cost parameters." } },
+              { "@type": "Question", "name": "Does this SHA-256 generator upload my input?", "acceptedAnswer": { "@type": "Answer", "text": "No. UTF-8 encoding, local file reading, and SHA-256 calculation happen in the current browser tab. Copying a digest, browser extensions, and other device software are separate from the hashing operation." } },
+              { "@type": "Question", "name": "What are the SHA-256 generator input limits?", "acceptedAnswer": { "@type": "Answer", "text": "Text input is limited to 5,000,000 UTF-16 code units. A selected file is limited to 64 MiB and is read completely into browser memory before hashing, so larger files need a streaming native tool." } },
+              { "@type": "Question", "name": "Does text mode preserve original newline bytes?", "acceptedAnswer": { "@type": "Answer", "text": "Not necessarily. Text mode hashes the current textarea value as UTF-8, and browser textarea or paste handling can normalize original CR or CRLF line endings to LF. Use file mode to hash the source file's original newline bytes." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="hash-page" data-page="sha256-generator">
+    <a class="skip-link" href="#sha256-tool">Skip to the SHA-256 generator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="/hash-generator/">All Hashes</a><a href="/file-checksum/">File Checksum</a><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div></nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy"><p class="eyebrow">256 bits · Text or file · Browser native</p><h1>SHA-256 Generator</h1><p class="hero-lead">Hash the current textarea value as UTF-8 or hash exact file bytes, then copy the complete SHA-256 value as lowercase hexadecimal or Base64. Calculation stays in this tab.</p><div class="hero-cta-row"><a class="hero-cta" href="#sha256-tool">Generate SHA-256</a><span>Text ≤ 5,000,000 units · File ≤ 64 MiB</span></div></div>
+        <div class="hero-example" aria-label="SHA-256 digest example"><div class="example-bar"><span></span><span></span><span></span><strong>sha256.txt</strong></div><pre><code><span class="string">hello</span>
+<span class="boolean">2cf24dba5fb0a30e26e83b2a…</span></code></pre><p><strong>32 digest bytes</strong><span>64 hexadecimal characters</span></p></div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="sha256-tool" aria-labelledby="tool-heading"><div><p class="section-kicker">Exact input, exact digest</p><h2 id="tool-heading">Generate a SHA-256 hash online</h2></div><p>Enter up to 5,000,000 UTF-16 code units or select a file up to 64 MiB, then copy the 256-bit digest. Files are buffered whole in browser memory, not streamed.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="SHA-256 generator loading"><p><strong>Loading the SHA-256 generator…</strong></p><p>Enable JavaScript to calculate the digest locally. The explanatory guide below remains readable.</p></section></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">A fixed 256-bit result</p><h2 id="meaning-heading">What SHA-256 calculates</h2></div>
+        <div class="prose-grid"><div>
+          <p>SHA-256 is a member of the SHA-2 family standardized by NIST. It processes an arbitrary sequence of bits through compression rounds and emits eight 32-bit words, for a total digest length of 256 bits. The algorithm is deterministic: identical bytes always produce identical output. A one-byte change normally creates a digest with no obvious visual relationship to the original.</p>
+          <p>Hexadecimal is only a display encoding for those bits. Each hex digit represents four bits, which makes the complete SHA-256 value 64 characters long. Standard padded Base64 represents the same 32 bytes in 44 characters. Converting between these display forms does not rehash the input and does not strengthen or weaken the digest.</p>
+          <p>The tool converts the current textarea value to UTF-8 before hashing. For plain ASCII, one visible character is usually one byte. Many accented characters, Korean syllables, emoji, and other Unicode code points require multiple bytes. Browser textarea or paste handling can normalize original CR or CRLF line endings to LF. Use file mode when the source's original newline bytes must be preserved.</p>
+          <p>Text mode enforces a maximum of 5,000,000 UTF-16 code units. File mode accepts at most 64 MiB and reads the complete file into browser memory before calling the digest API. It is intentionally bounded and is not a streaming file implementation; use a native streaming utility for larger artifacts or automated batches.</p>
+        </div><dl class="definition-list"><div><dt>Family</dt><dd>SHA-2, alongside SHA-224, SHA-384, and SHA-512.</dd></div><div><dt>Digest</dt><dd>256 bits, 32 bytes, or 64 hexadecimal characters.</dd></div><div><dt>Text input</dt><dd>UTF-8, limited to 5,000,000 UTF-16 code units.</dd></div><div><dt>File input</dt><dd>Up to 64 MiB, buffered completely in browser memory.</dd></div><div><dt>Execution</dt><dd>The browser Web Cryptography API in the current tab.</dd></div></dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="steps-heading">
+        <div class="section-heading"><p class="section-kicker">Reproducible in three steps</p><h2 id="steps-heading">How to create and compare SHA-256</h2></div>
+        <ol class="steps-grid"><li><span>1</span><h3>Choose text value or file bytes</h3><p>Text mode hashes the textarea value after browser newline handling. Choose file mode when original CR, CRLF, LF, BOM, or other source bytes must be reproduced exactly.</p></li><li><span>2</span><h3>Choose the expected representation</h3><p>Use 64-character hexadecimal for most checksum lists. Use Base64 only when the receiving protocol specifies it.</p></li><li><span>3</span><h3>Compare the complete value</h3><p>Normalize harmless hexadecimal letter case, but never compare a shortened prefix when a security or integrity decision depends on the result.</p></li></ol>
+      </section>
+
+      <section class="content-section" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Integrity workflows</p><h2 id="uses-heading">What SHA-256 is used for</h2></div>
+        <div class="benefit-grid"><article><span aria-hidden="true">01</span><h3>File checksums</h3><p>Hash a downloaded file and compare all 64 hex characters with a value obtained from the publisher through a trusted channel. Use the <a href="/file-checksum/">file checksum calculator</a> for raw file bytes.</p></article><article><span aria-hidden="true">02</span><h3>Content identifiers</h3><p>Use a digest to label exact immutable content in caches, build systems, or deduplication workflows. Define how metadata and serialization participate in the hashed bytes.</p></article><article><span aria-hidden="true">03</span><h3>Protocol building block</h3><p>SHA-256 participates in HMAC, digital signatures, Merkle trees, and other constructions. Follow the complete protocol rather than substituting a bare digest.</p></article><article><span aria-hidden="true">04</span><h3>Fixture validation</h3><p>Pin expected output for a known test vector. Keep file encoding, Unicode normalization, and checkout newline settings stable so the fixture remains reproducible.</p></article></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="security-heading">
+        <div class="section-heading"><p class="section-kicker">Strong primitive, specific limits</p><h2 id="security-heading">SHA-256 does not replace authentication or password hashing</h2></div>
+        <div class="prose-grid"><div>
+          <p>Collision resistance makes it computationally difficult to find two distinct messages with the same SHA-256 digest under current knowledge. That does not attach an identity to a checksum. If an attacker can change a file and the value you compare against, the attacker can simply hash the changed file. Verify a digital signature or obtain the expected digest independently when publisher authenticity matters.</p>
+          <p>A bare hash also is not a message authentication code. Use HMAC-SHA-256 when parties share a secret and the protocol calls for a MAC; do not invent a construction by concatenating a key and message. Use a reviewed authenticated-encryption scheme when both confidentiality and integrity are required.</p>
+          <p>Although SHA-256 is useful inside some password-hashing constructions, one fast SHA-256 pass is not suitable password storage. Password databases need unique salts and an intentionally expensive, tunable KDF such as Argon2id, scrypt, bcrypt, or PBKDF2. The application must also define parameter upgrades, secret handling, and account-recovery controls.</p>
+        </div><div class="callout-card"><strong>Different SHA-256 result?</strong><p>Compare UTF-8 bytes, Unicode normalization, a possible byte-order mark, spaces, and LF versus CRLF before assuming an implementation is wrong.</p><a href="/guides/hashing-utf8-newlines/">Open the byte mismatch guide →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">SHA-256 generator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How long is a SHA-256 hash?</summary><p>A SHA-256 digest is 256 bits, or 32 bytes. It is written as 64 hexadecimal characters or as 44 Base64 characters when the standard padded Base64 representation is used.</p></details>
+          <details><summary>Is SHA-256 still secure?</summary><p>SHA-256 remains an accepted collision-resistant hash for current general integrity uses when implemented correctly. Security still depends on the surrounding protocol, trusted comparison value, and exact bytes being hashed.</p></details>
+          <details><summary>Is SHA-256 encryption?</summary><p>No. SHA-256 is a one-way hash with no decryption key. Encryption is designed to recover plaintext with a key, while a hash is designed to create a deterministic digest for comparison and other constructions.</p></details>
+          <details><summary>Can SHA-256 verify a downloaded file?</summary><p>Yes, if you hash the downloaded file bytes and compare the complete result with an expected SHA-256 value obtained through a trustworthy channel. The checksum alone does not authenticate a publisher when both file and checksum can be replaced.</p></details>
+          <details><summary>Should passwords be stored as SHA-256 hashes?</summary><p>No. SHA-256 is intentionally fast, which makes large-scale password guessing efficient. Store passwords with a dedicated scheme based on Argon2id, scrypt, bcrypt, or PBKDF2, using unique salts and reviewed cost parameters.</p></details>
+          <details><summary>Does this SHA-256 generator upload my input?</summary><p>No. UTF-8 encoding, local file reading, and SHA-256 calculation happen in the current browser tab. Copying a digest, browser extensions, and other device software are separate from the hashing operation.</p></details>
+          <details><summary>What are the SHA-256 generator input limits?</summary><p>Text input is limited to 5,000,000 UTF-16 code units. A selected file is limited to 64 MiB and is read completely into browser memory before hashing, so larger files need a streaming native tool.</p></details>
+          <details><summary>Does text mode preserve original newline bytes?</summary><p>Not necessarily. Text mode hashes the current textarea value as UTF-8, and browser textarea or paste handling can normalize original CR or CRLF line endings to LF. Use file mode to hash the source file's original newline bytes.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Verify the workflow</p><h2 id="related-heading">Related SHA-256 resources</h2></div><ul><li><a href="/hash-generator/">All text hash algorithms</a></li><li><a href="/file-checksum/">Calculate a file checksum</a></li><li><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a></li><li><a href="/guides/how-to-verify-file-checksum/">Verify a file checksum safely</a></li><li><a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" target="_blank" rel="noreferrer">NIST FIPS 180-4</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/hash-generator/">Hash Generator</a><a href="/file-checksum/">File Checksum</a><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Text is hashed locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive SHA-256 calculation. The algorithm, encoding, integrity, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/hash.tsx"></script>
+  </body>
+</html>

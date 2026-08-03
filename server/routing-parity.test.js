@@ -101,6 +101,58 @@ describe('production routing parity', () => {
     expect(redirects.get('/uuid-checker')).toBe('/uuid-validator/');
   });
 
+  it('includes the hash and checksum cluster with intentional canonical aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/hash-generator/',
+      '/sha256-generator/',
+      '/md5-generator/',
+      '/file-checksum/',
+    ]);
+    const expectedAliases = new Map([
+      ['/hash', '/hash-generator/'],
+      ['/hashing-tool', '/hash-generator/'],
+      ['/online-hash-generator', '/hash-generator/'],
+      ['/sha-256-generator', '/sha256-generator/'],
+      ['/sha256-hash', '/sha256-generator/'],
+      ['/sha256', '/sha256-generator/'],
+      ['/md5-hash-generator', '/md5-generator/'],
+      ['/md5-hash', '/md5-generator/'],
+      ['/md5', '/md5-generator/'],
+      ['/checksum', '/file-checksum/'],
+      ['/checksum-calculator', '/file-checksum/'],
+      ['/file-hash', '/file-checksum/'],
+      ['/file-hash-calculator', '/file-checksum/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/hash-generator',
+      '/sha256-generator',
+      '/md5-generator',
+      '/file-checksum',
+      '/guides',
+      '/guides/sha256-vs-md5',
+      '/guides/hash-vs-encryption',
+      '/guides/how-to-verify-file-checksum',
+      '/guides/hashing-utf8-newlines',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
   it('includes the JWT canonical pages and guide without validator-like aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);

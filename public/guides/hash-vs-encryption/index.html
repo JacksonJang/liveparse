@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hashing vs Encryption: Differences and Use Cases | LiveParse</title>
+    <meta name="description" content="Learn the difference between hashing, encryption, encoding, HMAC, and digital signatures, including passwords, checksums, keys, reversibility, and authenticity." />
+    <link rel="canonical" href="https://liveparse.com/guides/hash-vs-encryption/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Hashing vs Encryption: Choose the Right Security Property" />
+    <meta property="og:description" content="Separate one-way digests, reversible confidentiality, public encoding, keyed authentication, and signatures." />
+    <meta property="og:url" content="https://liveparse.com/guides/hash-vs-encryption/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Hashing and encryption comparison guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hashing vs Encryption" />
+    <meta name="twitter:description" content="A practical decision guide for digests, ciphertext, passwords, HMAC, signatures, and Base64." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/hash-vs-encryption/#article",
+            "headline": "Hashing vs Encryption: Differences and Use Cases",
+            "description": "Understand one-way hashing, reversible encryption, encoding, password KDFs, HMAC, and digital signatures by the security property each provides.",
+            "mainEntityOfPage": "https://liveparse.com/guides/hash-vs-encryption/",
+            "url": "https://liveparse.com/guides/hash-vs-encryption/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Applied cryptography concepts",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/hash-vs-encryption/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Hashing vs Encryption", "item": "https://liveparse.com/guides/hash-vs-encryption/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/hash-vs-encryption/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is the main difference between hashing and encryption?", "acceptedAnswer": { "@type": "Answer", "text": "Hashing creates a fixed-length one-way digest for comparison and cryptographic constructions. Encryption transforms plaintext into ciphertext that an authorized party can decrypt with the correct key, providing confidentiality when the scheme is used correctly." } },
+              { "@type": "Question", "name": "Can a hash be decrypted?", "acceptedAnswer": { "@type": "Answer", "text": "No. A cryptographic hash has no decryption key and discards information by mapping many possible inputs into fixed-size outputs. Weak inputs can still be discovered by hashing guesses, which is not the same as decrypting the digest." } },
+              { "@type": "Question", "name": "Should passwords be encrypted or hashed?", "acceptedAnswer": { "@type": "Answer", "text": "Password verifiers should normally use a dedicated password-hashing KDF such as Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and tuned cost. Reversible encryption creates a key whose compromise can expose every password." } },
+              { "@type": "Question", "name": "Does hashing provide data authenticity?", "acceptedAnswer": { "@type": "Answer", "text": "A bare hash does not. Anyone can hash modified data. Use HMAC when trusted parties share a secret, or a digital signature when verifiers need public-key proof of origin, and follow the complete protocol." } },
+              { "@type": "Question", "name": "Is Base64 encryption or hashing?", "acceptedAnswer": { "@type": "Answer", "text": "Neither. Base64 is a public reversible encoding that represents bytes with printable characters. It uses no secret key, offers no confidentiality, and provides no integrity or authenticity by itself." } },
+              { "@type": "Question", "name": "Can encryption also detect tampering?", "acceptedAnswer": { "@type": "Answer", "text": "Authenticated-encryption schemes can provide confidentiality and integrity together when keys, nonces, associated data, and verification are handled correctly. Unauthenticated or obsolete encryption modes may hide plaintext without reliably detecting modification." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the hashing and encryption guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/hash-generator/">Hash Generator</a><a href="/sha256-generator/">SHA-256</a><a href="/base64-encoder/">Base64 Encoder</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">Hashing vs Encryption</span></nav><p class="eyebrow">Security property guide</p><h1>Hashing vs Encryption: Differences and Use Cases</h1><p class="dek">Hashing, encryption, encoding, HMAC, and signatures solve different problems. Start with the property you need—comparison, confidentiality, authentication, or transport representation—then select a reviewed construction.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>12 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> hashing maps bytes to a fixed-length digest and has no decryption operation. Encryption uses a key to transform plaintext into ciphertext that an authorized party can recover. A bare hash does not keep data secret or prove who created it. Modern authenticated encryption can protect confidentiality and integrity; HMAC and digital signatures authenticate without necessarily encrypting. Base64 is only reversible encoding.</p></div>
+
+          <h2 id="table">Hashing, encryption, encoding, and authentication compared</h2>
+          <div class="table-wrap"><table><thead><tr><th>Operation</th><th>Primary purpose</th><th>Reversible?</th><th>Secret material?</th><th>Typical output</th></tr></thead><tbody><tr><td>Cryptographic hash</td><td>Digest exact bytes</td><td>No decryption operation</td><td>No</td><td>Fixed-size digest</td></tr><tr><td>Password KDF</td><td>Slow password verification</td><td>No decryption operation</td><td>Password plus salt; optional pepper</td><td>Parameterized verifier</td></tr><tr><td>Authenticated encryption</td><td>Confidentiality and integrity</td><td>Yes with the key after authentication succeeds</td><td>Encryption key and unique nonce policy</td><td>Ciphertext and authentication tag</td></tr><tr><td>HMAC</td><td>Shared-secret message authentication</td><td>Message is not encoded by the MAC</td><td>Shared key</td><td>Authentication tag</td></tr><tr><td>Digital signature</td><td>Publicly verifiable origin and integrity</td><td>Message remains separate</td><td>Private signing key; public verification key</td><td>Signature</td></tr><tr><td>Base64</td><td>Binary-to-text representation</td><td>Yes without a key</td><td>No</td><td>Printable ASCII text</td></tr></tbody></table></div>
+
+          <h2 id="hashing">What cryptographic hashing does</h2>
+          <p>A cryptographic hash such as SHA-256 accepts an arbitrary byte sequence and produces a fixed-size digest. Identical bytes produce identical output. A small change to the input normally changes many digest bits, and a well-designed current function makes it computationally difficult to find an input for a chosen digest or two distinct inputs with the same digest.</p>
+          <p>Because infinitely many possible inputs map to a finite digest space, information is necessarily lost. There is no key that restores the original. That does not mean every source is unknowable: if an input comes from a small set such as common passwords, six-digit codes, email addresses, or predictable identifiers, an attacker can hash candidates and compare them.</p>
+          <p>Hashing is useful for file checksums, immutable content identifiers, deduplication, cache keys, Merkle structures, and as a component inside HMAC, digital signatures, and password KDFs. The surrounding construction supplies context a bare digest lacks. For example, an ordinary file checksum detects a mismatch only relative to an expected value; it does not say where that expected value came from.</p>
+
+          <h2 id="encryption">What encryption does</h2>
+          <p>Encryption protects confidentiality by transforming plaintext with a key. Symmetric encryption uses the same secret key, or closely related secret material, for encryption and decryption. Public-key encryption lets a sender encrypt to a public key so the holder of the corresponding private key can decrypt. Key generation, distribution, rotation, storage, and destruction are part of the security problem.</p>
+          <p>Current applications should generally use a reviewed authenticated-encryption scheme, such as AES-GCM or ChaCha20-Poly1305 in an appropriate protocol and library. Authenticated encryption returns ciphertext plus a tag and refuses to release plaintext when verification fails. Nonces must follow the scheme's uniqueness requirements; reusing a nonce with the same key can catastrophically weaken some modes.</p>
+          <p>Encryption does not make untrusted data safe to parse after decryption, does not authorize the recipient to perform an action, and does not conceal every form of metadata. Length, timing, endpoints, and access patterns may remain visible. The protocol must define associated data, key identity, replay handling, versioning, and error behavior.</p>
+
+          <h2 id="passwords">Passwords need a dedicated one-way verifier</h2>
+          <p>An application usually needs to check a password later without recovering the user's original password. Reversible encryption would create a master key whose compromise exposes every stored password. A fast hash such as SHA-256 or MD5 avoids a decryption key but lets a database thief test enormous numbers of guesses offline.</p>
+          <p>Password-hashing KDFs deliberately make each guess expensive. Prefer Argon2id where available, or use scrypt, bcrypt, or PBKDF2 when platform, compatibility, or compliance constraints require them. Generate a unique random salt for every verifier and store it with the algorithm identifier, cost parameters, and derived value. A salt is public; it prevents shared lookup work and identical-password equality, but does not replace adequate cost.</p>
+          <p>Calibrate parameters on the real authentication infrastructure, enforce password and breached-credential policy, rate-limit online guesses, and upgrade parameters after successful logins. A server-side pepper may add a separate defense when managed in a secret store, but its lifecycle and outage behavior need deliberate design.</p>
+
+          <h2 id="authenticity">Why a hash is not an HMAC or signature</h2>
+          <p>Anyone can calculate SHA-256 over any message. If Alice sends a message and an unkeyed digest over a channel Mallory can modify, Mallory can replace the message and calculate a matching digest. The value may detect accidental transmission errors but offers no evidence that Alice approved the bytes.</p>
+          <p>HMAC combines a cryptographic hash with a secret key through a standardized construction. A verifier who knows the shared key can check that the message and tag agree. HMAC does not provide public verification because every verifier able to validate can also create tags. Use a constant-time comparison function supplied by the platform.</p>
+          <p>A digital signature uses a private key to sign and a public key to verify. It can support public or multi-party verification when key identity is established correctly. Signature algorithms define message preprocessing, domain separation, encoding, and verification rules; do not sign an ad hoc hash without following the complete scheme.</p>
+
+          <h2 id="encoding">Base64 and hexadecimal are not security controls</h2>
+          <p>Base64 converts bytes into a printable alphabet, while hexadecimal represents each byte with two hex digits. Both are reversible without a key. They are useful for moving binary values through JSON, configuration, URLs, logs, and copy-and-paste workflows. An encoded password, token, document, or key remains readable to anyone who obtains the text.</p>
+          <p>Ciphertext, digests, MAC tags, signatures, and keys are often displayed using Base64 or hex, which can make the layers easy to confuse. The representation does not reveal which cryptographic operation produced the bytes. A field's schema must say whether it carries a SHA-256 digest, an HMAC tag, an AES-GCM package, a signature, or simply arbitrary data.</p>
+          <p>The <a href="/base64-encoder/">Base64 Encoder</a> is a transport conversion tool, while the <a href="/hash-generator/">Hash Generator</a> calculates one-way digests. Neither tool supplies an encryption key-management system or an authentication protocol.</p>
+
+          <h2 id="decision">Choose by the property the application needs</h2>
+          <ol class="steps"><li><strong>Need to compare exact content?</strong> Use SHA-256 or the algorithm required by the protocol, and protect the expected value according to the threat model.</li><li><strong>Need to store user passwords?</strong> Use Argon2id, scrypt, bcrypt, or PBKDF2 through an established authentication library.</li><li><strong>Need secrecy and tamper detection?</strong> Use authenticated encryption with managed keys and correct nonces.</li><li><strong>Need shared-secret authenticity?</strong> Use a standardized HMAC construction and define replay protection.</li><li><strong>Need public verification?</strong> Use an appropriate digital-signature system and verify the signer's key identity.</li><li><strong>Need printable transport?</strong> Use Base64 or hex after the security operation, without attributing security to the encoding.</li></ol>
+
+          <h2 id="mistakes">Common design mistakes</h2>
+          <ul><li><strong>“We encrypt passwords with SHA-256.”</strong> SHA-256 is not encryption, and one pass is not adequate password storage.</li><li><strong>“The checksum matches, so the download is official.”</strong> A match is only as trustworthy as the expected checksum source.</li><li><strong>“The value is Base64, so users cannot read it.”</strong> Base64 is immediately reversible and provides no confidentiality.</li><li><strong>“We add a secret before hashing, so it is an HMAC.”</strong> Ad hoc keyed hashes can have structural flaws; use the standard HMAC API.</li><li><strong>“Encryption automatically detects changes.”</strong> Only authenticated modes and correct tag verification provide that property reliably.</li><li><strong>“A longer digest fixes every protocol.”</strong> Algorithm strength cannot repair exposed keys, nonce reuse, untrusted metadata, or missing authorization.</li></ul>
+
+          <div class="tool-callout"><p><strong>Need a deterministic digest?</strong> Calculate SHA-256 from exact UTF-8 bytes locally, then place that digest only in a workflow whose trust and authentication rules are explicit.</p><a class="button" href="/sha256-generator/">Open the SHA-256 Generator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What is the main difference between hashing and encryption?</h3><p>Hashing creates a fixed-length one-way digest for comparison and cryptographic constructions. Encryption transforms plaintext into ciphertext that an authorized party can decrypt with the correct key, providing confidentiality when the scheme is used correctly.</p>
+            <h3>Can a hash be decrypted?</h3><p>No. A cryptographic hash has no decryption key and discards information by mapping many possible inputs into fixed-size outputs. Weak inputs can still be discovered by hashing guesses, which is not the same as decrypting the digest.</p>
+            <h3>Should passwords be encrypted or hashed?</h3><p>Password verifiers should normally use a dedicated password-hashing KDF such as Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and tuned cost. Reversible encryption creates a key whose compromise can expose every password.</p>
+            <h3>Does hashing provide data authenticity?</h3><p>A bare hash does not. Anyone can hash modified data. Use HMAC when trusted parties share a secret, or a digital signature when verifiers need public-key proof of origin, and follow the complete protocol.</p>
+            <h3>Is Base64 encryption or hashing?</h3><p>Neither. Base64 is a public reversible encoding that represents bytes with printable characters. It uses no secret key, offers no confidentiality, and provides no integrity or authenticity by itself.</p>
+            <h3>Can encryption also detect tampering?</h3><p>Authenticated-encryption schemes can provide confidentiality and integrity together when keys, nonces, associated data, and verification are handled correctly. Unauthenticated or obsolete encryption modes may hide plaintext without reliably detecting modification.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the tools</p><a href="/hash-generator/">Hash Generator</a><a href="/sha256-generator/">SHA-256 Generator</a><a href="/base64-encoder/">Base64 Encoder</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/sha256-vs-md5/">SHA-256 vs MD5</a><a href="/guides/how-to-verify-file-checksum/">Verify a checksum</a><a href="/guides/hashing-utf8-newlines/">UTF-8 and newlines</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/hash-generator/">Hash Generator</a><a href="/sha256-generator/">SHA-256</a><a href="/base64-encoder/">Base64</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Match the primitive to the required property.</p></footer>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHA-256 vs MD5: Security, Speed and Checksums | LiveParse</title>
+    <meta name="description" content="Compare SHA-256 and MD5 digest size, collision resistance, compatibility, file checksum use, password limits, and safe migration choices." />
+    <link rel="canonical" href="https://liveparse.com/guides/sha256-vs-md5/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+    <meta name="theme-color" content="#3458d4" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="SHA-256 vs MD5: Which Hash Should You Use?" />
+    <meta property="og:description" content="Choose a checksum algorithm without confusing legacy compatibility, collision resistance, authentication, and password hashing." />
+    <meta property="og:url" content="https://liveparse.com/guides/sha256-vs-md5/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SHA-256 and MD5 comparison guide from LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SHA-256 vs MD5" />
+    <meta name="twitter:description" content="Digest sizes, broken MD5 collision resistance, modern checksum choices, and migration guidance." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/sha256-vs-md5/#article",
+            "headline": "SHA-256 vs MD5: Security, Speed and Checksums",
+            "description": "Compare SHA-256 and MD5 digest sizes, collision resistance, compatibility, file checksums, password limits, and migration choices.",
+            "mainEntityOfPage": "https://liveparse.com/guides/sha256-vs-md5/",
+            "url": "https://liveparse.com/guides/sha256-vs-md5/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Hashing and checksums",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/sha256-vs-md5/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SHA-256 vs MD5", "item": "https://liveparse.com/guides/sha256-vs-md5/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/sha256-vs-md5/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Is SHA-256 better than MD5?", "acceptedAnswer": { "@type": "Answer", "text": "Yes for new security-sensitive integrity work. SHA-256 provides a 256-bit digest and has no practical collision attack comparable to MD5, while MD5 collision resistance is broken. The complete protocol and trust source still determine actual security." } },
+              { "@type": "Question", "name": "Why do websites still publish MD5 checksums?", "acceptedAnswer": { "@type": "Answer", "text": "Legacy tooling, old APIs, historical databases, and non-adversarial corruption checks keep MD5 in use. Compatibility explains its presence but does not make it suitable for signatures, secure release verification, or new designs." } },
+              { "@type": "Question", "name": "Can MD5 still detect an accidental download error?", "acceptedAnswer": { "@type": "Answer", "text": "It can often detect random corruption when no attacker is choosing the bytes, but SHA-256 is a better default for a new checksum. If the publisher supplies only MD5, a match is a limited compatibility check rather than collision-resistant security evidence." } },
+              { "@type": "Question", "name": "Can SHA-256 or MD5 encrypt data?", "acceptedAnswer": { "@type": "Answer", "text": "No. Both are one-way hash functions, not encryption algorithms. They do not use a decryption key or provide confidentiality. Use authenticated encryption when data must remain secret and resist modification." } },
+              { "@type": "Question", "name": "Is SHA-256 suitable for password storage?", "acceptedAnswer": { "@type": "Answer", "text": "Not as one fast hash pass. Password storage needs a dedicated KDF such as Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and tuned cost. SHA-256 may appear inside a reviewed construction, but a bare digest is inadequate." } },
+              { "@type": "Question", "name": "How should a system migrate from MD5 to SHA-256?", "acceptedAnswer": { "@type": "Answer", "text": "Add an algorithm identifier, generate SHA-256 for new data, backfill or recalculate where trusted original bytes exist, support both formats only during a bounded transition, and remove MD5 from every security acceptance path." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the SHA-256 and MD5 comparison</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/sha256-generator/">SHA-256 Generator</a><a href="/md5-generator/">MD5 Generator</a><a href="/file-checksum/">File Checksum</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">SHA-256 vs MD5</span></nav><p class="eyebrow">Hash algorithm comparison</p><h1>SHA-256 vs MD5: Security, Speed and Checksums</h1><p class="dek">SHA-256 and MD5 both turn bytes into a fixed-size digest, but they are not interchangeable security choices. MD5 survives for compatibility; SHA-256 is the practical baseline for new general integrity workflows.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>11 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> choose SHA-256 for a new file checksum, content digest, or general collision-resistant integrity task unless a specification requires another current algorithm. Use MD5 only to interoperate with a legacy field or checksum and never for signatures, certificates, secure software publication, or passwords. Neither bare hash authenticates a publisher, encrypts data, or safely stores a password.</p></div>
+
+          <h2 id="comparison">SHA-256 and MD5 at a glance</h2>
+          <div class="table-wrap"><table><thead><tr><th>Property</th><th>SHA-256</th><th>MD5</th></tr></thead><tbody><tr><td>Digest size</td><td>256 bits, 32 bytes, 64 hex characters</td><td>128 bits, 16 bytes, 32 hex characters</td></tr><tr><td>Algorithm family</td><td>SHA-2</td><td>MD family</td></tr><tr><td>Collision resistance</td><td>No practical break publicly known for full SHA-256</td><td>Broken; practical collision techniques exist</td></tr><tr><td>New general checksums</td><td>Widely supported default</td><td>Do not choose for adversarial integrity</td></tr><tr><td>Legacy compatibility</td><td>May not fit old 32-character fields</td><td>Still present in old protocols and data stores</td></tr><tr><td>Password storage</td><td>Too fast as a bare hash</td><td>Too fast and additionally obsolete</td></tr><tr><td>Authenticity by itself</td><td>No</td><td>No</td></tr></tbody></table></div>
+          <p>Digest length is the easiest visible difference, but not the complete reason to choose. SHA-256 is standardized in <a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" rel="external">NIST FIPS 180-4</a> as part of SHA-2. MD5's updated security considerations are summarized in <a href="https://www.rfc-editor.org/rfc/rfc6151" rel="external">RFC 6151</a>, which says MD5 is no longer acceptable where collision resistance is required.</p>
+
+          <h2 id="same">What SHA-256 and MD5 have in common</h2>
+          <p>Both functions accept an arbitrary sequence of bytes and deterministically emit a fixed-size digest. Hashing the same bytes with the same algorithm produces the same result on any correct implementation. Changing one byte normally changes many output bits. Hexadecimal and Base64 are merely encodings of the digest bytes; selecting a different display format does not calculate a different algorithm.</p>
+          <p>Neither function stores a filename, media type, encoding label, timestamp, publisher, signature, or key. When text is the source, an application must first decide which bytes represent the text. UTF-8 with LF line endings and UTF-8 with CRLF line endings create different inputs. An archive and its extracted directory are also different input objects even when the visible files seem equivalent.</p>
+          <p>Both are fast general-purpose hashes. Speed is useful for file verification and content indexing, but it is a liability for password verification because an attacker can test guesses rapidly. A different digest length does not turn a fast primitive into a password KDF.</p>
+
+          <h2 id="collision">Why MD5 collision resistance is broken</h2>
+          <p>A collision is a pair of distinct messages with the same hash. An ideal 128-bit digest would offer about 64 bits of generic birthday-bound collision security, but MD5 is much weaker than that ideal because cryptanalytic attacks exploit its internal structure. Researchers have demonstrated practical collisions and chosen-prefix collision techniques, where attackers can influence different prefixes and construct suffixes that make the complete MD5 values agree.</p>
+          <p>This matters whenever a system approves or signs a digest instead of reading every byte. Two colliding documents can carry different visible meaning while presenting the same MD5 value to the approval step. Changing MD5 output to uppercase, Base64, or a longer field cannot restore lost collision resistance. Hashing the MD5 result again also does not provide a sound migration from a broken acceptance rule.</p>
+          <p>MD5 preimage attacks, collisions, and password guessing are different questions. The lack of a generic decryption operation does not rescue collision-sensitive use. Likewise, an input may be easy to guess even when no one can mathematically invert an arbitrary digest. Choose controls for the actual property required.</p>
+
+          <h2 id="sha-security">What SHA-256 security does and does not provide</h2>
+          <p>For current ordinary use, full SHA-256 is treated as collision-resistant, preimage-resistant, and second-preimage-resistant when correctly implemented. Its 256-bit digest gives a generic collision bound around 2<sup>128</sup> operations and a generic preimage bound around 2<sup>256</sup>, although those are idealized work factors rather than performance promises.</p>
+          <p>A modern primitive can still be used in an insecure protocol. A bare SHA-256 checksum has no secret, so anyone who changes a file can calculate the new checksum. If a download server is compromised and hosts both artifacts and checksums, matching SHA-256 values do not independently authenticate the publisher. Signed release metadata, a verified digital signature, or a separately trusted expected digest supplies the missing trust relationship.</p>
+          <p>Do not invent a MAC by placing a secret before or after a message and hashing the concatenation. Use HMAC-SHA-256 through a reviewed library when a shared-secret message authentication code is the specified construction. Use authenticated encryption when confidentiality is also required.</p>
+
+          <h2 id="file-checksums">Choosing a file checksum</h2>
+          <p>When a publisher supplies one expected value, use the named algorithm exactly. A 32-character MD5 value cannot be compared with a 64-character SHA-256 result. For a new checksum list, SHA-256 balances modern security, widespread command-line support, package-manager compatibility, and manageable output size.</p>
+          <ol class="steps"><li><strong>Identify the exact artifact.</strong> Architecture, compression format, build flavor, and version all matter.</li><li><strong>Obtain the expected digest through a trusted path.</strong> Prefer signed metadata when malicious replacement is in scope.</li><li><strong>Hash the original bytes.</strong> Do not extract or resave a file before verifying the checksum published for the archive.</li><li><strong>Compare the complete value.</strong> Hex letter case can differ, but every digit must represent the same bytes.</li><li><strong>Stop on mismatch.</strong> Redownload and investigate rather than assuming the difference is harmless.</li></ol>
+          <p>The <a href="/file-checksum/">LiveParse File Checksum Calculator</a> reads a selected file locally and can compare an expected value. For a command-line or signature-centered workflow, follow the <a href="/guides/how-to-verify-file-checksum/">file checksum verification guide</a>.</p>
+
+          <h2 id="passwords">Neither algorithm is a password storage scheme</h2>
+          <p>One SHA-256 or MD5 calculation is cheap by design. After stealing a verifier database, an attacker can hash candidate passwords offline without the server's rate limit. MD5 is especially fast and obsolete, but swapping the function name to SHA-256 still leaves the basic password-guessing problem.</p>
+          <p>Use a dedicated password-hashing library built around Argon2id, scrypt, bcrypt, or PBKDF2. Each record needs a unique random salt, algorithm and parameter metadata, a calibrated work factor, and a rehash strategy. Argon2id and scrypt can impose memory cost in addition to computation. PBKDF2 and bcrypt remain necessary in some compatibility and compliance environments but require informed parameter choices.</p>
+          <p>Do not use this site's generators to process real user passwords for storage. The tools intentionally calculate fast, unsalted digests and have no account-level parameter, migration, rate-limit, or secret-management policy.</p>
+
+          <h2 id="migration">How to migrate an MD5 checksum field</h2>
+          <p>Begin by inventorying every producer, consumer, database column, API contract, cache, fixture, and external partner that assumes a 32-character digest. Add an explicit algorithm identifier rather than guessing from length forever. New records can receive SHA-256 immediately once every reader understands the field.</p>
+          <p>Backfill only from trusted original bytes. Hashing the old MD5 text with SHA-256 creates a digest of the legacy checksum, not a SHA-256 digest of the original content. If the content is gone, preserve the MD5 record as historical metadata until it can expire; do not relabel it.</p>
+          <p>During a bounded dual-read period, compare according to the stored algorithm and write only the new format. Instrument the remaining MD5 reads so owners can eliminate them. Security-sensitive acceptance paths should move first and should not silently fall back to MD5 after SHA-256 fails.</p>
+
+          <div class="tool-callout"><p><strong>Need to compare real outputs?</strong> Generate both digests from the same UTF-8 bytes, then use SHA-256 for the new contract and retain MD5 only where a legacy consumer still requires it.</p><a class="button" href="/hash-generator/">Open the Hash Generator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>Is SHA-256 better than MD5?</h3><p>Yes for new security-sensitive integrity work. SHA-256 provides a 256-bit digest and has no practical collision attack comparable to MD5, while MD5 collision resistance is broken. The complete protocol and trust source still determine actual security.</p>
+            <h3>Why do websites still publish MD5 checksums?</h3><p>Legacy tooling, old APIs, historical databases, and non-adversarial corruption checks keep MD5 in use. Compatibility explains its presence but does not make it suitable for signatures, secure release verification, or new designs.</p>
+            <h3>Can MD5 still detect an accidental download error?</h3><p>It can often detect random corruption when no attacker is choosing the bytes, but SHA-256 is a better default for a new checksum. If the publisher supplies only MD5, a match is a limited compatibility check rather than collision-resistant security evidence.</p>
+            <h3>Can SHA-256 or MD5 encrypt data?</h3><p>No. Both are one-way hash functions, not encryption algorithms. They do not use a decryption key or provide confidentiality. Use authenticated encryption when data must remain secret and resist modification.</p>
+            <h3>Is SHA-256 suitable for password storage?</h3><p>Not as one fast hash pass. Password storage needs a dedicated KDF such as Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and tuned cost. SHA-256 may appear inside a reviewed construction, but a bare digest is inadequate.</p>
+            <h3>How should a system migrate from MD5 to SHA-256?</h3><p>Add an algorithm identifier, generate SHA-256 for new data, backfill or recalculate where trusted original bytes exist, support both formats only during a bounded transition, and remove MD5 from every security acceptance path.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Try the tools</p><a href="/sha256-generator/">SHA-256 Generator</a><a href="/md5-generator/">MD5 Generator</a><a href="/file-checksum/">File Checksum</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/hash-vs-encryption/">Hashing vs encryption</a><a href="/guides/how-to-verify-file-checksum/">Verify a checksum</a><a href="/guides/hashing-utf8-newlines/">UTF-8 and newlines</a></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/sha256-generator/">SHA-256</a><a href="/md5-generator/">MD5</a><a href="/file-checksum/">File Checksum</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Verify the bytes and the trust source.</p></footer>
+  </body>
+</html>

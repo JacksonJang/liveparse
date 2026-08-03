@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hash Generator – SHA-256, SHA-384, SHA-512 &amp; MD5 | LiveParse</title>
+    <meta name="description" content="Use this hash generator for SHA-256, SHA-384, SHA-512, or MD5 with local UTF-8 text or files. Limits are 5,000,000 UTF-16 units and 64 MiB." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/hash-generator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/hash.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/hash-generator/" />
+    <meta property="og:title" content="Hash Generator for SHA-256, SHA-384, SHA-512 and MD5" />
+    <meta property="og:description" content="Hash UTF-8 text or a file locally with four supported algorithms and explicit in-memory input limits." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private browser-based developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Local Hash Generator | LiveParse" />
+    <meta name="twitter:description" content="Calculate text digests without sending the input to a hashing service." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/hash-generator/#application",
+            "name": "LiveParse Hash Generator",
+            "url": "https://liveparse.com/hash-generator/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Cryptographic hash and checksum calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Calculate SHA-256, SHA-384, SHA-512, or MD5 digests from the current textarea value encoded as UTF-8 or from exact local file bytes, with hexadecimal and Base64 output.",
+            "featureList": ["Hash the current textarea value as UTF-8 or hash exact local file bytes", "Choose SHA-256, SHA-384, SHA-512, or MD5", "View hexadecimal and Base64 digests", "Accept up to 5000000 UTF-16 code units of text", "Accept files up to 64 MiB", "Read the complete file into browser memory before hashing", "Copy the complete digest"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/hash-generator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Hash Generator", "item": "https://liveparse.com/hash-generator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/hash-generator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is a hash generator?", "acceptedAnswer": { "@type": "Answer", "text": "A hash generator converts an input byte sequence into a fixed-length digest using a selected algorithm. The same bytes produce the same digest, while even a small byte change normally produces a very different result." } },
+              { "@type": "Question", "name": "Which hash should I use for a new integrity check?", "acceptedAnswer": { "@type": "Answer", "text": "SHA-256 is a widely interoperable default for ordinary integrity checks. SHA-384 and SHA-512 are also current SHA-2 choices. Avoid MD5 when collision resistance or adversarial security matters." } },
+              { "@type": "Question", "name": "Can I hash a password with this tool?", "acceptedAnswer": { "@type": "Answer", "text": "Do not store passwords with a fast general-purpose hash. Use a reviewed password-hashing system built around Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and parameters chosen for the deployment." } },
+              { "@type": "Question", "name": "Why does changing a newline change the digest?", "acceptedAnswer": { "@type": "Answer", "text": "Text mode hashes the current textarea value as UTF-8. Browser textarea and paste handling can normalize original CR or CRLF line endings to LF, so use file mode when the source file's original newline bytes must be preserved." } },
+              { "@type": "Question", "name": "Does a matching hash prove who published the data?", "acceptedAnswer": { "@type": "Answer", "text": "No. A matching digest shows that the compared bytes match the expected digest, but an attacker who can replace both the data and an unauthenticated checksum can make them agree. Use a trusted checksum channel, digital signature, or authenticated MAC when origin matters." } },
+              { "@type": "Question", "name": "Is the text or file uploaded for hashing?", "acceptedAnswer": { "@type": "Answer", "text": "No. The hashing operation runs in the current browser tab and does not send the entered text or selected file to a hashing API. Browser extensions, clipboard tools, and other software on the device remain separate privacy boundaries." } },
+              { "@type": "Question", "name": "What are the hash generator input and memory limits?", "acceptedAnswer": { "@type": "Answer", "text": "Text input is limited to 5,000,000 UTF-16 code units. Files are limited to 64 MiB and are read completely into browser memory before hashing, so this tool is not a streaming file hasher." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="hash-page" data-page="hash-generator">
+    <a class="skip-link" href="#hash-tool">Skip to the hash generator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/sha256-generator/">SHA-256</a><a href="/md5-generator/">MD5</a><a href="/file-checksum/">File Checksum</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">UTF-8 or file bytes · Four algorithms · Local</p>
+          <h1>Hash Generator</h1>
+          <p class="hero-lead">Calculate SHA-256, SHA-384, SHA-512, or MD5 from text or a selected file in your browser. Compare the exact input length and copy a lowercase hexadecimal or Base64 digest without sending the input to a conversion server.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#hash-tool">Generate a hash</a><span>Free · No sign-up · No hashing API</span></div>
+        </div>
+        <div class="hero-example" aria-label="SHA-256 hash example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>SHA-256</strong></div>
+          <pre><code><span class="property">input</span>  <span class="string">hello</span>
+<span class="property">digest</span> <span class="boolean">2cf24dba5fb0a30e…</span></code></pre>
+          <p><strong>64 hexadecimal characters</strong><span>256-bit output</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="hash-tool" aria-labelledby="hash-tool-heading">
+        <div><p class="section-kicker">Text to digest</p><h2 id="hash-tool-heading">Generate a hash from UTF-8 text</h2></div>
+        <p>Paste up to 5,000,000 UTF-16 code units of text or choose a file up to 64 MiB, select one of four algorithms, and copy the complete digest. Files are buffered whole in browser memory rather than streamed.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Hash generator loading"><p><strong>Loading the hash generator…</strong></p><p>Enable JavaScript to calculate and copy digests. The algorithm and security guidance remains available below.</p></section></div>
+
+      <section class="content-section" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Deterministic byte processing</p><h2 id="how-heading">How text hashing works</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A cryptographic hash function consumes bytes and produces a fixed-size digest. SHA-256 always returns 256 bits, whether the input is an empty string, a short identifier, or a long document. Hexadecimal displays four bits per character, so a SHA-256 digest contains 64 hex characters. Base64 is a more compact representation of the same 32 digest bytes; changing the output encoding does not change the underlying hash.</p>
+            <p>Text must become bytes before it can be hashed. LiveParse encodes the current textarea value as UTF-8. That choice matters for Korean text, emoji, accented characters, and every non-ASCII code point. Browser textarea and paste handling can normalize original CR or CRLF line endings to LF before hashing. Use file mode when original newline bytes must be preserved, and establish an explicit canonicalization rule when several systems must reproduce one value.</p>
+            <p>Hashing is deliberately one-way: there is no general operation that reconstructs the source from its digest. It is still possible to guess low-entropy inputs by hashing candidates, so a digest is not a safe way to conceal a short secret. Treat hashes as comparison values, not encrypted text.</p>
+            <p>The interactive workspace accepts at most 5,000,000 UTF-16 code units in text mode. File mode accepts at most 64 MiB and reads the complete selected file into browser memory before calculating its digest. It does not stream chunks, so use a native streaming tool for larger files or repeated batch work.</p>
+          </div>
+          <dl class="definition-list"><div><dt>Text input</dt><dd>The current textarea value encoded as UTF-8; pasted newline bytes may normalize.</dd></div><div><dt>Text limit</dt><dd>5,000,000 UTF-16 code units.</dd></div><div><dt>File input</dt><dd>Exact bytes, up to 64 MiB, buffered completely in browser memory.</dd></div><div><dt>Output</dt><dd>A fixed-length digest rendered as hexadecimal or Base64.</dd></div><div><dt>Privacy boundary</dt><dd>Calculation stays in the browser tab; copied values leave that boundary.</dd></div></dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="algorithm-heading">
+        <div class="section-heading"><p class="section-kicker">Choose by security requirement</p><h2 id="algorithm-heading">SHA-256, SHA-384, SHA-512, and MD5</h2></div>
+        <div class="error-table" role="table" aria-label="Hash algorithm comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Algorithm</span><span role="columnheader">Digest size</span><span role="columnheader">Appropriate use</span></div>
+          <div class="error-row" role="row"><strong role="cell">SHA-256</strong><code role="cell">256 bits · 64 hex</code><span role="cell">A broadly supported SHA-2 default for new file and data integrity workflows.</span></div>
+          <div class="error-row" role="row"><strong role="cell">SHA-384 / SHA-512</strong><code role="cell">384 or 512 bits</code><span role="cell">Current SHA-2 alternatives when a protocol or ecosystem specifies them.</span></div>
+          <div class="error-row" role="row"><strong role="cell">MD5</strong><code role="cell">128 bits · 32 hex</code><span role="cell">Legacy checksums only; unsuitable for certificates, signatures, or adversarial integrity.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/sha256-vs-md5/">Read the SHA-256 vs MD5 security and compatibility guide →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="integrity-heading">
+        <div class="section-heading"><p class="section-kicker">Integrity is not authenticity</p><h2 id="integrity-heading">What a matching hash can and cannot prove</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>If two independently obtained digests match, it is strong evidence that the compared byte sequences are identical when a modern collision-resistant algorithm such as SHA-256 is used. This is useful for detecting download corruption, comparing build artifacts, identifying cached content, and checking whether data changed. Always compare the complete digest with an exact, case-insensitive hex parser or decoded bytes rather than a visually shortened prefix.</p>
+            <p>An ordinary hash has no secret key and no publisher identity. Anyone can compute a new digest after changing the data. If a website, mirror, or network attacker can replace both a file and the checksum displayed beside it, the matching values do not establish an authentic origin. Obtain the expected digest through a trusted channel or verify a digital signature. Use HMAC with a secret key for message authentication between parties that share that key.</p>
+            <p>Passwords need a different design again. Fast hashes let an attacker test guesses extremely quickly after a database leak. Use a password-specific KDF such as Argon2id, scrypt, bcrypt, or PBKDF2 with a unique random salt, calibrated cost parameters, safe storage, and an upgrade strategy.</p>
+          </div>
+          <div class="callout-card"><strong>Hash the right bytes</strong><p>Specify UTF-8, newline rules, Unicode normalization, and serialization before comparing results across tools or programming languages.</p><a href="/guides/hashing-utf8-newlines/">Diagnose text hash mismatches →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Useful, bounded jobs</p><h2 id="uses-heading">When to use this hash generator</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Reproduce an API example</h3><p>Hash the current textarea value as UTF-8, then compare the full digest and confirm whether the protocol expects hexadecimal, Base64, an HMAC, or a signature. Use file mode for byte-exact source fixtures.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Check test fixtures</h3><p>Create stable digests for known text fixtures. Preserve source encoding and line endings in version control so Windows and Unix checkouts do not silently change expected values.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Compare transformations</h3><p>Hash before and after normalization to show whether a formatter, serializer, newline conversion, or Unicode operation changed the underlying bytes.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Inspect a legacy MD5 value</h3><p>Reproduce MD5 only when an existing system requires it. Do not treat a legacy match as collision-resistant proof against a malicious input.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Hash generator FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What is a hash generator?</summary><p>A hash generator converts an input byte sequence into a fixed-length digest using a selected algorithm. The same bytes produce the same digest, while even a small byte change normally produces a very different result.</p></details>
+          <details><summary>Which hash should I use for a new integrity check?</summary><p>SHA-256 is a widely interoperable default for ordinary integrity checks. SHA-384 and SHA-512 are also current SHA-2 choices. Avoid MD5 when collision resistance or adversarial security matters.</p></details>
+          <details><summary>Can I hash a password with this tool?</summary><p>Do not store passwords with a fast general-purpose hash. Use a reviewed password-hashing system built around Argon2id, scrypt, bcrypt, or PBKDF2 with a unique salt and parameters chosen for the deployment.</p></details>
+          <details><summary>Why does changing a newline change the digest?</summary><p>Text mode hashes the current textarea value as UTF-8. Browser textarea and paste handling can normalize original CR or CRLF line endings to LF, so use file mode when the source file's original newline bytes must be preserved.</p></details>
+          <details><summary>Does a matching hash prove who published the data?</summary><p>No. A matching digest shows that the compared bytes match the expected digest, but an attacker who can replace both the data and an unauthenticated checksum can make them agree. Use a trusted checksum channel, digital signature, or authenticated MAC when origin matters.</p></details>
+          <details><summary>Is the text or file uploaded for hashing?</summary><p>No. The hashing operation runs in the current browser tab and does not send the entered text or selected file to a hashing API. Browser extensions, clipboard tools, and other software on the device remain separate privacy boundaries.</p></details>
+          <details><summary>What are the hash generator input and memory limits?</summary><p>Text input is limited to 5,000,000 UTF-16 code units. Files are limited to 64 MiB and are read completely into browser memory before hashing, so this tool is not a streaming file hasher.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue checking</p><h2 id="related-heading">Hash and checksum resources</h2></div><ul><li><a href="/sha256-generator/">SHA-256 Generator</a></li><li><a href="/file-checksum/">File Checksum Calculator</a></li><li><a href="/guides/hash-vs-encryption/">Hashing vs encryption</a></li><li><a href="/guides/how-to-verify-file-checksum/">How to verify a file checksum</a></li><li><a href="/privacy/">Local processing and privacy</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/">Home</a><a href="/sha256-generator/">SHA-256</a><a href="/md5-generator/">MD5</a><a href="/file-checksum/">File Checksum</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Text is hashed locally in your browser.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive hashing. The algorithm, encoding, integrity, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/hash.tsx"></script>
+  </body>
+</html>
