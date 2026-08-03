@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JWT Decode vs Verify: What Decoding Cannot Prove | LiveParse</title>
+    <meta name="description" content="JWT decode vs verify explained: Base64URL, JWS signatures, algorithms, keys, exp/nbf, issuer, audience, JWE, attacks, and a secure validation pipeline." />
+    <link rel="canonical" href="https://liveparse.com/guides/jwt-decode-vs-verify/" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#0ea5b7" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="JWT Decode vs Verify: What Decoding Cannot Prove" />
+    <meta property="og:description" content="A standards-focused guide to reading JWT data, verifying JWS protection, checking claims, and avoiding algorithm and key confusion." />
+    <meta property="og:url" content="https://liveparse.com/guides/jwt-decode-vs-verify/" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse guide to JWT decoding and signature verification" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JWT Decode vs Verify" />
+    <meta name="twitter:description" content="Understand what JWT decoding reveals, what verification establishes, and which claims an application still must enforce." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["WebPage", "TechArticle"],
+            "@id": "https://liveparse.com/guides/jwt-decode-vs-verify/#webpage",
+            "name": "JWT Decode vs Verify: What Decoding Cannot Prove",
+            "headline": "JWT Decode vs Verify: What Decoding Cannot Prove",
+            "description": "JWT decode vs verify explained: Base64URL, JWS signatures, algorithms, keys, exp/nbf, issuer, audience, JWE, attacks, and a secure validation pipeline.",
+            "url": "https://liveparse.com/guides/jwt-decode-vs-verify/",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "inLanguage": "en",
+            "isPartOf": {
+              "@type": "WebSite",
+              "@id": "https://liveparse.com/#website",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "LiveParse",
+              "url": "https://liveparse.com/"
+            },
+            "breadcrumb": { "@id": "https://liveparse.com/guides/jwt-decode-vs-verify/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/jwt-decode-vs-verify/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "JWT Decode vs Verify", "item": "https://liveparse.com/guides/jwt-decode-vs-verify/" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to article</a>
+    <header class="site-header">
+      <a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/jwt-decoder/">JWT Decoder</a>
+        <a href="/jwt-expiration-checker/">Expiration Checker</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+    </header>
+
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero">
+          <nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><span aria-current="page">JWT Decode vs Verify</span></nav>
+          <p class="eyebrow">Token security guide</p>
+          <h1>JWT Decode vs Verify</h1>
+          <p class="dek">Decoding makes a JWT readable. Verification establishes whether its exact protected bytes match a trusted key and allowed algorithm. Acceptance still requires issuer, audience, time, token-type, replay, and application policy.</p>
+          <p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>18 minute read</span></p>
+        </header>
+
+        <div class="article-layout">
+          <div class="article-body" id="article-content">
+            <div class="summary">
+              <p><strong>The short answer:</strong> JWT decoding reverses Base64URL for the header and payload, validates their bytes as text, and parses JSON. It needs no secret and proves no identity. JWT verification checks the signature or MAC over the original compact signing input with an expected algorithm and trusted key. A secure application then validates issuer, audience, expiration, not-before, token type, and every policy required for the requested action. “Readable,” “unexpired,” “signature verified,” “accepted,” and “authorized” are five different states.</p>
+            </div>
+
+            <h2 id="comparison">JWT decoding vs verification at a glance</h2>
+            <p>A compact signed JWT is normally a JSON Web Signature object with three dot-separated segments. The first two segments are designed to be readable. Their visibility is not a weakness and it is not encryption. The third segment provides integrity only when a consumer verifies it correctly. The comparison below keeps syntax, cryptography, and policy separate.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Stage</th><th scope="col">What it does</th><th scope="col">What it can establish</th><th scope="col">What it cannot establish</th></tr></thead>
+                <tbody>
+                  <tr><td>Decode</td><td>Base64URL-decodes header and payload, then parses JSON.</td><td>Which bytes and claim assertions are present.</td><td>Who created them, whether they changed, or whether they should be trusted.</td></tr>
+                  <tr><td>Verify</td><td>Checks JWS signature or MAC using an allowed algorithm and trusted key.</td><td>Integrity and authenticity relative to a configured key holder under that verification policy.</td><td>A unique signer identity—especially with shared HMAC keys—or whether issuer, audience, time, replay, token type, or authorization policy passes.</td></tr>
+                  <tr><td>Validate claims</td><td>Applies exact issuer, audience, time, and token-contract rules.</td><td>Whether a verified token fits the consumer’s acceptance policy.</td><td>Whether the accepted subject may perform every possible action.</td></tr>
+                  <tr><td>Authorize</td><td>Combines accepted identity and claims with resource and action policy.</td><td>Whether this request is allowed in the current context.</td><td>Future requests after revocation, role changes, or policy changes.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>The <a href="https://www.rfc-editor.org/rfc/rfc8725.html" rel="external">JWT Best Current Practices in RFC 8725</a> describes failures that occur when applications blur these stages. Its central themes are algorithm verification, key strength, input validation, issuer and audience checks, explicit typing where needed, and mutually exclusive validation rules for token kinds that could otherwise be confused.</p>
+
+            <h2 id="structure">What a JWT decoder reads</h2>
+            <p>For compact JWS, the token has this outer form:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Three compact segments</figcaption>
+              <pre><code>BASE64URL(UTF8(JOSE header))
+.
+BASE64URL(UTF8(JWT Claims Set))
+.
+BASE64URL(JWS signature bytes)</code></pre>
+            </figure>
+            <p>The JOSE header is a JSON object. It normally contains an <code>alg</code> parameter naming the cryptographic algorithm. It may contain <code>typ</code>, <code>kid</code>, certificate-related parameters, or extension parameters. Every one is input from the token. A secure implementation does not let that input broaden its configured algorithm or key policy.</p>
+            <p>The Claims Set is another JSON object. Registered names include <code>iss</code> for issuer, <code>sub</code> for subject, <code>aud</code> for audience, <code>exp</code> for expiration, <code>nbf</code> for not-before, <code>iat</code> for issued-at, and <code>jti</code> for a token identifier. Private claims can describe application-specific roles, scopes, tenants, sessions, or other data. They are assertions until the token is verified and its issuer is trusted for those meanings.</p>
+            <p>The signature segment is binary data represented with Base64URL. Turning it into hex or measuring its length is still decoding, not verification. A random byte string can occupy the segment and look structurally plausible. Verification recomputes or checks the cryptographic value using the exact protected header segment, a dot, and the exact payload segment as transmitted.</p>
+            <div class="note"><p><strong>Do not normalize before verifying.</strong> JSON whitespace, property order, escaping, and number spelling can represent equivalent data while producing different signed bytes. JWS protects the encoded segments, not a newly serialized object. Use a maintained JOSE implementation that verifies the original compact input.</p></div>
+
+            <h2 id="base64url">Base64URL is not encryption or authentication</h2>
+            <p>Base64URL is the URL-safe alphabet defined by RFC 4648. It substitutes <code>-</code> and <code>_</code> for the standard alphabet’s <code>+</code> and <code>/</code>. Compact JOSE representations omit padding. The transformation is reversible and has no key. A person, browser extension, proxy log, or script that receives the token can normally read a signed JWT’s header and payload.</p>
+            <p>This has two practical consequences. First, do not put confidential data in an ordinary signed JWT merely because the string looks opaque. Second, never use successful Base64URL decoding as an authentication decision. It checks the encoding layer. Strict decoding should still reject wrong alphabets, padding, whitespace, impossible lengths, invalid UTF-8, malformed JSON, non-object Claims Sets, and ambiguous duplicate names.</p>
+            <p><a href="https://www.rfc-editor.org/rfc/rfc7797.html" rel="external">RFC 7797</a> defines a JWS option that can leave a payload unencoded, but Section 7 states that JWTs must not use that option. A JWT decoder can therefore reject a protected <code>b64:false</code> header instead of guessing how to parse the middle segment.</p>
+
+            <h2 id="verification">What correct JWS verification requires</h2>
+            <p>Cryptographic verification is not a call to “decode with a secret.” It is a policy-guided operation over the original JWS signing input. A robust implementation needs all of the following:</p>
+            <ol>
+              <li><strong>A preconfigured algorithm allowlist.</strong> The application decides which algorithms are acceptable for this token type. The untrusted <code>alg</code> header selects only within that set; it does not expand it.</li>
+              <li><strong>The correct cryptographic operation.</strong> HMAC algorithms use a shared secret. RSA and elliptic-curve algorithms use a private key to sign and a public key to verify. Substituting one key kind or operation for another creates algorithm-confusion risk.</li>
+              <li><strong>A trusted key source.</strong> Keys come from application configuration or a controlled discovery process tied to the expected issuer. A decoded <code>jku</code>, <code>x5u</code>, or <code>kid</code> value is not authority to read arbitrary URLs, files, database rows, or object properties.</li>
+              <li><strong>Adequate key strength and lifecycle.</strong> Weak HMAC secrets can be guessed offline. Public keys need trusted distribution and rotation. Retired or compromised keys need an explicit rejection and revocation strategy.</li>
+              <li><strong>Exact signing input.</strong> Verification covers the original encoded protected header, dot, and encoded payload. Parsing and reserializing first is not equivalent.</li>
+              <li><strong>Failure-closed behavior.</strong> Unknown algorithms, keys, critical parameters, malformed signatures, invalid encodings, duplicate policy claims, and verification errors all produce rejection, not a best-effort decoded result.</li>
+            </ol>
+            <p>A good JOSE library can implement the primitive correctly, but the caller still owns configuration. Passing the token’s algorithm directly into a generic crypto API, using one byte string for both HMAC and public-key modes, or accepting every algorithm supported by a library weakens that boundary.</p>
+
+            <h2 id="attacks">Why algorithm and key confusion matter</h2>
+            <p>RFC 8725 records several classes of attacks that affected real JWT deployments. Understanding them explains why “signature present” and even “crypto function returned true” are not enough without policy.</p>
+            <h3>The unsecured <code>alg:none</code> case</h3>
+            <p>JOSE defines an unsecured JWS form whose algorithm is <code>none</code> and whose signature segment is empty. That format is not secretly broken; it is explicitly unsecured. The failure occurs when an application expecting signed access tokens accepts it. A decoder should label it clearly. A verifier for an authenticated token contract should reject it because <code>none</code> is absent from the allowlist.</p>
+            <h3>HMAC versus public-key confusion</h3>
+            <p>An application may expect an RSA-signed token and possess the issuer’s public key. If a vulnerable implementation lets the token switch to an HMAC algorithm and then uses those public-key bytes as an HMAC secret, an attacker who knows the public key can produce a matching MAC. The defense is not to inspect the algorithm after the fact; it is to bind each token type and key to a fixed compatible algorithm policy.</p>
+            <h3>Weak symmetric keys</h3>
+            <p>An HMAC signature can be tested offline against candidate secrets. A human password, short environment value, repository placeholder, or shared default may be recoverable even when the HMAC algorithm itself is sound. Generate keys with sufficient entropy, protect them as credentials, rotate them, and avoid using one key across unrelated environments or token types.</p>
+            <h3>Key lookup injection</h3>
+            <p>A <code>kid</code> helps select among trusted keys; it is not a filename, SQL fragment, object path, or remote URL. Likewise, remote-key header parameters need strict trust and network policy. Treat every header value as untrusted data, constrain its format, and select only from the expected issuer’s controlled key set.</p>
+
+            <h2 id="claims">Verification is followed by claim validation</h2>
+            <p>A cryptographically valid signature establishes integrity under a key. It does not tell the consumer why that key signed the token, which service should accept it, or whether its assertions fit the current request. Claim validation converts cryptographic evidence into an application acceptance decision.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Claim or property</th><th scope="col">Typical validation question</th><th scope="col">Common mistake</th></tr></thead>
+                <tbody>
+                  <tr><td><code>iss</code></td><td>Does it exactly match a configured trusted issuer?</td><td>Trusting any issuer whose key endpoint responds.</td></tr>
+                  <tr><td><code>aud</code></td><td>Does the string or array identify this recipient?</td><td>Accepting a token intended for a different API.</td></tr>
+                  <tr><td><code>exp</code></td><td>Is current time strictly before expiration plus small explicit leeway?</td><td>Checking expiration before signature verification or mixing milliseconds and seconds.</td></tr>
+                  <tr><td><code>nbf</code></td><td>Has the activation time arrived, considering explicit leeway?</td><td>Ignoring it because <code>exp</code> is still in the future.</td></tr>
+                  <tr><td><code>iat</code></td><td>Does token age satisfy this application’s defined policy?</td><td>Assuming it is a universal pass/fail claim.</td></tr>
+                  <tr><td><code>typ</code> or explicit type</td><td>Is this the expected token kind for this endpoint?</td><td>Using an ID token, refresh token, or another JWT kind as an access token.</td></tr>
+                  <tr><td><code>jti</code> / nonce</td><td>Does replay or one-time-use state accept this identifier?</td><td>Assuming uniqueness alone prevents replay.</td></tr>
+                  <tr><td>Private scope or role</td><td>Is the verified issuer authoritative for this meaning, and does current policy allow the action?</td><td>Mapping arbitrary decoded strings directly to privileges.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Audience deserves particular attention. RFC 7519 permits either one case-sensitive string or an array of strings. A general JSON parser that assumes only one form can reject legitimate tokens or, worse, skip the comparison. Issuer and audience rules should be exact and bound to the same token configuration that selected the keys and algorithms.</p>
+
+            <h2 id="time">Expiration checks are necessary but not sufficient</h2>
+            <p>The <code>exp</code> claim is an exclusive upper boundary: the current time must be before it. At equality, it has expired. The <code>nbf</code> claim is an inclusive lower boundary: the current time must be at or after it. Implementations may permit a small leeway for clock skew, but the value should be explicit rather than hidden in a decoder.</p>
+            <p>NumericDate uses seconds since the Unix epoch and may be fractional. JavaScript wall-clock APIs commonly return milliseconds, so unit confusion is a frequent bug. Floating-point conversion can also change very large or highly precise number text. A diagnostic tool can use exact arithmetic, but a production verifier should follow the maintained library’s supported NumericDate range and reject unsupported types rather than coercing strings or nulls.</p>
+            <p>Checking <code>exp</code> in an unverified payload is useful for debugging only. An attacker can put any future number into a new payload. The application must verify the signature before accepting the claim, and it may still enforce a shorter maximum age, session revocation, key rotation, or replay rules. Use the <a href="/jwt-expiration-checker/">JWT Expiration Checker</a> to inspect boundaries while keeping that distinction visible.</p>
+
+            <h2 id="pipeline">A safe JWT validation pipeline</h2>
+            <p>Exact library calls vary, but the order of decisions can remain stable. A useful review model is:</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Policy-first pseudocode</figcaption>
+              <pre><code>policy = configuration.forTokenType("access-token")
+
+token = parseCompactJwsWithLimits(input)
+require token.protectedHeader.alg in policy.allowedAlgorithms
+require token.protectedHeader.typ == policy.requiredType
+
+key = policy.trustedKeys.select(token.protectedHeader.kid)
+require key.algorithmCompatibleWith(token.protectedHeader.alg)
+require verifyOriginalJwsSigningInput(token, key)
+
+claims = token.requireUniqueJsonObjectClaims()
+require claims.iss == policy.expectedIssuer
+require policy.expectedAudience in normalizeAudience(claims.aud)
+require now &lt; claims.exp + policy.clockSkew
+require now &gt;= claims.nbf - policy.clockSkew  // when present
+require replayPolicy.accepts(claims.jti, claims.iat)
+
+identity = mapVerifiedSubject(claims.sub)
+authorize(identity, request.action, request.resource)</code></pre>
+            </figure>
+            <p>The sequence validates protected structure and policy before trusting claims. Some libraries combine parsing and signature verification in one safe call; use their intended API instead of reproducing low-level JOSE operations. The important review questions remain: Which algorithms are allowed? Where do keys come from? Which issuer and audience are required? Which claims are mandatory? Which time and replay policy is applied? What exact token type can this endpoint accept?</p>
+            <div class="warning"><p><strong>Never build authorization from a decode-only API.</strong> Many libraries expose a convenience function whose name contains “decode” and intentionally skips signature verification. That function is appropriate for logging redacted diagnostics, selecting a preconfigured verification path, or developer inspection—not for creating an authenticated user or granting access.</p></div>
+
+            <h2 id="duplicates">Duplicate names, JSON behavior, and ambiguity</h2>
+            <p>RFC 7519 requires the names in a Claims Set to be unique, while also describing parser behavior in terms of ECMAScript’s last-name-wins behavior or rejection. Security-sensitive systems should avoid a state where one component reads the first <code>aud</code> or <code>exp</code> and another reads the last. Rejecting duplicates before policy evaluation removes that disagreement.</p>
+            <p>Escapes make duplicate detection more subtle. The JSON names <code>"exp"</code> and <code>"\u0065xp"</code> decode to the same string. Comparing raw token slices is insufficient; the parser needs to compare decoded property names while preserving enough source information to report the ambiguity. The same concern applies to duplicate <code>alg</code> or <code>b64</code> header parameters.</p>
+            <p>Do not convert the claims object into a language dictionary that invokes setters or prototype behavior for names such as <code>__proto__</code>. A hardened parser or maintained JOSE library should treat property names as inert data, enforce size and nesting limits, and escape all diagnostic rendering. These are input-validation properties, separate from the cryptographic primitive.</p>
+
+            <h2 id="jwe">Signed JWT, nested JWT, and encrypted JWE</h2>
+            <p>A signed compact JWS has three segments. Compact JWE has five: protected header, encrypted key, initialization vector, ciphertext, and authentication tag. Segment count alone does not validate that an arbitrary five-part string is a JWE, but a properly formed compact JWE does not expose a readable JWT Claims Set because the content is encrypted. It needs complete format validation, recipient-key selection, algorithm policy, authenticated decryption, and content-type handling.</p>
+            <p>Applications can nest the formats. One design signs a JWT and then encrypts the signed result; another order has different security and interoperability properties. The consumer must know the expected nesting and validate every layer with separate rules. A three-part decoder should not join or skip JWE segments to make the input look readable.</p>
+            <p>Encryption hides content from parties without the recipient key, while a signature or MAC protects integrity and origin under its key model. Neither automatically creates authorization. If claims are sensitive, consider whether they belong in a client-carried token at all, how logs and error reports handle the compact value, and whether server-side session state offers a smaller exposure surface.</p>
+
+            <h2 id="debugging">A safer JWT debugging workflow</h2>
+            <ul>
+              <li><strong>Prefer a synthetic development token.</strong> Reproduce the same claim shape without a production bearer credential.</li>
+              <li><strong>Decode locally for inspection.</strong> Check segment syntax, exact JSON, claim types, duplicate names, time units, and expected header labels.</li>
+              <li><strong>Keep the verification status explicit.</strong> Screenshots and copied reports should say that the signature was not checked.</li>
+              <li><strong>Reproduce verification in the actual service.</strong> Use its configured issuer, key set, algorithm allowlist, audience, clock, and token type.</li>
+              <li><strong>Log reasons, not secrets.</strong> Record a safe token fingerprint, key ID, issuer classification, and failure category rather than the compact token or personal claims.</li>
+              <li><strong>Test exact boundaries.</strong> Cover before, equal to, and after <code>exp</code>/<code>nbf</code>, as well as key rotation, unknown <code>kid</code>, wrong audience, and algorithm mismatch.</li>
+              <li><strong>Clear incidental copies.</strong> Clipboard managers, shell history, browser storage, tickets, chat, and recordings can outlive the token’s original context.</li>
+            </ul>
+            <div class="tool-callout">
+              <p><strong>Inspect without pretending to verify.</strong> The LiveParse <a href="/jwt-decoder/">JWT Decoder</a> uses strict unpadded Base64URL, lossless JSON, duplicate-name diagnostics, and a permanent signature warning. The <a href="/jwt-expiration-checker/">JWT Expiration Checker</a> focuses on exact NumericDate boundaries and explicit leeway.</p>
+              <a class="button" href="/jwt-decoder/">Open the JWT Decoder</a>
+            </div>
+
+            <section aria-labelledby="faq-title">
+              <h2 id="faq-title">Frequently asked questions</h2>
+
+              <h3>Can a JWT be decoded without its secret?</h3>
+              <p>Yes. An ordinary signed JWT’s header and payload are Base64URL-encoded, so anyone holding the token can decode them. The secret or public key is needed to verify the signature or MAC, not to make the JSON readable.</p>
+
+              <h3>What is the difference between decode and verify?</h3>
+              <p>Decode recovers the JSON data. Verify checks cryptographic integrity over the original compact signing input with an expected algorithm and trusted key. After verification, the application still validates issuer, audience, time, token type, replay, and authorization policy.</p>
+
+              <h3>Is a JWT valid if its signature verifies?</h3>
+              <p>Signature verification is necessary for a signed-token contract but not sufficient for acceptance. A correctly signed token can be expired, not active yet, issued by the wrong tenant, intended for another audience, the wrong token type, revoked, replayed, or insufficiently authorized.</p>
+
+              <h3>Is a JWT valid if exp is in the future?</h3>
+              <p>No. Anyone can create an unverified payload with a future expiration. The signature must be verified first, and the verified token must pass every required claim and application policy. A future <code>exp</code> answers only one time question.</p>
+
+              <h3>Should the server trust the alg header?</h3>
+              <p>The server needs to read the label to select a verification path, but only within a preconfigured allowlist for that token type and key. The header must never enable <code>none</code>, switch key families, or broaden algorithms beyond policy.</p>
+
+              <h3>Can I fetch the jku URL from a decoded JWT?</h3>
+              <p>Do not fetch an arbitrary token-supplied URL. Remote key discovery must be tied to a configured trusted issuer with strict origin, TLS, redirect, network, caching, and key-selection controls. A diagnostic decoder should display the URL without requesting it.</p>
+
+              <h3>Why reject duplicate JWT claims?</h3>
+              <p>Different JSON processors may choose different occurrences. One service might authorize using the first audience while another logs the last. Rejecting decoded duplicate names avoids inconsistent security decisions and follows the uniqueness requirement in RFC 7519.</p>
+
+              <h3>Does JWE mean the token is verified?</h3>
+              <p>No. JWE provides authenticated encryption when processed correctly, but the consumer still needs trusted algorithms and keys, expected nesting or content type, and claim and authorization policy. A five-part JWE also cannot be decoded like a three-part readable JWS without decryption.</p>
+
+              <h3>Is it safe to paste an access token into a decoder?</h3>
+              <p>Prefer a synthetic or redacted token and a local-only tool on a trusted device. A bearer token may grant access, and screenshots, clipboard history, extensions, logs, or remote decoder services can expose it. Rotate or revoke a credential according to policy if it leaks.</p>
+            </section>
+
+            <section class="references" aria-labelledby="references-title">
+              <h2 id="references-title">Primary references</h2>
+              <ul>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7519.html" rel="external">RFC 7519: JSON Web Token</a> — JWT structure, registered claims, NumericDate, audience forms, and validation requirements.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7515.html" rel="external">RFC 7515: JSON Web Signature</a> — protected headers, signing input, compact serialization, signature algorithms, and validation.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc8725.html" rel="external">RFC 8725: JWT Best Current Practices</a> — algorithm verification, weak keys, issuer/audience checks, typing, and mutually exclusive rules.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7797.html" rel="external">RFC 7797: JWS Unencoded Payload Option</a> — the extension and its prohibition for JWT use.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc7516.html" rel="external">RFC 7516: JSON Web Encryption</a> — the five-part compact encrypted format and authenticated decryption model.</li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc4648.html" rel="external">RFC 4648: Base-N Encodings</a> — the Base64URL alphabet and canonical encoding rules used by JOSE.</li>
+              </ul>
+            </section>
+
+            <section class="related-guides" aria-labelledby="related-title">
+              <h2 id="related-title">Related tools and guides</h2>
+              <div class="related-grid">
+                <a class="related-card" href="/jwt-decoder/"><strong>JWT Decoder</strong><span>Decode exact header and payload JSON with a permanent signature warning.</span></a>
+                <a class="related-card" href="/jwt-expiration-checker/"><strong>JWT Expiration Checker</strong><span>Inspect exp, nbf, iat, UTC values, and exact leeway boundaries.</span></a>
+                <a class="related-card" href="/guides/base64-vs-base64url/"><strong>Base64 vs Base64URL</strong><span>Compare alphabets, padding, canonical syntax, and protocol use.</span></a>
+                <a class="related-card" href="/privacy/"><strong>LiveParse Privacy</strong><span>Understand local conversion input and the surrounding browser boundaries.</span></a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+              <li><a href="#comparison">Decode vs verify</a></li>
+              <li><a href="#structure">JWT structure</a></li>
+              <li><a href="#base64url">Base64URL</a></li>
+              <li><a href="#verification">JWS verification</a></li>
+              <li><a href="#attacks">Attack classes</a></li>
+              <li><a href="#claims">Claim validation</a></li>
+              <li><a href="#time">Expiration</a></li>
+              <li><a href="#pipeline">Safe pipeline</a></li>
+              <li><a href="#duplicates">Duplicate claims</a></li>
+              <li><a href="#jwe">JWE and nesting</a></li>
+              <li><a href="#debugging">Debugging workflow</a></li>
+              <li><a href="#faq-title">FAQ</a></li>
+            </ol>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>LiveParse · Private, browser-based data tools for developers</p>
+      <p><a href="/">Home</a> · <a href="/jwt-decoder/">JWT Decoder</a> · <a href="/jwt-expiration-checker/">Expiration Checker</a> · <a href="/privacy/">Privacy</a></p>
+    </footer>
+  </body>
+</html>

@@ -27,6 +27,8 @@ const DIRECTORY_ROUTES = new Set([
   '/uuid-generator',
   '/uuid-v7-generator',
   '/uuid-validator',
+  '/jwt-decoder',
+  '/jwt-expiration-checker',
   '/privacy',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
@@ -38,6 +40,7 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/discord-timestamp-formats',
   '/guides/base64-vs-base64url',
   '/guides/uuid-v4-vs-v7',
+  '/guides/jwt-decode-vs-verify',
 ]);
 const ROUTE_REDIRECTS = new Map([
   ['/json-diff', '/json-compare/'],
@@ -78,6 +81,26 @@ const ROUTE_REDIRECTS = new Map([
   ['/uuid-v7/', '/uuid-v7-generator/'],
   ['/uuid-checker', '/uuid-validator/'],
   ['/uuid-checker/', '/uuid-validator/'],
+  ['/jwt-decode', '/jwt-decoder/'],
+  ['/jwt-decode/', '/jwt-decoder/'],
+  ['/decode-jwt', '/jwt-decoder/'],
+  ['/decode-jwt/', '/jwt-decoder/'],
+  ['/jwt-parser', '/jwt-decoder/'],
+  ['/jwt-parser/', '/jwt-decoder/'],
+  ['/jwt-debugger', '/jwt-decoder/'],
+  ['/jwt-debugger/', '/jwt-decoder/'],
+  ['/jwt-inspector', '/jwt-decoder/'],
+  ['/jwt-inspector/', '/jwt-decoder/'],
+  ['/jwt-token-decoder', '/jwt-decoder/'],
+  ['/jwt-token-decoder/', '/jwt-decoder/'],
+  ['/json-web-token-decoder', '/jwt-decoder/'],
+  ['/json-web-token-decoder/', '/jwt-decoder/'],
+  ['/jwt-exp-checker', '/jwt-expiration-checker/'],
+  ['/jwt-exp-checker/', '/jwt-expiration-checker/'],
+  ['/jwt-expiry-checker', '/jwt-expiration-checker/'],
+  ['/jwt-expiry-checker/', '/jwt-expiration-checker/'],
+  ['/jwt-token-expiration-checker', '/jwt-expiration-checker/'],
+  ['/jwt-token-expiration-checker/', '/jwt-expiration-checker/'],
 ]);
 const CANONICAL_METRIC_PATHS = new Set(['/', ...[...DIRECTORY_ROUTES].map((pathname) => `${pathname}/`)]);
 

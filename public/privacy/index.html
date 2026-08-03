@@ -33,6 +33,7 @@
         <a href="/jsonl-parser/">JSONL Parser</a>
         <a href="/base64-decoder/">Base64 Decoder</a>
         <a href="/uuid-generator/">UUID Generator</a>
+        <a href="/jwt-decoder/">JWT Decoder</a>
       </nav>
     </header>
 
@@ -52,7 +53,8 @@
             </div>
 
             <h2>1. Tool input and files you provide</h2>
-            <p>JSON, JSONL, NDJSON, repair input, timestamps, dates, timezones, Base64 text, Data URLs, selected files, decoded bytes, UUID or GUID input, generated identifiers, and other generated output are processed in the current browser tab. The tools do not submit that content to a LiveParse application server, save it to a LiveParse database, or include it in analytics. Formatting, warnings, tree search, repair, encoding, decoding, conversion, validation, normalization, secure identifier generation, safe raster preview, and file export also run locally.</p>
+            <p>JSON, JSONL, NDJSON, repair input, timestamps, dates, timezones, Base64 text, Data URLs, selected files, decoded bytes, UUID or GUID input, generated identifiers, compact JWT or Bearer token input, decoded JOSE headers, JWT claims, signature bytes, and other generated output are processed in the current browser tab. The tools do not submit that content to a LiveParse application server, save it to a LiveParse database, or include it in analytics. Formatting, warnings, tree search, repair, encoding, decoding, conversion, validation, normalization, secure identifier generation, JWT time-claim inspection, safe raster preview, and file export also run locally.</p>
+            <p>The JWT tools do not put the compact token in the page URL or browser storage and do not request token-supplied key or certificate addresses such as <code>jku</code> or <code>x5u</code>. Their downloadable decoded report omits the original compact token. A bearer token may nevertheless grant real access, so prefer synthetic or redacted data, clear the input after use, and follow your credential revocation process if a token is exposed.</p>
             <p>Your input remains in page memory until you replace it, reload the page, or close the tab. A browser extension, clipboard manager, screen-sharing session, or managed device may have access outside LiveParse's control. Remove secrets and personal data when your organization requires it.</p>
 
             <h2>2. Website delivery and security data</h2>
@@ -77,7 +79,7 @@
             <hr />
             <section lang="ko" aria-labelledby="korean-summary">
               <h2 id="korean-summary">한국어 요약</h2>
-              <p>LiveParse에 붙여 넣은 JSON·JSONL·Base64·UUID·GUID 텍스트와 선택한 로컬 파일, 브라우저에서 생성한 식별자는 현재 브라우저 탭에서만 처리되며 LiveParse 애플리케이션 서버나 데이터베이스로 전송되지 않습니다. 웹사이트 파일을 제공하고 보안을 유지하기 위한 일반적인 접속 정보는 호스팅·네트워크 제공자가 처리할 수 있습니다.</p>
+              <p>LiveParse에 붙여 넣은 JSON·JSONL·Base64·UUID·GUID 텍스트, JWT·Bearer 토큰과 디코딩된 헤더·클레임, 선택한 로컬 파일, 브라우저에서 생성한 식별자는 현재 브라우저 탭에서만 처리되며 LiveParse 애플리케이션 서버나 데이터베이스로 전송되지 않습니다. JWT 도구는 토큰을 URL이나 브라우저 저장소에 넣지 않고 토큰에 적힌 원격 키 주소를 요청하지 않습니다. 실제 Bearer 토큰은 접근 권한을 가질 수 있으므로 가능하면 합성·마스킹된 값을 사용하고 작업 후 입력을 지우세요. 웹사이트 파일을 제공하고 보안을 유지하기 위한 일반적인 접속 정보는 호스팅·네트워크 제공자가 처리할 수 있습니다.</p>
               <p>현재 LiveParse는 광고, 제휴 위젯, 제3자 분석, 행동 추적 스크립트를 불러오지 않으며 광고·분석 쿠키를 설정하지 않습니다. 기본 서버는 검색 유입 추세를 보기 위해 검색엔진과 랜딩 페이지별 일일 합계만 저장하며, 이 집계에는 IP 주소·사용자 에이전트·전체 리퍼러 URL·검색어·개별 방문 시각을 저장하지 않습니다.</p>
             </section>
 
@@ -88,6 +90,7 @@
               <a class="button secondary" href="/jsonl-parser/">Open JSONL Parser</a>
               <a class="button secondary" href="/base64-decoder/">Open Base64 Decoder</a>
               <a class="button secondary" href="/uuid-generator/">Open UUID Generator</a>
+              <a class="button secondary" href="/jwt-decoder/">Open JWT Decoder</a>
             </div>
           </div>
         </div>

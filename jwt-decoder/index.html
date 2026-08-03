@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JWT Decoder Online – Decode Header &amp; Payload | LiveParse</title>
+    <meta name="description" content="JWT Decoder for strict local Base64URL decoding of JWT headers and payloads, exact JSON claims, exp/nbf/iat inspection, and clear signature warnings." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/jwt-decoder/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/jwt-decoder/" />
+    <meta property="og:title" content="JWT Decoder Online – Decode Header &amp; Payload" />
+    <meta property="og:description" content="Decode compact JWT header and payload JSON locally, inspect time claims, and keep the signature-not-verified boundary visible." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JWT Decoder Online" />
+    <meta name="twitter:description" content="Decode JWT JSON locally with exact claims, strict Base64URL rules, time checks, and no false verification claim." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "LiveParse JWT Decoder",
+            "url": "https://liveparse.com/jwt-decoder/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "browserRequirements": "JavaScript and TextDecoder support",
+            "description": "A browser-based JWT decoder for compact JWS header and payload JSON, registered time claims, and structural diagnostics without signature verification.",
+            "isAccessibleForFree": true,
+            "featureList": [
+              "Strict unpadded Base64URL decoding",
+              "Lossless JSON number and duplicate claim inspection",
+              "JWT exp, nbf, and iat NumericDate display",
+              "Local browser processing without key URL requests",
+              "Explicit signature-not-verified status"
+            ],
+            "publisher": { "@type": "Person", "name": "Jackson Jang" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "Can I decode a JWT without a secret?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. JWT header and payload segments are Base64URL-encoded and can be decoded without a key. A key is required to verify a signed token, and readable claims must remain untrusted until verification and policy checks succeed." } },
+              { "@type": "Question", "name": "Does decoding a JWT verify its signature?", "acceptedAnswer": { "@type": "Answer", "text": "No. Decoding only recovers bytes and JSON. Signature or MAC verification requires a trusted key, an allowed algorithm, and application checks for issuer, audience, and other policy." } },
+              { "@type": "Question", "name": "Is the JWT uploaded to LiveParse?", "acceptedAnswer": { "@type": "Answer", "text": "The decode operation runs in the current browser tab. The compact token is not submitted to a decoder API, placed in the URL, stored by the tool, or sent to remote key endpoints." } },
+              { "@type": "Question", "name": "What does an expired exp claim prove?", "acceptedAnswer": { "@type": "Answer", "text": "It only describes the time window asserted by the unverified payload. Applications must verify the signature and trusted issuer before relying on exp, then apply their own authorization policy." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="jwt-page" data-mode="decoder">
+    <a class="skip-link" href="#jwt-tool">Skip to JWT decoder</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/jwt-expiration-checker/">JWT Expiration</a>
+          <a href="/base64-decoder/">Base64 Decoder</a>
+          <a href="/unix-timestamp-converter/">Unix Time</a>
+          <a href="/guides/jwt-decode-vs-verify/">Decode vs Verify</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+
+      <section class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Strict local JWT inspection</p>
+          <h1>JWT Decoder Online</h1>
+          <p class="hero-lead">Decode a compact JWT header and payload into readable, lossless JSON. Inspect <code>exp</code>, <code>nbf</code>, and <code>iat</code> while the page keeps the essential boundary visible: decoded data is not a verified identity.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#jwt-tool">Decode JWT locally</a><span>No upload · no storage · no JWKS fetch</span></div>
+        </div>
+        <div class="hero-example" aria-label="JWT header and payload example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>decoded-jwt.json</strong></div>
+          <pre><span class="property">header.alg</span>  <span class="string">"RS256"</span>
+<span class="property">payload.sub</span> <span class="string">"user-123"</span>
+<span class="property">payload.exp</span> <span class="number">1893456000</span>
+
+<span class="property">decode</span>      <span class="boolean">complete</span>
+<span class="property">signature</span>   <span class="string">"not verified"</span></pre>
+          <p><span>Readable claims</span><strong>Untrusted until verified</strong></p>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="jwt-tool">
+        <div><p class="section-kicker">Three-part compact JWS</p><h2>Decode JWT header and payload JSON</h2></div>
+        <p>Paste a compact JWT or a copied <code>Bearer</code> value. The decoder validates unpadded Base64URL, fatal UTF-8, JSON object structure, duplicate names, and NumericDate types entirely in this browser tab.</p>
+      </section>
+      <div id="jwt-root" class="parser-fallback"><p><strong>Loading the local JWT decoder…</strong></p><p>Your token stays in this page.</p></div>
+
+      <section class="content-section" aria-labelledby="meaning-heading">
+        <div class="section-heading"><p class="section-kicker">What this tool actually does</p><h2 id="meaning-heading">JWT decoding turns segments into data—not trust</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A JSON Web Token is commonly represented as three dot-separated text segments. For a signed JWS compact token, the first segment contains the JOSE protected header, the second contains the JWT Claims Set, and the third contains signature or MAC bytes. The first two segments use Base64URL encoding without padding. Decoding reverses that encoding, validates UTF-8, and parses the resulting JSON objects.</p>
+            <p>No secret is needed for this step because Base64URL is an encoding, not encryption. Anyone who receives a normal signed JWT can read its header and payload. That makes a decoder useful for debugging an integration, checking claim names, understanding a token issued in a test environment, or comparing timestamps. It does not make the claims authentic.</p>
+            <p>LiveParse separates the result into three independent ideas. “Decoded” means the segments could be interpreted under strict syntax rules. “Signature not verified” means no cryptographic decision was made. The time result evaluates only the untrusted values of <code>exp</code> and <code>nbf</code> against your browser clock. Keeping those states separate prevents a readable or unexpired token from being labeled “valid.”</p>
+            <p>The parser preserves JSON number text instead of converting every number to a JavaScript <code>Number</code>. That matters for identifiers beyond 2<sup>53</sup> and fractional NumericDate values. Duplicate decoded property names—including equivalent escaped spellings—remain visible and are reported as ambiguous rather than silently applying last-value-wins behavior.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Decode</dt><dd>Recover Base64URL bytes, validate UTF-8, and parse header and payload JSON objects.</dd></div>
+            <div><dt>Inspect</dt><dd>Display claims, exact number tokens, duplicate names, signature length, and time assertions.</dd></div>
+            <div><dt>Verify</dt><dd>Cryptographically check the original signing input with a trusted key and allowed algorithm.</dd></div>
+            <div><dt>Authorize</dt><dd>Apply issuer, audience, subject, scope, tenant, time, replay, and application policy.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="segments-heading">
+        <div class="section-heading"><p class="section-kicker">Header.payload.signature</p><h2 id="segments-heading">Understand the three JWT segments</h2><p>A compact signed JWT usually travels as one string, but every segment has a different job and a different trust implication.</p></div>
+        <div class="benefit-grid">
+          <article><span>01</span><h3>JOSE protected header</h3><p>The header often declares <code>alg</code>, <code>typ</code>, and possibly <code>kid</code>. These values are attacker-controlled until verification. An application must not accept whatever algorithm or key location a token asks for; it needs a configured allowlist and trusted key selection rules.</p></article>
+          <article><span>02</span><h3>JWT Claims Set</h3><p>The payload is a JSON object containing registered claims such as <code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code>, <code>nbf</code>, <code>iat</code>, and <code>jti</code>, plus private claims defined by the application. Decoding reveals assertions, not facts.</p></article>
+          <article><span>03</span><h3>Signature or MAC</h3><p>The final bytes bind the exact encoded header and payload to a cryptographic key when verified correctly. This decoder reports their length and a short hex preview but never calls them valid, never asks for a key, and never tries a remote JWKS URL.</p></article>
+          <article><span>JWE</span><h3>Five segments match the JWE shape</h3><p>Compact JWE uses five segments, so a five-part value may contain encrypted claims rather than a readable signed JWT payload. Segment count alone does not validate JWE. The tool stops without decrypting it; authenticated decryption requires the expected algorithms, recipient key, and complete format checks.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="verify-heading">
+        <div class="section-heading"><p class="section-kicker">Security boundary</p><h2 id="verify-heading">JWT decode vs signature verification</h2></div>
+        <div class="error-table" role="table" aria-label="JWT decoding and verification comparison">
+          <div class="error-row error-head" role="row"><span role="columnheader">Question</span><span role="columnheader">Decoder can answer</span><span role="columnheader">Secure verifier must answer</span></div>
+          <div class="error-row" role="row"><strong role="cell">What data is present?</strong><code role="cell">Header and payload JSON</code><span role="cell">Whether those exact bytes were protected by an expected signer using a trusted key.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Which algorithm is named?</strong><code role="cell">The untrusted alg label</code><span role="cell">Whether that algorithm is explicitly allowed and used with the correct kind and strength of key.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Is exp in the future?</strong><code role="cell">A local time comparison</code><span role="cell">Whether the verified issuer asserted the value and the application accepts its clock-skew policy.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Who may use the token?</strong><code role="cell">Decoded aud or scope text</code><span role="cell">Exact issuer, audience, subject, tenant, nonce, replay, scope, and authorization requirements.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/jwt-decode-vs-verify/">Read the complete JWT decoding vs verification guide →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="claims-heading">
+        <div class="section-heading"><p class="section-kicker">Registered claim names</p><h2 id="claims-heading">Read common JWT claims without over-interpreting them</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p><code>iss</code> identifies the issuer that says it created the token. <code>sub</code> identifies the subject in that issuer’s namespace. <code>aud</code> names the intended recipient and can be one string or an array of strings. A decoder can display all three, but only a verifier configured for the expected issuer and audience can decide whether they are acceptable.</p>
+            <p><code>exp</code> is the expiration time: the current time must be before it. At the exact boundary where current time equals <code>exp</code>, the time window has expired. <code>nbf</code> is the not-before time: the current time must be at or after it. Implementations may allow a small, explicit leeway for clock differences. This page defaults that leeway to zero so a relaxation never happens invisibly.</p>
+            <p><code>iat</code> records when the token was issued. It is useful for age, rotation, or replay policy, but RFC 7519 does not turn it into a universal pass/fail rule. A future <code>iat</code> may be suspicious or may reflect clock drift; the consuming application decides. <code>jti</code> is a token identifier that can participate in replay prevention when the application stores and checks it.</p>
+            <p>NumericDate counts seconds from the Unix epoch and may include a fractional part. The decoder compares supported values with exact nanosecond arithmetic rather than rounding through floating point. Wrong JSON types, duplicate claim names, excessive fractional precision, and dates outside the supported calendar range produce an indeterminate time result instead of a guess.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>iss</dt><dd>Issuer identifier; compare it with an exact trusted value after signature verification.</dd></div>
+            <div><dt>aud</dt><dd>Intended audience; every recipient must identify itself in the accepted string or array.</dd></div>
+            <div><dt>exp</dt><dd>Exclusive upper time boundary: current time must be strictly earlier.</dd></div>
+            <div><dt>nbf</dt><dd>Inclusive lower time boundary: current time must be equal or later.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/jwt-expiration-checker/">Open the focused JWT Expiration Checker →</a></p>
+      </section>
+
+      <section class="content-section" aria-labelledby="strict-heading">
+        <div class="section-heading"><p class="section-kicker">Protocol-aware parsing</p><h2 id="strict-heading">Strict Base64URL, UTF-8, JSON, and duplicate checks</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Unpadded Base64URL only</h3><p>JWT compact segments use the URL-safe <code>-</code> and <code>_</code> alphabet without <code>=</code> padding. The decoder rejects standard <code>+</code> and <code>/</code>, embedded whitespace, impossible lengths, misplaced padding, and non-zero unused pad bits instead of repairing unknown input silently.</p></article>
+          <article><h3>Fatal UTF-8 decoding</h3><p>The decoded JSON must be valid UTF-8. Invalid byte sequences are not replaced with a placeholder character because that could change property names or values. A byte-level error stops the affected segment with a clear diagnostic.</p></article>
+          <article><h3>JSON objects and unique names</h3><p>Both the JOSE header and the JWT Claims Set must be JSON objects. Arrays, primitives, trailing content, excessive nesting, and syntax errors are rejected. Duplicate names stay visible and are marked as security issues rather than collapsed.</p></article>
+          <article><h3>No unencoded JWT payload</h3><p>RFC 7797 defines a JWS option named <code>b64:false</code>, but it explicitly must not be used with JWTs. The decoder refuses this option instead of treating an unencoded payload as an ordinary JWT Claims Set.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Sensitive data handling</p><h2 id="privacy-heading">Decode JWT tokens privately in your browser</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The decoding operation runs in JavaScript in the current tab. LiveParse does not post the token to a decoder service, append it to a query string or URL fragment, save it in local or session storage, or include it in the downloaded report. Remote key references such as <code>jku</code> and <code>x5u</code> are displayed only and never fetched.</p>
+            <p>JWTs can contain names, email addresses, account identifiers, tenant IDs, roles, permissions, internal infrastructure details, or bearer credentials. Use a redacted development token when possible. If a real access token is exposed to a shared screen, clipboard history, extension, chat, issue tracker, or untrusted device, treat it according to your incident and revocation policy.</p>
+            <p>Local processing narrows one risk but cannot control everything on the device. Browser extensions, accessibility software, clipboard managers, screenshots, downloaded files, operating-system telemetry, and malware have their own permissions. Clear the input when finished and avoid production credentials on a device you do not control.</p>
+            <p>The sample token on this page is synthetic and its signature text is deliberately fake. It is safe for learning how the interface works, but it is not an example of successful cryptographic verification. See the <a href="/privacy/">privacy page</a> for the site-wide distinction between conversion input and ordinary page requests.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>No upload</dt><dd>The compact token is not submitted to a server-side decoding endpoint.</dd></div>
+            <div><dt>No storage</dt><dd>The tool does not place token input in browser storage or the page URL.</dd></div>
+            <div><dt>No lookup</dt><dd>Header URLs and key identifiers do not trigger network requests.</dd></div>
+            <div><dt>Clear input</dt><dd>Remove sensitive values when finished and manage any clipboard copies separately.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="errors-heading">
+        <div class="section-heading"><p class="section-kicker">Useful failure modes</p><h2 id="errors-heading">Why a JWT decoder rejects a token</h2></div>
+        <div class="error-table" role="table" aria-label="Common JWT decoding errors">
+          <div class="error-row error-head" role="row"><span role="columnheader">Message</span><span role="columnheader">Likely cause</span><span role="columnheader">What to check</span></div>
+          <div class="error-row" role="row"><strong role="cell">Wrong segment count</strong><code role="cell">Not three parts</code><span role="cell">Confirm the complete value was copied. Five parts match compact JWE shape but still require validation and decryption; two, four, or more than five usually mean truncation or a different format.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Invalid Base64URL</strong><code role="cell">+, /, =, whitespace</code><span role="cell">Do not paste a standard Base64 conversion or percent-encoded URL. Preserve the original compact JWT and its two dots.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Invalid JSON or UTF-8</strong><code role="cell">Bad decoded bytes</code><span role="cell">The segment may be corrupted, compressed by a custom profile, or not a JWT. Do not delete bytes until it becomes readable.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Duplicate claim</strong><code role="cell">Two decoded names</code><span role="cell">Reject the token for policy evaluation. Different parsers may select different values, creating security ambiguity.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">JWT decoder FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Can I decode a JWT without a secret?</summary><p>Yes. The header and payload of an ordinary signed JWT are Base64URL-encoded, not encrypted, so no secret is needed to read them. The secret or public key is needed for signature verification. Never treat readability as authentication.</p></details>
+          <details><summary>Does this JWT decoder verify the signature?</summary><p>No. It intentionally performs decoding and structural inspection only. A secure verifier must use an allowed algorithm and trusted key, verify the original compact signing input, and then enforce issuer, audience, time, replay, and application authorization rules. Read <a href="/guides/jwt-decode-vs-verify/">decode vs verify</a>.</p></details>
+          <details><summary>Why does the tool say signature not verified?</summary><p>That message is always present because the page neither asks for a key nor contacts a JWKS endpoint. Even an apparently well-formed signature segment can be random bytes. The label prevents the common mistake of equating syntax with cryptographic trust.</p></details>
+          <details><summary>Can it decode a Bearer token copied from an HTTP header?</summary><p>Yes. Paste either the compact value itself or a value beginning with <code>Bearer</code> followed by whitespace. The tool removes that scheme prefix locally and reports the normalization. Do not include the full HTTP request or unrelated headers.</p></details>
+          <details><summary>What is the difference between JWT and JWE?</summary><p>A common signed JWT/JWS has three compact segments and a readable claims payload. Compact JWE has five segments and encrypts its content. This decoder recognizes the five-part JWE shape but does not validate or decrypt it; real decryption needs the correct key, algorithm context, and authenticated format checks.</p></details>
+          <details><summary>What does an expired exp claim prove?</summary><p>It proves only that the decoded payload asserts a time boundary that has passed. Until the signature and trusted issuer are verified, the claim may be forged. Even after verification, the application must still check audience, token type, replay, revocation, and authorization policy.</p></details>
+          <details><summary>How are exp and nbf checked?</summary><p><code>exp</code> passes only while the check time is strictly earlier than expiration plus explicit leeway. <code>nbf</code> passes when the check time reaches the not-before value minus leeway. The result still describes unverified payload assertions. Use the <a href="/jwt-expiration-checker/">expiration checker</a> for a focused view.</p></details>
+          <details><summary>Is my JWT uploaded or stored?</summary><p>The decoder runs in this browser tab and does not send input to a conversion API, store it in local or session storage, or put it in the URL. Device software and any clipboard or downloaded copy remain outside the tool’s control; see <a href="/privacy/">privacy</a>.</p></details>
+          <details><summary>Why are duplicate JWT claims dangerous?</summary><p>JSON processors can disagree about whether the first or last duplicate wins. RFC 7519 requires unique claim names. LiveParse preserves duplicates, reports ambiguity, and refuses to produce a definite time result from a duplicated time claim.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and next steps</p><h2 id="references-heading">JWT resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc7519.html" target="_blank" rel="noreferrer">RFC 7519: JWT</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8725.html" target="_blank" rel="noreferrer">RFC 8725: JWT BCP</a></li>
+          <li><a href="/jwt-expiration-checker/">JWT Expiration Checker</a></li>
+          <li><a href="/guides/jwt-decode-vs-verify/">Decode vs Verify Guide</a></li>
+          <li><a href="/base64-decoder/">Base64URL Decoder</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/jwt-expiration-checker/">JWT Expiration</a><a href="/guides/jwt-decode-vs-verify/">Decode vs Verify</a><a href="/base64-decoder/">Base64 Decoder</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. JWT input is decoded locally and signatures are never represented as verified.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive JWT decoding. The segment, claim, verification, privacy, and security guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/jwt.tsx"></script>
+  </body>
+</html>

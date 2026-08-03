@@ -226,6 +226,7 @@ BASE64URL(signature bytes)</code></pre>
               <p><strong>Decoding a JWT does not verify it.</strong> Anyone can construct Base64URL text. Seeing readable claims—or a header that says <code>"alg":"RS256"</code>—proves nothing about who issued the token. Authentication requires cryptographic verification with a trusted key, an allowed algorithm, and application checks for claims such as issuer, audience, expiration, and not-before time.</p>
             </div>
             <p>Some compact strings with dots are encrypted JWEs rather than three-part signed JWS objects; their compact form has five segments. Do not assume every JWT exposes readable JSON or that every three-part token is valid. Parse structure, enforce limits, reject unexpected algorithms, and keep decoding status separate from verification status.</p>
+            <p>Use the LiveParse <a href="/jwt-decoder/">JWT Decoder</a> for strict segment and claim inspection, then read <a href="/guides/jwt-decode-vs-verify/">JWT decode vs verify</a> for the algorithm, key, issuer, audience, and authorization boundary.</p>
 
             <h2 id="urls-cookies">Base64 in URLs, filenames, and cookies</h2>
             <p>Standard Base64 characters collide with common transport syntax. A slash can be a path separator. In form-style query parsing, a plus sign is often decoded as a space. An equals sign can act as a name/value separator or require percent-encoding. Base64URL replaces the first two problem characters, and protocols often omit padding to avoid the third.</p>
@@ -294,6 +295,7 @@ BASE64URL(signature bytes)</code></pre>
               <h2 id="related-title">Related tools</h2>
               <div class="related-grid">
                 <a class="related-card" href="/base64-decoder/"><strong>Base64 Decoder</strong><span>Decode standard Base64 or Base64URL with explicit byte and UTF-8 handling.</span></a>
+                <a class="related-card" href="/jwt-decoder/"><strong>JWT Decoder</strong><span>Decode compact JWT JSON locally without claiming signature verification.</span></a>
                 <a class="related-card" href="/base64-encoder/"><strong>Base64 Encoder</strong><span>Encode text or bytes with the alphabet and padding policy you need.</span></a>
                 <a class="related-card" href="/"><strong>LiveParse developer tools</strong><span>Open private, browser-based tools for structured data and timestamps.</span></a>
                 <a class="related-card" href="/privacy/"><strong>Privacy</strong><span>Learn how LiveParse approaches local processing and sensitive developer data.</span></a>

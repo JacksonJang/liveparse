@@ -22,6 +22,8 @@ const requiredPages = [
   { relativePath: 'uuid-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-generator/`, label: 'UUID Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:and\s+guid\s+)?generator\b/i, topicLabel: 'UUID generator' },
   { relativePath: 'uuid-v7-generator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-v7-generator/`, label: 'UUID v7 Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:version\s+)?v?7\s+generator\b/i, topicLabel: 'UUID v7 generator' },
   { relativePath: 'uuid-validator/index.html', canonical: `${CANONICAL_ORIGIN}/uuid-validator/`, label: 'UUID Validator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\buuid\s+(?:validator|checker|validation)\b/i, topicLabel: 'UUID validation' },
+  { relativePath: 'jwt-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-decoder/`, label: 'JWT Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:decode|decoder|decoding)\b/i, topicLabel: 'JWT decoding' },
+  { relativePath: 'jwt-expiration-checker/index.html', canonical: `${CANONICAL_ORIGIN}/jwt-expiration-checker/`, label: 'JWT Expiration Checker tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bjwt\s+(?:token\s+)?(?:expiration|expiry|exp)\s+(?:checker|check|checking)\b/i, topicLabel: 'JWT expiration checking' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
 ];
 
@@ -223,6 +225,14 @@ function isGuideHtml(relativePath) {
 
 function guideValidationProfile(relativePath) {
   const normalized = relativePath.split(sep).join('/').toLowerCase();
+  if (normalized.includes('jwt')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      topicPattern: /(?=.*\bjwt\b)(?=.*\bdecod(?:e|ing)\b)(?=.*\bverif(?:y|ication)\b)/i,
+      topicLabel: 'JWT decoding and verification',
+    };
+  }
   if (normalized.includes('uuid')) {
     return {
       requireJson: false,

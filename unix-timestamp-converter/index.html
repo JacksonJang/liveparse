@@ -238,7 +238,7 @@
         <div class="section-heading"><p class="section-kicker">Common workflows</p><h2 id="uses-heading">When an epoch converter is useful</h2></div>
         <div class="use-case-grid">
           <article><h3>Debug application logs</h3><p>Translate numeric event times into UTC, compare services in different regions, and keep exact sub-second values available for ordering requests inside a busy trace.</p></article>
-          <article><h3>Inspect JWT claims</h3><p>Read NumericDate claims such as <code>iat</code>, <code>nbf</code>, and <code>exp</code> as seconds since the epoch. Conversion helps inspection; it does not verify the token’s signature or trustworthiness.</p></article>
+          <article><h3><a href="/jwt-expiration-checker/">Inspect JWT claims</a></h3><p>Read NumericDate claims such as <code>iat</code>, <code>nbf</code>, and <code>exp</code> as seconds since the epoch. The focused checker applies exact boundaries and explicit leeway; neither conversion nor decoding verifies the token’s signature.</p></article>
           <article><h3>Review database exports</h3><p>Check whether a column is stored in seconds, milliseconds, microseconds, or nanoseconds before importing, rescaling, or building a date index.</p></article>
           <article><h3>Investigate API payloads</h3><p>Confirm that timestamps from different endpoints refer to the expected instants and that a frontend has not mistaken seconds for the milliseconds expected by JavaScript.</p></article>
         </div>

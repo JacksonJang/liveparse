@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JWT Expiration Checker – Check exp, nbf &amp; iat | LiveParse</title>
+    <meta name="description" content="JWT Expiration Checker for exact exp, nbf, and iat UTC times. This private JWT expiry checker applies clock skew without claiming signature verification." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/jwt-expiration-checker/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/jwt-expiration-checker/" />
+    <meta property="og:title" content="JWT Expiration Checker – exp, nbf &amp; iat" />
+    <meta property="og:description" content="Check JWT time claims against the current browser clock with exact boundaries, explicit leeway, and an always-visible unverified-payload warning." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse private developer tools" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JWT Expiration Checker" />
+    <meta name="twitter:description" content="Inspect JWT exp, nbf, and iat as exact UTC times. Time-window result only; signature not verified." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "LiveParse JWT Expiration Checker",
+            "url": "https://liveparse.com/jwt-expiration-checker/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any modern web browser",
+            "description": "A local JWT expiration checker for exact exp, nbf, and iat NumericDate conversion and time-window evaluation without signature verification.",
+            "isAccessibleForFree": true,
+            "featureList": [
+              "Exact exp expiration boundary",
+              "nbf not-before boundary",
+              "iat UTC timestamp display",
+              "Explicit configurable clock skew",
+              "Fractional NumericDate support",
+              "Local JWT decoding without token storage"
+            ],
+            "publisher": { "@type": "Person", "name": "Jackson Jang" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "How do I check when a JWT expires?", "acceptedAnswer": { "@type": "Answer", "text": "Decode the payload, read the numeric exp claim as seconds since the Unix epoch, and require the current time to be strictly before exp after applying only an explicit clock-skew allowance. Verify the signature before trusting that assertion." } },
+              { "@type": "Question", "name": "Is a JWT expired when now equals exp?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. RFC 7519 requires the current time to be before exp, so equality is already outside the accepted time window." } },
+              { "@type": "Question", "name": "What if a JWT has no exp claim?", "acceptedAnswer": { "@type": "Answer", "text": "The token has no expiration constraint to check. That does not make it permanent or acceptable; the application may require exp or enforce age, session, revocation, and other policies." } },
+              { "@type": "Question", "name": "Does a future exp make a JWT valid?", "acceptedAnswer": { "@type": "Answer", "text": "No. It only makes the decoded time assertion pass. Signature, issuer, audience, key, algorithm, revocation, and application authorization still need verification." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="jwt-page" data-mode="expiration">
+    <a class="skip-link" href="#jwt-tool">Skip to JWT expiration checker</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/jwt-decoder/">JWT Decoder</a>
+          <a href="/unix-timestamp-converter/">Unix Time</a>
+          <a href="/base64-decoder/">Base64URL</a>
+          <a href="/guides/jwt-decode-vs-verify/">Decode vs Verify</a>
+          <a href="/privacy/">Privacy</a>
+        </div>
+      </nav>
+
+      <section class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Exact NumericDate boundaries</p>
+          <h1>JWT Expiration Checker</h1>
+          <p class="hero-lead">Check the decoded <code>exp</code>, <code>nbf</code>, and <code>iat</code> claims against the current browser clock. See exact UTC instants and explicit leeway without confusing an unexpired payload with a verified token.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#jwt-tool">Check JWT expiration</a><span>Local only · leeway defaults to 0</span></div>
+        </div>
+        <div class="hero-example" aria-label="JWT expiration boundary example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>time-window.txt</strong></div>
+          <pre><span class="property">exp</span>  <span class="number">1893456000</span>
+<span class="property">UTC</span>  <span class="string">"2030-01-01T00:00:00Z"</span>
+
+require <span class="boolean">now &lt; exp + leeway</span>
+at equality: <span class="string">expired</span>
+
+signature: <span class="string">not verified</span></pre>
+          <p><span>Time-window check</span><strong>Not authentication</strong></p>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="jwt-tool">
+        <div><p class="section-kicker">Expiration, activation, issuance</p><h2>Check JWT exp, nbf, and iat locally</h2></div>
+        <p>Paste a three-part compact JWT or <code>Bearer</code> value. The checker decodes the claims set, preserves exact NumericDate text, and evaluates only its time window—never its signature or identity.</p>
+      </section>
+      <div id="jwt-root" class="parser-fallback"><p><strong>Loading the local JWT expiration checker…</strong></p><p>The compact token stays in this page.</p></div>
+
+      <section class="content-section" aria-labelledby="calculation-heading">
+        <div class="section-heading"><p class="section-kicker">The exact comparison</p><h2 id="calculation-heading">How JWT expiration is calculated</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>RFC 7519 defines <code>exp</code> as a NumericDate after which the JWT must not be accepted for processing. NumericDate is a JSON number of seconds from 1970-01-01T00:00:00Z, ignoring leap seconds. The acceptance condition is strict: the current time must be before the expiration instant. If <code>now == exp</code>, the token is already expired by that claim.</p>
+            <p>This page implements the boundary as <code>now &lt; exp + leeway</code>. Leeway is an explicit allowance for small clock differences between systems. Its default is zero. With 30 seconds of leeway, an <code>exp</code> at 12:00:00 is treated as passing until just before 12:00:30; at exactly 12:00:30 it is expired. An application should keep leeway small, documented, and consistent.</p>
+            <p>The checker uses the browser’s current UTC instant when you press the button. It does not infer a timezone from the token because NumericDate is an absolute Unix time. Local timezone affects only how a human might choose to display an instant; it does not change the arithmetic. The table shows an ISO 8601 UTC value to make comparisons portable.</p>
+            <p>A passing expiration comparison is deliberately labeled “time claims pass,” not “valid JWT.” The payload could have been altered, signed by an untrusted party, produced with a forbidden algorithm, intended for another audience, revoked, replayed, or rejected by application policy. Verify first, then rely on its time claims.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>exp</dt><dd>Exclusive upper boundary. The check time must remain strictly earlier.</dd></div>
+            <div><dt>now</dt><dd>The browser clock captured when the time check runs or refreshes.</dd></div>
+            <div><dt>leeway</dt><dd>An explicit non-negative tolerance for clock differences, zero by default.</dd></div>
+            <div><dt>result</dt><dd>A time-window observation from an unverified payload, not token validity.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="claims-heading">
+        <div class="section-heading"><p class="section-kicker">Three related timestamps</p><h2 id="claims-heading">The difference between exp, nbf, and iat</h2><p>All three registered claims use NumericDate, but they answer different questions and do not share one universal validation rule.</p></div>
+        <div class="benefit-grid">
+          <article><span>EXP</span><h3>Expiration time</h3><p><code>exp</code> limits the end of the accepted time window. The consumer requires <code>now &lt; exp</code>, optionally adding a small configured leeway. Missing <code>exp</code> means there is no expiration assertion to check; many applications correctly require the claim anyway.</p></article>
+          <article><span>NBF</span><h3>Not-before time</h3><p><code>nbf</code> limits the start of the accepted time window. The consumer requires <code>now &gt;= nbf</code>, optionally subtracting explicit leeway. At exact equality, the not-before constraint passes. A future value may be intentional for a scheduled credential.</p></article>
+          <article><span>IAT</span><h3>Issued-at time</h3><p><code>iat</code> records when the issuer says the JWT was created. It can support maximum-age or replay policy, but it is not automatically a validity boundary. This checker displays it and reports type problems without turning it alone into pass or fail.</p></article>
+          <article><span>JTI</span><h3>Token identifier</h3><p><code>jti</code> is not a time value. A verifier can combine it with server-side state to detect replay or revocation. A unique identifier by itself does not prevent reuse and cannot replace signature, issuer, audience, or time checks.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="matrix-heading">
+        <div class="section-heading"><p class="section-kicker">Boundary table</p><h2 id="matrix-heading">JWT time-window outcomes at a glance</h2></div>
+        <div class="error-table" role="table" aria-label="JWT expiration and not-before outcomes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Condition</span><span role="columnheader">Time result</span><span role="columnheader">Meaning and next step</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>now &gt;= exp + leeway</code></strong><code role="cell">Expired by exp</code><span role="cell">The asserted upper time boundary fails. A verifier should reject it even if the signature is otherwise correct.</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>now &lt; nbf - leeway</code></strong><code role="cell">Before nbf</code><span role="cell">The asserted activation time has not arrived. Wait, correct a clock problem, or investigate an unexpected claim.</span></div>
+          <div class="error-row" role="row"><strong role="cell">All present boundaries pass</strong><code role="cell">Time claims pass</code><span role="cell">Only the time assertions pass. Continue with cryptographic verification and every required policy check.</span></div>
+          <div class="error-row" role="row"><strong role="cell">No exp or nbf</strong><code role="cell">No time constraints</code><span role="cell">There is no window to evaluate. Enforce whether your application requires expiration or maximum age.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Duplicate or wrong type</strong><code role="cell">Indeterminate</code><span role="cell">Do not guess or convert a string silently. Reject ambiguous input for security decisions.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="numeric-heading">
+        <div class="section-heading"><p class="section-kicker">Seconds, not milliseconds</p><h2 id="numeric-heading">NumericDate precision and Unix timestamp pitfalls</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>JWT NumericDate values are seconds. A common 10-digit value such as <code>1893456000</code> represents 2030-01-01T00:00:00Z. JavaScript <code>Date.now()</code> returns milliseconds, usually 13 digits. Comparing those raw values without converting units makes a fresh token appear expired immediately or pushes dates thousands of years away.</p>
+            <p>NumericDate may contain a fractional part. For example, <code>1893456000.5</code> is half a second after midnight. JSON may also represent the same number with exponent notation. LiveParse normalizes supported exponent forms without converting through floating point and compares the instant with nanosecond arithmetic. More than nine meaningful fractional digits is reported as unsupported rather than rounded invisibly.</p>
+            <p>Large integers in general JSON payloads can exceed JavaScript’s safe integer limit. The lossless decoder retains their source spelling. Time claims also need a date that the browser can represent for ISO output; a value outside that calendar range is marked out of range. No <code>Number</code> fallback guesses a different instant.</p>
+            <p>Use the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> when you need to convert an arbitrary seconds, milliseconds, microseconds, or nanoseconds value without a JWT. Use this page when you need the registered-claim semantics and exact <code>exp</code>/<code>nbf</code> boundaries.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>10 digits</dt><dd>Often contemporary Unix seconds, but the claim type and context still matter.</dd></div>
+            <div><dt>13 digits</dt><dd>Often milliseconds in application logs, not a valid unit substitution for JWT NumericDate.</dd></div>
+            <div><dt>fraction</dt><dd>Sub-second NumericDate precision; supported exactly through nanoseconds.</dd></div>
+            <div><dt>UTC</dt><dd>The absolute timeline used for comparison, independent of a display timezone.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="skew-heading">
+        <div class="section-heading"><p class="section-kicker">Clock-skew policy</p><h2 id="skew-heading">When JWT leeway helps—and when it hides a bug</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Allow only a small documented margin</h3><p>Distributed systems may differ by a few seconds even with time synchronization. A short leeway can prevent false rejection at a boundary. Configure it in the verifier, test exact equality, and expose it in diagnostics. Do not add minutes or hours merely to make failures disappear.</p></article>
+          <article><h3>Measure clock drift separately</h3><p>If tokens repeatedly fail just before <code>nbf</code> or just after issuance, compare the issuer, verifier, proxy, and client clocks. Correct NTP or platform configuration rather than increasing tolerance indefinitely. Leeway is not a clock-management strategy.</p></article>
+          <article><h3>Keep issuer and verifier rules aligned</h3><p>The token producer chooses lifetimes, but the consumer decides acceptance. Document maximum lifetime, required <code>exp</code>, future <code>iat</code> tolerance, and refresh behavior. A decoder cannot infer those application-specific rules from claims alone.</p></article>
+          <article><h3>Test both sides of every boundary</h3><p>Include test cases at one unit before, exactly at, and one unit after <code>exp</code> and <code>nbf</code>, with and without leeway. Boundary tests catch accidental <code>&lt;=</code>, mixed milliseconds, rounding, and timezone errors better than a token far from expiration.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="security-heading">
+        <div class="section-heading"><p class="section-kicker">Unverified input</p><h2 id="security-heading">Why an unexpired JWT can still be rejected</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>An attacker can construct a payload with any future <code>exp</code> value and Base64URL-encode it in seconds. The time comparison will pass because it is evaluating the assertion as written. Without a verified signature or MAC from a trusted issuer, there is no reason to believe the assertion. This is why the result remains next to a permanent “signature not verified” warning.</p>
+            <p>After cryptographic verification, the consumer still needs exact policy. It should allow only expected algorithms, select keys from a trusted configuration, match the issuer, identify itself in the audience, enforce required claims, and consider token type, subject, tenant, scope, nonce, revocation, replay, and maximum age. Different token kinds should have mutually exclusive validation rules where confusion is possible.</p>
+            <p>Never use a decoded <code>jku</code>, <code>x5u</code>, or other URL as permission to fetch a key from anywhere. Remote key retrieval needs trusted origins, HTTPS validation, redirect and network controls, caching rules, and key-selection policy. This page performs no remote lookup, and the algorithm label is displayed as untrusted text.</p>
+            <p>For a practical breakdown of what each stage establishes, read <a href="/guides/jwt-decode-vs-verify/">JWT decoding vs verification</a>. Use the <a href="/jwt-decoder/">full JWT Decoder</a> when header parameters, private claims, duplicate names, and signature bytes are the primary debugging target.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Future exp</dt><dd>An assertion about time, not evidence of who created the token.</dd></div>
+            <div><dt>Verified</dt><dd>The signature or MAC matches under a trusted algorithm and key.</dd></div>
+            <div><dt>Accepted</dt><dd>Verification plus every issuer, audience, time, replay, and application rule passes.</dd></div>
+            <div><dt>Authorized</dt><dd>The accepted identity is allowed to perform this specific action on this resource.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local time inspection</p><h2 id="privacy-heading">Check JWT expiration without uploading the token</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>The compact input, decoded header, claims, and time values stay in the current page while the checker runs. The tool does not submit them to a server-side expiration API, place them in the URL, retain them in browser storage, or contact addresses named in the JOSE header. The downloaded report omits the original compact token.</p>
+            <p>A bearer access token may grant real access even when you only intend to inspect its expiration. Prefer a synthetic or redacted token. Avoid pasting production credentials into shared computers, screen recordings, chat windows, browser extensions you do not trust, or clipboard tools with cloud synchronization. Clear the input when you finish.</p>
+            <p>The normal page request and static assets still travel over the web, while token calculation is local. Device software can have independent access to memory, screen, keyboard, files, or clipboard. Review the <a href="/privacy/">privacy page</a> for those boundaries and follow your organization’s credential-handling and revocation procedures.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Input</dt><dd>Held in React state for this page; not put into the address bar or browser storage.</dd></div>
+            <div><dt>Clock</dt><dd>Read from the current browser only when a time evaluation runs.</dd></div>
+            <div><dt>Report</dt><dd>Includes decoded JSON strings and findings, but not the original compact credential.</dd></div>
+            <div><dt>Cleanup</dt><dd>Use Clear and manage any copies, screenshots, logs, or downloads separately.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">JWT expiration checker FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How do I check when a JWT expires?</summary><p>Decode the payload, locate the numeric <code>exp</code> claim, interpret it as Unix seconds, and compare the current UTC instant. The time window passes only while <code>now &lt; exp + explicit leeway</code>. Verify the signature and trusted issuer before relying on the claim.</p></details>
+          <details><summary>Is a JWT expired when the current time equals exp?</summary><p>Yes. The current time must be strictly before <code>exp</code>. Equality is expired. This checker uses that exact boundary and applies configured leeway before making the comparison.</p></details>
+          <details><summary>What happens when a JWT has no exp claim?</summary><p>The result says there are no expiration or not-before constraints when both <code>exp</code> and <code>nbf</code> are absent. That does not grant unlimited lifetime. A secure application can require <code>exp</code>, enforce maximum token age, or use session and revocation state.</p></details>
+          <details><summary>Does a future exp mean the JWT is valid?</summary><p>No. It means only that the decoded expiration assertion has not reached its boundary. A modified, unsigned, wrongly signed, revoked, wrong-audience, or unauthorized token can contain a future value. Read <a href="/guides/jwt-decode-vs-verify/">decode vs verify</a>.</p></details>
+          <details><summary>What clock skew should I use for JWT validation?</summary><p>Use the smallest documented allowance justified by measured clock differences. RFC 7519 permits a small leeway, often only a few minutes at most, but your architecture should define the actual value. This page defaults to zero and never hides a tolerance.</p></details>
+          <details><summary>Can exp be a decimal rather than an integer?</summary><p>Yes. NumericDate may be non-integer. LiveParse preserves fractional values through nanoseconds and supports exact normalizable exponent notation. More than nine meaningful fractional digits is reported as unsupported instead of rounded.</p></details>
+          <details><summary>Why does my JWT timestamp look thousands of years away?</summary><p>You may be reading milliseconds as seconds. JWT NumericDate uses seconds, while many JavaScript logs and APIs use milliseconds. A contemporary seconds value is often 10 digits; a millisecond value is often 13. Use the <a href="/unix-timestamp-converter/">Unix converter</a> to diagnose the source unit.</p></details>
+          <details><summary>Is the JWT sent to an expiration service?</summary><p>No. Decoding and time comparison run in the current browser tab. The input is not sent to a conversion endpoint, saved by the tool, placed in the URL, or used to fetch a remote key. Device and clipboard risks remain separate; see <a href="/privacy/">privacy</a>.</p></details>
+          <details><summary>Is this also a JWT expiry checker?</summary><p>Yes. “Expiry” and “expiration” describe the same <code>exp</code> boundary in this context. The checker also shows <code>nbf</code> and <code>iat</code>, but it never treats a passing time window as signature verification or complete token validity.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Standards and related tools</p><h2 id="references-heading">JWT time resources</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc7519.html" target="_blank" rel="noreferrer">RFC 7519 NumericDate</a></li>
+          <li><a href="/jwt-decoder/">Full JWT Decoder</a></li>
+          <li><a href="/guides/jwt-decode-vs-verify/">Decode vs Verify Guide</a></li>
+          <li><a href="/unix-timestamp-converter/">Unix Timestamp Converter</a></li>
+          <li><a href="/privacy/">Local processing and privacy</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, tokens, identifiers, encoding, and timestamps.</p></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/jwt-decoder/">JWT Decoder</a><a href="/guides/jwt-decode-vs-verify/">Decode vs Verify</a><a href="/unix-timestamp-converter/">Unix Time</a><a href="/privacy/">Privacy</a></div>
+      <p class="footer-note">© 2026 Jackson Jang. JWT time claims are inspected locally and never represented as signature verification.</p>
+    </footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive JWT expiration checker. The NumericDate, clock-skew, security, and privacy guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/jwt.tsx"></script>
+  </body>
+</html>

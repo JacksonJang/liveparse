@@ -248,7 +248,7 @@
         <div class="section-heading"><p class="section-kicker">Purposeful use cases</p><h2 id="uses-heading">When a Base64 encoder is useful</h2></div>
         <div class="use-case-grid">
           <article><h3>Create an API test fixture</h3><p>Encode a small UTF-8 or binary sample exactly as the API schema requires, keep the alphabet and padding documented, and verify it with a round trip before adding it to tests or documentation.</p></article>
-          <article><h3>Prepare a Base64URL value</h3><p>Generate URL-safe output for a field that explicitly uses RFC 4648’s URL alphabet. For JWT work, remember that encoding a header or payload is only serialization; signing and validating the complete token are separate security operations.</p></article>
+          <article><h3>Prepare a Base64URL value</h3><p>Generate URL-safe output for a field that explicitly uses RFC 4648’s URL alphabet. For JWT work, encoding a header or payload is only serialization; signing and validating the complete token are separate security operations. Read <a href="/guides/jwt-decode-vs-verify/">JWT decode vs verify</a> before treating claims as trusted.</p></article>
           <article><h3>Build a small Data URL</h3><p>Embed a trusted tiny raster image or fixture with an accurate media type. Measure the expanded size and prefer a normal asset URL when caching, readability, updateability, or page weight matters.</p></article>
           <article><h3>Move binary through a text-only field</h3><p>Represent bytes in JSON, XML, SQL text, or a configuration format when the contract has no binary type. Store content length, media type, and integrity information separately if consumers need them.</p></article>
         </div>
@@ -273,6 +273,7 @@
         <ul>
           <li><a href="/base64-decoder/">Decode and validate Base64</a></li>
           <li><a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a></li>
+          <li><a href="/jwt-decoder/">JWT Decoder</a></li>
           <li><a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noreferrer">RFC 4648 canonical encoding</a></li>
           <li><a href="/privacy/">Local processing and privacy</a></li>
         </ul>

@@ -39,7 +39,13 @@ describe('search referrer classification', () => {
 
 describe('request eligibility', () => {
   const browser = 'Mozilla/5.0 AppleWebKit/537.36 Chrome/140.0 Safari/537.36';
-  const allowedPaths = new Set(['/json-compare/', '/discord-timestamp-generator/', '/base64-decoder/']);
+  const allowedPaths = new Set([
+    '/json-compare/',
+    '/discord-timestamp-generator/',
+    '/base64-decoder/',
+    '/jwt-decoder/',
+    '/jwt-expiration-checker/',
+  ]);
 
   it('counts only GET HTML landings from a recognized search engine', () => {
     expect(searchReferralFromRequest({
@@ -58,6 +64,14 @@ describe('request eligibility', () => {
       method: 'GET', isHtml: true, requestPath: '/base64-decoder/',
       referrer: 'https://www.google.co.uk/search?q=base64+decode', userAgent: browser, allowedPaths,
     })).toEqual({ engine: 'google', path: '/base64-decoder/' });
+    expect(searchReferralFromRequest({
+      method: 'GET', isHtml: true, requestPath: '/jwt-decoder/',
+      referrer: 'https://www.google.com/search?q=jwt+decoder', userAgent: browser, allowedPaths,
+    })).toEqual({ engine: 'google', path: '/jwt-decoder/' });
+    expect(searchReferralFromRequest({
+      method: 'GET', isHtml: true, requestPath: '/jwt-expiration-checker/',
+      referrer: 'https://www.bing.com/search?q=jwt+expiration+checker', userAgent: browser, allowedPaths,
+    })).toEqual({ engine: 'bing', path: '/jwt-expiration-checker/' });
     expect(searchReferralFromRequest({
       method: 'GET', isHtml: false, requestPath: '/og.png',
       referrer: 'https://www.google.com/search?q=json+compare', userAgent: browser, allowedPaths,

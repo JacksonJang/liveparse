@@ -24,6 +24,8 @@ export default defineConfig({
         uuidGenerator: resolve(projectRoot, 'uuid-generator/index.html'),
         uuidV7Generator: resolve(projectRoot, 'uuid-v7-generator/index.html'),
         uuidValidator: resolve(projectRoot, 'uuid-validator/index.html'),
+        jwtDecoder: resolve(projectRoot, 'jwt-decoder/index.html'),
+        jwtExpirationChecker: resolve(projectRoot, 'jwt-expiration-checker/index.html'),
       },
     },
   },

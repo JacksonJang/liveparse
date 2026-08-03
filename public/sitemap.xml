@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://liveparse.com/unix-timestamp-converter/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/discord-timestamp-generator/</loc>
@@ -38,11 +38,11 @@
   </url>
   <url>
     <loc>https://liveparse.com/base64-decoder/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/base64-encoder/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/uuid-generator/</loc>
@@ -54,6 +54,14 @@
   </url>
   <url>
     <loc>https://liveparse.com/uuid-validator/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/jwt-decoder/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/jwt-expiration-checker/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
   <url>
@@ -94,10 +102,14 @@
   </url>
   <url>
     <loc>https://liveparse.com/guides/base64-vs-base64url/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://liveparse.com/guides/uuid-v4-vs-v7/</loc>
+    <lastmod>2026-08-04</lastmod>
+  </url>
+  <url>
+    <loc>https://liveparse.com/guides/jwt-decode-vs-verify/</loc>
     <lastmod>2026-08-04</lastmod>
   </url>
 </urlset>

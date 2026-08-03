@@ -246,7 +246,7 @@
         <div class="section-heading"><p class="section-kicker">Practical developer workflows</p><h2 id="uses-heading">When this Base64 decoder is useful</h2></div>
         <div class="use-case-grid">
           <article><h3>Inspect an API field</h3><p>Decode a documented Base64 property from JSON, compare byte length with the schema, and confirm whether its content is UTF-8, a structured binary message, or an embedded file. Use the <a href="/">JSON formatter</a> first when you need to isolate the field safely.</p></article>
-          <article><h3>Read a JWT segment carefully</h3><p>JWT header and payload segments use unpadded Base64URL. Decoding can make their JSON readable, but it does not verify the signature, algorithm, issuer, audience, expiration, or trustworthiness of the token.</p></article>
+          <article><h3><a href="/jwt-decoder/">Read a JWT segment carefully</a></h3><p>JWT header and payload segments use unpadded Base64URL. Decoding can make their JSON readable, but it does not verify the signature, algorithm, issuer, audience, expiration, or trustworthiness. Use the JWT-specific decoder to keep those states separate.</p></article>
           <article><h3>Recover an attached file</h3><p>Decode an encoded fixture, email part, or database export and download the original bytes. Check checksums and the expected media type separately before opening content from an unknown source.</p></article>
           <article><h3>Canonicalize a test vector</h3><p>Set the exact alphabet, whitespace, and padding policies to catch wrong syntax or pad bits, then compare canonical standard Base64 with unpadded Base64URL. This helps test serializers without treating two spellings of the same bytes as unrelated payloads.</p></article>
         </div>
@@ -271,6 +271,8 @@
         <ul>
           <li><a href="/base64-encoder/">Encode text or files to Base64</a></li>
           <li><a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a></li>
+          <li><a href="/jwt-decoder/">JWT Decoder</a></li>
+          <li><a href="/guides/jwt-decode-vs-verify/">JWT Decode vs Verify</a></li>
           <li><a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noreferrer">RFC 4648 alphabets</a></li>
           <li><a href="/privacy/">Local processing and privacy</a></li>
         </ul>
@@ -279,7 +281,7 @@
 
     <footer class="site-footer">
       <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, text, and binary conversions.</p></div>
-      <div class="footer-links"><a href="/">Home</a><a href="/base64-encoder/">Base64 Encoder</a><a href="/guides/base64-vs-base64url/">Base64URL Guide</a><a href="/json-compare/">JSON Compare</a><a href="/privacy/">Privacy</a></div>
+      <div class="footer-links"><a href="/">Home</a><a href="/base64-encoder/">Base64 Encoder</a><a href="/guides/base64-vs-base64url/">Base64URL Guide</a><a href="/jwt-decoder/">JWT Decoder</a><a href="/json-compare/">JSON Compare</a><a href="/privacy/">Privacy</a></div>
       <p class="footer-note">© 2026 Jackson Jang. Base64 input is processed locally in your browser.</p>
     </footer>
     <noscript><p class="noscript-note">JavaScript is required for interactive Base64 decoding. The validation, format, privacy, and safety guidance remains readable without it.</p></noscript>
