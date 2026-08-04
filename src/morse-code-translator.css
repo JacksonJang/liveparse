@@ -1,0 +1,356 @@
+.morse-page .seo-hero h1 { font-size: clamp(46px, 7vw, 92px); }
+
+.morse-app {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .82);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, .9);
+  box-shadow: var(--shadow);
+}
+
+.morse-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, #f4fcfe, #f6fff7 58%, #fff9ed);
+}
+
+.morse-local-badge {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1px 10px;
+  min-width: 0;
+}
+
+.morse-local-badge > span {
+  grid-row: 1 / 3;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #168654;
+  box-shadow: 0 0 0 5px rgba(22, 134, 84, .13);
+}
+
+.morse-local-badge strong,
+.morse-local-badge small { display: block; }
+.morse-local-badge strong { color: var(--ink-deep); font-size: 13px; font-weight: 900; }
+.morse-local-badge small { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+
+.morse-tool-badge {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid rgba(8, 116, 135, .17);
+  border-radius: 999px;
+  color: var(--aqua-dark);
+  background: var(--aqua-pale);
+  font-size: 11px;
+}
+
+.morse-tool-badge span { font-weight: 900; }
+.morse-tool-badge strong { color: var(--muted); font-weight: 750; }
+
+.morse-body { padding: clamp(20px, 3.5vw, 38px); }
+
+.morse-intro {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 34px;
+  margin-bottom: 22px;
+}
+
+.morse-intro p,
+.morse-card-heading p {
+  margin: 0 0 5px;
+  color: var(--aqua-dark);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.morse-intro h2 {
+  margin: 0;
+  color: var(--ink-deep);
+  font-size: clamp(25px, 3.5vw, 39px);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+}
+
+.morse-intro > span {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.morse-tabs {
+  display: inline-flex;
+  gap: 4px;
+  max-width: 100%;
+  margin-bottom: 18px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f4f9fa;
+}
+
+.morse-tabs button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 15px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.morse-tabs button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--aqua-dark);
+  box-shadow: 0 7px 16px rgba(7, 86, 104, .2);
+}
+
+.morse-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+  gap: 14px;
+}
+
+.morse-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(180deg, #fff, #fffcf5);
+}
+
+.morse-card.output { background: linear-gradient(180deg, #fff, #f5fcfe); }
+
+.morse-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--line);
+}
+
+.morse-card-heading h3 {
+  margin: 0;
+  color: var(--ink-deep);
+  font-size: 17px;
+  letter-spacing: -.025em;
+}
+
+.morse-card-heading > span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.morse-card-heading > span.over { color: #a63d34; }
+.morse-card-body { display: grid; gap: 14px; padding: 17px; }
+
+.morse-text-field,
+.morse-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.morse-text-field > span,
+.morse-field > span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.morse-text-field textarea,
+.morse-field input,
+.morse-field select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(17, 91, 105, .22);
+  border-radius: 14px;
+  outline: 0;
+  color: #15363e;
+  background: #fbfeff;
+}
+
+.morse-text-field textarea {
+  min-height: 190px;
+  padding: 14px;
+  resize: vertical;
+  font: 14px/1.7 "SFMono-Regular", "Cascadia Code", "Fira Code", "DejaVu Sans Mono", Consolas, monospace;
+}
+
+.morse-text-field.output textarea { background: #f7fcfd; }
+.morse-field input,
+.morse-field select { min-height: 45px; padding: 9px 11px; }
+
+.morse-text-field textarea:focus,
+.morse-field input:focus,
+.morse-field select:focus {
+  border-color: var(--aqua);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(8, 116, 135, .13);
+}
+
+.morse-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.morse-actions.between { justify-content: space-between; }
+
+.morse-button,
+.morse-link-button {
+  min-height: 41px;
+  border-radius: 12px;
+  padding: 9px 13px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.morse-button {
+  border: 1px solid rgba(7, 86, 104, .2);
+  color: var(--ink-deep);
+  background: #fff;
+}
+
+.morse-button.primary { border-color: var(--aqua-dark); color: #fff; background: var(--aqua-dark); }
+.morse-link-button { border: 0; color: var(--aqua-dark); background: transparent; }
+.morse-button:disabled { cursor: not-allowed; opacity: .48; }
+.morse-button:not(:disabled):hover,
+.morse-link-button:not(:disabled):hover { transform: translateY(-1px); }
+
+.morse-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.morse-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.morse-check input { flex: 0 0 auto; width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--aqua-dark); }
+.morse-check strong,
+.morse-check small { display: block; }
+.morse-check strong { color: var(--ink-deep); font-size: 11px; }
+.morse-check small { margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+
+.morse-note,
+.morse-empty,
+.morse-diagnostic {
+  margin: 0;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.morse-note { padding: 11px 12px; color: #52666b; background: #f4f8f9; }
+.morse-note strong { color: var(--ink-deep); }
+.morse-empty { display: grid; gap: 5px; padding: 18px; color: var(--muted); background: #f7fafb; }
+.morse-empty strong { color: var(--ink-deep); font-size: 14px; }
+
+.morse-diagnostics { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.morse-diagnostic { padding: 10px 12px; color: #6c4630; background: #fff5e8; }
+.morse-diagnostic.error { color: #843c35; background: #fff0ed; }
+.morse-diagnostic code { color: inherit; font-weight: 850; }
+
+.morse-summary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.morse-summary > div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.morse-summary span,
+.morse-summary strong { display: block; }
+.morse-summary span { color: var(--muted); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.morse-summary strong { margin-top: 4px; overflow-wrap: anywhere; color: var(--ink-deep); font-size: 12px; }
+
+.morse-audio {
+  display: grid;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid rgba(8, 116, 135, .14);
+  border-radius: 15px;
+  background: var(--aqua-pale);
+}
+
+.morse-audio > header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.morse-audio > header strong { color: var(--ink-deep); font-size: 12px; }
+.morse-audio > header span { color: var(--muted); font-size: 9px; }
+.morse-audio-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+
+.morse-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.morse-boundary {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--muted);
+  background: #fff;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.morse-boundary strong { color: var(--ink-deep); }
+
+@media (max-width: 900px) {
+  .morse-intro { display: grid; gap: 12px; }
+  .morse-workspace { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .morse-toolbar { align-items: flex-start; }
+  .morse-tool-badge { display: none; }
+  .morse-body { padding: 17px 13px 20px; }
+  .morse-tabs { display: grid; border-radius: 16px; width: 100%; }
+  .morse-tabs button { border-radius: 12px; }
+  .morse-options,
+  .morse-summary,
+  .morse-audio-controls { grid-template-columns: 1fr; }
+  .morse-card-heading { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .morse-button,
+  .morse-link-button,
+  .morse-tabs button { transition: none; }
+}

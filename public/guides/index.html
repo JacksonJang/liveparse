@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Developer Data Format Guides | LiveParse</title>
-    <meta name="description" content="Developer data guides to JSON, URLs, timestamps, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums." />
+    <meta name="description" content="Developer data guides to JSON, URLs, timestamps, Morse code, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums." />
     <link rel="canonical" href="https://liveparse.com/guides/" />
     <link rel="alternate" type="application/atom+xml" title="LiveParse Developer Tool Updates" href="https://liveparse.com/feed.xml" />
     <meta name="author" content="Jackson Jang" />
@@ -37,7 +37,7 @@
             "@id": "https://liveparse.com/guides/#page",
             "url": "https://liveparse.com/guides/",
             "name": "Developer Data Format Guides",
-            "description": "Practical guides to JSON, URLs, timestamps, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
+            "description": "Practical guides to JSON, URLs, timestamps, Morse code, number bases, binary, ASCII, Base64, UUIDs, JWTs, SQL, XML, YAML, hashes, and checksums.",
             "inLanguage": "en",
             "isPartOf": { "@type": "WebSite", "name": "LiveParse", "url": "https://liveparse.com/" },
             "mainEntity": { "@id": "https://liveparse.com/guides/#list" },
@@ -55,7 +55,7 @@
             "@type": "ItemList",
             "@id": "https://liveparse.com/guides/#list",
             "name": "LiveParse developer guides",
-            "numberOfItems": 32,
+            "numberOfItems": 33,
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "url": "https://liveparse.com/guides/what-is-a-json-parser/", "name": "What Is a JSON Parser?" },
               { "@type": "ListItem", "position": 2, "url": "https://liveparse.com/guides/common-json-errors/", "name": "Common JSON Errors" },
@@ -88,7 +88,8 @@
               { "@type": "ListItem", "position": 29, "url": "https://liveparse.com/guides/twos-complement-signed-binary/", "name": "Two's Complement Signed Binary" },
               { "@type": "ListItem", "position": 30, "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/", "name": "ASCII vs Unicode vs UTF-8" },
               { "@type": "ListItem", "position": 31, "url": "https://liveparse.com/guides/how-word-counting-works/", "name": "How Word Counting Works" },
-              { "@type": "ListItem", "position": 32, "url": "https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/", "name": "Grapheme Clusters vs Code Points and Bytes" }
+              { "@type": "ListItem", "position": 32, "url": "https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/", "name": "Grapheme Clusters vs Code Points and Bytes" },
+              { "@type": "ListItem", "position": 33, "url": "https://liveparse.com/guides/international-morse-code/", "name": "International Morse Code Reference" }
             ]
           }
         ]
@@ -112,7 +113,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>32 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>33 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -162,6 +163,15 @@
                 <a class="related-card" href="/guides/ascii-vs-unicode-utf8/"><strong>ASCII vs Unicode vs UTF-8</strong><span>Characters, code points, bytes, control codes, and why non-ASCII text needs multiple UTF-8 bytes.</span></a>
               </div>
               <p>Convert exact integer values with the <a href="/binary-converter/">Binary Converter</a> or <a href="/hex-converter/">Hex Converter</a>, translate text bytes with the <a href="/binary-translator/">Binary Translator</a>, and inspect all 128 standard entries in the <a href="/ascii-table/">ASCII Table</a>.</p>
+            </section>
+
+            <section aria-labelledby="morse-guides">
+              <h2 id="morse-guides">International Morse code</h2>
+              <p>Morse code represents supported characters as timed dot-and-dash signals. A text display still needs explicit boundaries between letters and words, because spacing carries meaning that a run of punctuation alone cannot preserve.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/international-morse-code/"><strong>International Morse Code Reference</strong><span>Letters, digits, punctuation, separators, timing ratios, prosigns, and the limits of automatic decoding.</span></a>
+              </div>
+              <p>Use the <a href="/morse-code-translator/">Morse Code Translator</a> to encode supported text or decode explicit dot-and-dash tokens locally.</p>
             </section>
 
             <section aria-labelledby="text-guides">
@@ -258,6 +268,7 @@
               <li><a href="#time-guides">Time and Discord</a></li>
               <li><a href="#encoding-guides">Base64 encoding</a></li>
               <li><a href="#number-guides">Numbers and ASCII</a></li>
+              <li><a href="#morse-guides">Morse code</a></li>
               <li><a href="#text-guides">Text measurement</a></li>
               <li><a href="#url-guides">URLs and queries</a></li>
               <li><a href="#uuid-guides">UUIDs</a></li>

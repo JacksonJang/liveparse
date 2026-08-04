@@ -255,6 +255,36 @@ describe('production routing parity', () => {
     expect(actualAliases).toEqual(completeExpectedAliases);
   });
 
+  it('includes one canonical Morse translator and redirects search-intent aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const expectedAliases = new Map([
+      ['/morse-code-decoder', '/morse-code-translator/'],
+      ['/morse-translator', '/morse-code-translator/'],
+      ['/text-to-morse-code', '/morse-code-translator/'],
+      ['/morse-code-converter', '/morse-code-translator/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/morse-code-translator',
+      '/guides/international-morse-code',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => target === '/morse-code-translator/')
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
   it('includes the JWT canonical pages and guide without validator-like aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);

@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T09:14:05+09:00</updated>
+  <updated>2026-08-04T09:39:03+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,25 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/morse-code-translator/</id>
+    <title>Morse Code Translator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/morse-code-translator/" />
+    <published>2026-08-04T09:39:03+09:00</published>
+    <updated>2026-08-04T09:39:03+09:00</updated>
+    <category term="Morse code and text translation" />
+    <summary>Translate supported text to International Morse code or decode explicit dot-and-dash tokens locally with visible separators and strict diagnostics.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/international-morse-code/</id>
+    <title>International Morse Code Reference</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/international-morse-code/" />
+    <published>2026-08-04T09:39:03+09:00</published>
+    <updated>2026-08-04T09:39:03+09:00</updated>
+    <category term="Morse code standards" />
+    <summary>Compare International Morse letters, digits, punctuation, token separators, signal timing, prosigns, and decoding limits against the ITU recommendation.</summary>
+  </entry>
 
   <entry xml:lang="es">
     <id>https://liveparse.com/es/contador-de-palabras/</id>

@@ -37,6 +37,7 @@ const FAQ_PARITY_PATHS = new Set([
   '/hex-converter/',
   '/binary-translator/',
   '/ascii-table/',
+  '/morse-code-translator/',
   '/word-counter/',
   '/character-counter/',
   '/es/contador-de-palabras/',
@@ -45,6 +46,7 @@ const FAQ_PARITY_PATHS = new Set([
   '/ko/character-counter/',
   '/guides/how-word-counting-works/',
   '/guides/grapheme-clusters-vs-code-points-and-bytes/',
+  '/guides/international-morse-code/',
   '/guides/binary-decimal-hex-octal-conversion/',
   '/guides/twos-complement-signed-binary/',
   '/guides/ascii-vs-unicode-utf8/',
@@ -73,6 +75,7 @@ const requiredPages = [
   { relativePath: 'hex-converter/index.html', canonical: `${CANONICAL_ORIGIN}/hex-converter/`, label: 'Hex Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\b(?:hex|hexadecimal)\b)(?=.*\bconvert(?:er|ing|s|ed)?\b)/i, topicLabel: 'hexadecimal conversion' },
   { relativePath: 'binary-translator/index.html', canonical: `${CANONICAL_ORIGIN}/binary-translator/`, label: 'Binary Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\btranslat(?:e|or|ing|ion)\b)/i, topicLabel: 'binary text translation' },
   { relativePath: 'ascii-table/index.html', canonical: `${CANONICAL_ORIGIN}/ascii-table/`, label: 'ASCII Table tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bascii\b)(?=.*\b(?:table|codes?|chart)\b)/i, topicLabel: 'ASCII table' },
+  { relativePath: 'morse-code-translator/index.html', canonical: `${CANONICAL_ORIGIN}/morse-code-translator/`, label: 'Morse Code Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bmorse\s+code\b)(?=.*\b(?:translat(?:e|or|ing|ion)|decod(?:e|er|ing))\b)/i, topicLabel: 'Morse code translation' },
   { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
   { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
   { relativePath: 'es/contador-de-palabras/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-palabras/`, label: 'Spanish Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+palabras/i, topicLabel: 'contador de palabras' },
@@ -500,6 +503,15 @@ function guideValidationProfile(relativePath) {
       minimumCharacters: 1_000,
       topicPattern: /(?=.*\bgrapheme(?:s|\s+clusters?)?\b)(?=.*\bcode\s+points?\b)(?=.*\bbytes?\b)/i,
       topicLabel: 'grapheme clusters, code points, and bytes',
+    };
+  }
+  if (normalized.includes('international-morse-code')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\binternational\s+morse\s+code\b)(?=.*\b(?:itu|recommendation|standard|reference)\b)/i,
+      topicLabel: 'International Morse code and the ITU recommendation',
     };
   }
   if (normalized.includes('url-percent-encoding')) {

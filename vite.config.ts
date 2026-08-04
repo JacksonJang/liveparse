@@ -25,6 +25,7 @@ export default defineConfig({
         hexConverter: resolve(projectRoot, 'hex-converter/index.html'),
         binaryTranslator: resolve(projectRoot, 'binary-translator/index.html'),
         asciiTable: resolve(projectRoot, 'ascii-table/index.html'),
+        morseCodeTranslator: resolve(projectRoot, 'morse-code-translator/index.html'),
         wordCounter: resolve(projectRoot, 'word-counter/index.html'),
         characterCounter: resolve(projectRoot, 'character-counter/index.html'),
         esWordCounter: resolve(projectRoot, 'es/contador-de-palabras/index.html'),
