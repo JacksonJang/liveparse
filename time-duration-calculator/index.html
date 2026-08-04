@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Duration Calculator – Hours &amp; Breaks | LiveParse</title>
+    <meta name="description" content="Calculate same-day or overnight clock duration, subtract a break once, and keep wall-clock arithmetic separate from time zones and DST." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/time-duration-calculator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/time-duration-calculator/" />
+    <meta property="og:title" content="Same-Day and Overnight Time Duration Calculator" />
+    <meta property="og:description" content="Measure a wall-clock interval and subtract one break with explicit overnight behavior." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse time duration calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Time Duration Calculator | LiveParse" />
+    <meta name="twitter:description" content="Calculate clock time across midnight and subtract a declared break." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/time-duration-calculator/#application",
+            "name": "LiveParse Time Duration Calculator",
+            "url": "https://liveparse.com/time-duration-calculator/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Wall-clock duration and break calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Calculate a same-day or next-day wall-clock interval, then subtract one nonnegative break duration without inferring a time zone.",
+            "featureList": ["Accept start and end clock times", "Choose same-day or overnight interpretation", "Subtract one break duration", "Report gross and net minutes", "Avoid unsupported daylight-saving assumptions"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/time-duration-calculator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Time Duration Calculator", "item": "https://liveparse.com/time-duration-calculator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/time-duration-calculator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How does the calculator handle an end time earlier than the start?", "acceptedAnswer": { "@type": "Answer", "text": "When overnight mode is selected, the end time is interpreted on the following calendar day. Without that selection, an earlier end is invalid rather than silently assumed to cross midnight." } },
+              { "@type": "Question", "name": "How is a break subtracted?", "acceptedAnswer": { "@type": "Answer", "text": "One nonnegative break duration is subtracted once from the gross wall-clock interval. A break longer than the gross interval is rejected rather than producing a negative worked duration." } },
+              { "@type": "Question", "name": "Does the calculator account for daylight saving time?", "acceptedAnswer": { "@type": "Answer", "text": "No. Clock times without a date and IANA time zone cannot identify a DST transition. This page performs nominal wall-clock arithmetic; use zoned timestamps and authoritative zone data for elapsed-time work across a transition." } },
+              { "@type": "Question", "name": "Is 09:00 to 17:00 eight hours if there is a lunch break?", "acceptedAnswer": { "@type": "Answer", "text": "The gross interval is eight hours. With a 30-minute break the net result is seven hours 30 minutes; with a 60-minute break it is seven hours. Enter the break explicitly." } },
+              { "@type": "Question", "name": "Can this calculator determine payable work time?", "acceptedAnswer": { "@type": "Answer", "text": "No. It supplies arithmetic only. Rounding, paid breaks, overtime, split shifts, on-call time, labor rules, contracts, and payroll policies must be applied by the responsible employer or system." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="time-duration-calculator">
+    <a class="skip-link" href="#date-tool">Skip to the time duration calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#overnight">Overnight</a><a href="#dst">DST boundary</a><a href="#faq">FAQ</a><a href="/days-between-dates/">Date difference</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Clock interval · Overnight option · Break subtraction</p><h1>Time Duration Calculator</h1><p class="hero-lead">Measure a nominal wall-clock interval, explicitly choose whether it crosses midnight, and subtract one break. Gross and net duration remain visible, while time-zone and payroll policy claims stay outside the calculation.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Calculate duration</a><span>Hours and minutes · Local processing</span></div></div><div class="hero-example" aria-label="Overnight duration example"><div class="example-bar"><span></span><span></span><span></span><strong>overnight shift</strong></div><pre><code><span class="property">start</span>  <span class="string">22:30</span>
+<span class="property">end</span>    <span class="string">06:15 next day</span>
+<span class="property">gross</span>  <span class="boolean">7 h 45 min</span></code></pre><p><strong>Crossing midnight is explicit</strong><span>Break is subtracted afterward</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Nominal clock arithmetic with visible assumptions</p><h2 id="date-tool-heading">Calculate gross time, then subtract one break</h2></div><p>Enter start and end clock times, select overnight only when the end occurs on the next date, and enter a nonnegative break duration. The calculator reports gross and net minutes plus an hours-and-minutes presentation.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Time duration calculator loading"><p><strong>Loading the time duration calculator…</strong></p><p>Enable JavaScript to enter clock times, overnight behavior, and a break. The arithmetic contract, DST limitations, examples, and FAQ remain readable below.</p></section></div>
+
+      <section class="content-section" id="overnight" aria-labelledby="overnight-heading"><div class="section-heading"><p class="section-kicker">An earlier clock label needs another fact</p><h2 id="overnight-heading">Overnight mode places the end on the next calendar day</h2></div><div class="prose-grid"><div><p>A clock time alone repeats every day. If the start is 22:30 and the end is 06:15, subtraction cannot tell whether the input is invalid, spans overnight, or refers to unrelated dates. Selecting overnight states that the end belongs to the following day, yielding a nominal gross interval of seven hours and 45 minutes.</p><p>When both clock labels are equal, same-day mode represents zero duration. Overnight mode can represent a full 24-hour wall-clock cycle. The distinction is deliberate; the calculator does not guess from an employment context or automatically choose the larger interval.</p><p>The break is a duration, not another clock endpoint. It is subtracted once after gross duration is found. Showing gross, break, and net independently prevents a copied result from hiding whether lunch or another pause was already removed.</p></div><dl class="definition-list"><div><dt>Gross</dt><dd>Nominal interval before a break.</dd></div><div><dt>Overnight</dt><dd>End clock time belongs to the next date.</dd></div><div><dt>Break</dt><dd>One nonnegative duration subtracted once.</dd></div><div><dt>Net</dt><dd>Gross minus break, never below zero.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="dst" aria-labelledby="dst-heading"><div class="section-heading"><p class="section-kicker">Wall-clock labels do not identify instants</p><h2 id="dst-heading">DST requires a date, time zone, and offset history</h2></div><p>A spring-forward night can omit local clock labels, while a fall-back night can repeat them. “01:30 to 03:30” might represent one, two, or three elapsed hours depending on the date and named zone. Because this page accepts only nominal clock times and an overnight choice, it cannot determine which offset transition applies and does not pretend to do so.</p><div class="error-table" role="table" aria-label="Duration calculation boundaries"><div class="error-row error-head" role="row"><span role="columnheader">Question</span><span role="columnheader">This page</span><span role="columnheader">Required for more</span></div><div class="error-row" role="row"><strong role="cell">Wall-clock difference</strong><span role="cell">Supported.</span><span role="cell">Start, end, and overnight selection.</span></div><div class="error-row" role="row"><strong role="cell">DST elapsed time</strong><span role="cell">Not inferred.</span><span role="cell">YYYY-MM-DD dates, IANA zone, and zone database.</span></div><div class="error-row" role="row"><strong role="cell">Multiple breaks</strong><span role="cell">Enter their verified sum as one break.</span><span role="cell">Separate schedule records for detailed auditing.</span></div><div class="error-row" role="row"><strong role="cell">Payroll result</strong><span role="cell">Not decided.</span><span role="cell">Rounding, contracts, and applicable labor policy.</span></div></div></section>
+
+      <section class="content-section" aria-labelledby="examples-heading"><div class="section-heading"><p class="section-kicker">Keep arithmetic and policy in separate steps</p><h2 id="examples-heading">Common duration workflows</h2></div><ol class="steps-grid"><li><span>1</span><h3>Same-day session</h3><p>09:00 to 17:00 is eight gross hours. Enter a 30-minute break to report seven hours 30 minutes net.</p></li><li><span>2</span><h3>Overnight shift</h3><p>Choose overnight for 22:30 to 06:15. Do not use the option merely to turn an accidental reversed input into a positive number.</p></li><li><span>3</span><h3>Multi-day project</h3><p>Use <a href="/days-between-dates/">Days Between Dates</a> for calendar spans. This tool intentionally supports only same-day or next-day clock intervals.</p></li></ol><div class="callout-card"><strong>Need working dates rather than hours?</strong><p>Exclude configured weekend weekdays and user-entered holiday dates with a schedule-specific calculator.</p><a href="/business-days-calculator/">Open the Business Days Calculator →</a></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Clock-duration answers</p><h2 id="faq-heading">Time duration calculator FAQ</h2></div><div class="faq-list">
+        <details open><summary>How does the calculator handle an end time earlier than the start?</summary><p>When overnight mode is selected, the end time is interpreted on the following calendar day. Without that selection, an earlier end is invalid rather than silently assumed to cross midnight.</p></details>
+        <details><summary>How is a break subtracted?</summary><p>One nonnegative break duration is subtracted once from the gross wall-clock interval. A break longer than the gross interval is rejected rather than producing a negative worked duration.</p></details>
+        <details><summary>Does the calculator account for daylight saving time?</summary><p>No. Clock times without a date and IANA time zone cannot identify a DST transition. This page performs nominal wall-clock arithmetic; use zoned timestamps and authoritative zone data for elapsed-time work across a transition.</p></details>
+        <details><summary>Is 09:00 to 17:00 eight hours if there is a lunch break?</summary><p>The gross interval is eight hours. With a 30-minute break the net result is seven hours 30 minutes; with a 60-minute break it is seven hours. Enter the break explicitly.</p></details>
+        <details><summary>Can this calculator determine payable work time?</summary><p>No. It supplies arithmetic only. Rounding, paid breaks, overtime, split shifts, on-call time, labor rules, contracts, and payroll policies must be applied by the responsible employer or system.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with calendar dates and schedules</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/days-between-dates/">Date Difference</a><a href="/business-days-calculator/">Business Days</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Separate wall-clock arithmetic from policy.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive time-duration calculation. Overnight, break, DST, and scope guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age on a Specific Date – Calendar Calculator | LiveParse</title>
+    <meta name="description" content="Calculate age on a past or future reference date in calendar years, months, and days with explicit Gregorian and leap-day rules." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/age-calculator-on-specific-date/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/age-calculator-on-specific-date/" />
+    <meta property="og:title" content="Age on a Specific Past or Future Date" />
+    <meta property="og:description" content="Use two date-only values to reconstruct calendar age at an event, record, anniversary, or planned date." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse age on a specific date calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Age on a Specific Date | LiveParse" />
+    <meta name="twitter:description" content="Measure completed calendar age at a selected YYYY-MM-DD reference date." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/age-calculator-on-specific-date/#application",
+            "name": "LiveParse Age on a Specific Date Calculator",
+            "url": "https://liveparse.com/age-calculator-on-specific-date/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Historical and future calendar age calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Calculate completed Gregorian calendar age from a YYYY-MM-DD birth date to a selected YYYY-MM-DD reference date.",
+            "featureList": ["Accept birth and reference dates", "Calculate completed years, months, and days", "Support past and future reference dates", "Apply a stated February 29 rule", "Keep date-only arithmetic separate from elapsed time"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/age-calculator-on-specific-date/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Age on a Specific Date", "item": "https://liveparse.com/age-calculator-on-specific-date/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/age-calculator-on-specific-date/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What does age on a specific date mean?", "acceptedAnswer": { "@type": "Answer", "text": "It is the completed Gregorian calendar interval from the birth date through the selected reference date, expressed as years, months, and days under this page's stated anniversary rules." } },
+              { "@type": "Question", "name": "Can the reference date be in the past or future?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Enter both values as YYYY-MM-DD. The reference date must not be earlier than the birth date, but it may be before or after today because today is not the calculation boundary." } },
+              { "@type": "Question", "name": "How are February 29 anniversaries treated?", "acceptedAnswer": { "@type": "Answer", "text": "For this calculator, an anniversary of February 29 clamps to February 28 in a non-leap reference year. A legal or organizational rule may choose March 1 instead and must be checked separately." } },
+              { "@type": "Question", "name": "Does the calculator include the reference date as a whole extra day?", "acceptedAnswer": { "@type": "Answer", "text": "No. Calendar age measures the interval from the start of the birth date to the start of the reference date. It does not add an inclusive extra day merely because both endpoint labels are displayed." } },
+              { "@type": "Question", "name": "Can this calculation prove age for an official requirement?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is general date arithmetic, not proof of identity or a decision about legal adulthood, work, education, insurance, immigration, retirement, benefits, or any other eligibility rule." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="age-calculator-on-specific-date">
+    <a class="skip-link" href="#date-tool">Skip to the specific-date age calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#contract">Contract</a><a href="#examples">Examples</a><a href="#faq">FAQ</a><a href="/age-calculator/">Age today</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Birth date → Chosen date · Past or future · Gregorian</p><h1>Age on a Specific Date Calculator</h1><p class="hero-lead">Reconstruct a person's calendar age at a selected event date, or project it at a future date. Both inputs are date-only YYYY-MM-DD values, so the calculation does not depend on the current clock.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Calculate age on a date</a><span>Two explicit endpoints · Local processing</span></div></div><div class="hero-example" aria-label="Specific date age example"><div class="example-bar"><span></span><span></span><span></span><strong>historical reference</strong></div><pre><code><span class="property">birth</span>      <span class="string">2000-02-29</span>
+<span class="property">reference</span>  <span class="string">2025-02-28</span>
+<span class="property">rule</span>       <span class="boolean">Feb 28 clamp</span></code></pre><p><strong>Reference is explicit</strong><span>Today does not change the answer</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Reconstruct or project one calendar age</p><h2 id="date-tool-heading">Choose the date that should stop the calculation</h2></div><p>Enter a birth date and reference date in YYYY-MM-DD form. The reference must be the same as or later than the birth date. The primary output is completed calendar years, months, and days, not a policy interpretation.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Specific-date age calculator loading"><p><strong>Loading the specific-date age calculator…</strong></p><p>Enable JavaScript to enter two YYYY-MM-DD values. The calculation contract, leap-day convention, examples, and limitations remain readable below.</p></section></div>
+
+      <section class="content-section" id="contract" aria-labelledby="contract-heading"><div class="section-heading"><p class="section-kicker">A fixed reference makes the result reproducible</p><h2 id="contract-heading">The calculation uses two date-only endpoints</h2></div><div class="prose-grid"><div><p>Unlike an age-to-today page, this calculator never substitutes the current date for the endpoint. That makes it useful when reading an old record, describing age at an event, checking a dataset, or planning a future anniversary. Record both input values with the result so another reader can reproduce the same calculation later.</p><p>The interval is decomposed by completing whole Gregorian years first, then whole months, then remaining days. A reference exactly equal to the birth date produces zero years, zero months, and zero days. The calculation does not add one merely because a human may call both endpoint dates “included.” Inclusion settings belong to a date-counting problem, not to calendar age.</p><p>Date-only arithmetic is intentional. A birthplace, time of birth, event time, and time zone can matter for a highly specific legal or astronomical question, but none is inferred here. The YYYY-MM-DD fields represent civil calendar dates and are not parsed as UTC instants.</p></div><dl class="definition-list"><div><dt>Start</dt><dd>Birth date in YYYY-MM-DD form.</dd></div><div><dt>End</dt><dd>Selected reference date in YYYY-MM-DD form.</dd></div><div><dt>Order</dt><dd>The end must not precede the start.</dd></div><div><dt>Output</dt><dd>Completed years, months, and remaining days.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="examples" aria-labelledby="examples-heading"><div class="section-heading"><p class="section-kicker">Interpret the reference before interpreting the number</p><h2 id="examples-heading">Historical, future, and cutoff-date examples</h2></div><ol class="steps-grid"><li><span>1</span><h3>Historical event</h3><p>Use the event's recorded civil date as the reference. The answer is stable because reopening the page tomorrow does not move that endpoint.</p></li><li><span>2</span><h3>Future anniversary</h3><p>Use a future date to describe projected calendar age, but do not treat the projection as proof that an event or entitlement will occur.</p></li><li><span>3</span><h3>Administrative cutoff</h3><p>Compute the arithmetic, then apply the authority's separate cutoff, inclusion, leap-day, residence, and documentation rules. The calculator does not supply them.</p></li></ol><div class="warning"><p><strong>February 29 is a policy boundary as well as a calendar edge.</strong> This page clamps a missing anniversary to February 28 for its own decomposition. Some laws or programs use March 1, the end of February, a precise instant, or a different wording. Never silently transfer this convention to an official decision.</p></div></section>
+
+      <section class="content-section" aria-labelledby="difference-heading"><div class="section-heading"><p class="section-kicker">Similar inputs can ask different questions</p><h2 id="difference-heading">Age, date difference, and elapsed duration are not interchangeable</h2></div><div class="use-case-grid"><article><h3>Calendar age</h3><p>Decomposes a birth-to-reference interval into anniversary-based years, months, and days. Use this page when that semantic meaning matters.</p></article><article><h3>Date difference</h3><p>The <a href="/days-between-dates/">days between dates calculator</a> counts date boundaries and can apply start/end inclusion choices without treating the first date as a birthday.</p></article><article><h3>Elapsed duration</h3><p>The <a href="/time-duration-calculator/">time duration calculator</a> works with clock times and breaks. Time zones and DST are separate from this date-only page.</p></article><article><h3>Age today</h3><p>The <a href="/age-calculator/">age calculator</a> is the simpler contract when the intended reference is always the current local date.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Reference-date answers</p><h2 id="faq-heading">Age on a specific date FAQ</h2></div><div class="faq-list">
+        <details open><summary>What does age on a specific date mean?</summary><p>It is the completed Gregorian calendar interval from the birth date through the selected reference date, expressed as years, months, and days under this page's stated anniversary rules.</p></details>
+        <details><summary>Can the reference date be in the past or future?</summary><p>Yes. Enter both values as YYYY-MM-DD. The reference date must not be earlier than the birth date, but it may be before or after today because today is not the calculation boundary.</p></details>
+        <details><summary>How are February 29 anniversaries treated?</summary><p>For this calculator, an anniversary of February 29 clamps to February 28 in a non-leap reference year. A legal or organizational rule may choose March 1 instead and must be checked separately.</p></details>
+        <details><summary>Does the calculator include the reference date as a whole extra day?</summary><p>No. Calendar age measures the interval from the start of the birth date to the start of the reference date. It does not add an inclusive extra day merely because both endpoint labels are displayed.</p></details>
+        <details><summary>Can this calculation prove age for an official requirement?</summary><p>No. It is general date arithmetic, not proof of identity or a decision about legal adulthood, work, education, insurance, immigration, retirement, benefits, or any other eligibility rule.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with dates, schedules, and anniversaries</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/age-calculator/">Age Today</a><a href="/date-calculator/">Date Math</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Keep both date endpoints explicit.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive specific-date age calculation. Its Gregorian, reference-date, leap-day, and scope rules remain readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

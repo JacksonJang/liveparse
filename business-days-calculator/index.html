@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Days Calculator – Weekends &amp; Holidays | LiveParse</title>
+    <meta name="description" content="Count or add business days with explicit weekend settings, YYYY-MM-DD holiday exclusions, endpoint rules, and no assumed regional calendar." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/business-days-calculator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/business-days-calculator/" />
+    <meta property="og:title" content="Business Day Calculator with Explicit Holidays" />
+    <meta property="og:description" content="Define weekends and holiday dates instead of silently assuming one country's working calendar." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse business days calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Business Days Calculator | LiveParse" />
+    <meta name="twitter:description" content="Count working dates with visible weekend, holiday, and endpoint rules." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/business-days-calculator/#application",
+            "name": "LiveParse Business Days Calculator",
+            "url": "https://liveparse.com/business-days-calculator/",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Business date counter and date calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Count or move through Gregorian business dates using an explicit weekend pattern, endpoint rules, and user-entered YYYY-MM-DD holidays.",
+            "featureList": ["Count working dates in a range", "Add or subtract business days", "Configure weekend weekdays", "Exclude explicit YYYY-MM-DD holidays", "Report skipped weekend and holiday dates separately"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/business-days-calculator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Business Days Calculator", "item": "https://liveparse.com/business-days-calculator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/business-days-calculator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Which days are treated as weekends?", "acceptedAnswer": { "@type": "Answer", "text": "The selected weekend weekdays are excluded. Saturday and Sunday are a common default, but the visible setting is authoritative because working weeks differ across organizations and locations." } },
+              { "@type": "Question", "name": "Does the calculator know public holidays automatically?", "acceptedAnswer": { "@type": "Answer", "text": "No. It does not assume a country, region, market, employer, or observed-holiday policy. Enter each holiday to exclude as YYYY-MM-DD and verify the list against the calendar that governs your task." } },
+              { "@type": "Question", "name": "What if a holiday falls on a weekend?", "acceptedAnswer": { "@type": "Answer", "text": "That date is excluded once and is not double-counted. An observed weekday is a separate holiday only when you enter its own YYYY-MM-DD value." } },
+              { "@type": "Question", "name": "Are the start and end dates included?", "acceptedAnswer": { "@type": "Answer", "text": "The selected endpoint options control whether an otherwise eligible start or end date counts. A weekend or listed holiday remains excluded even when its endpoint option is selected." } },
+              { "@type": "Question", "name": "Can this result establish a filing or payment deadline?", "acceptedAnswer": { "@type": "Answer", "text": "No. Deadline rules may specify cutoff times, jurisdictions, emergency closures, observed holidays, service methods, and rollover behavior. Confirm the controlling rule and official calendar before relying on a date." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="business-days-calculator">
+    <a class="skip-link" href="#date-tool">Skip to the business days calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#calendar">Calendar</a><a href="#endpoints">Endpoints</a><a href="#faq">FAQ</a><a href="/days-between-dates/">All days</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Weekend pattern · Holiday list · Visible endpoints</p><h1>Business Days Calculator</h1><p class="hero-lead">Count working dates or move by a business-day offset using an explicit weekend pattern and your own YYYY-MM-DD holiday list. No country, employer, exchange, or observed-holiday calendar is silently assumed.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Calculate business days</a><span>Configurable calendar · Local processing</span></div></div><div class="hero-example" aria-label="Business day exclusion example"><div class="example-bar"><span></span><span></span><span></span><strong>working calendar</strong></div><pre><code><span class="property">weekend</span>  <span class="string">Sat, Sun</span>
+<span class="property">holiday</span>  <span class="string">2026-08-17</span>
+<span class="property">rule</span>     <span class="boolean">exclude once</span></code></pre><p><strong>Inputs define the calendar</strong><span>Observed days are not inferred</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Working days depend on an organization</p><h2 id="date-tool-heading">Define the non-working dates before counting</h2></div><p>Choose a range or business-day offset, enter all civil dates as YYYY-MM-DD, select weekend weekdays, and add any holidays that apply. Save the settings with the result so another person can reproduce the same working calendar.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Business days calculator loading"><p><strong>Loading the business days calculator…</strong></p><p>Enable JavaScript to configure weekends, holidays, and endpoints. The working-calendar contract, duplicate handling, limitations, and FAQ remain readable below.</p></section></div>
+
+      <section class="content-section" id="calendar" aria-labelledby="calendar-heading"><div class="section-heading"><p class="section-kicker">“Business day” is not a universal weekday</p><h2 id="calendar-heading">Weekend and holiday inputs create the calculation calendar</h2></div><div class="prose-grid"><div><p>A Monday-through-Friday week is common, but it is not universal. Some organizations work six days; others use Friday and Saturday as their weekend; a shift schedule may not map cleanly to weekdays at all. This calculator excludes exactly the weekdays selected in the interface and makes that choice visible with the result.</p><p>Public holidays are equally contextual. A date may be a holiday in one country, province, city, exchange, school, bank, or company and an ordinary working day in another. Enter each relevant holiday as YYYY-MM-DD. Duplicate entries are treated as one date, out-of-range holidays do not change a range count, and a holiday already excluded as a weekend does not subtract twice.</p><p>An “observed” holiday is not inferred from the nominal holiday. If a Sunday holiday is observed on Monday under the governing calendar, enter the Monday date separately. Emergency closures and one-off company shutdowns also require explicit entries.</p></div><dl class="definition-list"><div><dt>Business day</dt><dd>A date that is neither a selected weekend weekday nor a listed holiday.</dd></div><div><dt>Holiday input</dt><dd>One valid Gregorian YYYY-MM-DD value.</dd></div><div><dt>Observed date</dt><dd>A separate date only when explicitly supplied.</dd></div><div><dt>Duplicate</dt><dd>The same excluded date counts once.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="endpoints" aria-labelledby="endpoints-heading"><div class="section-heading"><p class="section-kicker">Eligibility and membership are separate tests</p><h2 id="endpoints-heading">Endpoint inclusion never turns a non-working date into a working one</h2></div><p>For a range calculation, first choose whether the start and end belong to the range. Each included endpoint must still pass the working-day test. Selecting “include start” does not make a Saturday count when Saturday is configured as weekend, and it does not override an entered holiday.</p><div class="error-table" role="table" aria-label="Business day range decisions"><div class="error-row error-head" role="row"><span role="columnheader">Question</span><span role="columnheader">Decision</span><span role="columnheader">Where it comes from</span></div><div class="error-row" role="row"><strong role="cell">Is the date in the range?</strong><span role="cell">Start/end inclusion setting.</span><span role="cell">The requirement being modeled.</span></div><div class="error-row" role="row"><strong role="cell">Is its weekday working?</strong><span role="cell">Selected weekend pattern.</span><span role="cell">Organization or regional schedule.</span></div><div class="error-row" role="row"><strong role="cell">Is it a holiday?</strong><span role="cell">Explicit YYYY-MM-DD list.</span><span role="cell">Verified governing calendar.</span></div><div class="error-row" role="row"><strong role="cell">Does a deadline roll?</strong><span role="cell">Not decided here.</span><span role="cell">Controlling policy, contract, or law.</span></div></div></section>
+
+      <section class="content-section" aria-labelledby="choose-heading"><div class="section-heading"><p class="section-kicker">Use the smallest contract that fits</p><h2 id="choose-heading">Business dates are one layer of date arithmetic</h2></div><div class="use-case-grid"><article><h3>Count every date</h3><p>Use <a href="/days-between-dates/">Days Between Dates</a> when weekends and holidays should remain in the result.</p></article><article><h3>Add calendar units</h3><p>Use the <a href="/date-calculator/">Date Calculator</a> for years, months, weeks, or days without working-calendar exclusions.</p></article><article><h3>Measure a shift</h3><p>Use the <a href="/time-duration-calculator/">Time Duration Calculator</a> for clock times, overnight work, and an unpaid break.</p></article><article><h3>Identify a reporting week</h3><p>Use the <a href="/week-number-calculator/">Week Number Calculator</a> for the ISO week-year and Monday-based week identity.</p></article></div><div class="warning"><p><strong>Do not use a generic result as an authoritative deadline.</strong> Courts, tax agencies, payment networks, shipping carriers, employers, and schools can define “business day” differently and can publish closure exceptions. Confirm both the rule and the current official calendar.</p></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Working-calendar answers</p><h2 id="faq-heading">Business days calculator FAQ</h2></div><div class="faq-list">
+        <details open><summary>Which days are treated as weekends?</summary><p>The selected weekend weekdays are excluded. Saturday and Sunday are a common default, but the visible setting is authoritative because working weeks differ across organizations and locations.</p></details>
+        <details><summary>Does the calculator know public holidays automatically?</summary><p>No. It does not assume a country, region, market, employer, or observed-holiday policy. Enter each holiday to exclude as YYYY-MM-DD and verify the list against the calendar that governs your task.</p></details>
+        <details><summary>What if a holiday falls on a weekend?</summary><p>That date is excluded once and is not double-counted. An observed weekday is a separate holiday only when you enter its own YYYY-MM-DD value.</p></details>
+        <details><summary>Are the start and end dates included?</summary><p>The selected endpoint options control whether an otherwise eligible start or end date counts. A weekend or listed holiday remains excluded even when its endpoint option is selected.</p></details>
+        <details><summary>Can this result establish a filing or payment deadline?</summary><p>No. Deadline rules may specify cutoff times, jurisdictions, emergency closures, observed holidays, service methods, and rollover behavior. Confirm the controlling rule and official calendar before relying on a date.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with dates, ages, and durations</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/days-between-dates/">All Days</a><a href="/date-calculator/">Date Math</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Define the working calendar before counting.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive business-day calculations. Weekend, holiday, endpoint, and deadline guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

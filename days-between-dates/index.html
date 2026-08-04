@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Days Between Dates – Inclusive Calculator | LiveParse</title>
+    <meta name="description" content="Count days between two YYYY-MM-DD dates with explicit start and end inclusion, signed direction, weeks, and Gregorian date-only rules." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/days-between-dates/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/days-between-dates/" />
+    <meta property="og:title" content="Count Days Between Two Calendar Dates" />
+    <meta property="og:description" content="Choose whether each endpoint counts and keep date boundaries separate from elapsed hours." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse days between dates calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Days Between Dates | LiveParse" />
+    <meta name="twitter:description" content="Count Gregorian date boundaries with explicit endpoint inclusion." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/days-between-dates/#application",
+            "name": "LiveParse Days Between Dates Calculator",
+            "url": "https://liveparse.com/days-between-dates/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Gregorian date interval calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Count Gregorian date boundaries between two YYYY-MM-DD dates with explicit endpoint inclusion and direction.",
+            "featureList": ["Accept two YYYY-MM-DD dates", "Count date boundaries without timestamp drift", "Include or exclude the start date", "Include or exclude the end date", "Show whole weeks and remaining days"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/days-between-dates/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Days Between Dates", "item": "https://liveparse.com/days-between-dates/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/days-between-dates/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How many days are between the same date?", "acceptedAnswer": { "@type": "Answer", "text": "The exclusive boundary difference is zero. If both endpoint inclusion options are selected, that single calendar date counts as one represented day rather than two duplicate endpoints." } },
+              { "@type": "Question", "name": "What is the difference between exclusive and inclusive counting?", "acceptedAnswer": { "@type": "Answer", "text": "Exclusive counting measures date boundaries without counting an endpoint as a represented day. Including the start, the end, or both changes which labeled calendar dates belong to the requested range." } },
+              { "@type": "Question", "name": "Does a daylight-saving change create a fraction of a day?", "acceptedAnswer": { "@type": "Answer", "text": "No. This calculator counts Gregorian date boundaries, not elapsed 24-hour blocks. Consecutive local dates remain one date apart even if a zoned timestamp interval spans 23 or 25 hours." } },
+              { "@type": "Question", "name": "Are weekends and holidays removed?", "acceptedAnswer": { "@type": "Answer", "text": "No. Every Gregorian date is counted under the chosen endpoint rule. Use the business days calculator when weekends or user-supplied holidays must be excluded." } },
+              { "@type": "Question", "name": "Which date format does the calculator accept?", "acceptedAnswer": { "@type": "Answer", "text": "Enter both civil dates as YYYY-MM-DD. The interface validates real Gregorian dates, including leap-year rules, rather than accepting an impossible date such as 2025-02-29." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="days-between-dates">
+    <a class="skip-link" href="#date-tool">Skip to the days-between-dates calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#inclusion">Inclusion</a><a href="#dst">Date vs time</a><a href="#faq">FAQ</a><a href="/business-days-calculator/">Business days</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Two dates · Explicit endpoints · No DST drift</p><h1>Days Between Two Dates Calculator</h1><p class="hero-lead">Count Gregorian date boundaries between two YYYY-MM-DD values, then choose whether the start date, end date, or both should count as represented days. Weekends remain included unless you choose the separate business-day tool.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Count days</a><span>Inclusive or exclusive · Date-only</span></div></div><div class="hero-example" aria-label="Inclusive day count example"><div class="example-bar"><span></span><span></span><span></span><strong>endpoint choice</strong></div><pre><code><span class="property">start</span>      <span class="string">2026-08-04</span>
+<span class="property">end</span>        <span class="string">2026-08-05</span>
+<span class="property">exclusive</span>  <span class="boolean">1 boundary</span></code></pre><p><strong>Say what counts</strong><span>Range membership is configurable</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Count date labels with a visible boundary rule</p><h2 id="date-tool-heading">Measure the gap and choose endpoint inclusion</h2></div><p>Enter two valid Gregorian dates in YYYY-MM-DD form. The calculator preserves direction, shows the base boundary difference, and applies explicit start/end inclusion without pretending that every calendar day contains exactly 24 elapsed hours.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Days between dates calculator loading"><p><strong>Loading the days-between-dates calculator…</strong></p><p>Enable JavaScript to enter two dates and select endpoint inclusion. The counting rules, DST distinction, examples, and scope remain readable below.</p></section></div>
+
+      <section class="content-section" id="inclusion" aria-labelledby="inclusion-heading"><div class="section-heading"><p class="section-kicker">“Between” is incomplete without a boundary convention</p><h2 id="inclusion-heading">Exclusive and inclusive counts answer different range questions</h2></div><div class="error-table" role="table" aria-label="Endpoint inclusion examples"><div class="error-row error-head" role="row"><span role="columnheader">Rule</span><span role="columnheader">August 4 to August 5</span><span role="columnheader">Interpretation</span></div><div class="error-row" role="row"><strong role="cell">Exclude both</strong><span role="cell">1 date boundary</span><span role="cell">The start of August 5 is one calendar step after the start of August 4.</span></div><div class="error-row" role="row"><strong role="cell">Include start</strong><span role="cell">2 represented dates</span><span role="cell">August 4 and the boundary leading to August 5 are counted under the range convention.</span></div><div class="error-row" role="row"><strong role="cell">Include end</strong><span role="cell">2 represented dates</span><span role="cell">The terminal date belongs to the requested range.</span></div><div class="error-row" role="row"><strong role="cell">Include both</strong><span role="cell">2 represented dates</span><span role="cell">There are only two unique labeled dates; an identical endpoint is never double-counted.</span></div></div><p>Requirements often use “inclusive” casually. A hotel night count, medication schedule, filing window, project span, and array slice may each assign endpoints differently. Choose the convention from the real domain, then record it with the result.</p></section>
+
+      <section class="content-section alt" id="dst" aria-labelledby="dst-heading"><div class="section-heading"><p class="section-kicker">Civil dates are not fixed-duration timestamps</p><h2 id="dst-heading">A date boundary remains one even across DST</h2></div><div class="prose-grid"><div><p>These inputs contain a year, month, and day but no clock time or named time zone. The calculator therefore uses proleptic Gregorian date arithmetic. It does not create local midnight timestamps and divide milliseconds by 86,400,000, a technique that can yield surprising fractions or off-by-one results around daylight-saving changes.</p><p>From Saturday to Sunday is one date boundary whether the local clocks later skip an hour, repeat an hour, or never observe daylight saving. If the actual question asks how many seconds passed between two instants, the inputs must include times, zones, and an offset-history rule. That is outside this page's date-only contract.</p><p>Leap days are real dates. A range that crosses February 29 includes the extra date boundary automatically. The tool validates the Gregorian year rule: years divisible by four are generally leap years, century years are not unless divisible by 400.</p></div><dl class="definition-list"><div><dt>Date distance</dt><dd>Count of civil date boundaries.</dd></div><div><dt>Elapsed duration</dt><dd>Seconds or hours between instants.</dd></div><div><dt>Leap day</dt><dd>A valid February 29 in a Gregorian leap year.</dd></div><div><dt>Direction</dt><dd>Which entered endpoint occurs first.</dd></div></dl></div></section>
+
+      <section class="content-section" aria-labelledby="scope-heading"><div class="section-heading"><p class="section-kicker">Apply exclusions in the right layer</p><h2 id="scope-heading">Weekends, holidays, and age use different contracts</h2></div><div class="use-case-grid"><article><h3>All calendar days</h3><p>This page counts every date. Whole weeks and remainder days are a presentation of that count, not an ISO week-number calculation.</p></article><article><h3>Working dates</h3><p>The <a href="/business-days-calculator/">Business Days Calculator</a> applies a weekend pattern and explicit holiday list rather than silently assuming a locale.</p></article><article><h3>Calendar age</h3><p>The <a href="/age-calculator-on-specific-date/">specific-date age calculator</a> decomposes a birth interval into anniversary-based years, months, and days.</p></article><article><h3>Move an endpoint</h3><p>The <a href="/date-calculator/">Date Calculator</a> adds or subtracts years, months, weeks, and days with a stated month-end clamp.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Range-count answers</p><h2 id="faq-heading">Days between dates FAQ</h2></div><div class="faq-list">
+        <details open><summary>How many days are between the same date?</summary><p>The exclusive boundary difference is zero. If both endpoint inclusion options are selected, that single calendar date counts as one represented day rather than two duplicate endpoints.</p></details>
+        <details><summary>What is the difference between exclusive and inclusive counting?</summary><p>Exclusive counting measures date boundaries without counting an endpoint as a represented day. Including the start, the end, or both changes which labeled calendar dates belong to the requested range.</p></details>
+        <details><summary>Does a daylight-saving change create a fraction of a day?</summary><p>No. This calculator counts Gregorian date boundaries, not elapsed 24-hour blocks. Consecutive local dates remain one date apart even if a zoned timestamp interval spans 23 or 25 hours.</p></details>
+        <details><summary>Are weekends and holidays removed?</summary><p>No. Every Gregorian date is counted under the chosen endpoint rule. Use the business days calculator when weekends or user-supplied holidays must be excluded.</p></details>
+        <details><summary>Which date format does the calculator accept?</summary><p>Enter both civil dates as YYYY-MM-DD. The interface validates real Gregorian dates, including leap-year rules, rather than accepting an impossible date such as 2025-02-29.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with date math, age, and schedules</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/date-calculator/">Date Math</a><a href="/business-days-calculator/">Business Days</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Make the endpoint rule part of the answer.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive date-distance calculation. Inclusion, DST, leap-year, and scope guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

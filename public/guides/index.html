@@ -90,7 +90,8 @@
               { "@type": "ListItem", "position": 31, "url": "https://liveparse.com/guides/how-word-counting-works/", "name": "How Word Counting Works" },
               { "@type": "ListItem", "position": 32, "url": "https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/", "name": "Grapheme Clusters vs Code Points and Bytes" },
               { "@type": "ListItem", "position": 33, "url": "https://liveparse.com/guides/international-morse-code/", "name": "International Morse Code Reference" },
-              { "@type": "ListItem", "position": 34, "url": "https://liveparse.com/guides/image-compression-formats-and-file-size/", "name": "Image Compression, Formats, and File Size" }
+              { "@type": "ListItem", "position": 34, "url": "https://liveparse.com/guides/image-compression-formats-and-file-size/", "name": "Image Compression, Formats, and File Size" },
+              { "@type": "ListItem", "position": 35, "url": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/", "name": "Calendar Date Arithmetic, DST, and Leap Years" }
             ]
           }
         ]
@@ -114,7 +115,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>34 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>35 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -145,6 +146,15 @@
                 <a class="related-card" href="/guides/discord-timestamp-formats/"><strong>Discord Timestamp Formats</strong><span>All style codes, relative display, and epoch input rules.</span></a>
               </div>
               <p>Convert values with the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> or build markup with the <a href="/discord-timestamp-generator/">Discord Timestamp Generator</a>.</p>
+            </section>
+
+            <section aria-labelledby="calendar-guides">
+              <h2 id="calendar-guides">Calendar dates, ages, and durations</h2>
+              <p>Calendar arithmetic is not the same as subtracting timestamps. Month lengths vary, leap years add February 29, daylight-saving changes can make a local day shorter or longer than 24 hours, and ISO week-years can differ from calendar years near January 1.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/calendar-date-arithmetic-dst-leap-years/"><strong>Calendar Date Arithmetic, DST, and Leap Years</strong><span>Elapsed days, calendar age, end-of-month clamping, leap-day birthdays, business days, and ISO week numbering.</span></a>
+              </div>
+              <p>Use the <a href="/age-calculator/">Age Calculator</a>, <a href="/age-calculator-on-specific-date/">Age on a Specific Date</a>, <a href="/date-calculator/">Date Calculator</a>, <a href="/days-between-dates/">Days Between Dates</a>, <a href="/business-days-calculator/">Business Days Calculator</a>, <a href="/time-duration-calculator/">Time Duration Calculator</a>, <a href="/week-number-calculator/">Week Number Calculator</a>, or <a href="/birthday-countdown/">Birthday Countdown</a>. Their date-only calculations use exact Gregorian calendar values rather than timezone-dependent midnight timestamps.</p>
             </section>
 
             <section aria-labelledby="encoding-guides">
@@ -276,6 +286,7 @@
             <ol>
               <li><a href="#json-guides">JSON and APIs</a></li>
               <li><a href="#time-guides">Time and Discord</a></li>
+              <li><a href="#calendar-guides">Dates and calendars</a></li>
               <li><a href="#encoding-guides">Base64 encoding</a></li>
               <li><a href="#number-guides">Numbers and ASCII</a></li>
               <li><a href="#morse-guides">Morse code</a></li>

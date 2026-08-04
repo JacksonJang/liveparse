@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week Number Calculator – ISO Week Date | LiveParse</title>
+    <meta name="description" content="Convert a YYYY-MM-DD Gregorian date to its ISO 8601 week-year, week number, weekday, and Monday-to-Sunday week range." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/week-number-calculator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/week-number-calculator/" />
+    <meta property="og:title" content="ISO 8601 Week Number and Week-Year Calculator" />
+    <meta property="og:description" content="Identify the Monday-based ISO week containing a Gregorian calendar date." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse ISO week number calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ISO Week Number Calculator | LiveParse" />
+    <meta name="twitter:description" content="Find ISO week-year, week number, weekday, and week bounds from YYYY-MM-DD." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/week-number-calculator/#application",
+            "name": "LiveParse ISO Week Number Calculator",
+            "url": "https://liveparse.com/week-number-calculator/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "ISO 8601 week-date calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Convert a Gregorian YYYY-MM-DD date to an ISO 8601 week-year, two-digit week number, weekday, and Monday-to-Sunday bounds.",
+            "featureList": ["Accept a YYYY-MM-DD calendar date", "Calculate ISO week-year", "Calculate ISO week 01 through 53", "Report Monday as weekday 1 through Sunday as 7", "Show the containing Monday-to-Sunday range"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/week-number-calculator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Week Number Calculator", "item": "https://liveparse.com/week-number-calculator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/week-number-calculator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is ISO week 1?", "acceptedAnswer": { "@type": "Answer", "text": "ISO week 1 is the Monday-to-Sunday week containing January 4, equivalently the first week containing a Thursday. It can begin in the previous Gregorian calendar year." } },
+              { "@type": "Question", "name": "Why can the ISO week-year differ from the calendar year?", "acceptedAnswer": { "@type": "Answer", "text": "The first and last few dates of a Gregorian year can belong to a week whose Thursday lies in the neighboring year. The ISO week-year follows that week assignment, not merely the date's year field." } },
+              { "@type": "Question", "name": "Which day starts an ISO week?", "acceptedAnswer": { "@type": "Answer", "text": "Monday starts the ISO week and is weekday 1. Tuesday through Sunday are 2 through 7. This differs from displays or APIs that put Sunday first." } },
+              { "@type": "Question", "name": "Can an ISO year have week 53?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. An ISO week-year has 53 weeks when its calendar arrangement supplies a fifty-third Thursday-based week. The calculator derives the result instead of assuming every year ends at week 52." } },
+              { "@type": "Question", "name": "Is this the same as a locale or fiscal week number?", "acceptedAnswer": { "@type": "Answer", "text": "No. This page implements the ISO 8601 Monday-based week-date system. Locale calendars, retail 4-4-5 calendars, payroll periods, and organization-specific fiscal weeks can use different starts and numbering." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="week-number-calculator">
+    <a class="skip-link" href="#date-tool">Skip to the ISO week number calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#iso-rule">ISO rule</a><a href="#year-edge">Year edges</a><a href="#faq">FAQ</a><a href="/date-calculator/">Date math</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">ISO 8601 · Monday first · Week-year aware</p><h1>ISO Week Number Calculator</h1><p class="hero-lead">Convert a Gregorian YYYY-MM-DD date to its ISO week-year, week number, weekday, and Monday-to-Sunday range. Year-edge dates keep the ISO year separate from the ordinary calendar year.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Find the ISO week</a><span>Week 01–53 · Weekday 1–7</span></div></div><div class="hero-example" aria-label="ISO week-year example"><div class="example-bar"><span></span><span></span><span></span><strong>week-year boundary</strong></div><pre><code><span class="property">date</span>      <span class="string">2021-01-01</span>
+<span class="property">ISO week</span>  <span class="string">2020-W53</span>
+<span class="property">weekday</span>   <span class="boolean">5 · Friday</span></code></pre><p><strong>Calendar year can differ</strong><span>The week belongs to its Thursday</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">One standard, all output fields visible</p><h2 id="date-tool-heading">Find ISO week-year, week, weekday, and bounds</h2></div><p>Enter one valid Gregorian date as YYYY-MM-DD. The output identifies the complete ISO week date and the Monday and Sunday that bound the same reporting week.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="ISO week number calculator loading"><p><strong>Loading the ISO week number calculator…</strong></p><p>Enable JavaScript to enter a YYYY-MM-DD date. The ISO week-one rule, year-edge examples, week-53 behavior, and scope remain readable below.</p></section></div>
+
+      <section class="content-section" id="iso-rule" aria-labelledby="iso-rule-heading"><div class="section-heading"><p class="section-kicker">The first Thursday anchors the week-year</p><h2 id="iso-rule-heading">ISO week 1 contains January 4</h2></div><div class="prose-grid"><div><p>ISO 8601 weeks begin on Monday and end on Sunday. Week 1 is the week that contains January 4. The same rule can be stated as the first week with a Thursday in the new calendar year, or the week containing a majority of its days in that year. These equivalent definitions prevent a partial one- or two-day fragment from becoming week 1.</p><p>An ISO week date has three components: week-year, week number, and weekday. A complete representation such as 2020-W53-5 says Friday, weekday 5, in week 53 of ISO week-year 2020. Writing only “week 53” loses the year and can make data ambiguous.</p><p>The input remains a Gregorian calendar date in YYYY-MM-DD form. Conversion changes its labeling within a weekly system; it does not change the underlying date, locale, time zone, or elapsed duration.</p></div><dl class="definition-list"><div><dt>Week-year</dt><dd>The ISO year that owns the containing week.</dd></div><div><dt>Week</dt><dd>Two-digit number from 01 through 52 or 53.</dd></div><div><dt>Weekday</dt><dd>Monday 1 through Sunday 7.</dd></div><div><dt>Bounds</dt><dd>Monday and Sunday Gregorian dates for that week.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="year-edge" aria-labelledby="year-edge-heading"><div class="section-heading"><p class="section-kicker">Test the dates where assumptions fail</p><h2 id="year-edge-heading">Late December and early January can belong next door</h2></div><div class="error-table" role="table" aria-label="ISO week-year edge examples"><div class="error-row error-head" role="row"><span role="columnheader">Gregorian date</span><span role="columnheader">ISO identity</span><span role="columnheader">Reason</span></div><div class="error-row" role="row"><strong role="cell">2018-12-31</strong><span role="cell">2019-W01-1</span><span role="cell">Its Monday-to-Sunday week contains January 4, 2019.</span></div><div class="error-row" role="row"><strong role="cell">2021-01-01</strong><span role="cell">2020-W53-5</span><span role="cell">The Friday belongs to the final ISO week of 2020.</span></div><div class="error-row" role="row"><strong role="cell">2021-01-04</strong><span role="cell">2021-W01-1</span><span role="cell">This Monday begins the week containing January 4.</span></div><div class="error-row" role="row"><strong role="cell">2026-12-31</strong><span role="cell">Derived, not assumed</span><span role="cell">Week 53 exists only when the year's weekday arrangement allows it.</span></div></div><p>Use boundary fixtures when implementing weekly reports. A common defect concatenates the Gregorian year with a separately computed week number, producing an impossible pair around New Year. Store or transmit the ISO week-year returned by the same calculation as the week number.</p></section>
+
+      <section class="content-section" aria-labelledby="scope-heading"><div class="section-heading"><p class="section-kicker">ISO is precise, not universal</p><h2 id="scope-heading">Fiscal, locale, and payroll weeks need their own definitions</h2></div><div class="use-case-grid"><article><h3>ISO reporting</h3><p>Use this page for Monday-based ISO week dates shared across systems that explicitly require ISO 8601.</p></article><article><h3>Locale display</h3><p>A locale may start its visible week on Sunday or Saturday and may define its first week differently. Do not label that result ISO.</p></article><article><h3>Fiscal schedule</h3><p>Retail 4-4-5 and custom fiscal calendars require a fiscal-year anchor and leap-week policy not accepted here.</p></article><article><h3>Date movement</h3><p>Use the <a href="/date-calculator/">Date Calculator</a> to add seven-day weeks; use <a href="/days-between-dates/">Days Between Dates</a> to count date boundaries.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">ISO week answers</p><h2 id="faq-heading">Week number calculator FAQ</h2></div><div class="faq-list">
+        <details open><summary>What is ISO week 1?</summary><p>ISO week 1 is the Monday-to-Sunday week containing January 4, equivalently the first week containing a Thursday. It can begin in the previous Gregorian calendar year.</p></details>
+        <details><summary>Why can the ISO week-year differ from the calendar year?</summary><p>The first and last few dates of a Gregorian year can belong to a week whose Thursday lies in the neighboring year. The ISO week-year follows that week assignment, not merely the date's year field.</p></details>
+        <details><summary>Which day starts an ISO week?</summary><p>Monday starts the ISO week and is weekday 1. Tuesday through Sunday are 2 through 7. This differs from displays or APIs that put Sunday first.</p></details>
+        <details><summary>Can an ISO year have week 53?</summary><p>Yes. An ISO week-year has 53 weeks when its calendar arrangement supplies a fifty-third Thursday-based week. The calculator derives the result instead of assuming every year ends at week 52.</p></details>
+        <details><summary>Is this the same as a locale or fiscal week number?</summary><p>No. This page implements the ISO 8601 Monday-based week-date system. Locale calendars, retail 4-4-5 calendars, payroll periods, and organization-specific fiscal weeks can use different starts and numbering.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with calendar dates and intervals</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/date-calculator/">Date Math</a><a href="/days-between-dates/">Date Difference</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Keep ISO week-year and week number together.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive ISO week conversion. Week-one, week-year, week-53, and scope guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

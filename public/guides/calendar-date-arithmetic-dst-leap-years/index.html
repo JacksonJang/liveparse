@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar Arithmetic, DST &amp; Leap Years Guide | LiveParse</title>
+    <meta name="description" content="Learn reliable Gregorian date arithmetic: date-only values, elapsed time, DST, leap years, month-end clamp, inclusion, ISO weeks, and business days." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/" />
+    <meta property="og:title" content="Calendar Date Arithmetic, DST, and Leap Years" />
+    <meta property="og:description" content="Separate civil dates from instants, then make month-end, leap-day, endpoint, week, and working-calendar rules explicit." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse guide to calendar arithmetic, daylight saving time, and leap years" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Calendar Arithmetic and DST Guide | LiveParse" />
+    <meta name="twitter:description" content="A practical contract-first guide to civil dates, elapsed time, leap days, month ends, ISO weeks, and working calendars." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/#article",
+            "headline": "Calendar Date Arithmetic, DST, Leap Years, Month Ends, and ISO Weeks",
+            "description": "A contract-first guide to Gregorian date-only arithmetic, elapsed time, daylight-saving transitions, leap days, month-end clamp, endpoint inclusion, ISO week-years, and business calendars.",
+            "mainEntityOfPage": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/",
+            "url": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/",
+            "image": "https://liveparse.com/og-date-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Calendar and time arithmetic",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "Calendar Date Arithmetic, DST, and Leap Years", "item": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Is one calendar day always 24 elapsed hours?", "acceptedAnswer": { "@type": "Answer", "text": "No. Consecutive civil dates are one date boundary apart, but a zoned interval between their local midnights can be 23, 24, or 25 hours around daylight-saving changes. Date distance and elapsed duration are different measurements." } },
+              { "@type": "Question", "name": "Should adding one month mean adding 30 days?", "acceptedAnswer": { "@type": "Answer", "text": "No. Adding a calendar month changes the year-month field and needs a rule when the original day is unavailable. Adding 30 days crosses exactly 30 date boundaries and can land on a different result." } },
+              { "@type": "Question", "name": "How should January 31 plus one month be handled?", "acceptedAnswer": { "@type": "Answer", "text": "There is no universal implicit answer. LiveParse date tools clamp to the final valid day of February and state that rule. A system could instead reject the operation or roll into March, but it must document and test its choice." } },
+              { "@type": "Question", "name": "When is a Gregorian year a leap year?", "acceptedAnswer": { "@type": "Answer", "text": "A Gregorian year divisible by 4 is a leap year except a year divisible by 100 is not, unless it is also divisible by 400. Thus 2000 was a leap year, while 1900 and 2100 are not." } },
+              { "@type": "Question", "name": "Why can an ISO week-year differ from the date's year?", "acceptedAnswer": { "@type": "Answer", "text": "ISO weeks run Monday through Sunday, and week 1 contains January 4. A late-December or early-January date can therefore belong to a week assigned to the neighboring ISO week-year." } },
+              { "@type": "Question", "name": "Can generic date arithmetic decide an official deadline or age rule?", "acceptedAnswer": { "@type": "Answer", "text": "No. Laws, contracts, schools, employers, agencies, and benefit programs may define inclusion, cutoff times, observed holidays, leap-day anniversaries, evidence, and rollover differently. Verify the controlling rule and authoritative calendar." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the calendar arithmetic guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/date-calculator/">Date Calculator</a><a href="/days-between-dates/">Days Between Dates</a><a href="/guides/">Guides</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">Calendar Arithmetic and DST</span></nav><p class="eyebrow">Civil dates, instants, calendars, and explicit boundary rules</p><h1>Calendar Date Arithmetic, DST, Leap Years, Month Ends, and ISO Weeks</h1><p class="dek">Reliable date calculations begin by deciding whether the values are calendar labels, recurring dates, working dates, clock readings, or precise instants.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>14 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> A civil date such as 2026-08-04 is not an instant, and a calendar month is not a fixed number of seconds. Parse date inputs as YYYY-MM-DD, validate them against the Gregorian calendar, declare month-end and February 29 behavior, specify endpoint inclusion, and introduce a named time zone only when elapsed time requires one. Keep ISO week-years and working calendars as separate contracts rather than locale guesses.</p></div>
+
+          <h2 id="value-types">Start by naming the kind of value</h2>
+          <p>A plain date identifies a day on a civil calendar. It has a year, month, and day but no time of day, UTC offset, or time zone. A clock reading such as 09:30 repeats daily and does not identify an instant either. A local date-time combines both labels but can still be ambiguous or nonexistent during a daylight-saving transition. An instant is a position on a global timeline; a zoned date-time additionally supplies the rules needed to render that instant for a region.</p>
+          <p>Those distinctions determine the algorithm. Counting dates by constructing local-midnight timestamps and dividing milliseconds by 86,400,000 imports daylight-saving behavior into a problem that may never have asked about elapsed hours. Conversely, stripping a time zone from flight, log, medical, or financial timestamps can erase the information needed to order real events. Before calculating, write the input and output contract in words.</p>
+          <div class="table-wrap"><table><thead><tr><th>Value</th><th>Example</th><th>Good question</th><th>Missing information</th></tr></thead><tbody><tr><td>Civil date</td><td>2026-08-04</td><td>What date is 30 days later?</td><td>Time, offset, and zone.</td></tr><tr><td>Clock time</td><td>22:30</td><td>What is the nominal overnight shift length?</td><td>Date and zone for DST elapsed time.</td></tr><tr><td>Offset timestamp</td><td>2026-08-04T13:00:00+09:00</td><td>Which instant occurred first?</td><td>Named-zone rules for future recurrence.</td></tr><tr><td>Recurring month/day</td><td>February 29</td><td>When is the next observed birthday?</td><td>A non-leap-year observance convention.</td></tr></tbody></table></div>
+
+          <h2 id="gregorian">Validate Gregorian YYYY-MM-DD inputs</h2>
+          <p>LiveParse date tools describe date fields with the unambiguous YYYY-MM-DD order. Parsing is more than matching four digits, two digits, and two digits. April 31 and 2025-02-29 match that visual shape but are not real Gregorian dates. Validation must check the month-specific maximum and the leap-year rule.</p>
+          <p>A year divisible by four is normally a leap year. Century years divisible by 100 are excluded unless also divisible by 400. Therefore 2000 included February 29, 1900 did not, and 2100 will not. Test all three categories because code that uses only divisibility by four will pass many ordinary cases before failing at a century boundary.</p>
+
+          <h2 id="calendar-units">Calendar units are variable-length operations</h2>
+          <p>Adding one day advances to the next civil date. Adding one week advances seven date boundaries. Adding one month changes the year-month field and attempts to preserve the day. Adding one year changes the year and attempts to preserve the month and day. Months range from 28 to 31 days and years from 365 to 366, so replacing those operations with fixed averages changes the question.</p>
+          <p>Mixed units require an order. The LiveParse <a href="/date-calculator/">Date Calculator</a> applies years and months first, clamps an unavailable day to the destination month's last valid date, and then applies weeks and days. Starting at January 30, “one month then two days” can differ from “two days then one month.” Persist the order alongside the result when it matters.</p>
+
+          <h2 id="month-end">Month-end clamp is one explicit policy</h2>
+          <p>January 31 plus one calendar month requests a day that February does not have. A library can reject the input, clamp to February's last day, or construct an overflowing date that lands in March. None should be hidden. LiveParse uses clamp: January 31 plus one month becomes February 28 in a common year or February 29 in a leap year. March 31 minus one month uses the same backward rule.</p>
+          <p>Clamp also governs February 29 plus one calendar year, producing February 28 in a non-leap destination year. That is an arithmetic contract, not automatically a legal anniversary rule. A jurisdiction or program may use March 1 or language such as “after the end of February.”</p>
+
+          <h2 id="distance-inclusion">Date distance needs an endpoint convention</h2>
+          <p>The exclusive boundary difference from August 4 to August 5 is one. A range that represents both labeled dates contains August 4 and August 5. When both inputs are the same date, the boundary difference is zero, while an inclusive set contains one unique date. Requirements should say whether the start date, end date, both, or neither belongs to the count.</p>
+          <p>The <a href="/days-between-dates/">Days Between Dates Calculator</a> keeps these choices visible. It counts Gregorian date boundaries, including leap days, without interpreting each boundary as exactly 24 elapsed hours. That makes it suitable for calendar spans but not for measuring timestamp latency.</p>
+
+          <h2 id="dst">Date distance and elapsed time diverge at DST</h2>
+          <p>In a zone that advances clocks, the elapsed interval from one local midnight to the next can be 23 hours. When clocks repeat, it can be 25. The two civil dates are still consecutive. The correct answer therefore depends on whether the requested unit is “calendar days” or “elapsed hours.”</p>
+          <p>A named IANA time zone such as Asia/Seoul or America/New_York is more informative than a fixed abbreviation. The zone supplies historical and future offset transitions. Even then, an ambiguous repeated local time may need a disambiguation policy choosing the earlier or later occurrence, while a skipped local time may require rejection or an explicit adjustment.</p>
+          <p>The <a href="/time-duration-calculator/">Time Duration Calculator</a> deliberately performs nominal wall-clock arithmetic for a same-day or overnight interval and subtracts one break. Because clock labels alone cannot identify a DST transition, it makes no zoned elapsed-time claim.</p>
+
+          <h2 id="age-birthday">Age and birthdays add anniversary semantics</h2>
+          <p>Calendar age is not total days divided by 365. The <a href="/age-calculator/">Age Calculator</a> advances through completed years, then months, then remaining days through today. The <a href="/age-calculator-on-specific-date/">Age on a Specific Date Calculator</a> uses an explicit historical or future reference date, making the result reproducible after today changes.</p>
+          <p>The <a href="/birthday-countdown/">Birthday Countdown</a> instead finds the next annual occurrence and counts date boundaries to it. It returns zero when the observed birthday is today rather than immediately skipping to next year. All three tools use February 28 for a February 29 anniversary in a non-leap year and state that convention. They do not decide legal adulthood, school placement, employment, insurance, voting, retirement, benefits, or identity.</p>
+
+          <h2 id="business-days">Business days require a supplied working calendar</h2>
+          <p>Saturday and Sunday are common weekend days, but they are not universal. Holidays vary by country, province, exchange, employer, school, and year. A generic tool should not silently infer a region from browser language or IP address. The <a href="/business-days-calculator/">Business Days Calculator</a> uses the selected weekend weekdays and explicit YYYY-MM-DD holiday inputs.</p>
+          <p>A holiday falling on an excluded weekend is removed once, not twice. An observed Monday is separate from a Sunday nominal holiday and must be entered explicitly. Emergency closures, cutoff times, methods of service, and “roll to next working day” rules remain external policy. Arithmetic can support a deadline workflow without becoming the authority for it.</p>
+
+          <h2 id="iso-weeks">ISO week numbers carry their own year</h2>
+          <p>ISO 8601 weeks begin Monday. Week 1 is the week containing January 4, equivalently the first week with a Thursday in the new year. As a result, December 31 can belong to week 1 of the next ISO week-year, and January 1 can belong to week 52 or 53 of the previous one.</p>
+          <p>The <a href="/week-number-calculator/">Week Number Calculator</a> returns week-year, week number, weekday 1 through 7, and Monday-to-Sunday bounds together. Never combine a Gregorian year field with an independently computed week number. Locale week displays, payroll periods, fiscal calendars, and retail 4-4-5 calendars are separate systems.</p>
+
+          <h2 id="tool-map">Choose the date tool by its primary contract</h2>
+          <div class="table-wrap"><table><thead><tr><th>Question</th><th>Tool</th><th>Defining boundary</th></tr></thead><tbody>
+            <tr><td>How old is someone today?</td><td><a href="/age-calculator/">Age Calculator</a></td><td>Birth date through today's local date.</td></tr>
+            <tr><td>How old were they on an event date?</td><td><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></td><td>Birth date through an explicit reference.</td></tr>
+            <tr><td>What date follows a calendar offset?</td><td><a href="/date-calculator/">Date Calculator</a></td><td>Ordered units and month-end clamp.</td></tr>
+            <tr><td>How many dates lie in a range?</td><td><a href="/days-between-dates/">Days Between Dates</a></td><td>Start/end inclusion.</td></tr>
+            <tr><td>How many configured working days?</td><td><a href="/business-days-calculator/">Business Days Calculator</a></td><td>Weekend pattern and explicit holidays.</td></tr>
+            <tr><td>How long is a clock interval?</td><td><a href="/time-duration-calculator/">Time Duration Calculator</a></td><td>Same day or overnight, then break.</td></tr>
+            <tr><td>Which ISO reporting week owns a date?</td><td><a href="/week-number-calculator/">Week Number Calculator</a></td><td>ISO week-year and Monday-based week.</td></tr>
+            <tr><td>How many dates until the next birthday?</td><td><a href="/birthday-countdown/">Birthday Countdown</a></td><td>Annual recurrence and February 29 rule.</td></tr>
+          </tbody></table></div>
+
+          <h2 id="testing">Build a boundary-first test matrix</h2>
+          <ol class="steps"><li><strong>Validate real dates.</strong> Include ordinary dates, April 31, common-year February 29, leap-year February 29, 1900, 2000, and 2100.</li><li><strong>Exercise month ends.</strong> Add and subtract months from days 28 through 31 across February and 30-day months.</li><li><strong>Test order.</strong> Compare mixed year/month/day operations where changing the sequence changes the result.</li><li><strong>Test range identity.</strong> Use equal endpoints and one-day-apart endpoints under every inclusion setting.</li><li><strong>Cross DST only in the right model.</strong> Verify date-only distance remains integral, while zoned elapsed-time tests use real transition data.</li><li><strong>Cover ISO year edges.</strong> Test the final and first seven days around New Year, including known week 53 years.</li><li><strong>Deduplicate exclusions.</strong> Repeat a holiday and place it on a weekend to ensure a business date is removed once.</li><li><strong>Record policy.</strong> Keep leap-day observance, weekend pattern, holiday source, zone, and disambiguation with the result.</li></ol>
+
+          <div class="tool-callout"><p><strong>Start with the value type, not the desired number.</strong> Decide whether you are moving civil dates, counting represented dates, measuring instants, or applying a schedule. Then choose the tool whose boundary contract matches.</p><a class="button" href="/date-calculator/">Open the Date Calculator</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>Is one calendar day always 24 elapsed hours?</h3><p>No. Consecutive civil dates are one date boundary apart, but a zoned interval between their local midnights can be 23, 24, or 25 hours around daylight-saving changes. Date distance and elapsed duration are different measurements.</p>
+            <h3>Should adding one month mean adding 30 days?</h3><p>No. Adding a calendar month changes the year-month field and needs a rule when the original day is unavailable. Adding 30 days crosses exactly 30 date boundaries and can land on a different result.</p>
+            <h3>How should January 31 plus one month be handled?</h3><p>There is no universal implicit answer. LiveParse date tools clamp to the final valid day of February and state that rule. A system could instead reject the operation or roll into March, but it must document and test its choice.</p>
+            <h3>When is a Gregorian year a leap year?</h3><p>A Gregorian year divisible by 4 is a leap year except a year divisible by 100 is not, unless it is also divisible by 400. Thus 2000 was a leap year, while 1900 and 2100 are not.</p>
+            <h3>Why can an ISO week-year differ from the date's year?</h3><p>ISO weeks run Monday through Sunday, and week 1 contains January 4. A late-December or early-January date can therefore belong to a week assigned to the neighboring ISO week-year.</p>
+            <h3>Can generic date arithmetic decide an official deadline or age rule?</h3><p>No. Laws, contracts, schools, employers, agencies, and benefit programs may define inclusion, cutoff times, observed holidays, leap-day anniversaries, evidence, and rollover differently. Verify the controlling rule and authoritative calendar.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Date tools</p><a href="/age-calculator/">Age Calculator</a><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a><a href="/date-calculator/">Date Calculator</a><a href="/days-between-dates/">Days Between Dates</a><a href="/business-days-calculator/">Business Days</a><a href="/time-duration-calculator/">Time Duration</a><a href="/week-number-calculator/">ISO Week Number</a><a href="/birthday-countdown/">Birthday Countdown</a></div><div class="sidebar-card"><p class="sidebar-label">Contract checklist</p><span>YYYY-MM-DD civil dates</span><span>Gregorian validation</span><span>Declared endpoint rules</span><span>Zone only for instants</span></div><div class="sidebar-card"><p class="sidebar-label">Core rule</p><span>State the value type, boundary convention, and calendar before calculating.</span></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/date-calculator/">Date Math</a><a href="/days-between-dates/">Date Difference</a><a href="/week-number-calculator/">ISO Weeks</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Choose the calendar contract before the arithmetic.</p></footer>
+  </body>
+</html>

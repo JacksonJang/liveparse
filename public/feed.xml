@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T10:32:00+09:00</updated>
+  <updated>2026-08-04T11:30:12+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,88 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/age-calculator/</id>
+    <title>Age Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/age-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Calendar calculations" />
+    <summary>Calculate exact calendar age from a birth date to today in years, months, and days with an explicit leap-day policy.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/age-calculator-on-specific-date/</id>
+    <title>Age Calculator on a Specific Date</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/age-calculator-on-specific-date/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Calendar calculations" />
+    <summary>Find an exact calendar age on a chosen past or future reference date without timezone-dependent timestamp subtraction.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/date-calculator/</id>
+    <title>Date Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/date-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Calendar calculations" />
+    <summary>Add or subtract days, weeks, months, or years from a date with transparent end-of-month clamping.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/days-between-dates/</id>
+    <title>Days Between Dates Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/days-between-dates/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Date differences" />
+    <summary>Count elapsed days between two dates with explicit inclusive or exclusive endpoint choices and a calendar breakdown.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/business-days-calculator/</id>
+    <title>Business Days Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/business-days-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Business days" />
+    <summary>Count or add workdays with configurable weekend days and optional holiday exclusions.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/time-duration-calculator/</id>
+    <title>Time Duration Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/time-duration-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Time durations" />
+    <summary>Calculate hours and minutes between clock times with overnight handling and an optional break duration.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/week-number-calculator/</id>
+    <title>ISO Week Number Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/week-number-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="ISO weeks" />
+    <summary>Find the ISO 8601 week-year, week number, weekday, and Monday-to-Sunday range for a date.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/birthday-countdown/</id>
+    <title>Birthday Countdown</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/birthday-countdown/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Birthday calculations" />
+    <summary>Count calendar days until the next birthday and see the next birthday date and age under a stated leap-day rule.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/</id>
+    <title>Calendar Date Arithmetic, DST, and Leap Years</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/calendar-date-arithmetic-dst-leap-years/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-08-04T11:30:12+09:00</updated>
+    <category term="Calendar guides" />
+    <summary>Understand elapsed days, calendar age, month-end clamping, leap-day birthdays, workdays, ISO weeks, and DST boundaries.</summary>
+  </entry>
 
   <entry>
     <id>https://liveparse.com/image-compressor/</id>
@@ -388,23 +470,5 @@
     <updated>2026-08-04T05:37:22+09:00</updated>
     <category term="UUID" />
     <summary>Inspect UUID version, variant, bytes, and the standard timestamp fields defined for versions 1, 6, and 7.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/guides/uuid-versions-explained/</id>
-    <title>UUID Versions Explained</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/uuid-versions-explained/" />
-    <published>2026-08-04T05:37:22+09:00</published>
-    <updated>2026-08-04T05:37:22+09:00</updated>
-    <category term="UUID guides" />
-    <summary>Compare UUID versions 1 through 8, their layouts, ordering properties, privacy tradeoffs, and intended uses.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/guides/uuid-collision-probability/</id>
-    <title>UUID Collision Probability</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/uuid-collision-probability/" />
-    <published>2026-08-04T05:37:22+09:00</published>
-    <updated>2026-08-04T05:37:22+09:00</updated>
-    <category term="UUID guides" />
-    <summary>Estimate UUID collision risk with the birthday bound and separate random-space math from generator quality.</summary>
   </entry>
 </feed>

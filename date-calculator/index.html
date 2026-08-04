@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Calculator – Add or Subtract Time | LiveParse</title>
+    <meta name="description" content="Add or subtract calendar years, months, weeks, and days from a YYYY-MM-DD date with explicit Gregorian month-end clamp rules." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/date-calculator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/date-calculator/" />
+    <meta property="og:title" content="Add or Subtract Years, Months, Weeks, and Days" />
+    <meta property="og:description" content="Move a civil date by ordered Gregorian calendar units while keeping month-end behavior visible." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse date addition and subtraction calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Date Calculator | LiveParse" />
+    <meta name="twitter:description" content="Add or subtract Gregorian calendar units from a YYYY-MM-DD date." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/date-calculator/#application",
+            "name": "LiveParse Date Calculator",
+            "url": "https://liveparse.com/date-calculator/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Gregorian date addition and subtraction calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Add or subtract calendar years, months, weeks, and days from a YYYY-MM-DD Gregorian date using explicit ordered arithmetic and month-end clamping.",
+            "featureList": ["Add or subtract calendar units", "Accept an ISO-style YYYY-MM-DD date", "Apply years and months before weeks and days", "Clamp invalid month-end results", "Keep date-only math independent of daylight-saving hours"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/date-calculator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Date Calculator", "item": "https://liveparse.com/date-calculator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/date-calculator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "In what order are years, months, weeks, and days applied?", "acceptedAnswer": { "@type": "Answer", "text": "The calculator applies the signed year and month movement first, clamps the day if the destination month is shorter, and then applies whole weeks and days. Order matters near month ends, so this contract is shown with the result." } },
+              { "@type": "Question", "name": "What happens when the destination month has fewer days?", "acceptedAnswer": { "@type": "Answer", "text": "The day is clamped to the final valid day of the destination month. For example, moving one month from January 31 reaches the last day of February rather than overflowing into March." } },
+              { "@type": "Question", "name": "Does adding one month mean adding 30 days?", "acceptedAnswer": { "@type": "Answer", "text": "No. A calendar month moves the year-month field and keeps the day when valid, while 30 days advances exactly 30 date boundaries. These operations can produce different dates." } },
+              { "@type": "Question", "name": "Does daylight saving time affect the result?", "acceptedAnswer": { "@type": "Answer", "text": "No. This page operates on Gregorian date-only values, not zoned timestamps. Advancing one date boundary is a calendar operation even when the elapsed interval between local midnights is 23 or 25 hours." } },
+              { "@type": "Question", "name": "What date format should I use?", "acceptedAnswer": { "@type": "Answer", "text": "Enter the starting civil date as YYYY-MM-DD. Native date controls may render a localized label, but the value contract and copied interpretation use year-month-day order." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="date-calculator">
+    <a class="skip-link" href="#date-tool">Skip to the date calculator</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#order">Order</a><a href="#month-end">Month ends</a><a href="#faq">FAQ</a><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Date guide</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Add or subtract · Ordered units · Month-end clamp</p><h1>Add or Subtract Years, Months, Weeks, and Days</h1><p class="hero-lead">Move a YYYY-MM-DD civil date by calendar years, months, weeks, and days. The calculator states its operation order and clamps impossible month-end dates instead of allowing a hidden overflow.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Calculate a new date</a><span>Gregorian · Date-only · Local</span></div></div><div class="hero-example" aria-label="Month-end date calculation example"><div class="example-bar"><span></span><span></span><span></span><strong>month-end clamp</strong></div><pre><code><span class="property">start</span>   <span class="string">2025-01-31</span>
+<span class="property">change</span>  <span class="string">+1 month</span>
+<span class="property">result</span>  <span class="boolean">2025-02-28</span></code></pre><p><strong>Last valid day</strong><span>Not March overflow</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Move one civil date by declared units</p><h2 id="date-tool-heading">Add or subtract a calendar offset</h2></div><p>Enter a starting date in YYYY-MM-DD form, select addition or subtraction, and provide whole values for years, months, weeks, or days. Review both the final date and the displayed rule summary.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Date calculator loading"><p><strong>Loading the date calculator…</strong></p><p>Enable JavaScript to apply calendar offsets. The unit order, month-end behavior, leap-year examples, and date-versus-time distinction remain readable below.</p></section></div>
+
+      <section class="content-section" id="order" aria-labelledby="order-heading"><div class="section-heading"><p class="section-kicker">Mixed calendar units are not freely interchangeable</p><h2 id="order-heading">Operation order is part of the calculation contract</h2></div><div class="prose-grid"><div><p>This calculator applies years and months before weeks and days. That order is observable. Starting at January 30, adding one month and then two days can reach March 2 in a common year because the month step first clamps to February 28. Adding two days first reaches February 1, after which one month reaches March 1. Both sequences are defensible; they are not the same operation.</p><p>Years and months modify calendar fields. Weeks and days then cross a fixed number of date labels, with one week defined as seven days. The tool does not convert a year to 365 days or a month to 30 days. When subtraction is selected, the same ordered model is applied in the negative direction rather than swapping the labels after an unrelated calculation.</p><p>Record the original date, each signed unit, the order, and the final date when the result enters a test case or business rule. A naked output such as “April 30” does not reveal whether an intermediate clamp occurred.</p></div><dl class="definition-list"><div><dt>Year/month phase</dt><dd>Move calendar fields and clamp the day if necessary.</dd></div><div><dt>Week/day phase</dt><dd>Advance or retreat whole date boundaries.</dd></div><div><dt>One week</dt><dd>Exactly seven calendar days.</dd></div><div><dt>Not included</dt><dd>Hours, time zones, holidays, and business schedules.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="month-end" aria-labelledby="month-end-heading"><div class="section-heading"><p class="section-kicker">Invalid dates need a declared resolution</p><h2 id="month-end-heading">Month-end clamp keeps the result inside the requested month</h2></div><div class="error-table" role="table" aria-label="Date arithmetic examples"><div class="error-row error-head" role="row"><span role="columnheader">Start and change</span><span role="columnheader">Result rule</span><span role="columnheader">Why</span></div><div class="error-row" role="row"><strong role="cell">2025-01-31 + 1 month</strong><span role="cell">2025-02-28</span><span role="cell">February 2025 has no day 31, so use its final day.</span></div><div class="error-row" role="row"><strong role="cell">2024-01-31 + 1 month</strong><span role="cell">2024-02-29</span><span role="cell">The leap-year February has 29 valid days.</span></div><div class="error-row" role="row"><strong role="cell">2024-02-29 + 1 year</strong><span role="cell">2025-02-28</span><span role="cell">The destination year has no February 29.</span></div><div class="error-row" role="row"><strong role="cell">2025-03-31 − 1 month</strong><span role="cell">2025-02-28</span><span role="cell">Backward month movement uses the same final-day clamp.</span></div></div><p>Clamp is not rollover. Some programming APIs construct an invalid February 31 and normalize it into March; that produces a different contract. The page uses the last valid day specifically so adding a month aims at the requested destination month.</p></section>
+
+      <section class="content-section" aria-labelledby="scope-heading"><div class="section-heading"><p class="section-kicker">Date arithmetic is not schedule arithmetic</p><h2 id="scope-heading">Choose another tool when exclusions or clock time matter</h2></div><div class="use-case-grid"><article><h3>Count all date boundaries</h3><p>Use <a href="/days-between-dates/">Days Between Dates</a> when both endpoints already exist and you need an included or excluded day count.</p></article><article><h3>Skip weekends and holidays</h3><p>Use the <a href="/business-days-calculator/">Business Days Calculator</a> for a working-day schedule with explicit weekend and holiday inputs.</p></article><article><h3>Measure clock time</h3><p>Use the <a href="/time-duration-calculator/">Time Duration Calculator</a> for start/end times, overnight shifts, and break subtraction.</p></article><article><h3>Find ISO week identity</h3><p>Use the <a href="/week-number-calculator/">Week Number Calculator</a> when the goal is an ISO week-year, week number, and weekday.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Calendar movement answers</p><h2 id="faq-heading">Date calculator FAQ</h2></div><div class="faq-list">
+        <details open><summary>In what order are years, months, weeks, and days applied?</summary><p>The calculator applies the signed year and month movement first, clamps the day if the destination month is shorter, and then applies whole weeks and days. Order matters near month ends, so this contract is shown with the result.</p></details>
+        <details><summary>What happens when the destination month has fewer days?</summary><p>The day is clamped to the final valid day of the destination month. For example, moving one month from January 31 reaches the last day of February rather than overflowing into March.</p></details>
+        <details><summary>Does adding one month mean adding 30 days?</summary><p>No. A calendar month moves the year-month field and keeps the day when valid, while 30 days advances exactly 30 date boundaries. These operations can produce different dates.</p></details>
+        <details><summary>Does daylight saving time affect the result?</summary><p>No. This page operates on Gregorian date-only values, not zoned timestamps. Advancing one date boundary is a calendar operation even when the elapsed interval between local midnights is 23 or 25 hours.</p></details>
+        <details><summary>What date format should I use?</summary><p>Enter the starting civil date as YYYY-MM-DD. Native date controls may render a localized label, but the value contract and copied interpretation use year-month-day order.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Calculate age, distance, schedules, and anniversaries</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/days-between-dates/">Date Difference</a><a href="/business-days-calculator/">Business Days</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. State the unit order and month-end rule.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive date addition and subtraction. Unit order, clamp behavior, examples, and scope remain readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

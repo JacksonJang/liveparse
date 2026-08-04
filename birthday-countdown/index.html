@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Countdown – Days Until Birthday | LiveParse</title>
+    <meta name="description" content="Count calendar days from today to the next birthday using a YYYY-MM-DD birth date and an explicit February 29 observance rule." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/birthday-countdown/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/birthday-countdown/" />
+    <meta property="og:title" content="Calendar Days Until the Next Birthday" />
+    <meta property="og:description" content="Find the next observed birthday date and date-only countdown without a ticking timestamp." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse birthday countdown" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Birthday Countdown | LiveParse" />
+    <meta name="twitter:description" content="Find the next birthday and count Gregorian date boundaries to it." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/birthday-countdown/#application",
+            "name": "LiveParse Birthday Countdown",
+            "url": "https://liveparse.com/birthday-countdown/",
+            "applicationCategory": "LifestyleApplication",
+            "applicationSubCategory": "Date-only birthday countdown calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Find the next observed birthday from a YYYY-MM-DD birth date and count Gregorian date boundaries from today.",
+            "featureList": ["Accept a YYYY-MM-DD birth date", "Find the next annual birthday occurrence", "Count date boundaries from today", "Return zero when the observed birthday is today", "Apply an explicit February 29 rule"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/birthday-countdown/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Birthday Countdown", "item": "https://liveparse.com/birthday-countdown/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/birthday-countdown/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What happens when the birthday is today?", "acceptedAnswer": { "@type": "Answer", "text": "The countdown is zero calendar days and the current local date is reported as the observed birthday. The page does not skip immediately to next year's occurrence." } },
+              { "@type": "Question", "name": "How is a February 29 birthday counted in a non-leap year?", "acceptedAnswer": { "@type": "Answer", "text": "This countdown observes February 29 on February 28 when the target year is not a leap year. A person or institution may choose March 1 instead, so use their rule when it matters." } },
+              { "@type": "Question", "name": "Does the countdown count hours and minutes?", "acceptedAnswer": { "@type": "Answer", "text": "No. It counts Gregorian date boundaries from today's local date to the next observed birthday date. It does not create a midnight timestamp or claim a precise elapsed-hour countdown." } },
+              { "@type": "Question", "name": "Why must I enter the full birth date?", "acceptedAnswer": { "@type": "Answer", "text": "The YYYY-MM-DD value validates the original date, including whether February 29 was possible. The countdown uses month and day for recurrence while the age result can use the year." } },
+              { "@type": "Question", "name": "Can the birthday countdown decide an age-based entitlement?", "acceptedAnswer": { "@type": "Answer", "text": "No. It is a personal planning aid and general calendar calculation. It does not determine legal age, employment, school placement, insurance, voting, benefits, retirement, or any official deadline." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="birthday-countdown">
+    <a class="skip-link" href="#date-tool">Skip to the birthday countdown</a>
+    <header class="site-header"><nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Countdown</a><a href="#recurrence">Recurrence</a><a href="#leap-day">Leap day</a><a href="#faq">FAQ</a><a href="/age-calculator/">Age</a></div></nav><div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Next annual date · Today-aware · Leap-day rule</p><h1>Birthday Countdown</h1><p class="hero-lead">Enter a birth date in YYYY-MM-DD form to find the next observed birthday and count calendar date boundaries from today. The result is a date countdown, not a live hours-and-seconds timer or an eligibility decision.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Count days to a birthday</a><span>Gregorian · Date-only · Local</span></div></div><div class="hero-example" aria-label="Birthday countdown example"><div class="example-bar"><span></span><span></span><span></span><strong>annual recurrence</strong></div><pre><code><span class="property">born</span>     <span class="string">1992-11-08</span>
+<span class="property">next</span>     <span class="string">next Nov 08</span>
+<span class="property">distance</span> <span class="boolean">calendar days</span></code></pre><p><strong>Zero if today</strong><span>Otherwise the next occurrence</span></p></div></div></header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">Find the next annual occurrence</p><h2 id="date-tool-heading">Count calendar days until the next birthday</h2></div><p>Enter one valid birth date as YYYY-MM-DD. The calculator reads today's local Gregorian date, resolves this year's observed birthday under the stated February 29 convention, and rolls forward one year only when that date has passed.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Birthday countdown loading"><p><strong>Loading the birthday countdown…</strong></p><p>Enable JavaScript to enter a YYYY-MM-DD birth date. The recurrence, today, leap-day, date-only, and scope rules remain readable below.</p></section></div>
+
+      <section class="content-section" id="recurrence" aria-labelledby="recurrence-heading"><div class="section-heading"><p class="section-kicker">A birthday is a recurring civil date</p><h2 id="recurrence-heading">The next occurrence depends on today's local date</h2></div><div class="prose-grid"><div><p>The birth year establishes a valid source date and supports an accompanying age result, but the countdown itself recurs by month and day. The calculator constructs the observed birthday in the current year. If that date is today, the result is zero. If it remains ahead, that is the target. If it has passed, the target moves to the following year.</p><p>Zero is useful information: “birthday today” should not silently become roughly 365 days merely because the next future instant is technically next year. The tool labels the current occurrence and can separately show the following age without redefining the countdown.</p><p>Today is derived from the browser's local calendar. Two people opening the page at the same instant on opposite sides of midnight may have different current dates and therefore different countdowns. This is expected for a date-only personal reminder.</p></div><dl class="definition-list"><div><dt>Source</dt><dd>Valid birth date in YYYY-MM-DD form.</dd></div><div><dt>Reference</dt><dd>Current local Gregorian date.</dd></div><div><dt>Target</dt><dd>Observed birthday today or the next occurrence.</dd></div><div><dt>Count</dt><dd>Calendar date boundaries, not fixed 24-hour blocks.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="leap-day" aria-labelledby="leap-day-heading"><div class="section-heading"><p class="section-kicker">February 29 requires a convention</p><h2 id="leap-day-heading">Non-leap years use February 28 on this page</h2></div><p>A February 29 birth date exists only in a Gregorian leap year. For countdown arithmetic, this page observes it on February 28 when the target year has no February 29. That is a transparent product rule, not a universal statement about how every person celebrates or how every authority determines age.</p><div class="error-table" role="table" aria-label="Birthday recurrence rules"><div class="error-row error-head" role="row"><span role="columnheader">Situation</span><span role="columnheader">Countdown rule</span><span role="columnheader">Boundary</span></div><div class="error-row" role="row"><strong role="cell">Ordinary month/day</strong><span role="cell">Use the same month and day each year.</span><span role="cell">The source must be a valid YYYY-MM-DD date.</span></div><div class="error-row" role="row"><strong role="cell">February 29, leap year</strong><span role="cell">Use February 29.</span><span role="cell">Gregorian leap-year validation applies.</span></div><div class="error-row" role="row"><strong role="cell">February 29, common year</strong><span role="cell">Observe February 28.</span><span role="cell">Other personal or official conventions may use March 1.</span></div><div class="error-row" role="row"><strong role="cell">Target is today</strong><span role="cell">Return zero days.</span><span role="cell">Do not auto-skip to next year.</span></div></div><div class="warning"><p><strong>Keep official decisions outside the countdown.</strong> Statutes and program rules can define when a leap-day-born person attains an age. This page cannot determine jurisdiction, identity, or eligibility and should not be cited as authority.</p></div></section>
+
+      <section class="content-section" aria-labelledby="choose-heading"><div class="section-heading"><p class="section-kicker">Countdown, age, and interval have different outputs</p><h2 id="choose-heading">Choose the page that matches the intended result</h2></div><div class="use-case-grid"><article><h3>Next birthday</h3><p>Use this page to find the next recurring birthday date and calendar-day countdown from today.</p></article><article><h3>Current age</h3><p>Use the <a href="/age-calculator/">Age Calculator</a> for completed years, months, and days through today.</p></article><article><h3>Age at an event</h3><p>Use <a href="/age-calculator-on-specific-date/">Age on a Specific Date</a> when the reference is historical or future rather than today.</p></article><article><h3>Generic date range</h3><p>Use <a href="/days-between-dates/">Days Between Dates</a> for two arbitrary endpoints and configurable inclusion without birthday semantics.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Birthday-date answers</p><h2 id="faq-heading">Birthday countdown FAQ</h2></div><div class="faq-list">
+        <details open><summary>What happens when the birthday is today?</summary><p>The countdown is zero calendar days and the current local date is reported as the observed birthday. The page does not skip immediately to next year's occurrence.</p></details>
+        <details><summary>How is a February 29 birthday counted in a non-leap year?</summary><p>This countdown observes February 29 on February 28 when the target year is not a leap year. A person or institution may choose March 1 instead, so use their rule when it matters.</p></details>
+        <details><summary>Does the countdown count hours and minutes?</summary><p>No. It counts Gregorian date boundaries from today's local date to the next observed birthday date. It does not create a midnight timestamp or claim a precise elapsed-hour countdown.</p></details>
+        <details><summary>Why must I enter the full birth date?</summary><p>The YYYY-MM-DD value validates the original date, including whether February 29 was possible. The countdown uses month and day for recurrence while the age result can use the year.</p></details>
+        <details><summary>Can the birthday countdown decide an age-based entitlement?</summary><p>No. It is a personal planning aid and general calendar calculation. It does not determine legal age, employment, school placement, insurance, voting, benefits, retirement, or any official deadline.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Continue with ages, dates, and schedules</h2></div><ul><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/age-calculator/">Age</a><a href="/days-between-dates/">Date Difference</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Count the next calendar occurrence without guessing.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive birthday countdown. Recurrence, leap-day, today, and scope guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

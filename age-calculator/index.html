@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator – Years, Months and Days | LiveParse</title>
+    <meta name="description" content="Calculate calendar age from a birth date to today in years, months, and days, with explicit Gregorian and February 29 rules." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/age-calculator/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/date-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/age-calculator/" />
+    <meta property="og:title" content="Calendar Age Calculator in Years, Months, and Days" />
+    <meta property="og:description" content="Measure age from a birth date to today without turning calendar months into average day counts." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse calendar age calculator" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Age Calculator | LiveParse" />
+    <meta name="twitter:description" content="Calculate a Gregorian calendar age to today with stated month-end and leap-day behavior." />
+    <meta name="twitter:image" content="https://liveparse.com/og-date-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/age-calculator/#application",
+            "name": "LiveParse Age Calculator",
+            "url": "https://liveparse.com/age-calculator/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Gregorian calendar age calculator",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Calculate calendar age from a YYYY-MM-DD birth date through today in completed years, months, and days.",
+            "featureList": ["Use an ISO-style YYYY-MM-DD birth date", "Measure completed calendar years, months, and days", "Show total elapsed days as a separate quantity", "Apply an explicit February 29 anniversary rule", "Run locally in the current browser tab"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/age-calculator/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Age Calculator", "item": "https://liveparse.com/age-calculator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/age-calculator/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How does the age calculator count years, months, and days?", "acceptedAnswer": { "@type": "Answer", "text": "It advances from the birth date through completed Gregorian calendar years, then completed calendar months, then remaining days. It does not divide a total day count by an average year or month length." } },
+              { "@type": "Question", "name": "What date format should I enter?", "acceptedAnswer": { "@type": "Answer", "text": "Enter the birth date as YYYY-MM-DD using the Gregorian calendar. The labeled fields and native date control may display differently according to browser locale, but the stored value follows that year-month-day order." } },
+              { "@type": "Question", "name": "How is a February 29 birthday handled?", "acceptedAnswer": { "@type": "Answer", "text": "When an anniversary year has no February 29, this calculator clamps the calendar anniversary to February 28 for its arithmetic. Other institutions may use March 1, so check the rule that governs any official decision." } },
+              { "@type": "Question", "name": "Is calendar age the same as elapsed time?", "acceptedAnswer": { "@type": "Answer", "text": "No. Calendar age is expressed in completed calendar units whose lengths vary. Total elapsed days is a separate measurement, and elapsed hours can also depend on time zone and daylight-saving transitions." } },
+              { "@type": "Question", "name": "Can this result determine legal eligibility?", "acceptedAnswer": { "@type": "Answer", "text": "No. The result is general calendar arithmetic and does not decide legal adulthood, employment, school, insurance, retirement, benefit, or identity requirements. Use the responsible authority's definitions and records." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="date-page" data-page="age-calculator">
+    <a class="skip-link" href="#date-tool">Skip to the age calculator</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a><div class="nav-links"><a href="#date-tool">Calculator</a><a href="#method">Method</a><a href="#boundaries">Boundaries</a><a href="#faq">FAQ</a><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Date guide</a></div></nav>
+      <div class="seo-hero"><div class="seo-hero-copy"><p class="eyebrow">Birth date → Today · Gregorian calendar · Local</p><h1>Age Calculator in Years, Months, and Days</h1><p class="hero-lead">Enter a birth date in YYYY-MM-DD form and measure completed calendar years, months, and days through today. The result keeps calendar age separate from total elapsed days and states how February 29 anniversaries are handled.</p><div class="hero-cta-row"><a class="hero-cta" href="#date-tool">Calculate age</a><span>Free · No sign-up · Browser-based</span></div></div><div class="hero-example" aria-label="Calendar age example"><div class="example-bar"><span></span><span></span><span></span><strong>calendar units</strong></div><pre><code><span class="property">born</span>      <span class="string">1996-08-12</span>
+<span class="property">as of</span>     <span class="string">today</span>
+<span class="property">result</span>    <span class="boolean">years · months · days</span></code></pre><p><strong>Completed units first</strong><span>No average-length months</span></p></div></div>
+    </header>
+    <main>
+      <section class="tool-intro" id="date-tool" aria-labelledby="date-tool-heading"><div><p class="section-kicker">A personal age through the current local date</p><h2 id="date-tool-heading">Calculate calendar age to today</h2></div><p>The calculator accepts a valid Gregorian birth date no later than today. It reports completed years, months, and days, with supporting totals kept separate so different meanings are not blended into one number.</p></section>
+      <div id="root"><section class="parser-fallback" aria-label="Age calculator loading"><p><strong>Loading the age calculator…</strong></p><p>Enable JavaScript to enter a YYYY-MM-DD birth date and calculate the result. The arithmetic rules, examples, limitations, and FAQ remain readable below.</p></section></div>
+
+      <section class="content-section" id="method" aria-labelledby="method-heading"><div class="section-heading"><p class="section-kicker">Calendar units have variable lengths</p><h2 id="method-heading">Why a calendar age is not total days divided by 365</h2></div><div class="prose-grid"><div><p>A calendar age answers how many whole anniversaries and calendar-month steps have been completed. The calculation first advances the birth date by whole years without crossing today, then advances by whole months, and finally counts the leftover date boundaries. February can contain 28 or 29 days, while other months contain 30 or 31, so there is no single month length suitable for an exact calendar decomposition.</p><p>Total elapsed days can still be useful for a milestone or record, but it answers a different question. Dividing that total by 365 ignores leap days; dividing by 365.2425 gives an astronomical average rather than a birthday convention. This page therefore labels calendar units and elapsed-day totals independently.</p><p>Today comes from the browser's current local calendar date. The calculator operates on date-only values rather than midnight timestamps, preventing a time-zone offset from silently moving an entered birthday to the previous day.</p></div><dl class="definition-list"><div><dt>Input</dt><dd>One birth date in YYYY-MM-DD form.</dd></div><div><dt>Reference</dt><dd>Today's local Gregorian calendar date.</dd></div><div><dt>Primary result</dt><dd>Completed years, then months, then days.</dd></div><div><dt>Separate total</dt><dd>Elapsed date boundaries, not a replacement for calendar age.</dd></div></dl></div></section>
+
+      <section class="content-section alt" id="boundaries" aria-labelledby="boundaries-heading"><div class="section-heading"><p class="section-kicker">State the convention before trusting the number</p><h2 id="boundaries-heading">Leap-day, month-end, and eligibility boundaries</h2></div><div class="error-table" role="table" aria-label="Age calculation boundaries"><div class="error-row error-head" role="row"><span role="columnheader">Boundary</span><span role="columnheader">Calculator rule</span><span role="columnheader">Important limitation</span></div><div class="error-row" role="row"><strong role="cell">February 29</strong><span role="cell">Clamp the anniversary to February 28 in a non-leap year.</span><span role="cell">A statute, policy, or organization may instead recognize March 1.</span></div><div class="error-row" role="row"><strong role="cell">Month end</strong><span role="cell">Use real Gregorian month lengths when borrowing or advancing units.</span><span role="cell">Months are not normalized to 30 days.</span></div><div class="error-row" role="row"><strong role="cell">Today</strong><span role="cell">Read the browser's current local date at calculation time.</span><span role="cell">A user in another zone may already have a different date.</span></div><div class="error-row" role="row"><strong role="cell">Eligibility</strong><span role="cell">Return arithmetic only.</span><span role="cell">The page does not establish age, identity, jurisdiction, or entitlement.</span></div></div><p>Use the word “exact” only within these declared Gregorian date-only and February 29 rules. An official age determination may depend on jurisdiction, a cutoff time, supporting documents, or a definition that this general calculator cannot know.</p></section>
+
+      <section class="content-section" aria-labelledby="choose-heading"><div class="section-heading"><p class="section-kicker">Choose the calculator by the question</p><h2 id="choose-heading">Today is only one possible reference date</h2></div><div class="use-case-grid"><article><h3>Age today</h3><p>Use this page when the reference is the current local date and the subject is a birth date. It is optimized for the familiar “How old am I?” question.</p></article><article><h3>Age on another date</h3><p>Use the <a href="/age-calculator-on-specific-date/">age on a specific date calculator</a> for a historical or future reference, such as age on a past event date.</p></article><article><h3>Days between dates</h3><p>Use the <a href="/days-between-dates/">days between dates calculator</a> when the primary result is a count of date boundaries with explicit inclusion choices.</p></article><article><h3>Next birthday</h3><p>Use the <a href="/birthday-countdown/">birthday countdown</a> to find the next annual occurrence rather than decompose the complete age.</p></article></div></section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading"><div class="section-heading"><p class="section-kicker">Rules and limitations</p><h2 id="faq-heading">Age calculator FAQ</h2></div><div class="faq-list">
+        <details open><summary>How does the age calculator count years, months, and days?</summary><p>It advances from the birth date through completed Gregorian calendar years, then completed calendar months, then remaining days. It does not divide a total day count by an average year or month length.</p></details>
+        <details><summary>What date format should I enter?</summary><p>Enter the birth date as YYYY-MM-DD using the Gregorian calendar. The labeled fields and native date control may display differently according to browser locale, but the stored value follows that year-month-day order.</p></details>
+        <details><summary>How is a February 29 birthday handled?</summary><p>When an anniversary year has no February 29, this calculator clamps the calendar anniversary to February 28 for its arithmetic. Other institutions may use March 1, so check the rule that governs any official decision.</p></details>
+        <details><summary>Is calendar age the same as elapsed time?</summary><p>No. Calendar age is expressed in completed calendar units whose lengths vary. Total elapsed days is a separate measurement, and elapsed hours can also depend on time zone and daylight-saving transitions.</p></details>
+        <details><summary>Can this result determine legal eligibility?</summary><p>No. The result is general calendar arithmetic and does not decide legal adulthood, employment, school, insurance, retirement, benefit, or identity requirements. Use the responsible authority's definitions and records.</p></details>
+      </div></section>
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related date calculations</p><h2 id="related-heading">Move from age to dates, durations, and schedules</h2></div><ul><li><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></li><li><a href="/date-calculator/">Date Calculator</a></li><li><a href="/days-between-dates/">Days Between Dates</a></li><li><a href="/business-days-calculator/">Business Days Calculator</a></li><li><a href="/time-duration-calculator/">Time Duration Calculator</a></li><li><a href="/week-number-calculator/">Week Number Calculator</a></li><li><a href="/birthday-countdown/">Birthday Countdown</a></li><li><a href="/guides/calendar-date-arithmetic-dst-leap-years/">Calendar Arithmetic Guide</a></li></ul></aside>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/date-calculator/">Date Math</a><a href="/days-between-dates/">Date Difference</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Calendar arithmetic with its rules stated.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for the interactive age calculation. Gregorian, leap-day, month-end, and scope guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/date-tools.tsx"></script>
+  </body>
+</html>

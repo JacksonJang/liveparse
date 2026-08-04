@@ -43,6 +43,15 @@ const FAQ_PARITY_PATHS = new Set([
   '/png-to-jpg/',
   '/webp-to-jpg/',
   '/webp-to-png/',
+  '/age-calculator/',
+  '/age-calculator-on-specific-date/',
+  '/date-calculator/',
+  '/days-between-dates/',
+  '/business-days-calculator/',
+  '/time-duration-calculator/',
+  '/week-number-calculator/',
+  '/birthday-countdown/',
+  '/guides/calendar-date-arithmetic-dst-leap-years/',
   '/word-counter/',
   '/character-counter/',
   '/es/contador-de-palabras/',
@@ -87,6 +96,14 @@ const requiredPages = [
   { relativePath: 'png-to-jpg/index.html', canonical: `${CANONICAL_ORIGIN}/png-to-jpg/`, label: 'PNG to JPG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bpng\b)(?=.*\bjp(?:e)?g\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'PNG to JPG conversion' },
   { relativePath: 'webp-to-jpg/index.html', canonical: `${CANONICAL_ORIGIN}/webp-to-jpg/`, label: 'WebP to JPG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwebp\b)(?=.*\bjp(?:e)?g\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'WebP to JPG conversion' },
   { relativePath: 'webp-to-png/index.html', canonical: `${CANONICAL_ORIGIN}/webp-to-png/`, label: 'WebP to PNG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwebp\b)(?=.*\bpng\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'WebP to PNG conversion' },
+  { relativePath: 'age-calculator/index.html', canonical: `${CANONICAL_ORIGIN}/age-calculator/`, label: 'Age Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /\b(?:age\s+calculator|calculat(?:e|ing|or)\s+(?:a\s+)?(?:calendar\s+)?age)\b/i, topicLabel: 'age calculation' },
+  { relativePath: 'age-calculator-on-specific-date/index.html', canonical: `${CANONICAL_ORIGIN}/age-calculator-on-specific-date/`, label: 'Age on Specific Date Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\bage\b)(?=.*\b(?:specific|selected|reference|chosen|event)\s+date\b)/i, topicLabel: 'age on a selected date' },
+  { relativePath: 'date-calculator/index.html', canonical: `${CANONICAL_ORIGIN}/date-calculator/`, label: 'Date Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\b(?:date|days?)\b)(?=.*\b(?:calculator|add|subtract|move|shift)\b)/i, topicLabel: 'date calculation' },
+  { relativePath: 'days-between-dates/index.html', canonical: `${CANONICAL_ORIGIN}/days-between-dates/`, label: 'Days Between Dates tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\bdays?\b)(?=.*\b(?:between|difference)\b)(?=.*\bdates?\b)/i, topicLabel: 'days between two dates' },
+  { relativePath: 'business-days-calculator/index.html', canonical: `${CANONICAL_ORIGIN}/business-days-calculator/`, label: 'Business Days Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\b(?:business|work(?:ing)?)\s+days?\b)(?=.*\b(?:calculator|count|add)\b)/i, topicLabel: 'business day calculation' },
+  { relativePath: 'time-duration-calculator/index.html', canonical: `${CANONICAL_ORIGIN}/time-duration-calculator/`, label: 'Time Duration Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\b(?:time|clock)\b)(?=.*\b(?:duration|interval|difference)\b)/i, topicLabel: 'clock-time duration' },
+  { relativePath: 'week-number-calculator/index.html', canonical: `${CANONICAL_ORIGIN}/week-number-calculator/`, label: 'Week Number Calculator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\biso\b)(?=.*\bweek\b)(?=.*\b(?:number|date|year)\b)/i, topicLabel: 'ISO week numbering' },
+  { relativePath: 'birthday-countdown/index.html', canonical: `${CANONICAL_ORIGIN}/birthday-countdown/`, label: 'Birthday Countdown tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\bbirthday\b)(?=.*\b(?:countdown|count|next|days?\s+until)\b)/i, topicLabel: 'birthday countdown' },
   { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
   { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
   { relativePath: 'es/contador-de-palabras/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-palabras/`, label: 'Spanish Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+palabras/i, topicLabel: 'contador de palabras' },
@@ -532,6 +549,15 @@ function guideValidationProfile(relativePath) {
       minimumCharacters: 1_000,
       topicPattern: /(?=.*\bimages?\b)(?=.*\bcompress(?:ion|ing|ed)?\b)(?=.*\b(?:formats?|file\s+size|dimensions?|quality)\b)/i,
       topicLabel: 'image compression, formats, and file size',
+    };
+  }
+  if (normalized.includes('calendar-date-arithmetic-dst-leap-years')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_800,
+      topicPattern: /(?=.*\b(?:calendar|gregorian)\b)(?=.*\b(?:arithmetic|calculations?)\b)(?=.*\b(?:dst|daylight[-\s]?saving)\b)(?=.*\bleap\s+years?\b)/i,
+      topicLabel: 'calendar date arithmetic, DST, and leap years',
     };
   }
   if (normalized.includes('url-percent-encoding')) {

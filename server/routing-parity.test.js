@@ -354,6 +354,69 @@ describe('production routing parity', () => {
     expect(actualAliases).toEqual(completeExpectedAliases);
   });
 
+  it('includes distinct date-calculation intents and redirects only their synonyms', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/age-calculator/',
+      '/age-calculator-on-specific-date/',
+      '/date-calculator/',
+      '/days-between-dates/',
+      '/business-days-calculator/',
+      '/time-duration-calculator/',
+      '/week-number-calculator/',
+      '/birthday-countdown/',
+    ]);
+    const expectedAliases = new Map([
+      ['/calculate-age', '/age-calculator/'],
+      ['/date-of-birth-calculator', '/age-calculator/'],
+      ['/dob-calculator', '/age-calculator/'],
+      ['/how-old-am-i', '/age-calculator/'],
+      ['/age-on-date', '/age-calculator-on-specific-date/'],
+      ['/chronological-age-calculator', '/age-calculator-on-specific-date/'],
+      ['/add-days-to-date', '/date-calculator/'],
+      ['/date-add-calculator', '/date-calculator/'],
+      ['/days-from-today', '/date-calculator/'],
+      ['/date-difference-calculator', '/days-between-dates/'],
+      ['/day-counter', '/days-between-dates/'],
+      ['/days-calculator', '/days-between-dates/'],
+      ['/working-days-calculator', '/business-days-calculator/'],
+      ['/workdays-calculator', '/business-days-calculator/'],
+      ['/hours-calculator', '/time-duration-calculator/'],
+      ['/time-difference-calculator', '/time-duration-calculator/'],
+      ['/iso-week-number', '/week-number-calculator/'],
+      ['/week-number', '/week-number-calculator/'],
+      ['/birthday-calculator', '/birthday-countdown/'],
+      ['/days-until-my-birthday', '/birthday-countdown/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/age-calculator',
+      '/age-calculator-on-specific-date',
+      '/date-calculator',
+      '/days-between-dates',
+      '/business-days-calculator',
+      '/time-duration-calculator',
+      '/week-number-calculator',
+      '/birthday-countdown',
+      '/guides/calendar-date-arithmetic-dst-leap-years',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
   it('includes the JWT canonical pages and guide without validator-like aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);
