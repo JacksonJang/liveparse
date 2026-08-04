@@ -39,6 +39,10 @@ const FAQ_PARITY_PATHS = new Set([
   '/ascii-table/',
   '/word-counter/',
   '/character-counter/',
+  '/es/contador-de-palabras/',
+  '/es/contador-de-caracteres/',
+  '/ja/character-counter/',
+  '/ko/character-counter/',
   '/guides/how-word-counting-works/',
   '/guides/grapheme-clusters-vs-code-points-and-bytes/',
   '/guides/binary-decimal-hex-octal-conversion/',
@@ -71,6 +75,10 @@ const requiredPages = [
   { relativePath: 'ascii-table/index.html', canonical: `${CANONICAL_ORIGIN}/ascii-table/`, label: 'ASCII Table tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bascii\b)(?=.*\b(?:table|codes?|chart)\b)/i, topicLabel: 'ASCII table' },
   { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
   { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
+  { relativePath: 'es/contador-de-palabras/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-palabras/`, label: 'Spanish Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+palabras/i, topicLabel: 'contador de palabras' },
+  { relativePath: 'es/contador-de-caracteres/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-caracteres/`, label: 'Spanish Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+caracteres/i, topicLabel: 'contador de caracteres' },
+  { relativePath: 'ja/character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/ja/character-counter/`, label: 'Japanese Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, minimumWords: 12, topicPattern: /文字数(?:を)?カウント|文字(?:を)?カウント/i, topicLabel: '文字数カウント' },
+  { relativePath: 'ko/character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/ko/character-counter/`, label: 'Korean Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /글자\s*수(?:를)?\s*세기|글자수\s*세기/i, topicLabel: '글자수 세기' },
   { relativePath: 'url-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-encoder/`, label: 'URL Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bencod(?:e|er|ing)\b)/i, topicLabel: 'URL encoding' },
   { relativePath: 'url-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-decoder/`, label: 'URL Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'URL decoding' },
   { relativePath: 'url-parser/index.html', canonical: `${CANONICAL_ORIGIN}/url-parser/`, label: 'URL Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'URL parsing' },
@@ -102,6 +110,26 @@ const requiredPages = [
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
   { relativePath: 'guides/index.html', canonical: `${CANONICAL_ORIGIN}/guides/`, label: 'guides hub', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bdeveloper\b)(?=.*\bdata\b)(?=.*\bguides?\b)/i, topicLabel: 'developer data guides' },
 ];
+const WORD_COUNTER_HREFLANGS = new Map([
+  ['en', `${CANONICAL_ORIGIN}/word-counter/`],
+  ['es', `${CANONICAL_ORIGIN}/es/contador-de-palabras/`],
+  ['x-default', `${CANONICAL_ORIGIN}/word-counter/`],
+]);
+const CHARACTER_COUNTER_HREFLANGS = new Map([
+  ['en', `${CANONICAL_ORIGIN}/character-counter/`],
+  ['es', `${CANONICAL_ORIGIN}/es/contador-de-caracteres/`],
+  ['ja', `${CANONICAL_ORIGIN}/ja/character-counter/`],
+  ['ko', `${CANONICAL_ORIGIN}/ko/character-counter/`],
+  ['x-default', `${CANONICAL_ORIGIN}/character-counter/`],
+]);
+const EXPECTED_HREFLANGS = new Map([
+  [`${CANONICAL_ORIGIN}/word-counter/`, WORD_COUNTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/es/contador-de-palabras/`, WORD_COUNTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/es/contador-de-caracteres/`, CHARACTER_COUNTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/ja/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/ko/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
+]);
 
 function fail(message) {
   failures.push(message);
@@ -188,6 +216,29 @@ function canonicalValues(html) {
     .filter((attributes) => (attributes.get('rel') || '').toLowerCase().split(/\s+/).includes('canonical'))
     .map((attributes) => attributes.get('href')?.trim() || '')
     .filter(Boolean);
+}
+
+function validateHreflangAlternates(html, label, expected) {
+  const actual = new Map();
+  for (const attributes of openingTags(html, 'link')) {
+    const rel = (attributes.get('rel') || '').toLowerCase().split(/\s+/);
+    const hreflang = (attributes.get('hreflang') || '').trim().toLowerCase();
+    if (!rel.includes('alternate') || !hreflang) continue;
+    const href = (attributes.get('href') || '').trim();
+    if (actual.has(hreflang)) {
+      fail(`${label}: duplicate hreflang ${JSON.stringify(hreflang)}`);
+      continue;
+    }
+    actual.set(hreflang, href);
+  }
+  for (const [language, href] of expected) {
+    if (actual.get(language) !== href) {
+      fail(`${label}: hreflang ${JSON.stringify(language)} must point to ${href}, found ${JSON.stringify(actual.get(language) ?? null)}`);
+    }
+  }
+  for (const language of actual.keys()) {
+    if (!expected.has(language)) fail(`${label}: unexpected hreflang ${JSON.stringify(language)}`);
+  }
 }
 
 function h1Values(html) {
@@ -328,7 +379,7 @@ function validateFaqParity(html, label) {
   });
 }
 
-function validatePageBasics(html, label, expectedCanonical, { minimumCharacters = 200, requireJson = true, requireParsing = true } = {}) {
+function validatePageBasics(html, label, expectedCanonical, { minimumCharacters = 200, minimumWords = 30, requireJson = true, requireParsing = true } = {}) {
   const titles = titleValues(html);
   if (titles.length !== 1) fail(`${label}: expected exactly one non-empty <title>, found ${titles.length}`);
   else {
@@ -364,7 +415,7 @@ function validatePageBasics(html, label, expectedCanonical, { minimumCharacters 
 
   const text = visibleText(html);
   const words = text.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) || [];
-  if (text.length < minimumCharacters || words.length < 30) {
+  if (text.length < minimumCharacters || words.length < minimumWords) {
     fail(`${label}: visible static copy is too thin (${text.length} characters, ${words.length} words)`);
   }
   if (requireJson && !/json/i.test(text)) fail(`${label}: visible static copy must discuss JSON`);
@@ -1073,9 +1124,12 @@ async function main() {
     if (page === null) continue;
     validatePageBasics(page, requirement.label, requirement.canonical, {
       minimumCharacters: requirement.minimumCharacters ?? 200,
+      minimumWords: requirement.minimumWords ?? 30,
       requireJson: requirement.requireJson ?? true,
       requireParsing: requirement.requireParsing ?? true,
     });
+    const expectedHreflangs = EXPECTED_HREFLANGS.get(requirement.canonical);
+    if (expectedHreflangs) validateHreflangAlternates(page, requirement.label, expectedHreflangs);
     validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
     if (requirement.relativePath === 'ascii-table/index.html') {
       validateAsciiTableRows(page, requirement.label);

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>글자수 세기 – 공백 포함·제외, 자소서, UTF-8 | LiveParse</title>
+    <meta name="description" content="한글 글자수 세기 도구로 공백 포함·제외 값과 자소서 목표, grapheme, Unicode 코드 포인트, UTF-16, UTF-8, ASCII 1·비ASCII 2 가중치를 비교하세요." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ko/character-counter/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/character-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <link rel="alternate" hreflang="ja" href="https://liveparse.com/ja/character-counter/" />
+    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/character-counter/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/character-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ko/character-counter/" />
+    <meta property="og:title" content="글자수 세기 – 공백 포함·제외, 자소서, UTF-8" />
+    <meta property="og:description" content="보이는 글자와 코드 포인트, UTF-16, UTF-8, 별도 플랫폼 가중치를 나누어 확인하는 한국어 글자수 계산기입니다." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse 한국어 글자수 세기" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="글자수 세기 – Unicode 길이 네 가지" />
+    <meta name="twitter:description" content="공백 포함·제외, 자소서 목표, grapheme, 코드 포인트, UTF-16, UTF-8을 브라우저에서 비교하세요." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ko/character-counter/#application",
+            "name": "LiveParse 글자수 세기",
+            "url": "https://liveparse.com/ko/character-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "한글 글자수 및 Unicode 길이 계산기",
+            "operatingSystem": "최신 웹 브라우저를 사용할 수 있는 모든 운영체제",
+            "browserRequirements": "JavaScript, Intl.Segmenter, TextEncoder 지원 필요",
+            "isAccessibleForFree": true,
+            "inLanguage": "ko",
+            "description": "공백 포함·제외 글자수, 사용자 인식 문자에 가까운 grapheme cluster, Unicode 코드 포인트, UTF-16 코드 유닛, 엄격한 UTF-8 바이트, ASCII 1·비ASCII 2의 별도 정책 가중치를 브라우저에서 비교합니다.",
+            "featureList": [
+              "Grapheme cluster 기준 글자수",
+              "Unicode 공백을 제외한 글자수",
+              "Unicode 코드 포인트 수",
+              "JavaScript UTF-16 코드 유닛 수",
+              "엄격한 UTF-8 바이트 수",
+              "ASCII 1·비ASCII 2의 명시적 플랫폼 정책 가중치",
+              "1,000자 기본 목표와 남은 글자·초과 글자 표시",
+              "입력을 전송하지 않는 브라우저 로컬 처리"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ko/character-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "글자수 세기", "item": "https://liveparse.com/ko/character-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ko/character-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "이 도구에서 한 글자는 무엇을 뜻하나요?", "acceptedAnswer": { "@type": "Answer", "text": "기본 글자수는 사용자가 한 글자로 인식하는 단위에 가까운 확장 grapheme cluster 수입니다. 코드 포인트, JavaScript의 UTF-16 코드 유닛, UTF-8 바이트도 따로 보여 주므로 제출 사이트가 지정한 단위와 비교할 수 있습니다." } },
+              { "@type": "Question", "name": "공백 제외 글자수에서는 무엇이 빠지나요?", "acceptedAnswer": { "@type": "Answer", "text": "Unicode White_Space 속성에 해당하는 공백만으로 이루어진 grapheme을 제외합니다. 일반 띄어쓰기뿐 아니라 탭과 줄바꿈 등도 빠집니다. 기본 글자수와 1,000자 목표는 공백을 포함한 grapheme 수를 사용합니다." } },
+              { "@type": "Question", "name": "완성형 한글과 분해된 자모는 왜 수치가 다른가요?", "acceptedAnswer": { "@type": "Answer", "text": "완성형 ‘한’과 초성·중성·종성 자모로 이루어진 ‘한’은 모두 한 grapheme으로 묶일 수 있지만, 전자는 코드 포인트 1개이고 후자는 3개입니다. 정규화하지 않으므로 UTF-16, UTF-8, 정책 가중치의 차이가 그대로 남습니다." } },
+              { "@type": "Question", "name": "ASCII 1·비ASCII 2 가중치는 바이트 수인가요?", "acceptedAnswer": { "@type": "Answer", "text": "아닙니다. 현재 문자열을 코드 포인트로 순회해 U+0000–U+007F은 1, 그 밖의 모든 코드 포인트는 2로 더하는 별도 플랫폼 정책입니다. UTF-8, UTF-16, EUC-KR, CP949의 실제 인코딩 바이트 수와 같다고 해석하면 안 됩니다." } },
+              { "@type": "Question", "name": "자소서 1,000자 제한과 정확히 같나요?", "acceptedAnswer": { "@type": "Answer", "text": "기본 목표는 공백을 포함한 grapheme 1,000개를 기준으로 남은 수와 초과분을 보여 줍니다. 채용 사이트마다 공백, 줄바꿈, 이모지, 바이트 또는 자체 가중치 규칙이 다를 수 있으므로 최종 제출 폼의 표시값과 공고 기준을 우선해야 합니다." } },
+              { "@type": "Question", "name": "입력한 자소서가 전송·저장·정규화되나요?", "acceptedAnswer": { "@type": "Answer", "text": "계산은 현재 브라우저 탭에서 실행되며 입력을 글자수 계산용 API로 의도적으로 전송하거나 서버 기록으로 저장하지 않습니다. Unicode 정규화는 하지 않지만 HTML textarea는 CRLF와 CR 줄바꿈을 분석 전에 LF로 바꿉니다." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="character-counter" data-ui-locale="ko" data-analysis-locale="ko" data-character-limit="1000">
+    <a class="skip-link" href="#counter">글자수 계산기로 바로 이동</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a class="brand" href="/" aria-label="LiveParse 홈"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/ko/character-counter/" aria-current="page">글자수</a><a href="/word-counter/" lang="en">Word Counter</a><a href="#units">계산 기준</a><a href="#faq">FAQ</a><a href="/ko/json-parser/">JSON Parser</a><a href="/privacy/" lang="en">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">공백 포함·제외 · 자소서 목표 · UTF-16 · UTF-8</p>
+          <h1>글자수 세기</h1>
+          <p class="hero-lead">자기소개서, 보고서, 게시글의 글자수를 실시간으로 세고 공백 포함·제외 값을 함께 확인하세요. 완성형 한글, 분해된 자모, 이모지의 grapheme과 코드 포인트·UTF-16·UTF-8 차이를 숨기지 않으며 입력은 이 브라우저 탭에서 처리합니다.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">글자수 계산하기</a><span>기본 1,000자 · 남은 글자 · 초과 글자</span></div>
+        </div>
+        <div class="hero-example" aria-label="완성형 한글과 분해된 자모의 길이 비교 예시">
+          <div class="example-bar"><span></span><span></span><span></span><strong>자소서.txt</strong></div>
+          <pre><code><span class="property">표시</span>       한 / &#x1112;&#x1161;&#x11AB;
+<span class="string">Grapheme</span>   1 / 1
+<span class="boolean">코드 포인트</span> 1 / 3
+UTF-8       3 / 9 bytes</code></pre>
+          <p><strong>보이는 한 글자와 저장 길이는 다를 수 있습니다</strong><span>원문을 Unicode 정규화하지 않습니다</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">붙여 넣는 즉시 로컬 계산</p><h2 id="counter-heading">공백 포함·제외와 인코딩 길이를 나란히 확인</h2></div>
+        <p>Grapheme cluster, 공백 없는 grapheme, Unicode 코드 포인트, UTF-16 코드 유닛, 엄격한 UTF-8 바이트, 줄 수를 함께 표시합니다. 한국어 화면에서는 ASCII 1·비ASCII 2의 별도 정책 가중치도 명확히 구분합니다.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="글자수 계산기 불러오는 중"><p><strong>글자수 계산기를 불러오고 있습니다…</strong></p><p>대화형 계산에는 JavaScript가 필요합니다. 계산 기준, 예시, 자소서 확인 방법은 아래에서 그대로 읽을 수 있습니다.</p></section></div>
+
+      <section class="content-section" id="units" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">“한 글자”의 단위부터 확인</p><h2 id="units-heading">보이는 글자, 코드 포인트, 코드 유닛, 바이트는 서로 다릅니다</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>사람이 글자수를 셀 때는 화면에서 하나로 보이는 단위를 기대하는 경우가 많습니다. 이 페이지의 기본 글자수는 Unicode 확장 grapheme cluster입니다. 완성형 음절뿐 아니라 결합 자모와 여러 요소가 이어진 이모지를 사용자 인식 문자에 가까운 경계로 묶습니다. 다만 글꼴의 폭이나 특정 채용 사이트의 내부 규칙까지 재현하는 단위는 아닙니다.</p>
+            <p>코드 포인트는 U+D55C, U+1F600처럼 Unicode에 배정된 값입니다. JavaScript 문자열은 16비트 UTF-16 코드 유닛의 연속이며, U+FFFF를 넘는 코드 포인트는 2개 코드 유닛으로 표현됩니다. UTF-8 바이트 수는 같은 문자열을 UTF-8로 전송하거나 저장할 때 필요한 또 다른 길이입니다.</p>
+            <p>자소서 공고의 “1,000자”, 학교생활기록부 입력의 “바이트”, 서비스의 “한글 2자·영문 1자” 표시는 같은 계약이 아닙니다. 공백과 줄바꿈, 이모지, 결합 문자, 정규화, 인코딩의 규칙을 확인하고 최종 제출 화면의 값을 기준으로 판단해야 합니다.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Grapheme cluster</dt><dd>보이는 한 글자에 가까운 Unicode 경계이며 기본 글자수와 목표의 단위입니다.</dd></div>
+            <div><dt>공백 제외</dt><dd>Unicode 공백만으로 구성된 grapheme을 뺀 수입니다.</dd></div>
+            <div><dt>코드 포인트</dt><dd>문자열을 Unicode 값 단위로 순회했을 때의 개수입니다.</dd></div>
+            <div><dt>UTF-16 코드 유닛</dt><dd>JavaScript <code>string.length</code>가 세는 16비트 요소입니다.</dd></div>
+            <div><dt>UTF-8 바이트</dt><dd>모든 스칼라 값이 올바를 때의 엄격한 UTF-8 길이입니다.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/" lang="en">Grapheme, 코드 포인트, 바이트 상세 가이드 읽기 →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="korean-rules-heading">
+        <div class="section-heading"><p class="section-kicker">국내 입력 폼에서 자주 다른 기준</p><h2 id="korean-rules-heading">공백 포함·제외, 목표 글자수, 자체 가중치를 분리해서 보기</h2></div>
+        <div class="error-table" role="table" aria-label="한국어 글자수 기준과 이 페이지의 처리 방식">
+          <div class="error-row error-head" role="row"><span role="columnheader">표시 기준</span><span role="columnheader">이 페이지의 계산</span><span role="columnheader">최종 확인</span></div>
+          <div class="error-row" role="row"><strong role="cell">공백 포함</strong><span role="cell">모든 grapheme cluster</span><span role="cell">줄바꿈도 공백 문자로 포함</span></div>
+          <div class="error-row" role="row"><strong role="cell">공백 제외</strong><span role="cell">Unicode White_Space 제거</span><span role="cell">탭·줄바꿈도 제외</span></div>
+          <div class="error-row" role="row"><strong role="cell">자소서 목표</strong><span role="cell">기본 1,000 grapheme</span><span role="cell">채용 폼 기준이 우선</span></div>
+          <div class="error-row" role="row"><strong role="cell">정책 가중치</strong><span role="cell">ASCII 1 · 비ASCII 2</span><span role="cell">인코딩 바이트가 아님</span></div>
+        </div>
+        <div class="prose-grid"><div>
+          <p>공백 제외 값은 단순히 키보드의 스페이스만 지운 수가 아닙니다. Unicode <code>White_Space</code>에 해당하는 공백만으로 이루어진 grapheme을 제외하므로 일반 띄어쓰기, 줄바꿈, 탭과 그 밖의 Unicode 공백이 빠집니다. 기본 글자수와 1,000자 목표 게이지는 공백을 포함합니다.</p>
+          <p>어떤 사이트는 줄바꿈을 빼고, 어떤 사이트는 공백을 포함하며, 또 다른 사이트는 서버에서 정규화한 뒤 자체 규칙을 적용할 수 있습니다. 이 페이지의 숫자는 기준을 비교하고 초안을 조정하는 도구이며, 특정 채용 사이트나 공공 입력 폼과의 완전한 일치를 주장하지 않습니다.</p>
+        </div><div class="callout-card"><strong>자소서 제출 전 마지막 확인</strong><p>공고에 공백 포함·제외 또는 바이트 기준이 적혀 있는지 확인하고, 실제 지원 폼에 붙여 넣은 뒤 그 폼이 표시하는 수치를 최종값으로 사용하세요.</p><a href="#limit-heading">1,000자 목표 사용법 보기 →</a></div></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="hangul-heading">
+        <div class="section-heading"><p class="section-kicker">한글은 보이는 음절과 저장 형태가 다를 수 있음</p><h2 id="hangul-heading">완성형 음절과 분해된 자모를 정규화하지 않고 비교</h2></div>
+        <div class="error-table" role="table" aria-label="한글과 이모지의 Unicode 길이 예시">
+          <div class="error-row error-head" role="row"><span role="columnheader">문자와 표현</span><span role="columnheader">Grapheme · 포인트 · UTF-16</span><span role="columnheader">UTF-8 · 정책 가중치</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>한</code> · U+D55C</strong><code role="cell">1 · 1 · 1</code><span role="cell">3 bytes · 2</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>&#x1112;&#x1161;&#x11AB;</code> · U+1112 U+1161 U+11AB</strong><code role="cell">1 · 3 · 3</code><span role="cell">9 bytes · 6</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>A</code> · U+0041</strong><code role="cell">1 · 1 · 1</code><span role="cell">1 byte · 1</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>😀</code> · U+1F600</strong><code role="cell">1 · 1 · 2</code><span role="cell">4 bytes · 2</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>👨‍👩‍👧‍👦</code> · 결합 가족 이모지</strong><code role="cell">1 · 7 · 11</code><span role="cell">25 bytes · 14</span></div>
+        </div>
+        <p>완성형 <code>한</code>과 분해된 자모 <code>&#x1112;&#x1161;&#x11AB;</code>은 모두 하나의 grapheme으로 보일 수 있지만 내부 코드는 다릅니다. 이 페이지는 NFC, NFD, NFKC, NFKD 정규화를 적용하지 않으므로 코드 포인트, UTF-16, UTF-8, 정책 가중치의 차이를 그대로 보여 줍니다. 서명, 해시, 데이터베이스 키, 입력 제한에 정규화 규칙이 있다면 그 계약을 별도로 따라야 합니다.</p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="weight-heading">
+        <div class="section-heading"><p class="section-kicker">“한글 2, 영문 1”을 정확히 이름 붙이기</p><h2 id="weight-heading">ASCII 1·비ASCII 2는 인코딩이 아니라 플랫폼 정책 가중치입니다</h2></div>
+        <div class="prose-grid"><div>
+          <p>한국어 화면의 정책 가중치는 현재 문자열을 코드 포인트 단위로 순회합니다. U+0000부터 U+007F까지의 ASCII 코드 포인트에는 1을, 그 밖의 모든 코드 포인트에는 2를 더합니다. ASCII 스페이스와 줄바꿈도 각각 1이며, 한글 음절, 자모, 비ASCII 공백, 이모지 등은 코드 포인트마다 2입니다.</p>
+          <p>이 숫자를 UTF-8 바이트, UTF-16 바이트, EUC-KR 또는 CP949 바이트라고 부르면 안 됩니다. 예를 들어 <code>한</code>은 UTF-8에서 3바이트지만 이 가중치에서는 2이고, <code>😀</code>은 UTF-8에서 4바이트지만 이 가중치에서는 2입니다. 분해된 자모는 코드 포인트가 3개라 가중치 6이 됩니다.</p>
+          <p>일부 레거시 입력 폼이 비슷한 규칙을 사용할 수 있지만, 이름이 같아 보여도 세부 구현은 다를 수 있습니다. 서비스가 “바이트”라고 표시하더라도 실제 규칙을 문서로 확인하고, 최종 폼의 수치와 대표 문자를 직접 대조하세요.</p>
+        </div><div class="callout-card"><strong>UTF-8은 별도 지표</strong><p>실제 UTF-8 저장·전송 크기가 필요하면 “UTF-8 바이트” 값을 사용하세요. 단독 surrogate가 있으면 조용히 대체하지 않고 결과를 이용 불가로 표시합니다.</p><a href="#encoding-heading">인코딩 주의점 보기 →</a></div></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="limit-heading">
+        <div class="section-heading"><p class="section-kicker">1,000자를 기본 목표로 설정</p><h2 id="limit-heading">자소서 분량을 맞추되 제출 폼의 단위를 우선하기</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>공고 기준 확인</h3><p>공백 포함·제외, 글자, 바이트, 자체 가중치 중 어떤 제한인지 먼저 읽습니다.</p></li>
+          <li><span>2</span><h3>목표 수치 조정</h3><p>기본값은 1,000 grapheme입니다. 원하는 제한으로 바꾸면 남은 수와 초과분을 바로 확인합니다.</p></li>
+          <li><span>3</span><h3>실제 폼과 대조</h3><p>초안을 지원 사이트에 붙여 넣고, 줄바꿈·이모지·결합 문자까지 포함해 최종 표시값을 확인합니다.</p></li>
+        </ol>
+        <p>목표 게이지는 입력을 자르거나 정규화하지 않으며 공백을 포함한 grapheme cluster를 기준으로 합니다. 공백 제외 값, UTF-8 바이트, 정책 가중치는 별도의 지표입니다. 글자수를 줄일 때도 보이는 글자를 중간에서 깨지 않도록 grapheme 경계를 지키고, 저장 제한이 따로 있으면 바이트 값까지 다시 확인하세요.</p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="encoding-heading">
+        <div class="section-heading"><p class="section-kicker">로컬 계산과 엄격한 인코딩</p><h2 id="encoding-heading">UTF-16, UTF-8, textarea 개행 변환의 경계를 알기</h2></div>
+        <div class="prose-grid"><div>
+          <p>UTF-16 코드 유닛은 JavaScript 문자열의 길이입니다. 대부분의 완성형 한글 음절과 자모는 각각 1코드 유닛이지만 많은 이모지는 2코드 유닛의 surrogate pair를 사용합니다. UTF-8 바이트는 현재 DOM 문자열을 엄격한 UTF-8로 인코딩했을 때의 길이입니다.</p>
+          <p>JavaScript 문자열에는 드물게 짝이 없는 surrogate 코드 유닛이 들어갈 수 있습니다. 이는 Unicode scalar value가 아니므로 이 페이지는 U+FFFD 대체 문자의 3바이트를 원문 바이트인 것처럼 표시하지 않습니다. 대신 엄격한 UTF-8 수치를 이용 불가로 표시하고 문제 위치를 알려 줍니다.</p>
+          <p>HTML textarea는 CRLF와 CR 줄바꿈을 JavaScript가 읽기 전에 LF로 변환합니다. 따라서 Windows 원본 파일의 개행 바이트를 그대로 재는 도구가 아닙니다. 원본 파일 전체의 바이트, BOM, 다른 인코딩이 계약의 일부라면 해당 파일을 직접 검사하는 별도 도구가 필요합니다.</p>
+        </div><div class="callout-card"><strong>Unicode 계층을 더 알아보기</strong><p>ASCII, Unicode, UTF-8, UTF-16, grapheme은 서로 연결되어 있지만 같은 개념은 아닙니다.</p><a href="/guides/ascii-vs-unicode-utf8/" lang="en">ASCII vs Unicode vs UTF-8 읽기 →</a></div></div>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">브라우저 안에서만 글자수 계산</p><h2 id="privacy-heading">자소서를 계산 서버로 보내지 않고 분량 확인</h2></div>
+        <div class="prose-grid"><div>
+          <p>계산은 전용 Web Worker를 사용해 현재 브라우저 탭에서 실행됩니다. LiveParse는 입력한 글을 글자수 계산용 API로 의도적으로 전송하거나 서버 측 기록으로 저장하지 않으며, 클립보드를 자동으로 읽지 않습니다. 한 번의 입력은 최대 200,000 UTF-16 코드 유닛입니다.</p>
+          <p>브라우저 로컬 처리가 기기 전체의 격리를 뜻하지는 않습니다. 브라우저 확장 프로그램, 클립보드 관리 앱, 화면 공유, 접근성 소프트웨어, 운영체제 기능은 이 페이지의 통제 밖입니다. 주민등록번호, 연락처, 회사 기밀처럼 분량 확인에 필요 없는 정보는 제거하고 사용하는 기기의 보안 정책을 따르세요.</p>
+          <p>페이지 자체를 불러오려면 네트워크 요청이 필요하지만, 입력 내용은 계산 요청 URL이나 로컬 저장소에 넣지 않습니다. 브라우저를 닫거나 페이지를 새로 고치기 전에 필요한 원문을 사용자가 직접 보관해야 합니다.</p>
+        </div><div class="callout-card"><strong>JSON도 한국어로 안전하게 검사</strong><p>큰 정수와 중복 키를 조용히 바꾸지 않는 한국어 lossless JSON Parser도 같은 브라우저 로컬 처리 원칙을 따릅니다.</p><a href="/ko/json-parser/">한국어 JSON Parser 열기 →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section alt" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">자주 묻는 질문</p><h2 id="faq-heading">글자수 세기 FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>이 도구에서 한 글자는 무엇을 뜻하나요?</summary><p>기본 글자수는 사용자가 한 글자로 인식하는 단위에 가까운 확장 grapheme cluster 수입니다. 코드 포인트, JavaScript의 UTF-16 코드 유닛, UTF-8 바이트도 따로 보여 주므로 제출 사이트가 지정한 단위와 비교할 수 있습니다.</p></details>
+          <details><summary>공백 제외 글자수에서는 무엇이 빠지나요?</summary><p>Unicode White_Space 속성에 해당하는 공백만으로 이루어진 grapheme을 제외합니다. 일반 띄어쓰기뿐 아니라 탭과 줄바꿈 등도 빠집니다. 기본 글자수와 1,000자 목표는 공백을 포함한 grapheme 수를 사용합니다.</p></details>
+          <details><summary>완성형 한글과 분해된 자모는 왜 수치가 다른가요?</summary><p>완성형 ‘한’과 초성·중성·종성 자모로 이루어진 ‘한’은 모두 한 grapheme으로 묶일 수 있지만, 전자는 코드 포인트 1개이고 후자는 3개입니다. 정규화하지 않으므로 UTF-16, UTF-8, 정책 가중치의 차이가 그대로 남습니다.</p></details>
+          <details><summary>ASCII 1·비ASCII 2 가중치는 바이트 수인가요?</summary><p>아닙니다. 현재 문자열을 코드 포인트로 순회해 U+0000–U+007F은 1, 그 밖의 모든 코드 포인트는 2로 더하는 별도 플랫폼 정책입니다. UTF-8, UTF-16, EUC-KR, CP949의 실제 인코딩 바이트 수와 같다고 해석하면 안 됩니다.</p></details>
+          <details><summary>자소서 1,000자 제한과 정확히 같나요?</summary><p>기본 목표는 공백을 포함한 grapheme 1,000개를 기준으로 남은 수와 초과분을 보여 줍니다. 채용 사이트마다 공백, 줄바꿈, 이모지, 바이트 또는 자체 가중치 규칙이 다를 수 있으므로 최종 제출 폼의 표시값과 공고 기준을 우선해야 합니다.</p></details>
+          <details><summary>입력한 자소서가 전송·저장·정규화되나요?</summary><p>계산은 현재 브라우저 탭에서 실행되며 입력을 글자수 계산용 API로 의도적으로 전송하거나 서버 기록으로 저장하지 않습니다. Unicode 정규화는 하지 않지만 HTML textarea는 CRLF와 CR 줄바꿈을 분석 전에 LF로 바꿉니다.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">관련 도구와 표준</p><h2 id="related-heading">글자수, 단어수, Unicode 더 살펴보기</h2></div><ul><li><a href="/character-counter/" lang="en" hreflang="en">Character Counter · English</a></li><li><a href="/ja/character-counter/" lang="ja" hreflang="ja">文字数カウント · 日本語</a></li><li><a href="/word-counter/" lang="en">Word Counter</a></li><li><a href="/ko/json-parser/">한국어 JSON Parser</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/" lang="en">Grapheme clusters, code points, and bytes</a></li><li><a href="/guides/ascii-vs-unicode-utf8/" lang="en">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li><li><a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>글자의 단위를 구분해 확인하는 브라우저 기반 도구입니다.</p></div><div class="footer-links"><a href="/ko/character-counter/">글자수</a><a href="/ko/json-parser/">JSON</a><a href="/guides/" lang="en">Guides</a><a href="/privacy/" lang="en">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. 글자 제한을 비교하기 전에 단위와 공백 규칙을 확인하세요.</p></footer>
+    <noscript><p class="noscript-note">대화형 글자수 계산에는 JavaScript가 필요합니다. Unicode 정의, 예시, 자소서 분량 안내는 JavaScript 없이도 읽을 수 있습니다.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

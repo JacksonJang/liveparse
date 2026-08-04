@@ -404,17 +404,30 @@ describe('production routing parity', () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);
     const redirects = new Map(routeRedirects(source));
-    const canonicalTargets = new Set(['/word-counter/', '/character-counter/']);
+    const canonicalTargets = new Set([
+      '/word-counter/',
+      '/character-counter/',
+      '/es/contador-de-palabras/',
+      '/es/contador-de-caracteres/',
+    ]);
     const expectedAliases = new Map([
       ['/word-count', '/word-counter/'],
       ['/word-count-checker', '/word-counter/'],
       ['/character-count', '/character-counter/'],
       ['/letter-counter', '/character-counter/'],
+      ['/es/contador-palabras', '/es/contador-de-palabras/'],
+      ['/es/contar-palabras', '/es/contador-de-palabras/'],
+      ['/es/contador-caracteres', '/es/contador-de-caracteres/'],
+      ['/es/contar-caracteres', '/es/contador-de-caracteres/'],
     ]);
 
     expect(directories).toEqual(expect.arrayContaining([
       '/word-counter',
       '/character-counter',
+      '/es/contador-de-palabras',
+      '/es/contador-de-caracteres',
+      '/ja/character-counter',
+      '/ko/character-counter',
       '/guides/how-word-counting-works',
       '/guides/grapheme-clusters-vs-code-points-and-bytes',
     ]));

@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T08:25:34+09:00</updated>
+  <updated>2026-08-04T09:14:05+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,43 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry xml:lang="es">
+    <id>https://liveparse.com/es/contador-de-palabras/</id>
+    <title>Contador de palabras</title>
+    <link rel="alternate" type="text/html" hreflang="es" href="https://liveparse.com/es/contador-de-palabras/" />
+    <published>2026-08-04T09:14:05+09:00</published>
+    <updated>2026-08-04T09:14:05+09:00</updated>
+    <category term="Medición de texto" />
+    <summary>Cuenta palabras, frases, párrafos y líneas con segmentación configurada para español y estimaciones ajustables de lectura y locución.</summary>
+  </entry>
+  <entry xml:lang="es">
+    <id>https://liveparse.com/es/contador-de-caracteres/</id>
+    <title>Contador de caracteres</title>
+    <link rel="alternate" type="text/html" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <published>2026-08-04T09:14:05+09:00</published>
+    <updated>2026-08-04T09:14:05+09:00</updated>
+    <category term="Unicode y longitud de texto" />
+    <summary>Compara grafemas visibles, caracteres sin espacios, puntos de código, unidades UTF-16 y bytes UTF-8 sin normalizar el texto.</summary>
+  </entry>
+  <entry xml:lang="ja">
+    <id>https://liveparse.com/ja/character-counter/</id>
+    <title>文字数カウント</title>
+    <link rel="alternate" type="text/html" hreflang="ja" href="https://liveparse.com/ja/character-counter/" />
+    <published>2026-08-04T09:14:05+09:00</published>
+    <updated>2026-08-04T09:14:05+09:00</updated>
+    <category term="文字数とUnicode" />
+    <summary>空白を含む・含まない文字数と、書記素・コードポイント・UTF-16・UTF-8の違いをブラウザ内で確認します。</summary>
+  </entry>
+  <entry xml:lang="ko">
+    <id>https://liveparse.com/ko/character-counter/</id>
+    <title>글자수 세기</title>
+    <link rel="alternate" type="text/html" hreflang="ko" href="https://liveparse.com/ko/character-counter/" />
+    <published>2026-08-04T09:14:05+09:00</published>
+    <updated>2026-08-04T09:14:05+09:00</updated>
+    <category term="글자 수와 Unicode" />
+    <summary>공백 포함·제외 글자 수와 grapheme, 코드 포인트, UTF-16 코드 단위, UTF-8 바이트를 구분해 계산합니다.</summary>
+  </entry>
 
   <entry>
     <id>https://liveparse.com/word-counter/</id>
