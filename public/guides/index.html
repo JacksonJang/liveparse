@@ -89,7 +89,8 @@
               { "@type": "ListItem", "position": 30, "url": "https://liveparse.com/guides/ascii-vs-unicode-utf8/", "name": "ASCII vs Unicode vs UTF-8" },
               { "@type": "ListItem", "position": 31, "url": "https://liveparse.com/guides/how-word-counting-works/", "name": "How Word Counting Works" },
               { "@type": "ListItem", "position": 32, "url": "https://liveparse.com/guides/grapheme-clusters-vs-code-points-and-bytes/", "name": "Grapheme Clusters vs Code Points and Bytes" },
-              { "@type": "ListItem", "position": 33, "url": "https://liveparse.com/guides/international-morse-code/", "name": "International Morse Code Reference" }
+              { "@type": "ListItem", "position": 33, "url": "https://liveparse.com/guides/international-morse-code/", "name": "International Morse Code Reference" },
+              { "@type": "ListItem", "position": 34, "url": "https://liveparse.com/guides/image-compression-formats-and-file-size/", "name": "Image Compression, Formats, and File Size" }
             ]
           }
         ]
@@ -113,7 +114,7 @@
           <p class="eyebrow">Developer reference library</p>
           <h1>Developer Data Format Guides</h1>
           <p class="dek">Understand the bytes, syntax, standards, security boundaries, and common failure modes behind LiveParse tools. Every guide is readable without running JavaScript and links to a local browser utility when hands-on inspection helps.</p>
-          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>33 practical guides</span></p>
+          <p class="byline"><span>Maintained by <strong>Jackson Jang</strong></span><span>Updated <time datetime="2026-08-04">August 4, 2026</time></span><span>34 practical guides</span></p>
         </header>
 
         <div class="article-layout">
@@ -172,6 +173,15 @@
                 <a class="related-card" href="/guides/international-morse-code/"><strong>International Morse Code Reference</strong><span>Letters, digits, punctuation, separators, timing ratios, prosigns, and the limits of automatic decoding.</span></a>
               </div>
               <p>Use the <a href="/morse-code-translator/">Morse Code Translator</a> to encode supported text or decode explicit dot-and-dash tokens locally.</p>
+            </section>
+
+            <section aria-labelledby="image-guides">
+              <h2 id="image-guides">Image compression, resizing, and formats</h2>
+              <p>Image file size depends on pixel dimensions, codec, quality, transparency, animation, and metadata. A smaller byte count can require a format change, a lower quality setting, fewer pixels, or more than one of those choices.</p>
+              <div class="related-grid">
+                <a class="related-card" href="/guides/image-compression-formats-and-file-size/"><strong>Image Compression, Formats, and File Size</strong><span>JPEG, PNG, WebP, target KB limits, dimensions, transparency, animation, metadata, and local processing boundaries.</span></a>
+              </div>
+              <p>Process supported static images with the <a href="/image-compressor/">Image Compressor</a>, <a href="/image-resizer/">Image Resizer</a>, <a href="/png-to-jpg/">PNG to JPG Converter</a>, <a href="/webp-to-jpg/">WebP to JPG Converter</a>, or <a href="/webp-to-png/">WebP to PNG Converter</a>.</p>
             </section>
 
             <section aria-labelledby="text-guides">
@@ -269,6 +279,7 @@
               <li><a href="#encoding-guides">Base64 encoding</a></li>
               <li><a href="#number-guides">Numbers and ASCII</a></li>
               <li><a href="#morse-guides">Morse code</a></li>
+              <li><a href="#image-guides">Image files</a></li>
               <li><a href="#text-guides">Text measurement</a></li>
               <li><a href="#url-guides">URLs and queries</a></li>
               <li><a href="#uuid-guides">UUIDs</a></li>

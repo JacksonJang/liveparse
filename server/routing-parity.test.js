@@ -31,6 +31,16 @@ describe('production routing parity', () => {
     expect(routeRedirects(nodeSource)).toEqual(routeRedirects(workerSource));
   });
 
+  it('allows only local, data, and browser-created blob image sources in both production CSPs', async () => {
+    const [nodeSource, workerSource] = await Promise.all([
+      readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8'),
+      readFile(resolve(projectRoot, 'server/worker.js'), 'utf8'),
+    ]);
+    const directive = `"img-src 'self' data: blob:"`;
+    expect(nodeSource).toContain(directive);
+    expect(workerSource).toContain(directive);
+  });
+
   it('defines slash and non-slash forms for every alias and direct canonical targets', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = new Set(directoryRoutes(source));
@@ -277,6 +287,65 @@ describe('production routing parity', () => {
 
     const actualAliases = [...redirects]
       .filter(([, target]) => target === '/morse-code-translator/')
+      .map(([alias, target]) => [alias, target])
+      .sort(([left], [right]) => left.localeCompare(right));
+    const completeExpectedAliases = [...expectedAliases]
+      .flatMap(([alias, target]) => [[alias, target], [`${alias}/`, target]])
+      .sort(([left], [right]) => left.localeCompare(right));
+    expect(actualAliases).toEqual(completeExpectedAliases);
+  });
+
+  it('includes the image compression, resizing, and conversion cluster with intentional aliases', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const directories = directoryRoutes(source);
+    const redirects = new Map(routeRedirects(source));
+    const canonicalTargets = new Set([
+      '/image-compressor/',
+      '/image-resizer/',
+      '/png-to-jpg/',
+      '/webp-to-jpg/',
+      '/webp-to-png/',
+    ]);
+    const expectedAliases = new Map([
+      ['/compress-image', '/image-compressor/'],
+      ['/image-compress', '/image-compressor/'],
+      ['/photo-compressor', '/image-compressor/'],
+      ['/reduce-image-size', '/image-compressor/'],
+      ['/compress-image-to-20kb', '/image-compressor/'],
+      ['/compress-image-to-50kb', '/image-compressor/'],
+      ['/compress-image-to-100kb', '/image-compressor/'],
+      ['/compress-image-to-200kb', '/image-compressor/'],
+      ['/compress-image-to-500kb', '/image-compressor/'],
+      ['/compress-image-to-1mb', '/image-compressor/'],
+      ['/reduce-image-size-in-kb', '/image-compressor/'],
+      ['/resize-image', '/image-resizer/'],
+      ['/photo-resizer', '/image-resizer/'],
+      ['/resize-photo', '/image-resizer/'],
+      ['/pixel-resizer', '/image-resizer/'],
+      ['/png-to-jpeg', '/png-to-jpg/'],
+      ['/convert-png-to-jpg', '/png-to-jpg/'],
+      ['/convert-png-to-jpeg', '/png-to-jpg/'],
+      ['/webp-to-jpeg', '/webp-to-jpg/'],
+      ['/convert-webp-to-jpg', '/webp-to-jpg/'],
+      ['/convert-webp-to-jpeg', '/webp-to-jpg/'],
+      ['/convert-webp-to-png', '/webp-to-png/'],
+    ]);
+
+    expect(directories).toEqual(expect.arrayContaining([
+      '/image-compressor',
+      '/image-resizer',
+      '/png-to-jpg',
+      '/webp-to-jpg',
+      '/webp-to-png',
+      '/guides/image-compression-formats-and-file-size',
+    ]));
+    for (const [alias, target] of expectedAliases) {
+      expect(redirects.get(alias)).toBe(target);
+      expect(redirects.get(`${alias}/`)).toBe(target);
+    }
+
+    const actualAliases = [...redirects]
+      .filter(([, target]) => canonicalTargets.has(target))
       .map(([alias, target]) => [alias, target])
       .sort(([left], [right]) => left.localeCompare(right));
     const completeExpectedAliases = [...expectedAliases]

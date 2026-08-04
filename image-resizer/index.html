@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Resizer – Resize by Pixels or Percent | LiveParse</title>
+    <meta name="description" content="Resize static JPEG, PNG, and WebP images by pixels or percent with contain, cover, aspect-lock, and no-upscale controls in your browser." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/image-resizer/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/image-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/image-resizer/" />
+    <meta property="og:title" content="Image Resizer with Predictable Pixel Geometry" />
+    <meta property="og:description" content="Set pixel or percentage dimensions, choose contain or cover behavior, and inspect the actual browser-encoded result before downloading." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse local image resizer" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Resize JPG, PNG, and WebP Locally | LiveParse" />
+    <meta name="twitter:description" content="Control dimensions, aspect ratio, fit mode, upscaling, output format, and transparency from one browser-based image tool." />
+    <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/image-resizer/#application",
+            "name": "LiveParse Image Resizer",
+            "url": "https://liveparse.com/image-resizer/",
+            "applicationCategory": "MultimediaApplication",
+            "applicationSubCategory": "JPEG, PNG, and WebP image resizer",
+            "operatingSystem": "Any operating system with a compatible modern web browser",
+            "browserRequirements": "Requires JavaScript, Canvas, image decoding, and browser image encoders",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Resize a validated static JPEG, PNG, or WebP image using pixel or percentage dimensions, contain or cover geometry, aspect locking, and optional no-upscale behavior.",
+            "featureList": [
+              "Resize by exact pixels or percentage",
+              "Choose contain or cover geometry",
+              "Lock the source aspect ratio",
+              "Prevent enlargement with no-upscale mode",
+              "Export as original format, JPEG, PNG, or WebP",
+              "Validate supported file signatures before decoding"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/image-resizer/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Image Resizer", "item": "https://liveparse.com/image-resizer/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/image-resizer/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Should I resize an image by pixels or percent?", "acceptedAnswer": { "@type": "Answer", "text": "Use pixels when a layout, platform, or asset specification requires exact dimensions. Use percent when you want a relative scale such as half-size while preserving the relationship to the source dimensions." } },
+              { "@type": "Question", "name": "What is the difference between contain and cover?", "acceptedAnswer": { "@type": "Answer", "text": "Contain fits the whole image inside the requested box and can leave unused space on one axis. Cover fills the entire box and crops overflow from the other axis. Both preserve the image's aspect ratio." } },
+              { "@type": "Question", "name": "What does no-upscale do?", "acceptedAnswer": { "@type": "Answer", "text": "No-upscale prevents the image from being enlarged beyond its source dimensions. It is useful when a requested box is larger than the original and you prefer a smaller output over invented extra pixels." } },
+              { "@type": "Question", "name": "Will enlarging an image improve its quality?", "acceptedAnswer": { "@type": "Answer", "text": "No. Upscaling creates more pixels by interpolation but cannot restore detail that was not present in the source. The larger result may look softer or expose compression artifacts." } },
+              { "@type": "Question", "name": "Can the resized image keep transparency?", "acceptedAnswer": { "@type": "Answer", "text": "PNG and WebP output can retain decoded transparency when the browser encoder supports it. JPEG has no alpha channel, so transparent pixels are flattened onto the selected background color." } },
+              { "@type": "Question", "name": "Which images can the resizer process locally?", "acceptedAnswer": { "@type": "Answer", "text": "It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, unsupported signatures, and undecodable files are rejected; processing occurs in the current browser tab." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="image-page" data-page="image-resizer">
+    <a class="skip-link" href="#image-tool">Skip to the image resizer</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="#image-tool">Resizer</a><a href="#geometry">Geometry</a><a href="#formats">Formats</a><a href="#faq">FAQ</a><a href="/guides/image-compression-formats-and-file-size/">Image guide</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Pixels or percent · Contain or cover · Optional no-upscale</p>
+          <h1>Image Resizer by Pixels or Percent</h1>
+          <p class="hero-lead">Resize a static JPEG, PNG, or WebP with explicit geometry. Set dimensions in pixels or percent, preserve the aspect ratio, fit inside a box, fill and crop a box, or prevent accidental enlargement.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Resize an image</a><span>Local preview · No sign-up</span></div>
+        </div>
+        <div class="hero-example" aria-label="Image resize geometry example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>contain fit</strong></div>
+          <pre><code><span class="property">source</span>  <span class="string">2400 × 1600</span>
+<span class="property">box</span>     <span class="string">1200 × 1200</span>
+<span class="property">result</span>  <span class="string">1200 × 800</span></code></pre>
+          <p><strong>Aspect ratio preserved</strong><span>No crop in contain mode</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="image-tool" aria-labelledby="image-tool-heading">
+        <div><p class="section-kicker">Resize one image or a local batch of up to 20</p><h2 id="image-tool-heading">Define the output canvas before you download</h2></div>
+        <p>Select validated static images, choose pixel or percentage sizing and a fit mode, then compare source and output dimensions for each result. Downloads are created only after the browser has decoded and re-encoded them.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Image resizer loading"><p><strong>Loading the image resizer…</strong></p><p>Enable JavaScript to select, validate, resize, preview, and download an image. Geometry rules and format limitations remain readable below.</p></section></div>
+
+      <section class="content-section" id="geometry" aria-labelledby="geometry-heading">
+        <div class="section-heading"><p class="section-kicker">Choose the rule that matches the destination</p><h2 id="geometry-heading">Pixels, percentages, contain, and cover solve different sizing problems</h2><p>A width and height can describe an exact output, a bounding box, or a crop frame. The selected mode determines which interpretation applies.</p></div>
+        <div class="error-table" role="table" aria-label="Image resize modes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Control</span><span role="columnheader">Result</span><span role="columnheader">Best used for</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixels</strong><span role="cell">Targets explicit width and height values.</span><span role="cell">CMS slots, social assets, thumbnails, and interface specifications.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Percent</strong><span role="cell">Scales from the decoded source dimensions, such as 50% on each axis.</span><span role="cell">Making a proportional half-size or quarter-size copy without calculating pixels.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Contain</strong><span role="cell">Fits the entire image within the box; one axis may be smaller than requested.</span><span role="cell">Product photos, documents, and any image that must not be cropped.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Cover</strong><span role="cell">Fills the box and crops centered overflow on one axis.</span><span role="cell">Avatars, cards, banners, and fixed-ratio frames that cannot have gaps.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="ratio-heading">
+        <div class="section-heading"><p class="section-kicker">Protect proportions and real detail</p><h2 id="ratio-heading">Aspect lock and no-upscale prevent common resize mistakes</h2></div>
+        <div class="prose-grid"><div>
+          <p>Aspect lock couples width and height to the decoded source ratio. Changing one dimension recalculates the other, preventing an accidental stretch that makes circles oval and faces unnaturally narrow. Contain and cover also preserve the ratio, but differ in whether the entire source or the entire destination box wins.</p>
+          <p>No-upscale caps the scale at 100% of the source. For example, a 640 × 480 image contained in a 1200 × 1200 box remains 640 × 480 when no-upscale is enabled. Without the cap, interpolation can produce a larger file and more pixels, but it cannot recreate texture, focus, or lettering that the source never captured.</p>
+          <p>Cover mode necessarily discards pixels outside the destination crop. Check the preview for subjects near the edges; a general-purpose centered crop cannot understand which face, label, or object is important.</p>
+        </div><dl class="definition-list">
+          <div><dt>Aspect lock</dt><dd>Preserves width ÷ height while one dimension changes.</dd></div>
+          <div><dt>No-upscale</dt><dd>Stops the computed scale from exceeding the original dimensions.</dd></div>
+          <div><dt>Interpolation</dt><dd>Estimates new pixel values; it does not recover missing source detail.</dd></div>
+          <div><dt>Centered crop</dt><dd>Removes equal overflow where possible; inspect edge content before saving.</dd></div>
+        </dl></div>
+      </section>
+
+      <section class="content-section" id="formats" aria-labelledby="formats-heading">
+        <div class="section-heading"><p class="section-kicker">Geometry first, encoding second</p><h2 id="formats-heading">Choose Original format, JPEG, PNG, or WebP deliberately</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Original format</h3><p>The output MIME type follows the validated JPEG, PNG, or WebP source. Resizing still requires decoding and re-encoding, so the result is not byte-identical and source metadata is not promised.</p></article>
+          <article><h3>JPEG</h3><p>Useful for opaque photographs. JPEG cannot store an alpha channel, so transparent source pixels are composited over the background color selected in the tool.</p></article>
+          <article><h3>PNG</h3><p>Keeps decoded alpha and sharp pixel boundaries through lossless encoding, but photographs can produce much larger files than lossy JPEG or WebP.</p></article>
+          <article><h3>WebP</h3><p>Can combine browser-controlled lossy encoding with transparency. Browser encoder support is checked: a fallback blob with the wrong MIME type is rejected.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Validate before allocating a canvas</p><h2 id="limits-heading">Supported input and browser processing limits</h2></div>
+        <div class="error-table" role="table" aria-label="Image resizer limits">
+          <div class="error-row error-head" role="row"><span role="columnheader">Check</span><span role="columnheader">Contract</span><span role="columnheader">Reason</span></div>
+          <div class="error-row" role="row"><strong role="cell">Signature</strong><span role="cell">Magic bytes must identify a static JPEG, PNG, or WebP.</span><span role="cell">Extensions and declared MIME types can be renamed or incorrect.</span></div>
+          <div class="error-row" role="row"><strong role="cell">File size</strong><span role="cell">The encoded input may be no larger than 25 MiB.</span><span role="cell">Decoded pixels need substantially more browser memory than compressed bytes.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixel count</strong><span role="cell">Decoded width × height may be no larger than 40 megapixels.</span><span role="cell">This bounds the source canvas before transformation.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unsupported</strong><span role="cell">HEIC, AVIF, animated PNG/WebP, and other signatures are rejected.</span><span role="cell">The tool does not silently export one frame from an animation.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Output MIME</strong><span role="cell">The browser encoder must return the requested JPEG, PNG, or WebP type.</span><span role="cell">Silent encoder fallback is reported as an error, not mislabeled for download.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">Start from the destination</p><h2 id="examples-heading">Practical resizing examples</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Uncropped catalog image</h3><p>Choose a 1200 × 1200 pixel box with contain. A 3:2 landscape source becomes 1200 × 800; the whole photograph remains visible.</p></li>
+          <li><span>2</span><h3>Square profile image</h3><p>Choose 512 × 512 with cover. Inspect the centered crop, especially faces or logos near an edge, before exporting.</p></li>
+          <li><span>3</span><h3>Smaller review copy</h3><p>Choose 50% with aspect lock and no-upscale. Each dimension is halved, so the output has one quarter of the source pixel count.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local pixels, bounded claim</p><h2 id="privacy-heading">Resizing happens in the current browser tab</h2></div>
+        <div class="prose-grid"><div>
+          <p>The selected file is read with browser file APIs, decoded, drawn to a canvas at the computed geometry, encoded, previewed, and downloaded without intentionally sending its image bytes to an image-processing service. Large dimensions can still consume significant local memory; a decoded RGBA canvas commonly requires about four bytes per pixel before browser overhead.</p>
+          <p>Ordinary page requests are separate from image processing. Browser extensions, device security tools, cloud-synced folders, and any destination where you later share the download have their own data handling. Re-encoding also should not be treated as a guaranteed metadata-sanitization process.</p>
+        </div><div class="callout-card"><strong>Need a byte ceiling instead?</strong><p>When delivery size matters more than exact geometry, use measured JPEG/WebP quality search and proportional fallback resizing.</p><a href="/image-compressor/">Open the Image Compressor →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading"><p class="section-kicker">Geometry and format answers</p><h2 id="faq-title">Image resizer FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Should I resize an image by pixels or percent?</summary><p>Use pixels when a layout, platform, or asset specification requires exact dimensions. Use percent when you want a relative scale such as half-size while preserving the relationship to the source dimensions.</p></details>
+          <details><summary>What is the difference between contain and cover?</summary><p>Contain fits the whole image inside the requested box and can leave unused space on one axis. Cover fills the entire box and crops overflow from the other axis. Both preserve the image's aspect ratio.</p></details>
+          <details><summary>What does no-upscale do?</summary><p>No-upscale prevents the image from being enlarged beyond its source dimensions. It is useful when a requested box is larger than the original and you prefer a smaller output over invented extra pixels.</p></details>
+          <details><summary>Will enlarging an image improve its quality?</summary><p>No. Upscaling creates more pixels by interpolation but cannot restore detail that was not present in the source. The larger result may look softer or expose compression artifacts.</p></details>
+          <details><summary>Can the resized image keep transparency?</summary><p>PNG and WebP output can retain decoded transparency when the browser encoder supports it. JPEG has no alpha channel, so transparent pixels are flattened onto the selected background color.</p></details>
+          <details><summary>Which images can the resizer process locally?</summary><p>It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, unsupported signatures, and undecodable files are rejected; processing occurs in the current browser tab.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related image workflows</p><h2 id="related-heading">Convert, compress, or study the trade-offs</h2></div><ul><li><a href="/image-compressor/">Image Compressor</a></li><li><a href="/png-to-jpg/">PNG to JPG</a></li><li><a href="/webp-to-jpg/">WebP to JPG</a></li><li><a href="/webp-to-png/">WebP to PNG</a></li><li><a href="/guides/image-compression-formats-and-file-size/">Compression &amp; Formats Guide</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/image-compressor/">Compress</a><a href="/image-resizer/">Resize</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Choose the geometry, then inspect the encoded result.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive image resizing. Geometry modes, format behavior, constraints, examples, and privacy boundaries remain readable without it.</p></noscript>
+    <script type="module" src="/src/image-tools.tsx"></script>
+  </body>
+</html>

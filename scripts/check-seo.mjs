@@ -38,6 +38,11 @@ const FAQ_PARITY_PATHS = new Set([
   '/binary-translator/',
   '/ascii-table/',
   '/morse-code-translator/',
+  '/image-compressor/',
+  '/image-resizer/',
+  '/png-to-jpg/',
+  '/webp-to-jpg/',
+  '/webp-to-png/',
   '/word-counter/',
   '/character-counter/',
   '/es/contador-de-palabras/',
@@ -47,6 +52,7 @@ const FAQ_PARITY_PATHS = new Set([
   '/guides/how-word-counting-works/',
   '/guides/grapheme-clusters-vs-code-points-and-bytes/',
   '/guides/international-morse-code/',
+  '/guides/image-compression-formats-and-file-size/',
   '/guides/binary-decimal-hex-octal-conversion/',
   '/guides/twos-complement-signed-binary/',
   '/guides/ascii-vs-unicode-utf8/',
@@ -76,6 +82,11 @@ const requiredPages = [
   { relativePath: 'binary-translator/index.html', canonical: `${CANONICAL_ORIGIN}/binary-translator/`, label: 'Binary Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\btranslat(?:e|or|ing|ion)\b)/i, topicLabel: 'binary text translation' },
   { relativePath: 'ascii-table/index.html', canonical: `${CANONICAL_ORIGIN}/ascii-table/`, label: 'ASCII Table tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bascii\b)(?=.*\b(?:table|codes?|chart)\b)/i, topicLabel: 'ASCII table' },
   { relativePath: 'morse-code-translator/index.html', canonical: `${CANONICAL_ORIGIN}/morse-code-translator/`, label: 'Morse Code Translator tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bmorse\s+code\b)(?=.*\b(?:translat(?:e|or|ing|ion)|decod(?:e|er|ing))\b)/i, topicLabel: 'Morse code translation' },
+  { relativePath: 'image-compressor/index.html', canonical: `${CANONICAL_ORIGIN}/image-compressor/`, label: 'Image Compressor tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\b(?:images?|photos?)\b)(?=.*\bcompress(?:or|ion|ing|ed)?\b)(?=.*\b(?:kb|file\s+size|size)\b)/i, topicLabel: 'image compression to a file-size target' },
+  { relativePath: 'image-resizer/index.html', canonical: `${CANONICAL_ORIGIN}/image-resizer/`, label: 'Image Resizer tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\b(?:images?|photos?)\b)(?=.*\b(?:resize|resizer|resizing)\b)(?=.*\b(?:pixels?|percent|dimensions?)\b)/i, topicLabel: 'image resizing by pixels or percent' },
+  { relativePath: 'png-to-jpg/index.html', canonical: `${CANONICAL_ORIGIN}/png-to-jpg/`, label: 'PNG to JPG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bpng\b)(?=.*\bjp(?:e)?g\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'PNG to JPG conversion' },
+  { relativePath: 'webp-to-jpg/index.html', canonical: `${CANONICAL_ORIGIN}/webp-to-jpg/`, label: 'WebP to JPG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwebp\b)(?=.*\bjp(?:e)?g\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'WebP to JPG conversion' },
+  { relativePath: 'webp-to-png/index.html', canonical: `${CANONICAL_ORIGIN}/webp-to-png/`, label: 'WebP to PNG Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwebp\b)(?=.*\bpng\b)(?=.*\bconvert(?:er|ing|ed|s)?\b)/i, topicLabel: 'WebP to PNG conversion' },
   { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
   { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
   { relativePath: 'es/contador-de-palabras/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-palabras/`, label: 'Spanish Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+palabras/i, topicLabel: 'contador de palabras' },
@@ -512,6 +523,15 @@ function guideValidationProfile(relativePath) {
       minimumCharacters: 1_000,
       topicPattern: /(?=.*\binternational\s+morse\s+code\b)(?=.*\b(?:itu|recommendation|standard|reference)\b)/i,
       topicLabel: 'International Morse code and the ITU recommendation',
+    };
+  }
+  if (normalized.includes('image-compression-formats-and-file-size')) {
+    return {
+      requireJson: false,
+      requireParsing: false,
+      minimumCharacters: 1_000,
+      topicPattern: /(?=.*\bimages?\b)(?=.*\bcompress(?:ion|ing|ed)?\b)(?=.*\b(?:formats?|file\s+size|dimensions?|quality)\b)/i,
+      topicLabel: 'image compression, formats, and file size',
     };
   }
   if (normalized.includes('url-percent-encoding')) {

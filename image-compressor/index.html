@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Compressor – Compress to File Size | LiveParse</title>
+    <meta name="description" content="Compress JPEG, PNG, or WebP images toward 20 KB–1 MB file-size targets with honest quality and resize limits, processed locally in your browser." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/image-compressor/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/image-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/image-compressor/" />
+    <meta property="og:title" content="Image Compressor with Honest Target-Size Results" />
+    <meta property="og:description" content="Aim for a byte budget while keeping the best JPEG or WebP quality the browser can produce, with proportional resizing when required." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse local image compressor" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Compress JPG, PNG, and WebP Locally | LiveParse" />
+    <meta name="twitter:description" content="Choose a target byte budget, compare dimensions and size, and download only after the browser reports what it achieved." />
+    <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/image-compressor/#application",
+            "name": "LiveParse Image Compressor",
+            "url": "https://liveparse.com/image-compressor/",
+            "applicationCategory": "MultimediaApplication",
+            "applicationSubCategory": "JPEG, PNG, and WebP image compressor",
+            "operatingSystem": "Any operating system with a compatible modern web browser",
+            "browserRequirements": "Requires JavaScript, Canvas, image decoding, and browser image encoders",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Compress a validated static JPEG, PNG, or WebP image toward a selected byte budget with explicit output-format, quality, resize, and browser-encoder limits.",
+            "featureList": [
+              "Target 20 KB, 50 KB, 100 KB, 200 KB, 500 KB, or 1 MB",
+              "Search JPEG and WebP quality for the highest result at or below the target",
+              "Reduce dimensions proportionally when quality alone cannot meet the target",
+              "Re-encode PNG without pretending that a Canvas quality value controls PNG compression",
+              "Return original bytes when an original-format input already meets the target",
+              "Validate supported file signatures before decoding"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/image-compressor/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Image Compressor", "item": "https://liveparse.com/image-compressor/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/image-compressor/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "How does the image compressor target a file size?", "acceptedAnswer": { "@type": "Answer", "text": "For JPEG and WebP output, it searches browser-encoder quality values and keeps the highest-quality result found at or below the selected byte target. If quality changes are insufficient, it can reduce width and height proportionally and try again." } },
+              { "@type": "Question", "name": "Will the compressed image be exactly 100 KB or another selected size?", "acceptedAnswer": { "@type": "Answer", "text": "No. The target is a maximum, not a promise of an exact byte count. Browser encoders produce discrete results, and some images cannot reach a very small target within the tool's quality and dimension safeguards. The result reports whether the target was met." } },
+              { "@type": "Question", "name": "Does the quality control compress PNG files?", "acceptedAnswer": { "@type": "Answer", "text": "No. The browser Canvas PNG encoder does not expose a lossy quality control. PNG output is re-encoded and may be resized proportionally when needed, but a JPEG-style quality search is not presented as PNG compression." } },
+              { "@type": "Question", "name": "What happens when the original image is already below the target?", "acceptedAnswer": { "@type": "Answer", "text": "When Original format is selected and the source is already at or below the target, the original file bytes are returned unchanged. Choosing another output format still requires decoding and re-encoding." } },
+              { "@type": "Question", "name": "Which images can this compressor process?", "acceptedAnswer": { "@type": "Answer", "text": "It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, files with unsupported signatures, and images the browser cannot decode are rejected." } },
+              { "@type": "Question", "name": "Is my image uploaded while it is compressed?", "acceptedAnswer": { "@type": "Answer", "text": "The selected image is decoded, processed, previewed, and exported in the current browser tab without intentionally sending its bytes to an image-conversion service. Page requests, browser extensions, operating-system services, downloaded files, and destinations where you later share the result remain separate boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="image-page" data-page="image-compressor">
+    <a class="skip-link" href="#image-tool">Skip to the image compressor</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="#image-tool">Compressor</a><a href="#targets">Size targets</a><a href="#formats">Formats</a><a href="#faq">FAQ</a><a href="/guides/image-compression-formats-and-file-size/">Image guide</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Target a byte budget · Compare before and after · Local processing</p>
+          <h1>Image Compressor for a Target File Size</h1>
+          <p class="hero-lead">Compress a static JPEG, PNG, or WebP toward a practical file-size ceiling. Keep the highest JPEG or WebP quality found under the target, then reduce dimensions proportionally only when the byte budget requires it.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Compress an image</a><span>20 KB to 1 MB targets · No sign-up</span></div>
+        </div>
+        <div class="hero-example" aria-label="Image compression target example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>measured result</strong></div>
+          <pre><code><span class="property">input</span>   <span class="string">2,048 × 1,365 · 1.8 MiB</span>
+<span class="property">target</span>  <span class="string">≤ 200 KB</span>
+<span class="property">output</span>  <span class="string">reported after encoding</span></code></pre>
+          <p><strong>Target, not exact size</strong><span>Quality and dimensions stay visible</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="image-tool" aria-labelledby="image-tool-heading">
+        <div><p class="section-kicker">Compress one image or a local batch of up to 20</p><h2 id="image-tool-heading">Find the best result the selected target permits</h2></div>
+        <p>Choose validated static images, a target such as 100 KB or 1 MB, and an output format. Preview each encoded result and its measured byte size before downloading it.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Image compressor loading"><p><strong>Loading the image compressor…</strong></p><p>Enable JavaScript to select, validate, encode, preview, and download an image. The target-size method and format limitations remain readable below.</p></section></div>
+
+      <section class="content-section" id="method" aria-labelledby="method-heading">
+        <div class="section-heading"><p class="section-kicker">Measure every candidate</p><h2 id="method-heading">How target-size image compression works</h2><p>A file-size goal is an optimization problem, not a metadata label. The output must actually be encoded before its bytes can be counted.</p></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Validate and decode</h3><p>The tool checks PNG, JPEG, or WebP signature bytes instead of trusting a renamed extension. It then decodes the static image and rejects unsupported, animated, oversized, or undecodable input.</p></li>
+          <li><span>2</span><h3>Search quality where it exists</h3><p>For JPEG and WebP output, candidates are encoded at different quality values. The compressor retains the highest-quality candidate found at or below the selected target rather than claiming one quality setting always yields one size.</p></li>
+          <li><span>3</span><h3>Resize only when required</h3><p>If quality search cannot meet the limit, width and height are reduced together and the search repeats. A smaller pixel grid often saves more bytes than another small quality reduction, but it also removes spatial detail.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" id="targets" aria-labelledby="targets-heading">
+        <div class="section-heading"><p class="section-kicker">KB means 1,024 bytes here</p><h2 id="targets-heading">Choose a 20 KB, 50 KB, 100 KB, 200 KB, 500 KB, or 1 MB target</h2><p>Each preset is an upper bound. A successful output can be smaller; an impossible target produces an explicit unmet-target result rather than a false success.</p></div>
+        <div class="error-table" role="table" aria-label="Image compression target examples">
+          <div class="error-row error-head" role="row"><span role="columnheader">Target</span><span role="columnheader">Typical reason</span><span role="columnheader">Trade-off to inspect</span></div>
+          <div class="error-row" role="row"><strong role="cell">20 KB / 50 KB</strong><span role="cell">Tiny thumbnails, strict form limits, or compact previews.</span><span role="cell">Expect aggressive quality reduction, smaller dimensions, or an honest failure for detailed images.</span></div>
+          <div class="error-row" role="row"><strong role="cell">100 KB / 200 KB</strong><span role="cell">Article images, profile pictures, and lightweight product previews.</span><span role="cell">Inspect text edges, faces, gradients, and the final pixel dimensions.</span></div>
+          <div class="error-row" role="row"><strong role="cell">500 KB</strong><span role="cell">Larger web content where detail matters more than a tiny transfer.</span><span role="cell">Compare the selected format with the original instead of assuming recompression always helps.</span></div>
+          <div class="error-row" role="row"><strong role="cell">1 MB</strong><span role="cell">High-resolution sharing or a permissive upload ceiling.</span><span role="cell">An already smaller original-format file is returned unchanged.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="formats" aria-labelledby="formats-heading">
+        <div class="section-heading"><p class="section-kicker">Different encoders, different controls</p><h2 id="formats-heading">JPEG, WebP, PNG, and Original format do not compress the same way</h2></div>
+        <div class="prose-grid"><div>
+          <p>JPEG and WebP expose a browser encoder quality argument, so the tool can search candidate quality levels. That value is not a universal percentage of visual fidelity and does not predict output size: two photographs at the same dimensions and quality can have very different byte counts because texture, noise, color, and edges compress differently.</p>
+          <p>Canvas PNG output is lossless for the pixels supplied to the encoder and does not provide an equivalent lossy quality dial. The compressor re-encodes PNG and can reduce its dimensions when the selected target requires fewer pixels. It does not move a decorative quality slider and describe the unchanged PNG behavior as successful compression.</p>
+          <p>Original format means that the output MIME type matches the validated input type. If its bytes already fit, they are returned unchanged. Once decoding, resizing, or re-encoding occurs, metadata and exact binary identity are not preserved even when the visible format name remains the same.</p>
+        </div><dl class="definition-list">
+          <div><dt>JPEG</dt><dd>Lossy, no alpha channel, often efficient for photographs.</dd></div>
+          <div><dt>WebP</dt><dd>Browser-encoded lossy output with alpha support when the browser encoder provides it.</dd></div>
+          <div><dt>PNG</dt><dd>Lossless pixel encoding; target reduction may require fewer dimensions.</dd></div>
+          <div><dt>Original format</dt><dd>Keep the validated source format; unchanged bytes only when it already meets the target.</dd></div>
+        </dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Bounded browser work</p><h2 id="limits-heading">Supported input, hard limits, and target failures</h2></div>
+        <div class="error-table" role="table" aria-label="Image compressor limits">
+          <div class="error-row error-head" role="row"><span role="columnheader">Check</span><span role="columnheader">Contract</span><span role="columnheader">Why it matters</span></div>
+          <div class="error-row" role="row"><strong role="cell">File signature</strong><span role="cell">JPEG, PNG, or WebP magic bytes must match a supported static format.</span><span role="cell">A filename or declared MIME type can be missing, mistaken, or renamed.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Input size</strong><span role="cell">At most 25 MiB before decoding.</span><span role="cell">Decoded pixels and multiple encoded candidates can consume much more memory than the source file.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixel count</strong><span role="cell">At most 40 megapixels, measured as width × height.</span><span role="cell">A small compressed file can still expand to a very large canvas.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Unsupported</strong><span role="cell">HEIC, AVIF, animated PNG/WebP, and other formats are rejected.</span><span role="cell">The tool does not silently keep one animation frame or rely on inconsistent optional decoders.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Encoder MIME</strong><span role="cell">The browser must return the requested JPEG, PNG, or WebP type.</span><span role="cell">A silent fallback to another format is treated as an error.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">Read the result, not the slider</p><h2 id="examples-heading">Compression decisions for photographs, screenshots, and graphics</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Photograph for a form</h3><p>Try JPEG or WebP at the form's stated ceiling. Zoom into faces, hair, foliage, and low-light noise; those regions reveal quality loss sooner than a small whole-image preview.</p></article>
+          <article><h3>Screenshot with text</h3><p>Compare PNG and WebP. A tiny JPEG target can introduce halos around high-contrast letters, while PNG may need a dimension reduction to cross the same byte threshold.</p></article>
+          <article><h3>Transparent graphic</h3><p>Use PNG or WebP when alpha matters. JPEG has no transparency, so conversion requires flattening against a chosen background and can permanently change edge pixels.</p></article>
+          <article><h3>Already optimized asset</h3><p>Do not assume another encoding pass helps. If Original format is below the target, preserving its bytes avoids generational loss and needless metadata changes.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local conversion with explicit boundaries</p><h2 id="privacy-heading">Image bytes stay in the tab during compression</h2></div>
+        <div class="prose-grid"><div>
+          <p>The selected file is read through browser file APIs, decoded to pixels, encoded into candidate blobs, previewed, and downloaded from the current tab. LiveParse does not intentionally post those file bytes to a remote compression endpoint. Processing can still consume substantial local memory because decoded RGBA pixels use roughly four bytes per pixel before browser overhead and encoded candidates.</p>
+          <p>This statement is not a universal “zero upload” guarantee for the device. Opening the page makes ordinary website requests; extensions, security software, cloud-synced download folders, clipboard utilities, and any service where you later upload the result have their own behavior. Remove sensitive material or use a controlled offline workflow when those boundaries matter.</p>
+          <p>Re-encoding is not sanitization. Although canvas output normally does not copy source EXIF, IPTC, or XMP metadata, do not rely on this utility to remove every hidden or sensitive property. Inspect the downloaded file with a dedicated metadata tool before publishing consequential images.</p>
+        </div><div class="callout-card"><strong>Need dimensions instead of a byte target?</strong><p>Use the resizer when width, height, percentage, contain, or cover geometry is the primary requirement.</p><a href="/image-resizer/">Open the Image Resizer →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered precisely</p><h2 id="faq-heading">Image compressor FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>How does the image compressor target a file size?</summary><p>For JPEG and WebP output, it searches browser-encoder quality values and keeps the highest-quality result found at or below the selected byte target. If quality changes are insufficient, it can reduce width and height proportionally and try again.</p></details>
+          <details><summary>Will the compressed image be exactly 100 KB or another selected size?</summary><p>No. The target is a maximum, not a promise of an exact byte count. Browser encoders produce discrete results, and some images cannot reach a very small target within the tool's quality and dimension safeguards. The result reports whether the target was met.</p></details>
+          <details><summary>Does the quality control compress PNG files?</summary><p>No. The browser Canvas PNG encoder does not expose a lossy quality control. PNG output is re-encoded and may be resized proportionally when needed, but a JPEG-style quality search is not presented as PNG compression.</p></details>
+          <details><summary>What happens when the original image is already below the target?</summary><p>When Original format is selected and the source is already at or below the target, the original file bytes are returned unchanged. Choosing another output format still requires decoding and re-encoding.</p></details>
+          <details><summary>Which images can this compressor process?</summary><p>It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, files with unsupported signatures, and images the browser cannot decode are rejected.</p></details>
+          <details><summary>Is my image uploaded while it is compressed?</summary><p>The selected image is decoded, processed, previewed, and exported in the current browser tab without intentionally sending its bytes to an image-conversion service. Page requests, browser extensions, operating-system services, downloaded files, and destinations where you later share the result remain separate boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue with the right operation</p><h2 id="related-heading">Related image tools and guide</h2></div><ul><li><a href="/image-resizer/">Image Resizer</a></li><li><a href="/png-to-jpg/">PNG to JPG</a></li><li><a href="/webp-to-jpg/">WebP to JPG</a></li><li><a href="/webp-to-png/">WebP to PNG</a></li><li><a href="/guides/image-compression-formats-and-file-size/">Compression &amp; Formats Guide</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/image-compressor/">Compress</a><a href="/image-resizer/">Resize</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Measure the encoded bytes and inspect the pixels.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive image compression. The target-size method, format comparison, constraints, examples, and privacy boundaries remain readable without it.</p></noscript>
+    <script type="module" src="/src/image-tools.tsx"></script>
+  </body>
+</html>

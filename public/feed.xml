@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T09:39:03+09:00</updated>
+  <updated>2026-08-04T10:32:00+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,61 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/image-compressor/</id>
+    <title>Image Compressor to 20KB, 50KB, 100KB, 200KB, or 500KB</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/image-compressor/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image compression" />
+    <summary>Compress JPEG, PNG, or WebP images toward a chosen KB limit in the browser, with honest target status, dimensions, and file-size comparisons.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/image-resizer/</id>
+    <title>Image Resizer by Pixels or Percent</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/image-resizer/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image resizing" />
+    <summary>Resize JPEG, PNG, or WebP images by pixels or percent with aspect-ratio, contain, cover, no-upscale, format, and quality controls.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/png-to-jpg/</id>
+    <title>PNG to JPG Converter</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/png-to-jpg/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image conversion" />
+    <summary>Convert PNG images to JPEG locally with explicit quality and background-color controls for transparent pixels.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/webp-to-jpg/</id>
+    <title>WebP to JPG Converter</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/webp-to-jpg/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image conversion" />
+    <summary>Convert static WebP images to JPEG locally while choosing output quality and the background behind transparent pixels.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/webp-to-png/</id>
+    <title>WebP to PNG Converter</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/webp-to-png/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image conversion" />
+    <summary>Convert static WebP images to PNG in the browser, preserving decoded transparency while reporting the likely file-size tradeoff.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/guides/image-compression-formats-and-file-size/</id>
+    <title>Image Compression, Formats, Dimensions, and File Size</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/image-compression-formats-and-file-size/" />
+    <published>2026-08-04T10:32:00+09:00</published>
+    <updated>2026-08-04T10:32:00+09:00</updated>
+    <category term="Image format guides" />
+    <summary>Understand how dimensions, codec, quality, transparency, animation, and metadata affect image file size before compressing or converting.</summary>
+  </entry>
 
   <entry>
     <id>https://liveparse.com/morse-code-translator/</id>

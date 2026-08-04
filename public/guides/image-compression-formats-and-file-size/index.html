@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Compression, Formats &amp; File Size Guide | LiveParse</title>
+    <meta name="description" content="Understand JPEG, PNG, and WebP compression, dimensions, quality, transparency, animation, metadata, byte targets, and a reliable image workflow." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/guides/image-compression-formats-and-file-size/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://liveparse.com/guides/image-compression-formats-and-file-size/" />
+    <meta property="og:title" content="Image Compression, Formats, and File Size Explained" />
+    <meta property="og:description" content="Choose JPEG, PNG, or WebP by image content and delivery requirements, then change quality or dimensions with measurable expectations." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse guide to image formats, compression, and file size" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Image Formats and File Size Guide | LiveParse" />
+    <meta name="twitter:description" content="A practical guide to pixels, byte budgets, lossy and lossless encoding, alpha, animation, metadata, and privacy boundaries." />
+    <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
+    <link rel="stylesheet" href="/article.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "@id": "https://liveparse.com/guides/image-compression-formats-and-file-size/#article",
+            "headline": "Image Compression, Formats, and File Size: JPEG, PNG, WebP, Dimensions, and Quality",
+            "description": "A practical guide to image byte size, pixel dimensions, lossy and lossless compression, transparency, animation, metadata, and reliable target-size workflows.",
+            "mainEntityOfPage": "https://liveparse.com/guides/image-compression-formats-and-file-size/",
+            "url": "https://liveparse.com/guides/image-compression-formats-and-file-size/",
+            "image": "https://liveparse.com/og-tools.png",
+            "datePublished": "2026-08-04",
+            "dateModified": "2026-08-04",
+            "author": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@type": "Organization", "name": "LiveParse", "url": "https://liveparse.com/" },
+            "articleSection": "Image formats and browser processing",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/guides/image-compression-formats-and-file-size/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://liveparse.com/guides/" },
+              { "@type": "ListItem", "position": 3, "name": "Image Compression, Formats, and File Size", "item": "https://liveparse.com/guides/image-compression-formats-and-file-size/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/image-compression-formats-and-file-size/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What determines an image's file size?", "acceptedAnswer": { "@type": "Answer", "text": "Pixel dimensions, color and alpha data, image complexity, format, encoder settings, metadata, and prior processing all affect byte size. Dimensions set the amount of pixel data, but two images with the same width and height can still compress to very different sizes." } },
+              { "@type": "Question", "name": "Is lossless compression the same as no quality loss from the original scene?", "acceptedAnswer": { "@type": "Answer", "text": "No. Lossless means the encoded file can reconstruct the pixel values supplied to that encoder. If a source was already resized, edited, or encoded lossily, saving those decoded pixels as PNG cannot restore detail that was previously discarded." } },
+              { "@type": "Question", "name": "Can an image compressor guarantee an exact target size?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not. Encoders produce discrete byte results, and browser implementations differ. A responsible workflow encodes and measures candidates, keeps the highest acceptable quality at or below a maximum when possible, and reports when safeguards prevent meeting the target." } },
+              { "@type": "Question", "name": "Which format should I use for transparency?", "acceptedAnswer": { "@type": "Answer", "text": "Use PNG or a supported WebP output when decoded alpha must remain. JPEG cannot store transparency, so conversion to JPEG requires compositing transparent pixels over a chosen background and permanently baking that matte into edge pixels." } },
+              { "@type": "Question", "name": "Does converting an image preserve animation and metadata?", "acceptedAnswer": { "@type": "Answer", "text": "Do not assume it does. A static Canvas workflow cannot preserve a timed animation, and it generally does not copy source EXIF, IPTC, XMP, color-profile, or resolution records. Keep the original and use specialized tools when those properties matter." } },
+              { "@type": "Question", "name": "Do LiveParse image tools upload the selected image?", "acceptedAnswer": { "@type": "Answer", "text": "The listed image tools read, decode, process, preview, and export the selected file in the current browser tab without intentionally sending its image bytes to an image-processing service. Page requests, extensions, operating-system services, synced folders, and later sharing remain separate privacy boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article-content">Skip to the image compression guide</a>
+    <header class="site-header"><a class="brand" href="https://liveparse.com/" aria-label="LiveParse home"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><nav class="site-nav" aria-label="Primary navigation"><a href="/image-compressor/">Image Compressor</a><a href="/image-resizer/">Image Resizer</a><a href="/guides/">Guides</a></nav></header>
+    <main class="page-shell" id="main">
+      <article class="article-card">
+        <header class="article-hero"><nav class="byline" aria-label="Breadcrumb"><a href="https://liveparse.com/">Home</a><span aria-hidden="true">›</span><a href="/guides/">Guides</a><span aria-hidden="true">›</span><span aria-current="page">Image Compression and Formats</span></nav><p class="eyebrow">Pixels, encoders, byte budgets, and honest trade-offs</p><h1>Image Compression, Formats, and File Size: JPEG, PNG, WebP, Dimensions, and Quality</h1><p class="dek">Choose an image format from what the asset must preserve, then change quality or dimensions only after separating pixel geometry from encoded bytes.</p><p class="byline"><span>Written by <strong>Jackson Jang</strong></span><span>Published <time datetime="2026-08-04">August 4, 2026</time></span><span>Last reviewed <time datetime="2026-08-04">August 4, 2026</time></span><span>15 minute read</span></p></header>
+        <div class="article-layout"><div class="article-body" id="article-content">
+          <div class="summary"><p><strong>Short answer:</strong> Image dimensions tell you how many pixels an image has; file size tells you how many bytes its encoded representation uses. JPEG is lossy and opaque, PNG is lossless and can preserve alpha, and WebP can support lossy or lossless pixels, alpha, and animation. No extension is always smallest. Pick the properties the destination needs, encode a candidate, measure its bytes, inspect its pixels, and keep the original.</p></div>
+
+          <h2 id="three-sizes">Separate width, pixel count, and file size</h2>
+          <p>An image can be described in several kinds of “size,” and confusing them leads to unreliable optimization. Width and height are dimensions, such as 2400 × 1600 pixels. Their product is 3,840,000 pixels, or 3.84 megapixels. File size is the length of the encoded file, such as 620 KiB. A print label such as 300 dpi describes a relationship between pixels and physical units; it does not create more pixels.</p>
+          <div class="table-wrap"><table><thead><tr><th>Measurement</th><th>Example</th><th>What it controls</th><th>What it does not prove</th></tr></thead><tbody>
+            <tr><td>Dimensions</td><td>2400 × 1600 px</td><td>Pixel grid and aspect ratio.</td><td>The encoded byte count or visual quality.</td></tr>
+            <tr><td>Pixel count</td><td>3.84 MP</td><td>How many pixel positions must be represented.</td><td>How complex or compressible their colors are.</td></tr>
+            <tr><td>File size</td><td>620 KiB</td><td>Storage and transfer bytes.</td><td>The dimensions without reading the format.</td></tr>
+            <tr><td>Resolution metadata</td><td>300 dpi</td><td>An intended physical print scale in compatible software.</td><td>Additional detail beyond the existing pixel grid.</td></tr>
+          </tbody></table></div>
+          <p>Two 1200 × 800 photographs can differ greatly in bytes. A smooth studio backdrop compresses differently from foliage, fabric, noise, or confetti because an encoder must describe more high-frequency variation. A tiny compressed file can still decode to a large in-memory canvas: RGBA pixel storage commonly starts around four bytes per pixel before browser and intermediate-buffer overhead.</p>
+
+          <h2 id="lossless-lossy">Lossless and lossy describe the encoding step</h2>
+          <p>A lossless encoder can reconstruct the exact pixel values it received. PNG uses lossless compression: decoding its output recovers those encoded pixels and alpha values. That promise begins at the encoder input. If those pixels came from a blurry resize or a lossy WebP, PNG preserves the blur or artifacts exactly; it cannot recover the original scene or a prior master file.</p>
+          <p>A lossy encoder represents the image approximately to save bytes. JPEG discards information according to its encoder and quality input. WebP can use lossy or lossless coding, although a browser Canvas WebP export commonly exposes a quality argument for its produced output. Repeated lossy conversion can cause generation loss because the next encoder works from already approximated pixels.</p>
+          <div class="warning"><p><strong>“No quality loss” needs a reference point.</strong> Lossless PNG can preserve decoded pixels, but a format conversion may still discard animation, metadata, color-management information, or the original compressed representation. Always say which property is preserved.</p></div>
+
+          <h2 id="format-table">JPEG, PNG, and WebP comparison</h2>
+          <div class="table-wrap"><table><thead><tr><th>Format</th><th>Pixel compression</th><th>Transparency</th><th>Animation</th><th>Common fit</th><th>Main caveat</th></tr></thead><tbody>
+            <tr><td>JPEG</td><td>Lossy</td><td>No alpha channel</td><td>No</td><td>Opaque photographs and broad legacy compatibility</td><td>Hard edges and text can show ringing or block artifacts.</td></tr>
+            <tr><td>PNG</td><td>Lossless</td><td>Yes</td><td>APNG exists, but not in these static tools</td><td>Logos, diagrams, screenshots, and transparent graphics</td><td>Full-resolution photographs can be much larger.</td></tr>
+            <tr><td>WebP</td><td>Lossy or lossless at the format level</td><td>Yes</td><td>Yes at the format level</td><td>Modern web delivery across varied image content</td><td>Tool and downstream support must match the particular features used.</td></tr>
+          </tbody></table></div>
+          <p>The format capability is not the same as a particular utility's contract. LiveParse's image tools accept validated static JPEG, PNG, or WebP where stated and reject animated input. They do not currently accept HEIC or AVIF. A converter that outputs PNG creates one static PNG, not an APNG; a converter that outputs JPEG cannot keep alpha or animation.</p>
+
+          <h2 id="quality">A quality setting is not a universal percentage</h2>
+          <p>A value such as 0.8 is an instruction to a particular encoder implementation. It is not “80% of the original quality,” does not mean 20% of bytes were removed, and does not map identically across JPEG and WebP encoders or browsers. Content also matters: the same value can produce different sizes and artifact patterns for two images with identical dimensions.</p>
+          <p>PNG through the browser Canvas export path does not expose an equivalent lossy quality control. Re-encoding a PNG may change its byte size because implementations and ancillary chunks differ, but passing a decorative quality value is not a sound PNG compression method. To reduce a difficult PNG substantially, consider smaller dimensions or a different format after checking whether losslessness and alpha are required.</p>
+
+          <h2 id="target-workflow">How a target file-size workflow should work</h2>
+          <p>A target such as 200 KB should be treated as a maximum byte budget, not a label written into the file. LiveParse's compressor defines 1 KB as 1,024 bytes and offers 20 KB, 50 KB, 100 KB, 200 KB, 500 KB, and 1 MB presets. A candidate must be encoded before its real length can be measured.</p>
+          <ol class="steps">
+            <li><strong>Validate and decode the source.</strong> Confirm a supported static format and obtain actual dimensions.</li>
+            <li><strong>Choose a destination format.</strong> Decide whether alpha, losslessness, or JPEG compatibility is required before optimizing.</li>
+            <li><strong>Encode and measure.</strong> For JPEG or WebP, try quality candidates and retain the highest-quality result found at or below the byte ceiling.</li>
+            <li><strong>Reduce dimensions when needed.</strong> If quality alone cannot meet the target, shrink width and height proportionally and repeat. Fewer pixels often change size more decisively.</li>
+            <li><strong>Respect format limits.</strong> PNG has no comparable lossy quality search in this path, so a difficult target may require proportional resizing or another format.</li>
+            <li><strong>Report failure honestly.</strong> Encoder results are discrete, minimum dimensions and quality safeguards matter, and a very small target may not be reachable.</li>
+            <li><strong>Inspect the actual output.</strong> Check bytes, dimensions, transparency or matte, and artifacts at useful zoom—not just a slider value.</li>
+          </ol>
+          <p>If Original format is selected and the original file already fits the compressor's target, returning those source bytes unchanged avoids a needless encoding generation. If conversion or resizing occurs, the output is newly encoded even when its format name matches the source. Exact target equality is uncommon and unnecessary when the real requirement is “at or below.”</p>
+
+          <h2 id="dimensions">Resize geometry: exact pixels, percent, contain, and cover</h2>
+          <p>Resize only to dimensions the destination can display or store usefully. Scaling a 4000-pixel photograph down for an 800-pixel content slot removes data the viewer cannot see at that presentation size and usually reduces transfer cost. Upscaling does the opposite: it interpolates additional pixels but cannot restore texture, focus, or legibility absent from the source.</p>
+          <div class="table-wrap"><table><thead><tr><th>Mode</th><th>Rule</th><th>Example for a 3:2 source and 1200 × 1200 box</th></tr></thead><tbody>
+            <tr><td>Exact independent dimensions</td><td>Force width and height separately.</td><td>1200 × 1200, but the image stretches unless the ratio already matches.</td></tr>
+            <tr><td>Percent with aspect lock</td><td>Scale both axes by the same factor.</td><td>50% turns 2400 × 1600 into 1200 × 800.</td></tr>
+            <tr><td>Contain</td><td>Fit the entire image inside the box.</td><td>1200 × 800; no crop, with unused box height.</td></tr>
+            <tr><td>Cover</td><td>Fill the box and crop overflow.</td><td>1200 × 1200; source content is cropped horizontally.</td></tr>
+            <tr><td>No-upscale</td><td>Cap scale at the source dimensions.</td><td>A 640 × 480 source stays 640 × 480 in the larger box.</td></tr>
+          </tbody></table></div>
+          <p>Cover crops should be inspected for subjects near edges. A centered crop cannot know which face, label, or object is semantically important. Aspect lock avoids distortion; no-upscale avoids producing larger interpolated output when the destination can accept a smaller image.</p>
+
+          <h2 id="transparency">Transparency requires either alpha or a deliberate matte</h2>
+          <p>PNG and WebP can represent an alpha value per pixel. Alpha enables transparent holes, soft shadows, and blended edges. JPEG is opaque. When converting PNG or WebP to JPEG, first fill the output canvas with a chosen color, then composite the source over it. That color becomes permanently mixed into partially transparent edge pixels.</p>
+          <p>Choose a matte that matches the final background. A white matte around an icon can create a pale fringe on a dark page. If the asset will appear on multiple backgrounds, keep a transparent PNG or WebP master. Converting static WebP to PNG can preserve decoded alpha without flattening, but the PNG may be much larger and will not preserve WebP container metadata.</p>
+
+          <h2 id="animation-metadata">Animation, metadata, orientation, and resolution are separate properties</h2>
+          <p>A browser may visually decode an animated source, but a static Canvas export does not preserve frame duration, looping, frame disposal, or the sequence. Silently saving the first decoded frame is risky: that frame may be partial or simply not the still the user intended. The LiveParse image tools reject animated PNG and WebP and require a frame-aware workflow for deliberate extraction.</p>
+          <p>Canvas conversion generally creates a new file from decoded pixels rather than copying EXIF, IPTC, XMP, embedded previews, or original profile and resolution chunks. Orientation is applied according to browser decoding behavior and the displayed output should be checked. Canvas exports typically use 96 dpi where a format supports resolution metadata, but pixel dimensions—not that label—remain authoritative for screens.</p>
+          <p>Do not use format conversion as a guaranteed metadata sanitizer. If metadata carries attribution, accessibility, color, legal, medical, location, or privacy consequences, archive the original and inspect or rewrite the output with a dedicated metadata-aware application.</p>
+
+          <h2 id="validation">Validate bytes, not only names</h2>
+          <p>A filename extension and a declared MIME type are helpful hints, but both can be missing or wrong. A robust local tool checks format signatures: PNG has a defined leading signature, JPEG begins with its marker sequence, and WebP uses a RIFF container with a WEBP form identifier. Signature validation does not make arbitrary data safe or guarantee successful decoding, but it prevents treating a renamed unrelated file as a supported image.</p>
+          <p>Resource limits matter after identity. The LiveParse image tools cap inputs at 25 MiB and decoded dimensions at 40 megapixels. They reject HEIC, AVIF, animated inputs, unsupported signatures, and files the browser cannot decode. When a requested JPEG, PNG, or WebP encoder returns a blob with a different MIME type, the operation fails instead of downloading mislabeled fallback data.</p>
+
+          <h2 id="privacy">What local browser processing does and does not mean</h2>
+          <p>For these tools, the selected image is read with browser file APIs, decoded, transformed, previewed, and exported in the current tab without intentionally posting its bytes to an image-processing endpoint. This reduces one common disclosure route and can keep the workflow responsive after page assets have loaded.</p>
+          <p>That boundary is narrower than “nothing ever leaves the device.” Opening the page involves ordinary website requests. Browser extensions, endpoint-security products, clipboard or accessibility utilities, cloud-synced source and download folders, operating-system backups, and any service where the result is later shared have their own behavior. For highly sensitive images, use a controlled device and network, understand installed software, and verify the final file separately.</p>
+
+          <h2 id="decision">A practical format and optimization decision tree</h2>
+          <ol class="steps">
+            <li><strong>Keep the original master.</strong> Never make a one-way conversion the only copy.</li>
+            <li><strong>Check animation first.</strong> Use an animation-aware workflow if timing or multiple frames matter.</li>
+            <li><strong>Decide whether transparency is required.</strong> Choose PNG or supported WebP for alpha; choose a deliberate matte for JPEG.</li>
+            <li><strong>Match dimensions to the destination.</strong> Prefer aspect-safe downscaling; avoid upscaling unless larger interpolated pixels are truly required.</li>
+            <li><strong>Choose by content.</strong> Start with JPEG or WebP for opaque photos and PNG for lossless graphics, screenshots, or editable alpha, then test.</li>
+            <li><strong>Encode, measure, and preview.</strong> Compare actual bytes and visible artifacts across relevant formats or quality values.</li>
+            <li><strong>Verify non-pixel requirements.</strong> Check metadata, orientation, color, physical print scale, filenames, and downstream acceptance separately.</li>
+            <li><strong>Document the result.</strong> Record the chosen dimensions, format, target ceiling, and why the trade-off was acceptable.</li>
+          </ol>
+
+          <h2 id="tools">Choose the LiveParse image operation that matches the requirement</h2>
+          <div class="table-wrap"><table><thead><tr><th>Requirement</th><th>Tool</th><th>Primary decision</th></tr></thead><tbody>
+            <tr><td>Meet a maximum byte budget</td><td><a href="/image-compressor/">Image Compressor</a></td><td>Target bytes, output format, quality, and possible proportional downscaling.</td></tr>
+            <tr><td>Change width, height, percentage, or fit</td><td><a href="/image-resizer/">Image Resizer</a></td><td>Pixels versus percent, contain versus cover, aspect lock, and no-upscale.</td></tr>
+            <tr><td>Make an opaque JPEG from PNG</td><td><a href="/png-to-jpg/">PNG to JPG Converter</a></td><td>The background that permanently replaces PNG transparency.</td></tr>
+            <tr><td>Make an opaque JPEG from static WebP</td><td><a href="/webp-to-jpg/">WebP to JPG Converter</a></td><td>Alpha matte, animation rejection, and possible second-generation loss.</td></tr>
+            <tr><td>Keep static WebP alpha in PNG</td><td><a href="/webp-to-png/">WebP to PNG Converter</a></td><td>Decoded transparency versus a potentially much larger lossless file.</td></tr>
+          </tbody></table></div>
+
+          <h2 id="checklist">Pre-download image checklist</h2>
+          <ol class="steps">
+            <li><strong>Source identity:</strong> Do signature bytes and decoded dimensions match the file you intended?</li>
+            <li><strong>Static or animated:</strong> Are you preserving a still image, or does the source require frame-aware handling?</li>
+            <li><strong>Dimensions:</strong> Does the destination need every source pixel, and is the aspect ratio correct?</li>
+            <li><strong>Format:</strong> Does the output need alpha, lossless decoded pixels, or JPEG compatibility?</li>
+            <li><strong>Matte:</strong> If output is JPEG, is the chosen background correct for all transparent edges?</li>
+            <li><strong>Artifacts:</strong> Have you inspected text, faces, edges, gradients, and texture at meaningful zoom?</li>
+            <li><strong>Bytes:</strong> Is the measured file at or below the real limit, rather than merely near a slider guess?</li>
+            <li><strong>Metadata:</strong> Have required orientation, profile, attribution, privacy, and print records been checked separately?</li>
+            <li><strong>Output identity:</strong> Did the browser actually produce the requested MIME type?</li>
+            <li><strong>Original retained:</strong> Can you return to the unflattened, unresized, or animated master later?</li>
+          </ol>
+
+          <div class="tool-callout"><p><strong>Start with the requirement you can measure.</strong> Use the compressor for a byte ceiling, the resizer for geometry, or a format converter when a specific destination format is mandatory.</p><a class="button" href="/image-compressor/">Open the Image Compressor</a></div>
+
+          <section aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <h3>What determines an image's file size?</h3><p>Pixel dimensions, color and alpha data, image complexity, format, encoder settings, metadata, and prior processing all affect byte size. Dimensions set the amount of pixel data, but two images with the same width and height can still compress to very different sizes.</p>
+            <h3>Is lossless compression the same as no quality loss from the original scene?</h3><p>No. Lossless means the encoded file can reconstruct the pixel values supplied to that encoder. If a source was already resized, edited, or encoded lossily, saving those decoded pixels as PNG cannot restore detail that was previously discarded.</p>
+            <h3>Can an image compressor guarantee an exact target size?</h3><p>Usually not. Encoders produce discrete byte results, and browser implementations differ. A responsible workflow encodes and measures candidates, keeps the highest acceptable quality at or below a maximum when possible, and reports when safeguards prevent meeting the target.</p>
+            <h3>Which format should I use for transparency?</h3><p>Use PNG or a supported WebP output when decoded alpha must remain. JPEG cannot store transparency, so conversion to JPEG requires compositing transparent pixels over a chosen background and permanently baking that matte into edge pixels.</p>
+            <h3>Does converting an image preserve animation and metadata?</h3><p>Do not assume it does. A static Canvas workflow cannot preserve a timed animation, and it generally does not copy source EXIF, IPTC, XMP, color-profile, or resolution records. Keep the original and use specialized tools when those properties matter.</p>
+            <h3>Do LiveParse image tools upload the selected image?</h3><p>The listed image tools read, decode, process, preview, and export the selected file in the current browser tab without intentionally sending its image bytes to an image-processing service. Page requests, extensions, operating-system services, synced folders, and later sharing remain separate privacy boundaries.</p>
+          </section>
+        </div>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Image tools</p><a href="/image-compressor/">Image Compressor</a><a href="/image-resizer/">Image Resizer</a><a href="/png-to-jpg/">PNG to JPG</a><a href="/webp-to-jpg/">WebP to JPG</a><a href="/webp-to-png/">WebP to PNG</a></div><div class="sidebar-card"><p class="sidebar-label">Key boundaries</p><span>Static JPEG, PNG, and WebP</span><span>25 MiB input</span><span>40 megapixels</span><span>HEIC, AVIF, and animation unsupported</span></div><div class="sidebar-card"><p class="sidebar-label">Core rule</p><span>Measure encoded bytes. Inspect decoded pixels. Preserve the original.</span></div></aside>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer"><div><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">{ }</span><span>LiveParse</span></a><p>Private browser-based tools and precise implementation guides.</p></div><div class="footer-links"><a href="/image-compressor/">Compress</a><a href="/image-resizer/">Resize</a><a href="/png-to-jpg/">PNG to JPG</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Choose the properties, encode the candidate, and measure the result.</p></footer>
+  </body>
+</html>

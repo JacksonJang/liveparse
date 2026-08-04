@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PNG to JPG Converter – Convert Images Online | LiveParse</title>
+    <meta name="description" content="Convert a static PNG to JPEG locally, choose the background used for transparency, and understand quality, metadata, 96 dpi, and size limits." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/png-to-jpg/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/image-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/png-to-jpg/" />
+    <meta property="og:title" content="PNG to JPG with an Explicit Alpha Background" />
+    <meta property="og:description" content="Flatten PNG transparency onto a chosen color, encode JPEG in the browser, and review dimensions and measured file size before saving." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse local PNG to JPG converter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Convert PNG to JPG Locally | LiveParse" />
+    <meta name="twitter:description" content="Choose how transparent pixels look in the opaque JPEG result and inspect the browser-encoded output before download." />
+    <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/png-to-jpg/#application",
+            "name": "LiveParse PNG to JPG Converter",
+            "url": "https://liveparse.com/png-to-jpg/",
+            "applicationCategory": "MultimediaApplication",
+            "applicationSubCategory": "PNG to JPEG image converter",
+            "operatingSystem": "Any operating system with a compatible modern web browser",
+            "browserRequirements": "Requires JavaScript, Canvas, PNG decoding, and JPEG encoding",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Convert a validated static PNG into an opaque JPEG with a selected transparency background and browser-controlled lossy quality.",
+            "featureList": [
+              "Validate the PNG file signature before decoding",
+              "Flatten transparent pixels onto a selected background color",
+              "Encode an opaque JPEG at the selected browser quality",
+              "Preview dimensions and measured output size",
+              "Reject animated PNG instead of silently choosing a frame",
+              "Process image pixels in the current browser tab"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/png-to-jpg/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "PNG to JPG", "item": "https://liveparse.com/png-to-jpg/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/png-to-jpg/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What happens to PNG transparency when it becomes JPG?", "acceptedAnswer": { "@type": "Answer", "text": "JPEG has no alpha channel. The converter composites every transparent and partially transparent PNG pixel over the background color you select, so that appearance becomes permanent in the JPG." } },
+              { "@type": "Question", "name": "Is converting PNG to JPG lossless?", "acceptedAnswer": { "@type": "Answer", "text": "No. JPEG encoding is lossy and can soften edges or add artifacts around text, diagrams, and flat-color graphics. The quality setting guides the browser encoder but does not promise a fixed visual score or file size." } },
+              { "@type": "Question", "name": "Will a JPG always be smaller than the PNG?", "acceptedAnswer": { "@type": "Answer", "text": "No. Photographs often become smaller, but simple or already optimized PNG graphics can produce a similar or larger JPEG. Compare the measured output size and preview instead of relying on the extension." } },
+              { "@type": "Question", "name": "Does the converted JPG keep PNG metadata and print resolution?", "acceptedAnswer": { "@type": "Answer", "text": "Source metadata is not copied by the Canvas conversion path. Browser-generated JPEG metadata is limited, and Canvas exports typically use 96 dpi where resolution metadata is supported, so rely on pixel dimensions and set print metadata later in a dedicated editor." } },
+              { "@type": "Question", "name": "Which PNG files can this converter accept?", "acceptedAnswer": { "@type": "Answer", "text": "It accepts a validated static PNG up to 25 MiB and 40 megapixels. Animated PNG, HEIC, AVIF, renamed files with the wrong signature, and images the browser cannot decode are rejected." } },
+              { "@type": "Question", "name": "Is the PNG sent to a conversion server?", "acceptedAnswer": { "@type": "Answer", "text": "The PNG is decoded, composited, encoded, previewed, and downloaded in the current browser tab without intentionally sending its image bytes to a conversion service. Page requests, extensions, device services, synced folders, and later sharing remain separate boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="image-page" data-page="png-to-jpg">
+    <a class="skip-link" href="#image-tool">Skip to the PNG to JPG converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="#image-tool">Converter</a><a href="#transparency">Transparency</a><a href="#metadata">Metadata</a><a href="#faq">FAQ</a><a href="/guides/image-compression-formats-and-file-size/">Image guide</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Static PNG input · Chosen alpha background · Opaque JPEG output</p>
+          <h1>PNG to JPG Converter</h1>
+          <p class="hero-lead">Convert a static PNG into JPEG without leaving transparency to chance. Pick the color that replaces the alpha channel, adjust the browser encoder quality, and inspect the real output before downloading.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Convert PNG to JPG</a><span>Local processing · No sign-up</span></div>
+        </div>
+        <div class="hero-example" aria-label="PNG transparency conversion example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>alpha composite</strong></div>
+          <pre><code><span class="property">input</span>       <span class="string">PNG · RGBA</span>
+<span class="property">background</span>  <span class="string">#ffffff</span>
+<span class="property">output</span>      <span class="string">JPEG · RGB</span></code></pre>
+          <p><strong>Transparent pixels become opaque</strong><span>Preview the chosen background</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="image-tool" aria-labelledby="image-tool-heading">
+        <div><p class="section-kicker">Convert one PNG or a local batch of up to 20</p><h2 id="image-tool-heading">Flatten alpha intentionally, then encode JPEG</h2></div>
+        <p>Select validated static PNGs, choose a background color and quality, then compare every source and encoded result. The tool accepts PNG input only and verifies each actual signature before decoding.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="PNG to JPG converter loading"><p><strong>Loading the PNG to JPG converter…</strong></p><p>Enable JavaScript to select, validate, composite, preview, and download a JPEG. Transparency, metadata, and format limitations remain readable below.</p></section></div>
+
+      <section class="content-section" id="transparency" aria-labelledby="transparency-heading">
+        <div class="section-heading"><p class="section-kicker">JPEG cannot store alpha</p><h2 id="transparency-heading">Every transparent pixel needs a background color</h2><p>A PNG can describe opacity from fully transparent to fully opaque. JPEG can describe color, but not that separate alpha value.</p></div>
+        <div class="prose-grid"><div>
+          <p>Before JPEG encoding, the tool fills the output canvas with the selected background and draws the decoded PNG over it. Fully transparent areas become the background color. Partially transparent edges are blended with that same color, which matters around logos, icons, cut-out products, shadows, and anti-aliased text.</p>
+          <p>Choose the background that matches the final placement. A white matte can create a pale fringe when the JPEG is later shown on black; a black matte can create a dark fringe on white. Once flattened, the original transparency cannot be reconstructed from the JPEG alone.</p>
+        </div><dl class="definition-list">
+          <div><dt>Alpha channel</dt><dd>A per-pixel opacity value supported by PNG but not JPEG.</dd></div>
+          <div><dt>Compositing</dt><dd>Combining source color and opacity with a chosen opaque background.</dd></div>
+          <div><dt>Edge matte</dt><dd>The background color blended into partially transparent boundary pixels.</dd></div>
+          <div><dt>Opaque output</dt><dd>Every JPEG pixel has a color; none remains transparent.</dd></div>
+        </dl></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="quality-heading">
+        <div class="section-heading"><p class="section-kicker">A new lossy encoding</p><h2 id="quality-heading">Quality is a browser encoder input, not a guaranteed percentage</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Decode PNG pixels</h3><p>The validated PNG is decoded at its intrinsic pixel dimensions. Its compressed byte size does not predict how much memory the decoded canvas requires.</p></li>
+          <li><span>2</span><h3>Composite the background</h3><p>The selected opaque color is painted first, then the PNG is drawn over it. This explicitly resolves transparent and translucent pixels.</p></li>
+          <li><span>3</span><h3>Encode and measure JPEG</h3><p>The browser receives the chosen quality value. The resulting blob is checked for the JPEG MIME type, measured, and previewed; a silent format fallback is treated as an error.</p></li>
+        </ol>
+        <p>JPEG commonly suits continuous-tone photographs. It can be a poor match for screenshots, line art, tiny text, or flat-color diagrams because block and ringing artifacts become conspicuous at hard edges. Converting does not promise a smaller file: content and encoder behavior decide the measured result.</p>
+      </section>
+
+      <section class="content-section" id="metadata" aria-labelledby="metadata-heading">
+        <div class="section-heading"><p class="section-kicker">Pixels survive; ancillary records generally do not</p><h2 id="metadata-heading">Metadata, orientation, and the 96 dpi caveat</h2></div>
+        <div class="error-table" role="table" aria-label="PNG to JPG metadata behavior">
+          <div class="error-row error-head" role="row"><span role="columnheader">Property</span><span role="columnheader">Conversion behavior</span><span role="columnheader">What to use instead</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixel dimensions</strong><span role="cell">The decoded width and height are used for the output canvas.</span><span role="cell">Treat these dimensions as authoritative for screens.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Text and profile metadata</strong><span role="cell">Source PNG chunks and descriptive metadata are not copied through the Canvas path.</span><span role="cell">Archive the original and add required records later with a metadata-aware editor.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Orientation</strong><span role="cell">The output represents the pixels as decoded and drawn by the browser.</span><span role="cell">Visually verify width, height, and orientation before publishing.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Print resolution</strong><span role="cell">Canvas exports typically use 96 dpi where the format supports resolution metadata.</span><span role="cell">Set the intended physical size or dpi later in print-production software.</span></div>
+        </div>
+        <p>Dpi metadata does not add image detail. A 2400 × 1600 image contains the same number of pixels whether a file labels it 72, 96, or 300 dpi; the label changes the implied physical print size, not the screen pixel grid.</p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Strict input identity</p><h2 id="limits-heading">PNG validation and conversion limits</h2></div>
+        <div class="error-table" role="table" aria-label="PNG to JPG converter limits">
+          <div class="error-row error-head" role="row"><span role="columnheader">Check</span><span role="columnheader">Contract</span><span role="columnheader">Why it exists</span></div>
+          <div class="error-row" role="row"><strong role="cell">Magic bytes</strong><span role="cell">The file must begin with the PNG signature.</span><span role="cell">A .png extension or image/png declaration alone is not proof of format.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Static image</strong><span role="cell">Animated PNG is rejected rather than reduced to one frame.</span><span role="cell">JPEG cannot preserve animation or timing.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Input size</strong><span role="cell">At most 25 MiB of encoded source data.</span><span role="cell">Input bytes are checked before the more expensive decode.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixel count</strong><span role="cell">At most 40 megapixels, measured as width × height.</span><span role="cell">Decoded RGBA data and the output canvas can be much larger than the PNG file.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Other formats</strong><span role="cell">JPEG, WebP, HEIC, AVIF, and unknown signatures are rejected here.</span><span role="cell">Dedicated tools make format-specific transparency and animation behavior explicit.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Convert when the destination requires JPEG</p><h2 id="uses-heading">Good uses and cases where PNG should stay PNG</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Photo stored as PNG</h3><p>A photographic PNG may shrink substantially as JPEG, although the result is lossy. Compare fine texture, gradients, and the measured byte size.</p></article>
+          <article><h3>Opaque upload requirement</h3><p>If a service accepts JPEG only, choose its page background before conversion so a transparent logo does not receive an unexpected black or white matte.</p></article>
+          <article><h3>Screenshot or diagram</h3><p>Keep PNG when small type, one-pixel lines, or limited flat colors must remain crisp. JPEG artifacts can offset any size benefit.</p></article>
+          <article><h3>Editable transparent asset</h3><p>Keep the original PNG as the master. A flattened JPEG cannot restore alpha, source chunks, or the exact pre-encoded pixels.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Conversion within the tab</p><h2 id="privacy-heading">The selected PNG is processed locally</h2></div>
+        <div class="prose-grid"><div>
+          <p>The browser reads the selected PNG, validates its signature, decodes its pixels, composites the chosen background, and creates the JPEG blob in the current tab. The tool does not intentionally post those image bytes to a remote conversion endpoint.</p>
+          <p>This is a bounded processing statement, not a claim about every part of the device. Loading the site makes normal page requests, and browser extensions, security software, synced download folders, backups, and later upload destinations can handle the source or result separately. Preserve the original when provenance, alpha, or metadata matters.</p>
+        </div><div class="callout-card"><strong>Need to keep transparency?</strong><p>JPEG is the wrong destination when an alpha channel is required. Resize or compress to PNG/WebP instead.</p><a href="/image-resizer/">Open the Image Resizer →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading"><p class="section-kicker">Format-specific answers</p><h2 id="faq-title">PNG to JPG FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What happens to PNG transparency when it becomes JPG?</summary><p>JPEG has no alpha channel. The converter composites every transparent and partially transparent PNG pixel over the background color you select, so that appearance becomes permanent in the JPG.</p></details>
+          <details><summary>Is converting PNG to JPG lossless?</summary><p>No. JPEG encoding is lossy and can soften edges or add artifacts around text, diagrams, and flat-color graphics. The quality setting guides the browser encoder but does not promise a fixed visual score or file size.</p></details>
+          <details><summary>Will a JPG always be smaller than the PNG?</summary><p>No. Photographs often become smaller, but simple or already optimized PNG graphics can produce a similar or larger JPEG. Compare the measured output size and preview instead of relying on the extension.</p></details>
+          <details><summary>Does the converted JPG keep PNG metadata and print resolution?</summary><p>Source metadata is not copied by the Canvas conversion path. Browser-generated JPEG metadata is limited, and Canvas exports typically use 96 dpi where resolution metadata is supported, so rely on pixel dimensions and set print metadata later in a dedicated editor.</p></details>
+          <details><summary>Which PNG files can this converter accept?</summary><p>It accepts a validated static PNG up to 25 MiB and 40 megapixels. Animated PNG, HEIC, AVIF, renamed files with the wrong signature, and images the browser cannot decode are rejected.</p></details>
+          <details><summary>Is the PNG sent to a conversion server?</summary><p>The PNG is decoded, composited, encoded, previewed, and downloaded in the current browser tab without intentionally sending its image bytes to a conversion service. Page requests, extensions, device services, synced folders, and later sharing remain separate boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related image workflows</p><h2 id="related-heading">Resize, compress, or convert another format</h2></div><ul><li><a href="/image-compressor/">Image Compressor</a></li><li><a href="/image-resizer/">Image Resizer</a></li><li><a href="/webp-to-jpg/">WebP to JPG</a></li><li><a href="/webp-to-png/">WebP to PNG</a></li><li><a href="/guides/image-compression-formats-and-file-size/">Compression &amp; Formats Guide</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/image-compressor/">Compress</a><a href="/image-resizer/">Resize</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Resolve alpha before encoding an opaque JPEG.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive PNG conversion. Transparency, JPEG quality, metadata, limits, use cases, and privacy boundaries remain readable without it.</p></noscript>
+    <script type="module" src="/src/image-tools.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebP to PNG Converter – Preserve Transparency | LiveParse</title>
+    <meta name="description" content="Convert a validated static WebP to lossless PNG locally, retain decoded transparency, reject animation, and understand the likely file-size increase." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/webp-to-png/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/image-tools.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/webp-to-png/" />
+    <meta property="og:title" content="Static WebP to PNG with Transparency Preserved" />
+    <meta property="og:description" content="Decode a supported still WebP, retain its alpha channel in PNG, and check the measured output instead of assuming lossless means smaller." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta property="og:image:width" content="1731" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="LiveParse local WebP to PNG converter" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Convert Static WebP to PNG | LiveParse" />
+    <meta name="twitter:description" content="Preserve decoded transparency in a still PNG while keeping animation and file-size limitations explicit." />
+    <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
+    <meta name="theme-color" content="#087487" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/webp-to-png/#application",
+            "name": "LiveParse WebP to PNG Converter",
+            "url": "https://liveparse.com/webp-to-png/",
+            "applicationCategory": "MultimediaApplication",
+            "applicationSubCategory": "WebP to PNG image converter",
+            "operatingSystem": "Any operating system with a compatible modern web browser",
+            "browserRequirements": "Requires JavaScript, Canvas, static WebP decoding, and PNG encoding",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Convert a validated static WebP into a losslessly encoded PNG while retaining decoded alpha and rejecting animation.",
+            "featureList": [
+              "Validate RIFF and WebP signature bytes before decoding",
+              "Reject animated WebP rather than selecting one frame",
+              "Retain decoded transparency in PNG output",
+              "Encode decoded pixels without a lossy quality control",
+              "Preview dimensions and measured output size",
+              "Verify that the browser returned an image/png blob"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/webp-to-png/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "WebP to PNG", "item": "https://liveparse.com/webp-to-png/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/webp-to-png/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "Does WebP to PNG preserve transparency?", "acceptedAnswer": { "@type": "Answer", "text": "Yes for a supported static WebP: decoded transparent and partially transparent pixels are written to the PNG alpha channel. The conversion preserves the decoded appearance, not necessarily every original container property or metadata record." } },
+              { "@type": "Question", "name": "Can this tool convert an animated WebP to PNG?", "acceptedAnswer": { "@type": "Answer", "text": "No. Animated WebP is rejected because this tool creates one static PNG, not an APNG sequence. It does not silently save the first frame; use an animation-aware workflow to choose or export frames deliberately." } },
+              { "@type": "Question", "name": "Is WebP to PNG conversion lossless?", "acceptedAnswer": { "@type": "Answer", "text": "PNG encoding is lossless for the pixels decoded from the WebP. It cannot recover detail already discarded by a lossy WebP encoder, reproduce the original WebP bitstream, or guarantee preservation of source metadata." } },
+              { "@type": "Question", "name": "Why can the PNG be much larger than the WebP?", "acceptedAnswer": { "@type": "Answer", "text": "PNG uses lossless compression and has no JPEG-style quality control. Photographs, noise, gradients, and high dimensions often need far more PNG bytes than a lossy WebP representing a similar decoded image." } },
+              { "@type": "Question", "name": "Which WebP files can this converter accept?", "acceptedAnswer": { "@type": "Answer", "text": "It accepts a validated static WebP up to 25 MiB and 40 megapixels. Animated WebP, JPEG, PNG, HEIC, AVIF, false file extensions, and files the browser cannot decode are rejected." } },
+              { "@type": "Question", "name": "Is the WebP sent away to become PNG?", "acceptedAnswer": { "@type": "Answer", "text": "The WebP is validated, decoded, encoded, previewed, and downloaded in the current browser tab without intentionally sending its image bytes to a conversion service. Page traffic, extensions, device services, synced folders, and later sharing remain separate boundaries." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="image-page" data-page="webp-to-png">
+    <a class="skip-link" href="#image-tool">Skip to the WebP to PNG converter</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="#image-tool">Converter</a><a href="#transparency">Transparency</a><a href="#size">File size</a><a href="#faq">FAQ</a><a href="/guides/image-compression-formats-and-file-size/">Image guide</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Static WebP input · Decoded alpha retained · Lossless PNG output</p>
+          <h1>WebP to PNG Converter</h1>
+          <p class="hero-lead">Convert a supported static WebP to PNG when transparency or a lossless decoded-pixel format matters. Keep alpha, verify the result, and expect photographic PNGs to be larger rather than treating conversion as compression.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Convert WebP to PNG</a><span>Local processing · No sign-up</span></div>
+        </div>
+        <div class="hero-example" aria-label="WebP to PNG transparency example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>alpha retained</strong></div>
+          <pre><code><span class="property">source</span>  <span class="string">WebP · static RGBA</span>
+<span class="property">pixels</span>  <span class="string">decode unchanged</span>
+<span class="property">result</span>  <span class="string">PNG · lossless RGBA</span></code></pre>
+          <p><strong>Lossless does not mean small</strong><span>Measure the actual output</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="image-tool" aria-labelledby="image-tool-heading">
+        <div><p class="section-kicker">Convert one WebP or a local batch of up to 20</p><h2 id="image-tool-heading">Re-encode decoded pixels and alpha as PNG</h2></div>
+        <p>Select validated static WebPs and review each image's dimensions, transparency-capable preview, and measured PNG size. No quality slider is shown because the browser's Canvas PNG path does not expose lossy quality control.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="WebP to PNG converter loading"><p><strong>Loading the WebP to PNG converter…</strong></p><p>Enable JavaScript to validate, decode, preview, and download a PNG. Transparency, lossless encoding, animation, and file-size caveats remain readable below.</p></section></div>
+
+      <section class="content-section" id="transparency" aria-labelledby="transparency-heading">
+        <div class="section-heading"><p class="section-kicker">Alpha has a destination</p><h2 id="transparency-heading">Static WebP transparency can remain transparent in PNG</h2></div>
+        <div class="prose-grid"><div>
+          <p>WebP and PNG can both represent an alpha channel. The browser decodes the source into color and opacity values, and the PNG encoder writes those decoded pixels without first painting an opaque background. Fully transparent regions remain transparent; soft shadows and anti-aliased edges keep partial opacity.</p>
+          <p>This is preservation of the decoded appearance, not the source container. The result is a new PNG bitstream with different compression and structure. WebP-specific chunks, original encoding choices, and source metadata are not copied through the Canvas path. Keep the original when provenance or later WebP re-editing matters.</p>
+        </div><dl class="definition-list">
+          <div><dt>RGBA</dt><dd>Red, green, blue, and alpha values for each decoded pixel.</dd></div>
+          <div><dt>Alpha preserved</dt><dd>Opacity remains available instead of being flattened onto a matte.</dd></div>
+          <div><dt>New container</dt><dd>The exported PNG is not a renamed or byte-identical WebP.</dd></div>
+          <div><dt>Static only</dt><dd>One still image is supported; animation is rejected before export.</dd></div>
+        </dl></div>
+      </section>
+
+      <section class="content-section alt" id="size" aria-labelledby="size-heading">
+        <div class="section-heading"><p class="section-kicker">Lossless is about reconstruction, not a byte guarantee</p><h2 id="size-heading">The PNG may be several times larger than the WebP</h2></div>
+        <div class="error-table" role="table" aria-label="WebP to PNG size factors">
+          <div class="error-row error-head" role="row"><span role="columnheader">Source content</span><span role="columnheader">PNG tendency</span><span role="columnheader">Decision</span></div>
+          <div class="error-row" role="row"><strong role="cell">Photograph</strong><span role="cell">Continuous tones, fine texture, and sensor noise often produce a much larger lossless PNG.</span><span role="cell">Keep WebP unless PNG compatibility or lossless downstream editing is required.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Logo or icon</strong><span role="cell">Flat colors and repeated transparent areas can compress efficiently.</span><span role="cell">PNG is often practical when alpha and broad compatibility matter.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Lossy WebP</strong><span role="cell">PNG stores the already-decoded, already-lossy pixels exactly.</span><span role="cell">Do not expect lost detail or original sharpness to return.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Large dimensions</strong><span role="cell">More pixels generally mean more output data regardless of the small source file.</span><span role="cell">Resize first if the destination does not need every source pixel.</span></div>
+        </div>
+        <p>The PNG encoder has no equivalent of a JPEG/WebP lossy quality search. A lower decorative quality value would not provide the promised reduction, so the tool measures the lossless result instead of implying that it can tune it to an exact byte target.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="animation-heading">
+        <div class="section-heading"><p class="section-kicker">Do not collapse motion silently</p><h2 id="animation-heading">Animated WebP is not converted to a single PNG</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Check the WebP container</h3><p>The tool verifies RIFF/WebP identity and checks animation-related data before accepting the file as a still image.</p></li>
+          <li><span>2</span><h3>Reject timed sequences</h3><p>An animated source stops with an error. Exporting only its first decoded frame could omit important content and ignore frame blending, disposal, loop, and duration rules.</p></li>
+          <li><span>3</span><h3>Select an animation workflow</h3><p>Use a frame-aware editor when you need APNG, a frame sheet, or one deliberately chosen composited still. This converter creates only a static PNG.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limits-heading">
+        <div class="section-heading"><p class="section-kicker">Strict identity and resource bounds</p><h2 id="limits-heading">Supported WebP input and output checks</h2></div>
+        <div class="error-table" role="table" aria-label="WebP to PNG converter limits">
+          <div class="error-row error-head" role="row"><span role="columnheader">Check</span><span role="columnheader">Contract</span><span role="columnheader">Reason</span></div>
+          <div class="error-row" role="row"><strong role="cell">Magic bytes</strong><span role="cell">RIFF and WEBP markers must identify the selected file.</span><span role="cell">A file extension or declared MIME type can be wrong.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Static image</strong><span role="cell">Animated WebP is rejected.</span><span role="cell">A static PNG cannot honestly preserve the source timing and frames.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Input size</strong><span role="cell">At most 25 MiB of encoded WebP data.</span><span role="cell">The tool bounds input before allocating decoded image memory.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Pixel count</strong><span role="cell">At most 40 megapixels, measured as width × height.</span><span role="cell">A highly compressed file can expand into a large canvas.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Other formats</strong><span role="cell">PNG, JPEG, HEIC, AVIF, unknown signatures, and undecodable WebP are rejected.</span><span role="cell">This route keeps one input-to-output contract.</span></div>
+          <div class="error-row" role="row"><strong role="cell">PNG encoder</strong><span role="cell">The output blob must report image/png.</span><span role="cell">A silent browser fallback is treated as an error.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="uses-heading">
+        <div class="section-heading"><p class="section-kicker">Use PNG for a reason</p><h2 id="uses-heading">Practical WebP to PNG decisions</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Transparent UI asset</h3><p>Convert a static logo or icon when a downstream design tool accepts PNG more reliably and the alpha channel must remain editable.</p></article>
+          <article><h3>Lossless editing handoff</h3><p>PNG prevents another lossy encoding step for the decoded pixels, but it does not reverse artifacts that already exist in the WebP source.</p></article>
+          <article><h3>Photographic delivery</h3><p>Keep WebP when it is supported. A full-resolution photograph can expand sharply in PNG without gaining visible detail.</p></article>
+          <article><h3>Animated source</h3><p>Stop and use an animation-aware tool. Neither a random nor a first frame is an adequate replacement for a timed sequence.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Local decode and encode</p><h2 id="privacy-heading">Conversion occurs in the current browser tab</h2></div>
+        <div class="prose-grid"><div>
+          <p>The selected WebP is read through browser APIs, checked, decoded to pixels, encoded as a PNG blob, previewed, and downloaded without intentionally sending its image bytes to a remote conversion endpoint. Decoded images and PNG output can use considerably more local memory than the compressed WebP source.</p>
+          <p>This does not describe unrelated page requests or third-party software on the device. Extensions, endpoint security, backups, cloud-synced folders, and any platform where you later share the PNG have separate behavior. Canvas conversion is also not a guaranteed metadata sanitizer; inspect consequential output with a dedicated tool.</p>
+        </div><div class="callout-card"><strong>Need opaque JPEG compatibility?</strong><p>Choose the background that replaces WebP transparency and review the extra lossy generation.</p><a href="/webp-to-jpg/">Convert WebP to JPG →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading"><p class="section-kicker">Alpha, animation, and size answers</p><h2 id="faq-title">WebP to PNG FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>Does WebP to PNG preserve transparency?</summary><p>Yes for a supported static WebP: decoded transparent and partially transparent pixels are written to the PNG alpha channel. The conversion preserves the decoded appearance, not necessarily every original container property or metadata record.</p></details>
+          <details><summary>Can this tool convert an animated WebP to PNG?</summary><p>No. Animated WebP is rejected because this tool creates one static PNG, not an APNG sequence. It does not silently save the first frame; use an animation-aware workflow to choose or export frames deliberately.</p></details>
+          <details><summary>Is WebP to PNG conversion lossless?</summary><p>PNG encoding is lossless for the pixels decoded from the WebP. It cannot recover detail already discarded by a lossy WebP encoder, reproduce the original WebP bitstream, or guarantee preservation of source metadata.</p></details>
+          <details><summary>Why can the PNG be much larger than the WebP?</summary><p>PNG uses lossless compression and has no JPEG-style quality control. Photographs, noise, gradients, and high dimensions often need far more PNG bytes than a lossy WebP representing a similar decoded image.</p></details>
+          <details><summary>Which WebP files can this converter accept?</summary><p>It accepts a validated static WebP up to 25 MiB and 40 megapixels. Animated WebP, JPEG, PNG, HEIC, AVIF, false file extensions, and files the browser cannot decode are rejected.</p></details>
+          <details><summary>Is the WebP sent away to become PNG?</summary><p>The WebP is validated, decoded, encoded, previewed, and downloaded in the current browser tab without intentionally sending its image bytes to a conversion service. Page traffic, extensions, device services, synced folders, and later sharing remain separate boundaries.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Related image workflows</p><h2 id="related-heading">Choose the destination that matches the asset</h2></div><ul><li><a href="/webp-to-jpg/">WebP to JPG</a></li><li><a href="/image-compressor/">Image Compressor</a></li><li><a href="/image-resizer/">Image Resizer</a></li><li><a href="/png-to-jpg/">PNG to JPG</a></li><li><a href="/guides/image-compression-formats-and-file-size/">Compression &amp; Formats Guide</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/image-compressor/">Compress</a><a href="/image-resizer/">Resize</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">© 2026 Jackson Jang. Preserve decoded alpha and measure the lossless output.</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required for interactive WebP conversion. Transparency, lossless encoding, animation, size trade-offs, limits, and privacy boundaries remain readable without it.</p></noscript>
+    <script type="module" src="/src/image-tools.tsx"></script>
+  </body>
+</html>
