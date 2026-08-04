@@ -48,11 +48,31 @@ describe('production routing parity', () => {
 
     for (const [alias, target] of redirects) {
       expect(target.endsWith('/')).toBe(true);
-      expect(directories.has(target.slice(0, -1))).toBe(true);
+      if (target !== '/') expect(directories.has(target.slice(0, -1))).toBe(true);
       if (alias.endsWith('/')) expect(redirects.get(alias.slice(0, -1))).toBe(target);
       else expect(redirects.get(`${alias}/`)).toBe(target);
       expect(redirects.has(target)).toBe(false);
     }
+  });
+
+  it('consolidates common JSON parser and formatter paths into the canonical homepage', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const redirects = new Map(routeRedirects(source));
+    const aliases = [
+      '/json-parser',
+      '/json-formatter',
+      '/json-validator',
+      '/json-beautifier',
+      '/json-viewer',
+      '/format-json',
+      '/parse-json',
+    ];
+
+    for (const alias of aliases) {
+      expect(redirects.get(alias)).toBe('/');
+      expect(redirects.get(`${alias}/`)).toBe('/');
+    }
+    expect(redirects.has('/')).toBe(false);
   });
 
   it('includes the UUID generator, validator, decoder, and guide cluster with intentional aliases', async () => {
