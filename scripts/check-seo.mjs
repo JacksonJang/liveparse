@@ -345,6 +345,46 @@ function collectJsonLdNodes(value, nodes = []) {
   return nodes;
 }
 
+function validateGuideItemList(html, expectedGuideUrls) {
+  const itemLists = [];
+  for (const block of jsonLdBlocks(html)) {
+    try {
+      const parsed = JSON.parse(block);
+      itemLists.push(...collectJsonLdNodes(parsed).filter((node) => node['@type'] === 'ItemList'));
+    } catch {
+      return;
+    }
+  }
+
+  if (itemLists.length !== 1) {
+    fail(`guides hub: expected exactly one ItemList JSON-LD node, found ${itemLists.length}`);
+    return;
+  }
+
+  const itemList = itemLists[0];
+  const elements = Array.isArray(itemList.itemListElement) ? itemList.itemListElement : [];
+  if (itemList.numberOfItems !== expectedGuideUrls.size) {
+    fail(`guides hub: ItemList numberOfItems must be ${expectedGuideUrls.size}, found ${JSON.stringify(itemList.numberOfItems)}`);
+  }
+  if (elements.length !== expectedGuideUrls.size) {
+    fail(`guides hub: ItemList must contain ${expectedGuideUrls.size} entries, found ${elements.length}`);
+  }
+
+  const listedUrls = new Set();
+  elements.forEach((entry, index) => {
+    if (entry?.position !== index + 1) {
+      fail(`guides hub: ItemList entry ${index + 1} has position ${JSON.stringify(entry?.position)}`);
+    }
+    const url = typeof entry?.url === 'string' ? entry.url : '';
+    if (!expectedGuideUrls.has(url)) fail(`guides hub: ItemList contains unexpected guide URL ${JSON.stringify(url)}`);
+    if (listedUrls.has(url)) fail(`guides hub: ItemList contains duplicate guide URL ${JSON.stringify(url)}`);
+    listedUrls.add(url);
+  });
+  for (const url of expectedGuideUrls.keys()) {
+    if (!listedUrls.has(url)) fail(`guides hub: ItemList is missing guide URL ${url}`);
+  }
+}
+
 function normalizeFaqText(value) {
   return value.replace(/\s+/g, ' ').trim().replace(/\s+([,.;:!?/])/g, '$1').replace(/\/\s+/g, '/');
 }
@@ -1091,6 +1131,8 @@ async function main() {
     const homepageH1 = h1Values(homepage)[0] || '';
     if (!/\bjson\s+formatter\b/i.test(homepageTitle)) fail('homepage: title must target the phrase "JSON Formatter"');
     if (!/\bjson\s+formatter\b/i.test(homepageH1)) fail('homepage: H1 must target the phrase "JSON Formatter"');
+    if (!/\bviewer\b/i.test(homepageTitle)) fail('homepage: title must target JSON viewer intent');
+    if (!/\bviewer\b/i.test(homepageH1)) fail('homepage: H1 must target JSON viewer intent');
   }
 
   const guidesIndexPath = join(distRoot, 'guides', 'index.html');
@@ -1242,6 +1284,7 @@ async function main() {
     }
     if (!sitemapUrlSet.has(expectedUrl)) fail(`guide ${publicPath}: missing from sitemap.xml`);
   }
+  if (guidesIndex !== null) validateGuideItemList(guidesIndex, expectedGuideUrls);
 
   const guidesHubUrl = `${CANONICAL_ORIGIN}/guides/`;
   const inboundGuideSources = new Map([...expectedGuideUrls.keys()].map((url) => [url, new Set()]));

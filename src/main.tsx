@@ -11,7 +11,7 @@ type Locale = 'en' | 'ko';
 
 const samples = {
   'SEO metadata': `{
-  "title": "JSON Formatter & Validator – Free Online Tool | LiveParse",
+  "title": "JSON Formatter, Validator & Viewer Online | LiveParse",
   "description": "Format, validate, beautify, minify, and explore JSON locally while preserving 64-bit numbers and duplicate keys.",
   "canonicalUrl": "https://liveparse.com/",
   "robots": {
@@ -42,7 +42,7 @@ const samples = {
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "LiveParse JSON Formatter and Validator",
+    "name": "LiveParse JSON Formatter, Validator, and Viewer",
     "url": "https://liveparse.com/",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
