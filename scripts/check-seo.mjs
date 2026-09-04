@@ -139,6 +139,7 @@ const requiredPages = [
   { relativePath: 'yaml-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/yaml-to-json/`, label: 'YAML to JSON tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\byaml\b)(?=.*\bjson\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'YAML to JSON conversion' },
   { relativePath: 'json-to-yaml/index.html', canonical: `${CANONICAL_ORIGIN}/json-to-yaml/`, label: 'JSON to YAML tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 900, topicPattern: /(?=.*\bjson\b)(?=.*\byaml\b)(?=.*\b(?:convert(?:er|ing)?|conversion)\b)/i, topicLabel: 'JSON to YAML conversion' },
   { relativePath: 'privacy/index.html', canonical: `${CANONICAL_ORIGIN}/privacy/`, label: 'privacy page', requireJson: false, requireParsing: false },
+  { relativePath: 'about/index.html', canonical: `${CANONICAL_ORIGIN}/about/`, label: 'about page', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bliveparse\b/i, topicLabel: 'the LiveParse brand name' },
   { relativePath: 'guides/index.html', canonical: `${CANONICAL_ORIGIN}/guides/`, label: 'guides hub', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bdeveloper\b)(?=.*\bdata\b)(?=.*\bguides?\b)/i, topicLabel: 'developer data guides' },
 ];
 const WORD_COUNTER_HREFLANGS = new Map([

@@ -3,9 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>JSON Formatter, Validator &amp; Viewer Online | LiveParse</title>
     <meta name="description" content="Format, validate, beautify, minify, and view JSON online for free. Preserve 64-bit numbers and duplicate keys while all processing stays in your browser." />
     <meta name="author" content="Jackson Jang" />
+    <meta name="application-name" content="LiveParse" />
+    <meta name="apple-mobile-web-app-title" content="LiveParse" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/" />
     <link rel="alternate" hreflang="en" href="https://liveparse.com/" />
@@ -36,8 +42,39 @@
             "@id": "https://liveparse.com/#website",
             "url": "https://liveparse.com/",
             "name": "LiveParse",
+            "alternateName": ["Liveparse", "Live Parse", "liveparse.com"],
             "description": "Private browser-based tools for JSON, YAML, XML, images, SQL queries, tokens, identifiers, encoding, timestamps, and exact calendar calculations.",
-            "inLanguage": "en"
+            "inLanguage": "en",
+            "publisher": { "@id": "https://liveparse.com/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://liveparse.com/#organization",
+            "name": "LiveParse",
+            "alternateName": ["Liveparse", "Live Parse"],
+            "url": "https://liveparse.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://liveparse.com/#logo",
+              "url": "https://liveparse.com/icon-512.png",
+              "contentUrl": "https://liveparse.com/icon-512.png",
+              "width": 512,
+              "height": 512,
+              "caption": "LiveParse"
+            },
+            "image": { "@id": "https://liveparse.com/#logo" },
+            "description": "LiveParse is a local-first developer data toolkit that formats, validates, compares, repairs, converts, encodes, decodes, hashes, and calculates data entirely inside the browser.",
+            "foundingDate": "2026",
+            "founder": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "sameAs": [
+              "https://github.com/JacksonJang/liveparse",
+              "https://github.com/JacksonJang"
+            ],
+            "subjectOf": { "@id": "https://liveparse.com/about/#aboutpage" }
           },
           {
             "@type": "WebApplication",
@@ -55,6 +92,7 @@
               "name": "Jackson Jang",
               "url": "https://github.com/JacksonJang"
             },
+            "publisher": { "@id": "https://liveparse.com/#organization" },
             "description": "A free lossless JSON formatter, validator, beautifier, minifier, parser, and virtualized tree viewer that processes input locally in the browser.",
             "featureList": [
               "Lossless strict JSON parsing and validation",
@@ -80,7 +118,7 @@
             "url": "https://liveparse.com/",
             "name": "JSON Formatter, Validator, and Viewer Online",
             "description": "Format, beautify, validate, minify, and view JSON without altering large numbers or duplicate keys.",
-            "dateModified": "2026-08-07",
+            "dateModified": "2026-09-04",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/#json-parser" }
@@ -278,6 +316,15 @@
         </div>
       </section>
 
+      <section class="content-section" id="about-liveparse" aria-labelledby="about-heading">
+        <div class="section-heading"><p class="section-kicker">About the project</p><h2 id="about-heading">What is LiveParse?</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>One name, one site</h3><p>LiveParse (also written Liveparse or Live Parse) is the developer data toolkit published at liveparse.com. It began as a lossless JSON parser and now covers YAML, XML, SQL, URLs, timestamps, calendar math, images, Base64, hashes, UUIDs, and JWTs.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Local-first by principle</h3><p>Every LiveParse tool runs in the browser tab. Pasted data and selected files are never posted to a LiveParse server, and the site loads no advertising or tracking scripts.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Built in the open</h3><p>LiveParse is developed by Jackson Jang, and the source is public on GitHub. Read the <a href="/about/">About LiveParse</a> page for the project background, principles, and full tool catalog.</p></article>
+        </div>
+      </section>
+
       <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
         <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">JSON Formatter &amp; Validator FAQ</h2></div>
         <div class="faq-list">
@@ -364,6 +411,7 @@
         <a href="/jsonl-parser/">JSONL Parser</a>
         <a href="/guides/">Guides</a>
         <a href="/ko/json-parser/" lang="ko">한국어</a>
+        <a href="/about/">About LiveParse</a>
         <a href="/privacy/">Privacy &amp; cookies</a>
         <a href="https://github.com/JacksonJang" target="_blank" rel="noreferrer">Creator profile</a>
       </div>

@@ -79,6 +79,7 @@ const DIRECTORY_ROUTES = new Set([
   '/yaml-to-json',
   '/json-to-yaml',
   '/privacy',
+  '/about',
   '/guides',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
