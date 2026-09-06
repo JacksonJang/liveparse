@@ -258,7 +258,7 @@ function SqlFormatterApp(): React.JSX.Element {
       <div className="sql-editors">
         <section className="sql-editor-card" aria-labelledby="sql-input-heading">
           <header><div><p>Source</p><h3 id="sql-input-heading">SQL input</h3></div><span>{textLineCount(input).toLocaleString('en-US')} lines · {input.length.toLocaleString('en-US')} chars</span></header>
-          <label className="sr-only" htmlFor="sql-input">SQL query to format</label>
+          <label className="visually-hidden" htmlFor="sql-input">SQL query to format</label>
           <textarea id="sql-input" value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_SQL_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={19} />
           <div className="sql-actions">
             <button className="sql-button primary" type="submit" disabled={busy}>{busy ? 'Formatting…' : 'Format SQL'}</button>
@@ -269,7 +269,7 @@ function SqlFormatterApp(): React.JSX.Element {
 
         <section className="sql-editor-card output" aria-labelledby="sql-output-heading">
           <header><div><p>Result</p><h3 id="sql-output-heading">Formatted SQL</h3></div><span>{textLineCount(output).toLocaleString('en-US')} lines · {output.length.toLocaleString('en-US')} chars</span></header>
-          <label className="sr-only" htmlFor="sql-output">Formatted SQL result</label>
+          <label className="visually-hidden" htmlFor="sql-output">Formatted SQL result</label>
           <textarea id="sql-output" value={output} readOnly spellCheck={false} rows={19} placeholder="Your formatted SQL will appear here. The tool changes layout; it does not execute or prove that a query is valid." />
           <div className="sql-actions">
             <button className="sql-button" type="button" onClick={copyOutput} disabled={!output || busy}>Copy result</button>

@@ -38,7 +38,7 @@
 .url-local-badge strong,
 .url-local-badge small { display: block; }
 .url-local-badge strong { color: var(--ink-deep); font-size: 13px; font-weight: 900; }
-.url-local-badge small { margin-top: 2px; color: var(--muted); font-size: 11px; }
+.url-local-badge small { margin-top: 2px; color: var(--muted); font-size: 12px; }
 
 .url-tool-badge {
   flex: 0 0 auto;
@@ -50,7 +50,7 @@
   border-radius: 999px;
   color: var(--aqua-dark);
   background: var(--aqua-pale);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .url-tool-badge span { font-weight: 900; }
@@ -70,7 +70,7 @@
 .url-card-heading p {
   margin: 0 0 5px;
   color: var(--aqua-dark);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -101,7 +101,7 @@
 .url-fieldset legend {
   margin-bottom: 8px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -129,7 +129,7 @@
 }
 
 .url-mode-picker button strong { color: var(--ink-deep); font-size: 13px; }
-.url-mode-picker button span { color: var(--muted); font-size: 10px; line-height: 1.35; }
+.url-mode-picker button span { color: var(--muted); font-size: 12px; line-height: 1.35; }
 
 .url-mode-picker button[aria-pressed="true"] {
   border-color: rgba(8, 116, 135, .4);
@@ -176,7 +176,7 @@
 .url-card-heading > span,
 .url-counter {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   text-align: right;
 }
@@ -194,7 +194,7 @@
 .url-text-field > span,
 .url-single-field > span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.45;
 }
@@ -272,8 +272,8 @@
   background: #fff;
 }
 
-.url-facts dt { color: var(--muted); font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; }
-.url-facts dd { margin: 5px 0 0; overflow-wrap: anywhere; color: var(--ink-deep); font-size: 11px; font-weight: 850; }
+.url-facts dt { color: var(--muted); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; }
+.url-facts dd { margin: 5px 0 0; overflow-wrap: anywhere; color: var(--ink-deep); font-size: 12px; font-weight: 850; }
 
 .url-error {
   display: grid;
@@ -299,7 +299,7 @@
   border-radius: 12px;
   color: #315d67;
   background: #effbfc;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -325,9 +325,9 @@
 .url-component-list div + div { border-top: 1px solid var(--line); }
 .url-component-list dt,
 .url-component-list dd { min-width: 0; padding: 10px 12px; }
-.url-component-list dt { color: var(--muted); background: #f2f9fa; font-size: 10px; font-weight: 850; }
+.url-component-list dt { color: var(--muted); background: #f2f9fa; font-size: 12px; font-weight: 850; }
 .url-component-list dd { margin: 0; overflow-wrap: anywhere; background: #fff; }
-.url-component-list code { color: #18434d; font-size: 11px; }
+.url-component-list code { color: #18434d; font-size: 12px; }
 
 .url-table-wrap { min-width: 0; overflow: auto; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
 .url-pair-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -336,11 +336,11 @@
 .url-pair-table th:last-child,
 .url-pair-table td:last-child { border-right: 0; }
 .url-pair-table tbody tr:last-child > * { border-bottom: 0; }
-.url-pair-table thead th { color: var(--aqua-dark); background: #ecf8fa; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
-.url-pair-table th:first-child { width: 42px; color: var(--muted); font-size: 10px; }
-.url-pair-table code { color: #173e47; font-size: 10px; white-space: pre-wrap; }
-.url-pair-table small { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
-.url-table-limit { margin: 0; padding: 9px 11px; border-top: 1px solid var(--line); color: #6a4c18; background: var(--sun-pale); font-size: 10px; }
+.url-pair-table thead th { color: var(--aqua-dark); background: #ecf8fa; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.url-pair-table th:first-child { width: 42px; color: var(--muted); font-size: 12px; }
+.url-pair-table code { color: #173e47; font-size: 12px; white-space: pre-wrap; }
+.url-pair-table small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+.url-table-limit { margin: 0; padding: 9px 11px; border-top: 1px solid var(--line); color: #6a4c18; background: var(--sun-pale); font-size: 12px; }
 
 .url-empty {
   display: grid;
@@ -356,7 +356,7 @@
 }
 
 .url-empty strong { color: var(--ink-deep); }
-.url-empty span { font-size: 11px; }
+.url-empty span { font-size: 12px; }
 
 .url-warning-list {
   grid-column: 1 / -1;
@@ -372,8 +372,8 @@
 .url-warning-list li { padding: 10px; border: 1px solid rgba(179, 122, 14, .17); border-radius: 11px; background: rgba(255, 255, 255, .55); }
 .url-warning-list strong,
 .url-warning-list span { display: block; }
-.url-warning-list strong { font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
-.url-warning-list span { margin-top: 4px; font-size: 10px; line-height: 1.5; }
+.url-warning-list strong { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.url-warning-list span { margin-top: 4px; font-size: 12px; line-height: 1.5; }
 
 .query-input { margin-bottom: 14px; }
 .query-input .url-text-field textarea { min-height: 120px; }
@@ -395,7 +395,7 @@
 
 .url-query-summary span,
 .url-query-summary strong { display: block; }
-.url-query-summary span { color: var(--muted); font-size: 9px; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
+.url-query-summary span { color: var(--muted); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
 .url-query-summary strong { margin-top: 5px; overflow-wrap: anywhere; color: var(--ink-deep); font-size: 12px; }
 
 .url-view-tabs {
@@ -414,7 +414,7 @@
   padding: 8px 11px;
   color: var(--muted);
   background: transparent;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 850;
 }
 
@@ -433,7 +433,7 @@
 .url-safety-strip strong,
 .url-safety-strip span { display: block; }
 .url-safety-strip strong { color: var(--ink-deep); font-size: 12px; }
-.url-safety-strip span { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+.url-safety-strip span { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 
 .url-status {
   display: flex;
@@ -445,7 +445,7 @@
   border-top: 1px solid var(--line);
   color: var(--muted);
   background: #fff;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .url-status strong {
@@ -454,7 +454,7 @@
   border-radius: 999px;
   color: #fff;
   background: #17683c;
-  font-size: 9px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .04em;
 }

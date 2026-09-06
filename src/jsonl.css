@@ -61,12 +61,12 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-example-bar i { width: 9px; height: 9px; border-radius: 50%; background: #e66458; }
 .jsonl-example-bar i:nth-child(2) { background: #f3b52c; }
 .jsonl-example-bar i:nth-child(3) { background: #36c98a; }
-.jsonl-example-bar strong { margin-left: 7px; color: #a9cbd1; font-size: 11px; }
+.jsonl-example-bar strong { margin-left: 7px; color: #a9cbd1; font-size: 12px; }
 .jsonl-hero-example pre { margin: 0; padding: 22px 20px; overflow: hidden; font-size: 12px; line-height: 1.8; white-space: pre; }
 .jsonl-hero-example .key { color: #7de3f1; }
 .jsonl-hero-example .value { color: #8be6b7; }
 .jsonl-hero-example .number { color: #d3b6ff; }
-.jsonl-hero-example > p { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding: 13px 17px; color: #a9cbd1; background: rgba(255,255,255,.05); font-size: 11px; }
+.jsonl-hero-example > p { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding: 13px 17px; color: #a9cbd1; background: rgba(255,255,255,.05); font-size: 12px; }
 .jsonl-hero-example > p strong { color: #8be6b7; }
 
 .jsonl-main { padding-block: 70px; }
@@ -82,9 +82,9 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-local > span { flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%; background: var(--jsonl-mint); box-shadow: 0 0 0 4px rgba(22,134,84,.13); }
 .jsonl-local div { display: grid; gap: 2px; }
 .jsonl-local strong { color: var(--jsonl-deep); font-size: 12px; }
-.jsonl-local small { color: var(--jsonl-muted); font-size: 10px; }
+.jsonl-local small { color: var(--jsonl-muted); font-size: 12px; }
 .jsonl-toolbar-actions, .jsonl-export-actions { display: flex; align-items: end; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
-.jsonl-select-label, .jsonl-filter-label { display: grid; gap: 5px; color: var(--jsonl-muted); font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.jsonl-select-label, .jsonl-filter-label { display: grid; gap: 5px; color: var(--jsonl-muted); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .jsonl-select-label select, .jsonl-filter-label input { min-height: 38px; border: 1px solid var(--jsonl-line); border-radius: 999px; color: var(--jsonl-ink); background: #fff; padding: 8px 13px; }
 .jsonl-select-label select { min-width: 190px; }
 .jsonl-button { min-height: 38px; border: 0; border-radius: 999px; padding: 8px 13px; font-weight: 850; transition: transform .16s ease, background .16s ease; }
@@ -96,8 +96,8 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-input-panel { background: linear-gradient(180deg, #fff, #fffcf5); }
 .jsonl-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px 18px; border-bottom: 1px solid var(--jsonl-line); }
 .jsonl-panel-heading h3, .jsonl-results-toolbar h3, .jsonl-diagnostic-heading h3 { margin: 0; color: var(--jsonl-deep); font-size: 16px; letter-spacing: -.02em; }
-.jsonl-panel-heading p, .jsonl-results-toolbar p, .jsonl-diagnostic-heading p { margin: 4px 0 0; color: var(--jsonl-muted); font-size: 11px; }
-.jsonl-phase { display: inline-flex; flex: 0 0 auto; padding: 6px 10px; border-radius: 999px; color: #fff; background: #506c73; font-size: 11px; font-weight: 900; }
+.jsonl-panel-heading p, .jsonl-results-toolbar p, .jsonl-diagnostic-heading p { margin: 4px 0 0; color: var(--jsonl-muted); font-size: 12px; }
+.jsonl-phase { display: inline-flex; flex: 0 0 auto; padding: 6px 10px; border-radius: 999px; color: #fff; background: #506c73; font-size: 12px; font-weight: 900; }
 .jsonl-phase.parsing { color: #4d3500; background: #f3b52c; }
 .jsonl-phase.failed { background: var(--jsonl-coral); }
 .jsonl-input-panel textarea { display: block; width: 100%; min-height: 310px; resize: vertical; border: 0; outline: 0; padding: 20px; color: #17363e; background: rgba(255,255,255,.56); caret-color: var(--jsonl-aqua-dark); font-size: 13px; line-height: 1.7; tab-size: 2; }
@@ -107,7 +107,7 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 
 .jsonl-summary { display: grid; grid-template-columns: 1.5fr repeat(5, minmax(120px, 1fr)); gap: 1px; background: var(--jsonl-line); }
 .jsonl-summary article { min-width: 0; display: grid; gap: 6px; padding: 16px 18px; background: #fff; }
-.jsonl-summary span { color: var(--jsonl-muted); font-size: 10px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+.jsonl-summary span { color: var(--jsonl-muted); font-size: 12px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
 .jsonl-summary strong { overflow: hidden; color: var(--jsonl-deep); font-size: 18px; text-overflow: ellipsis; white-space: nowrap; }
 .jsonl-summary .wide strong { color: #5939a8; font-size: 15px; }
 .jsonl-summary .valid { background: #f3fff8; }
@@ -123,10 +123,10 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-results { min-width: 0; background: #fff; }
 .jsonl-results-toolbar { display: grid; grid-template-columns: minmax(170px, .7fr) minmax(230px, 1fr) auto; align-items: end; gap: 16px; padding: 16px 18px; border-bottom: 1px solid var(--jsonl-line); }
 .jsonl-filter-label input { width: 100%; min-width: 0; text-transform: none; letter-spacing: normal; font-size: 13px; }
-.jsonl-limit-note { margin: 0; padding: 10px 18px; color: #684800; border-bottom: 1px solid #ecd9a3; background: var(--jsonl-sun-pale); font-size: 11px; line-height: 1.45; }
+.jsonl-limit-note { margin: 0; padding: 10px 18px; color: #684800; border-bottom: 1px solid #ecd9a3; background: var(--jsonl-sun-pale); font-size: 12px; line-height: 1.45; }
 .jsonl-table-scroll { max-height: 480px; overflow: auto; color: #17363e; background: #fbfeff; font-size: 12px; line-height: 1.4; }
 .jsonl-table-header, .jsonl-table-row { display: grid; }
-.jsonl-table-header { position: sticky; z-index: 3; top: 0; height: 42px; color: var(--jsonl-deep); background: #eaf7f9; box-shadow: 0 1px 0 var(--jsonl-line); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 10px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+.jsonl-table-header { position: sticky; z-index: 3; top: 0; height: 42px; color: var(--jsonl-deep); background: #eaf7f9; box-shadow: 0 1px 0 var(--jsonl-line); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
 .jsonl-table-header > div, .jsonl-table-row > div { min-width: 0; overflow: hidden; padding: 11px 12px; border-right: 1px solid var(--jsonl-line); text-overflow: ellipsis; white-space: nowrap; }
 .jsonl-table-header > div:last-child, .jsonl-table-row > div:last-child { border-right: 0; }
 .jsonl-virtual-space { position: relative; }
@@ -135,13 +135,13 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-table-row:nth-child(even) { background: #f9fcfd; }
 .jsonl-table-row:hover { background: #f2f0ff; }
 .jsonl-line-cell { display: flex; align-items: center; justify-content: space-between; gap: 7px; color: var(--jsonl-muted); background: rgba(227,247,250,.35); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-weight: 850; }
-.jsonl-line-cell span { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #5b3c00; background: #ffd878; font-size: 10px; font-weight: 950; }
+.jsonl-line-cell span { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #5b3c00; background: #ffd878; font-size: 12px; font-weight: 950; }
 .jsonl-empty-cell { color: #a5b4b8; }
 .jsonl-empty-result { min-height: 180px; display: grid; place-content: center; padding: 24px; color: var(--jsonl-muted); text-align: center; background: #fbfeff; }
 
 .jsonl-diagnostics { border-top: 1px solid var(--jsonl-line); background: #fff; }
 .jsonl-diagnostic-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 18px; border-bottom: 1px solid var(--jsonl-line); }
-.jsonl-diagnostic-heading > span { flex: 0 0 auto; padding: 6px 9px; border-radius: 999px; font-size: 10px; font-weight: 900; }
+.jsonl-diagnostic-heading > span { flex: 0 0 auto; padding: 6px 9px; border-radius: 999px; font-size: 12px; font-weight: 900; }
 .jsonl-diagnostics.error .jsonl-diagnostic-heading > span { color: #7d2b25; background: var(--jsonl-coral-pale); }
 .jsonl-diagnostics.warning .jsonl-diagnostic-heading > span { color: #664400; background: var(--jsonl-sun-pale); }
 .jsonl-diagnostics ol { max-height: 380px; overflow: auto; display: grid; gap: 9px; margin: 0; padding: 14px 18px 18px 46px; }
@@ -150,11 +150,11 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-diagnostics.warning li { border-left: 4px solid #e4aa24; }
 .jsonl-diagnostics li > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .jsonl-diagnostics li strong { color: var(--jsonl-deep); font-size: 12px; }
-.jsonl-diagnostics li code { padding: 3px 6px; border-radius: 6px; color: #4c3390; background: var(--jsonl-violet-pale); font-size: 10px; }
+.jsonl-diagnostics li code { padding: 3px 6px; border-radius: 6px; color: #4c3390; background: var(--jsonl-violet-pale); font-size: 12px; }
 .jsonl-diagnostics li p { margin: 7px 0 0; color: var(--jsonl-muted); font-size: 12px; line-height: 1.5; }
 .jsonl-diagnostics li small { display: block; margin-top: 6px; color: #7456bb; font-family: "SFMono-Regular", Consolas, monospace; }
-.jsonl-diagnostics li pre { overflow: hidden; margin: 9px 0 0; padding: 8px 10px; border-radius: 8px; color: #74342f; background: #fff5f3; font-size: 10px; text-overflow: ellipsis; white-space: pre; }
-.jsonl-truncated { margin: 0; padding: 10px 18px; color: #684800; background: var(--jsonl-sun-pale); font-size: 11px; }
+.jsonl-diagnostics li pre { overflow: hidden; margin: 9px 0 0; padding: 8px 10px; border-radius: 8px; color: #74342f; background: #fff5f3; font-size: 12px; text-overflow: ellipsis; white-space: pre; }
+.jsonl-truncated { margin: 0; padding: 10px 18px; color: #684800; background: var(--jsonl-sun-pale); font-size: 12px; }
 
 .jsonl-content { margin-top: 96px; scroll-margin-top: 22px; content-visibility: auto; contain-intrinsic-size: auto 660px; }
 .jsonl-content.alt { padding: clamp(28px, 5vw, 58px); border: 1px solid rgba(255,255,255,.82); border-radius: 32px; background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(240,235,255,.56)); box-shadow: 0 22px 58px rgba(7,78,96,.08); }
@@ -175,7 +175,7 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
 .jsonl-compare-row { display: grid; grid-template-columns: .6fr 1fr 1fr; }
 .jsonl-compare-row > * { min-width: 0; padding: 15px 18px; border-top: 1px solid var(--jsonl-line); overflow-wrap: anywhere; }
 .jsonl-compare-row > * + * { border-left: 1px solid var(--jsonl-line); }
-.jsonl-compare-row.head { color: var(--jsonl-aqua-dark); background: #edf9fb; font-size: 11px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.jsonl-compare-row.head { color: var(--jsonl-aqua-dark); background: #edf9fb; font-size: 12px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
 .jsonl-compare-row.head > * { border-top: 0; }
 .jsonl-compare-row strong { color: var(--jsonl-deep); }
 .jsonl-compare-row span { color: var(--jsonl-muted); line-height: 1.55; }
@@ -222,7 +222,7 @@ code, pre, textarea, .jsonl-table-scroll { font-family: "SFMono-Regular", "Casca
   .jsonl-hero { margin-top: 8px; padding: 30px 20px; border-radius: 25px; }
   .jsonl-hero h1 { font-size: clamp(46px, 16vw, 70px); }
   .jsonl-hero-lead { font-size: 16px; }
-  .jsonl-hero-example pre { padding: 18px 14px; font-size: 10px; }
+  .jsonl-hero-example pre { padding: 18px 14px; font-size: 12px; }
   .jsonl-main { padding-block: 48px; }
   .jsonl-app { border-radius: 22px; }
   .jsonl-toolbar, .jsonl-toolbar-actions, .jsonl-panel-heading, .jsonl-format-note, .jsonl-diagnostic-heading, .jsonl-references { align-items: stretch; flex-direction: column; }

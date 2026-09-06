@@ -38,7 +38,7 @@
 .morse-local-badge strong,
 .morse-local-badge small { display: block; }
 .morse-local-badge strong { color: var(--ink-deep); font-size: 13px; font-weight: 900; }
-.morse-local-badge small { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+.morse-local-badge small { margin-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.35; }
 
 .morse-tool-badge {
   flex: 0 0 auto;
@@ -50,7 +50,7 @@
   border-radius: 999px;
   color: var(--aqua-dark);
   background: var(--aqua-pale);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .morse-tool-badge span { font-weight: 900; }
@@ -70,7 +70,7 @@
 .morse-card-heading p {
   margin: 0 0 5px;
   color: var(--aqua-dark);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -153,7 +153,7 @@
 
 .morse-card-heading > span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   text-align: right;
 }
@@ -171,7 +171,7 @@
 .morse-text-field > span,
 .morse-field > span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.45;
 }
@@ -221,7 +221,7 @@
   min-height: 41px;
   border-radius: 12px;
   padding: 9px 13px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -257,15 +257,15 @@
 .morse-check input { flex: 0 0 auto; width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--aqua-dark); }
 .morse-check strong,
 .morse-check small { display: block; }
-.morse-check strong { color: var(--ink-deep); font-size: 11px; }
-.morse-check small { margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+.morse-check strong { color: var(--ink-deep); font-size: 12px; }
+.morse-check small { margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.4; }
 
 .morse-note,
 .morse-empty,
 .morse-diagnostic {
   margin: 0;
   border-radius: 14px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -295,7 +295,7 @@
 
 .morse-summary span,
 .morse-summary strong { display: block; }
-.morse-summary span { color: var(--muted); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.morse-summary span { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
 .morse-summary strong { margin-top: 4px; overflow-wrap: anywhere; color: var(--ink-deep); font-size: 12px; }
 
 .morse-audio {
@@ -309,13 +309,13 @@
 
 .morse-audio > header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .morse-audio > header strong { color: var(--ink-deep); font-size: 12px; }
-.morse-audio > header span { color: var(--muted); font-size: 9px; }
+.morse-audio > header span { color: var(--muted); font-size: 12px; }
 .morse-audio-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
 
 .morse-status {
   margin: 0;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -326,7 +326,7 @@
   border-radius: 14px;
   color: var(--muted);
   background: #fff;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -371,7 +371,7 @@
   border-radius: 12px;
   background: #0b2a31;
   color: rgba(255, 255, 255, .5);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;

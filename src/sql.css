@@ -30,24 +30,24 @@
   gap: 14px;
 }
 .sql-app-bar { min-height: 68px; padding: 13px 18px; border-bottom: 1px solid var(--sql-line); background: linear-gradient(90deg, #edfdf8, #f5fbff 55%, #fff7ee); }
-.sql-app-bar > a { flex: 0 0 auto; padding: 8px 12px; border: 1px solid var(--sql-line); border-radius: 999px; color: var(--sql-teal-dark); background: #fff; font-size: 11px; font-weight: 900; }
+.sql-app-bar > a { flex: 0 0 auto; padding: 8px 12px; border: 1px solid var(--sql-line); border-radius: 999px; color: var(--sql-teal-dark); background: #fff; font-size: 12px; font-weight: 900; }
 .sql-local-badge { min-width: 0; display: flex; align-items: center; gap: 11px; }
 .sql-local-badge > span { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; background: var(--sql-teal); box-shadow: 0 0 0 4px rgba(8, 127, 120, .13); }
 .sql-local-badge > div { min-width: 0; display: grid; gap: 2px; }
 .sql-local-badge strong { color: var(--sql-deep); font-size: 12px; }
-.sql-local-badge small { overflow: hidden; color: var(--sql-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.sql-local-badge small { overflow: hidden; color: var(--sql-muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 
 .sql-controls { display: grid; gap: 16px; padding: 20px; border-bottom: 1px solid var(--sql-line); background: linear-gradient(180deg, #fffdf9, #fff); }
 .sql-controls-heading > div, .sql-editor-card > header > div { display: grid; gap: 2px; }
-.sql-controls-heading p, .sql-editor-card > header p { margin: 0; color: var(--sql-coral); font-size: 10px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.sql-controls-heading p, .sql-editor-card > header p { margin: 0; color: var(--sql-coral); font-size: 12px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
 .sql-controls-heading h2, .sql-editor-card > header h3 { margin: 0; color: var(--sql-deep); font-size: 18px; line-height: 1.2; }
-.sql-controls-heading > span, .sql-editor-card > header > span { color: var(--sql-muted); font-size: 11px; font-weight: 800; }
+.sql-controls-heading > span, .sql-editor-card > header > span { color: var(--sql-muted); font-size: 12px; font-weight: 800; }
 .sql-control-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .sql-control-grid label { display: grid; gap: 6px; }
-.sql-control-grid label > span { color: var(--sql-muted); font-size: 11px; font-weight: 800; }
+.sql-control-grid label > span { color: var(--sql-muted); font-size: 12px; font-weight: 800; }
 .sql-control-grid select { width: 100%; min-height: 42px; padding: 8px 34px 8px 11px; border: 1px solid var(--sql-line); border-radius: 11px; color: var(--sql-deep); background: #fff; font-size: 13px; font-weight: 750; }
 .sql-control-grid select:focus-visible, .sql-app textarea:focus-visible, .sql-app button:focus-visible, .sql-app a:focus-visible { outline: 3px solid rgba(8, 127, 120, .22); outline-offset: 2px; }
-.sql-dialect-note { margin: -2px 0 0; color: var(--sql-muted); font-size: 11px; line-height: 1.5; }
+.sql-dialect-note { margin: -2px 0 0; color: var(--sql-muted); font-size: 12px; line-height: 1.5; }
 .sql-dialect-note strong { color: var(--sql-teal-dark); }
 .sql-switches { display: flex; flex-wrap: wrap; gap: 9px 18px; }
 .sql-switches label { display: flex; align-items: center; gap: 7px; color: var(--sql-ink); font-size: 12px; font-weight: 750; }
@@ -71,7 +71,7 @@
 .sql-disclaimer { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 16px; padding: 15px 20px; border-top: 1px solid var(--sql-line); color: #6f5b2e; background: #fff9e9; font-size: 12px; line-height: 1.55; }
 .sql-disclaimer strong { color: #614715; }
 .sql-activity { min-height: 58px; margin: 0; padding: 13px 20px; border-top: 1px solid var(--sql-line); color: var(--sql-muted); background: #fbfdfd; font-size: 12px; }
-.sql-activity strong { flex: 0 0 auto; color: var(--sql-teal-dark); font-size: 10px; letter-spacing: .11em; text-transform: uppercase; }
+.sql-activity strong { flex: 0 0 auto; color: var(--sql-teal-dark); font-size: 12px; letter-spacing: .11em; text-transform: uppercase; }
 .sql-activity span { min-width: 0; text-align: right; }
 
 @media (max-width: 900px) {

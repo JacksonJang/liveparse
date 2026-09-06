@@ -38,7 +38,7 @@
 .text-local-badge strong,
 .text-local-badge small { display: block; }
 .text-local-badge strong { color: var(--ink-deep); font-size: 13px; font-weight: 900; }
-.text-local-badge small { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+.text-local-badge small { margin-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.35; }
 
 .text-tool-badge {
   display: flex;
@@ -49,7 +49,7 @@
   border-radius: 999px;
   color: var(--aqua-dark);
   background: var(--aqua-pale);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .text-tool-badge span { font-weight: 900; }
@@ -69,7 +69,7 @@
 .text-results-card header p {
   margin: 0 0 5px;
   color: var(--aqua-dark);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -128,7 +128,7 @@
 .text-input-card header > span,
 .text-state {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 850;
   text-align: right;
 }
@@ -185,7 +185,7 @@
 .text-status {
   margin: 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -201,7 +201,7 @@
 }
 
 .text-controls label { display: grid; gap: 6px; min-width: 0; }
-.text-controls label > span { color: var(--muted); font-size: 10px; font-weight: 850; }
+.text-controls label > span { color: var(--muted); font-size: 12px; font-weight: 850; }
 .text-controls select,
 .text-controls input {
   width: 100%;
@@ -213,7 +213,7 @@
   outline: 0;
   color: #15363e;
   background: #fbfeff;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 750;
 }
 
@@ -238,9 +238,9 @@
 }
 .text-metric span,
 .text-metric small { display: block; }
-.text-metric span { color: var(--muted); font-size: 10px; font-weight: 850; }
+.text-metric span { color: var(--muted); font-size: 12px; font-weight: 850; }
 .text-metric strong { display: block; margin: 7px 0 5px; overflow-wrap: anywhere; color: var(--ink-deep); font-size: clamp(20px, 3vw, 31px); line-height: 1; font-variant-numeric: tabular-nums; }
-.text-metric small { color: var(--muted); font-size: 9px; line-height: 1.4; }
+.text-metric small { color: var(--muted); font-size: 12px; line-height: 1.4; }
 .text-metric.primary span,
 .text-metric.primary strong,
 .text-metric.primary small { color: #fff; }
@@ -254,7 +254,7 @@
   background: #fffbef;
 }
 .text-time-grid span,
-.text-time-grid small { display: block; color: var(--muted); font-size: 10px; }
+.text-time-grid small { display: block; color: var(--muted); font-size: 12px; }
 .text-time-grid strong { display: block; margin: 7px 0 4px; color: #76520b; font-size: 20px; }
 
 .text-limit {
@@ -266,9 +266,9 @@
   background: #f2fbf6;
 }
 .text-limit > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.text-limit span { color: var(--muted); font-size: 10px; font-weight: 850; }
+.text-limit span { color: var(--muted); font-size: 12px; font-weight: 850; }
 .text-limit strong { color: #126c46; font-size: 18px; }
-.text-limit small { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.text-limit small { color: var(--muted); font-size: 12px; line-height: 1.45; }
 .text-limit.over { border-color: rgba(172, 59, 48, .22); background: #fff5f2; }
 .text-limit.over strong { color: #9b342d; }
 .text-progress { overflow: hidden; height: 8px; border-radius: 999px; background: rgba(18, 108, 70, .12); }
@@ -284,7 +284,7 @@
   border-radius: 13px;
   color: #7f302a;
   background: #fff4f1;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.55;
 }
 .text-error strong,
