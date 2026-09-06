@@ -532,3 +532,54 @@
   .date-tab,
   .date-button { transition: none; }
 }
+
+/* Quick answers strip: N business days from today */
+.date-quick-strip {
+  padding: 18px clamp(20px, 3vw, 30px) 20px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(8, 116, 135, .06), rgba(255, 255, 255, 0));
+}
+.date-quick-heading h3 {
+  margin: 0;
+  color: var(--ink-deep);
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+.date-quick-heading p {
+  max-width: 720px;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.date-quick-note { color: #873b33; font-weight: 700; }
+.date-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.date-quick-card {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+.date-quick-card:hover:not(:disabled) { transform: translateY(-1px); border-color: var(--aqua-dark); box-shadow: 0 6px 16px rgba(8, 116, 135, .12); }
+.date-quick-card:focus-visible { outline: 3px solid var(--aqua-dark); outline-offset: 2px; }
+.date-quick-card:disabled { cursor: not-allowed; opacity: .55; }
+.date-quick-card span { color: var(--muted); font-size: 12px; font-weight: 750; text-transform: uppercase; letter-spacing: .04em; }
+.date-quick-card strong { color: var(--ink-deep); font-size: 17px; font-weight: 900; line-height: 1.15; letter-spacing: -.02em; }
+.date-quick-card small { color: var(--muted); font-size: 12px; }
+@media (max-width: 620px) {
+  .date-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

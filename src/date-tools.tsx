@@ -1,4 +1,4 @@
-import React, { useState, type FormEvent, type ReactNode } from 'react';
+import React, { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   addBusinessDays,
@@ -155,6 +155,10 @@ function longDate(input: CalendarDate | string): string {
   return `${WEEKDAY_NAMES[dayOfWeek(date) - 1]}, ${MONTH_NAMES[date.month - 1]} ${date.day}, ${date.year}`;
 }
 
+function shortDate(date: CalendarDate, withYear: boolean): string {
+  return `${WEEKDAY_SHORT[dayOfWeek(date) - 1]}, ${MONTH_NAMES[date.month - 1].slice(0, 3)} ${date.day}${withYear ? `, ${date.year}` : ''}`;
+}
+
 function dateDirection(start: CalendarDate | string, end: CalendarDate | string): string {
   const comparison = compareDates(start, end);
   return comparison === 0 ? 'Same date' : comparison < 0 ? 'Forward' : 'Backward';
@@ -244,7 +248,7 @@ function useCalculator() {
   return { result, error, status, calculate, clear, copyResult, shareResult };
 }
 
-function CalculatorLayout({ mode, children }: { mode: PageMode; children: ReactNode }) {
+function CalculatorLayout({ mode, lead, children }: { mode: PageMode; lead?: ReactNode; children: ReactNode }) {
   return (
     <div className="date-app">
       <div className="date-toolbar">
@@ -254,6 +258,7 @@ function CalculatorLayout({ mode, children }: { mode: PageMode; children: ReactN
         </div>
         <span className="date-mode-badge">{PAGE_LABELS[mode]}</span>
       </div>
+      {lead}
       <div className="date-workspace">{children}</div>
     </div>
   );
@@ -726,6 +731,7 @@ function DaysBetweenCalculator() {
 }
 
 type BusinessMode = 'count' | 'add';
+const QUICK_BUSINESS_STEPS = [1, 2, 3, 5, 7, 10, 15, 20] as const;
 type WeekendPreset = 'sat-sun' | 'fri-sat' | 'sun-only' | 'custom';
 
 function initialCustomWeekend(): IsoWeekday[] {
@@ -772,6 +778,106 @@ function BusinessDaysCalculator() {
   const [includeEnd, setIncludeEnd] = useState(() => queryBoolean('includeEnd', true));
   const calculator = useCalculator();
 
+  const buildAddResult = (
+    start: CalendarDate,
+    businessAmount: number,
+    weekend: IsoWeekday[],
+    holidays: string[],
+    query: DisplayResult['query'],
+  ): DisplayResult => {
+    const resultDate = addBusinessDays(start, businessAmount, { weekend, holidays });
+    const resultIso = formatIsoDate(resultDate);
+    const verifiedSteps = businessDaysBetween(start, resultDate, {
+      weekend,
+      holidays,
+      includeStart: false,
+      includeEnd: true,
+      signed: true,
+    });
+    return {
+      eyebrow: businessAmount < 0 ? 'Business days subtracted' : 'Business days added',
+      headline: longDate(resultDate),
+      description: `${formatNumber(Math.abs(businessAmount))} business-day step${Math.abs(businessAmount) === 1 ? '' : 's'} from ${formatIsoDate(start)}.`,
+      rows: [
+        { label: 'ISO result', value: resultIso },
+        { label: 'Calendar-day shift', value: formatNumber(daysBetween(start, resultDate, { signed: true })) },
+        { label: 'Business steps verified', value: formatNumber(verifiedSteps) },
+        { label: 'Holiday dates supplied', value: formatNumber(holidays.length) },
+      ],
+      note: `Weekend days: ${weekendLabel(weekend)}. The start date is not counted as the first added business day.`,
+      copyText: `${businessAmount} business days from ${formatIsoDate(start)}\nResult: ${resultIso} (${WEEKDAY_NAMES[dayOfWeek(resultDate) - 1]})\nWeekend: ${weekendLabel(weekend)}\nHoliday dates supplied: ${holidays.length}`,
+      query,
+    };
+  };
+
+  // Quick answers from today, using the weekend and holiday settings currently in the form.
+  const quickWeekend = weekendFor(weekendPreset, customWeekend);
+  let quickHolidays: string[] = [];
+  let quickNote = '';
+  try {
+    quickHolidays = parseHolidays(holidaysText);
+  } catch {
+    quickNote = 'The holiday list has an invalid line, so these quick answers ignore holidays until it is fixed.';
+  }
+  const todayDate = parseIsoDate(TODAY);
+  const quickRows = QUICK_BUSINESS_STEPS.map((steps) => {
+    try {
+      const date = addBusinessDays(todayDate, steps, { weekend: quickWeekend, holidays: quickHolidays });
+      return { steps, date, shift: daysBetween(todayDate, date, { signed: true }) };
+    } catch {
+      return { steps, date: null, shift: 0 };
+    }
+  });
+
+  const runAdd = (startIso: string, steps: number) => {
+    setMode('add');
+    setStartDate(startIso);
+    setAmount(String(steps));
+    calculator.calculate(() => buildAddResult(requireDate(startIso, 'Start date'), steps, quickWeekend, quickHolidays, {
+      mode: 'add',
+      start: startIso,
+      end: endDate,
+      amount: String(steps),
+      weekend: weekendPreset,
+      customWeekend: customWeekend.join(','),
+      holidays: quickNote ? '' : holidaysText,
+      includeStart,
+      includeEnd,
+    }));
+  };
+
+  // Links such as ?mode=add&amount=5 should answer immediately instead of waiting for a click.
+  useEffect(() => {
+    if (SHARED_QUERY.get('mode') !== 'add' || !SHARED_QUERY.has('amount')) return;
+    const steps = Number(amount);
+    if (!Number.isInteger(steps) || Math.abs(steps) > 3_652_058) return;
+    runAdd(startDate, steps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const quickStrip = (
+    <section className="date-quick-strip" aria-labelledby="quick-today-heading">
+      <div className="date-quick-heading">
+        <h3 id="quick-today-heading">Business days from today</h3>
+        <p>
+          Today is {longDate(todayDate)}. Weekend: {weekendLabel(quickWeekend)}
+          {quickHolidays.length > 0 ? `, ${quickHolidays.length} holiday date${quickHolidays.length === 1 ? '' : 's'} excluded` : ', no holidays listed'}.
+          Select a card to load it into the calculator.
+        </p>
+        {quickNote && <p className="date-quick-note">{quickNote}</p>}
+      </div>
+      <div className="date-quick-grid">
+        {quickRows.map((row) => (
+          <button key={row.steps} type="button" className="date-quick-card" onClick={() => runAdd(TODAY, row.steps)} disabled={row.date === null}>
+            <span>{row.steps} business day{row.steps === 1 ? '' : 's'}</span>
+            <strong>{row.date ? shortDate(row.date, row.date.year !== todayDate.year) : '—'}</strong>
+            <small>{row.date ? `${formatNumber(row.shift)} calendar day${row.shift === 1 ? '' : 's'} later` : 'No business day available'}</small>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+
   const reset = () => {
     setMode('add');
     setStartDate(TODAY);
@@ -811,29 +917,7 @@ function BusinessDaysCalculator() {
 
       if (mode === 'add') {
         const businessAmount = requireWholeNumber(amount, 'Business days to add', { minimum: -3_652_058, maximum: 3_652_058 });
-        const resultDate = addBusinessDays(start, businessAmount, { weekend, holidays });
-        const resultIso = formatIsoDate(resultDate);
-        const verifiedSteps = businessDaysBetween(start, resultDate, {
-          weekend,
-          holidays,
-          includeStart: false,
-          includeEnd: true,
-          signed: true,
-        });
-        return {
-          eyebrow: businessAmount < 0 ? 'Business days subtracted' : 'Business days added',
-          headline: longDate(resultDate),
-          description: `${formatNumber(Math.abs(businessAmount))} business-day step${Math.abs(businessAmount) === 1 ? '' : 's'} from ${formatIsoDate(start)}.`,
-          rows: [
-            { label: 'ISO result', value: resultIso },
-            { label: 'Calendar-day shift', value: formatNumber(daysBetween(start, resultDate, { signed: true })) },
-            { label: 'Business steps verified', value: formatNumber(verifiedSteps) },
-            { label: 'Holiday dates supplied', value: formatNumber(holidays.length) },
-          ],
-          note: `Weekend days: ${weekendLabel(weekend)}. The start date is not counted as the first added business day.`,
-          copyText: `${businessAmount} business days from ${formatIsoDate(start)}\nResult: ${resultIso} (${WEEKDAY_NAMES[dayOfWeek(resultDate) - 1]})\nWeekend: ${weekendLabel(weekend)}\nHoliday dates supplied: ${holidays.length}`,
-          query: commonQuery,
-        };
+        return buildAddResult(start, businessAmount, weekend, holidays, commonQuery);
       }
 
       const end = requireDate(endDate, 'End date');
@@ -895,7 +979,7 @@ function BusinessDaysCalculator() {
   };
 
   return (
-    <CalculatorLayout mode="business-days-calculator">
+    <CalculatorLayout mode="business-days-calculator" lead={quickStrip}>
       <InputPanel
         title="Count or add business days"
         description="Define your weekend, then add optional holiday dates one per line."
