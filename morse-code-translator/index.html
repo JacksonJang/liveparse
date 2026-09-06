@@ -7,8 +7,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Morse Code Translator – Text to Morse &amp; Decoder | LiveParse</title>
-    <meta name="description" content="Translate text to International Morse code or decode dots and dashes to text. Free, private, client-side, with exact ITU mappings and clear separators." />
+    <title>Morse Code Translator – English to Morse &amp; Morse to Text | LiveParse</title>
+    <meta name="description" content="Free Morse code translator. Convert English text to Morse code or decode Morse code to English text instantly. Letters, numbers, punctuation, SOS, and playable audio. No sign-up." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/morse-code-translator/" />
@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="/src/morse-code-translator.css" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/morse-code-translator/" />
-    <meta property="og:title" content="Morse Code Translator – Encode or Decode Dots and Dashes" />
-    <meta property="og:description" content="Convert text to Morse code or decode explicitly separated Morse groups with visible ITU rules and local browser processing." />
+    <meta property="og:title" content="Morse Code Translator – English to Morse Code and Back" />
+    <meta property="og:description" content="Type English and get Morse code, or paste dots and dashes and get the text back. Play the result as audio. Free, in your browser." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -26,7 +26,7 @@
     <meta property="og:image:alt" content="LiveParse browser-based Morse code translator" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Morse Code Translator and Decoder | LiveParse" />
-    <meta name="twitter:description" content="Translate text and Morse code locally with explicit character and word boundaries." />
+    <meta name="twitter:description" content="Translate English to Morse code or Morse to text, play it as audio, and check every letter against the ITU chart." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#3458d4" />
     <script type="application/ld+json">
@@ -37,7 +37,7 @@
             "@type": "WebApplication",
             "@id": "https://liveparse.com/morse-code-translator/#application",
             "name": "LiveParse Morse Code Translator",
-            "alternateName": ["Morse Code Decoder", "Text to Morse Code Converter"],
+            "alternateName": ["Morse Code Decoder", "English to Morse Code Translator", "Morse to English Translator", "Text to Morse Code Converter"],
             "url": "https://liveparse.com/morse-code-translator/",
             "applicationCategory": "UtilitiesApplication",
             "applicationSubCategory": "International Morse code text translator and decoder",
@@ -45,7 +45,7 @@
             "browserRequirements": "Requires JavaScript and a modern web browser",
             "isAccessibleForFree": true,
             "inLanguage": "en",
-            "description": "Translate supported text characters to International Morse code or decode explicitly separated dot-and-dash groups to text in the browser.",
+            "description": "Translate English text to International Morse code or decode Morse code to English text in the browser, with letters, numbers, punctuation, and audio playback.",
             "featureList": [
               "Encode supported Latin letters, digits, and punctuation as Morse code",
               "Decode explicitly separated dot-and-dash character groups",
@@ -70,10 +70,12 @@
             "@type": "FAQPage",
             "@id": "https://liveparse.com/morse-code-translator/#faq-schema",
             "mainEntity": [
-              { "@type": "Question", "name": "How does the Morse code translator convert text?", "acceptedAnswer": { "@type": "Answer", "text": "It maps each supported letter, digit, or punctuation mark to its International Morse code sequence. Character groups remain separate, and text spaces become explicit word boundaries so the result can be decoded without guessing where one symbol ends and the next begins." } },
-              { "@type": "Question", "name": "How should dots and dashes be separated when decoding Morse code?", "acceptedAnswer": { "@type": "Answer", "text": "Keep the dots and dashes for one character together, separate character groups with spaces, and use the word separator shown by the interface between words. A continuous stream such as .-.- is ambiguous because several different character groupings can produce it." } },
-              { "@type": "Question", "name": "Is a slash part of Morse code or a word separator?", "acceptedAnswer": { "@type": "Answer", "text": "Context matters. This interface can use a standalone slash between surrounding spaces as a readable word delimiter, while the encoded slash punctuation mark is the five-signal group -..-. Keeping those two forms distinct prevents a word break from being decoded as punctuation." } },
-              { "@type": "Question", "name": "Does the translator support every language and symbol?", "acceptedAnswer": { "@type": "Answer", "text": "No. International Morse code defines a limited repertoire rather than a code for every Unicode character. The tool reports unsupported text instead of silently deleting it, and it does not transliterate names or translate the meaning of a sentence into another language." } },
+              { "@type": "Question", "name": "How do I translate English to Morse code?", "acceptedAnswer": { "@type": "Answer", "text": "Set the direction to text to Morse, type the English message, and the translator outputs one dot-and-dash group per letter, digit, or punctuation mark. Letters are separated by spaces and words by a spaced slash, so the result can be copied and decoded again without guessing." } },
+              { "@type": "Question", "name": "How do I translate Morse code to English text?", "acceptedAnswer": { "@type": "Answer", "text": "Set the direction to Morse to text, paste the dots and dashes with a space between each letter and a spaced slash between words, and the decoder returns the text. Unknown groups are reported at their position instead of being dropped." } },
+              { "@type": "Question", "name": "What is SOS in Morse code?", "acceptedAnswer": { "@type": "Answer", "text": "SOS is ... --- ...: three dots, three dashes, three dots. In real signalling it is sent as one continuous group without letter gaps, which is why it is so easy to recognize. The translator writes it with spaces so each letter stays visible." } },
+              { "@type": "Question", "name": "Can it decode Morse code without spaces?", "acceptedAnswer": { "@type": "Answer", "text": "No decoder can do that reliably. A stream such as ......-...-..--- can be split into many different letter sequences, so the boundaries must come from the spacing or from the original timing. Add a space between letters and a spaced slash between words, then decode." } },
+              { "@type": "Question", "name": "Does the translator handle numbers and punctuation?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Digits 0 to 9 use the five-signal groups shown in the chart, and the ITU punctuation marks such as period .-.-.-, comma --..--, question mark ..--.., and slash -..-. are supported. Characters outside International Morse are reported rather than silently removed." } },
+              { "@type": "Question", "name": "Can I hear the Morse code?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. After translating, use the play control to hear synthesized tones at an adjustable speed and pitch. The audio is generated in the browser, and nothing is recorded or uploaded." } },
               { "@type": "Question", "name": "Is Morse code binary or encryption?", "acceptedAnswer": { "@type": "Answer", "text": "No. Morse uses short and long signals plus meaningful gaps, so it cannot be reduced to two symbols without also preserving timing or separators. It is a public character code, not encryption, and anyone who knows the code can read the message." } },
               { "@type": "Question", "name": "Is my text or Morse code uploaded?", "acceptedAnswer": { "@type": "Answer", "text": "No. Translation and validation run in the current browser tab without intentionally sending the entered message to a conversion service. The bounded input limit protects responsiveness; browser extensions, clipboard managers, and anything you do with a copied result remain separate boundaries." } }
             ]
@@ -87,14 +89,14 @@
     <header class="site-header">
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
-        <div class="nav-links"><a href="#morse-tool">Translator</a><a href="#alphabet">Morse chart</a><a href="#method">Method</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div>
+        <div class="nav-links"><a href="#morse-tool">Translator</a><a href="#words">Words &amp; letters</a><a href="#alphabet">Morse chart</a><a href="#method">Method</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a></div>
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
-          <p class="eyebrow">Text ↔ dots and dashes · Explicit spacing · Local processing</p>
+          <p class="eyebrow">Free · English to Morse · Morse to text · Audio playback</p>
           <h1>Morse Code Translator</h1>
-          <p class="hero-lead">Translate text to International Morse code or decode separated dots and dashes back to readable text. Unsupported symbols and ambiguous boundaries stay visible instead of disappearing behind a guess.</p>
-          <div class="hero-cta-row"><a class="hero-cta" href="#morse-tool">Translate Morse code</a><span>Free · No sign-up · No conversion API</span></div>
+          <p class="hero-lead">Type English and get Morse code, or paste dots and dashes and get the text back. The translator covers letters, numbers, and punctuation, plays the result as sound, and keeps every character boundary explicit so nothing is guessed.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#morse-tool">Translate Morse code now</a><span>Free · No sign-up · Runs in your browser</span></div>
         </div>
         <div class="hero-example" aria-label="Morse code example for SOS">
           <div class="example-bar"><span></span><span></span><span></span><strong>clear boundaries</strong></div>
@@ -108,12 +110,33 @@
 
     <main>
       <section class="tool-intro" id="morse-tool" aria-labelledby="morse-tool-heading">
-        <div><p class="section-kicker">Encode or decode</p><h2 id="morse-tool-heading">Convert text and Morse code without losing boundaries</h2></div>
-        <p>Choose the direction, enter a message within the limit shown by the workspace, and copy the result. The decoder expects deliberate character and word separators rather than trying to solve an unspaced signal stream.</p>
+        <div><p class="section-kicker">English to Morse, Morse to English</p><h2 id="morse-tool-heading">Translate text to Morse code or decode Morse code to text</h2></div>
+        <p>Choose the direction, enter a message within the limit shown by the workspace, and copy or play the result. The decoder expects a space between letters and a spaced slash between words rather than trying to solve an unspaced signal stream.</p>
       </section>
       <div id="root"><section class="parser-fallback" aria-label="Morse code translator loading"><p><strong>Loading the Morse code translator…</strong></p><p>Enable JavaScript to translate and copy a message. The International Morse table, spacing rules, examples, and limitations remain readable below.</p></section></div>
 
-      <section class="content-section" id="method" aria-labelledby="method-heading">
+      <section class="content-section" id="words" aria-labelledby="words-heading">
+        <div class="section-heading"><p class="section-kicker">Common lookups</p><h2 id="words-heading">Common words and letters in Morse code</h2><p>Looking for one word or letter “in Morse code”? These are the most requested translations, written the same way the translator writes them: a space between letters and a spaced slash between words.</p></div>
+        <div class="error-table" role="table" aria-label="Common words and letters translated to Morse code">
+          <div class="error-row error-head" role="row"><span role="columnheader">Text</span><span role="columnheader">Morse code</span><span role="columnheader">Note</span></div>
+          <div class="error-row" role="row"><strong role="cell">SOS</strong><code role="cell">... --- ...</code><span role="cell">The distress signal; in real signalling it is sent as one unbroken group.</span></div>
+          <div class="error-row" role="row"><strong role="cell">HELLO</strong><code role="cell">.... . .-.. .-.. ---</code><span role="cell">Five letters, five groups.</span></div>
+          <div class="error-row" role="row"><strong role="cell">HELP</strong><code role="cell">.... . .-.. .--.</code><span role="cell">Not a formal distress signal; SOS is.</span></div>
+          <div class="error-row" role="row"><strong role="cell">YES</strong><code role="cell">-.-- . ...</code><span role="cell">Y is four signals; E is the single dot.</span></div>
+          <div class="error-row" role="row"><strong role="cell">NO</strong><code role="cell">-. ---</code><span role="cell">N is dash-dot; O is three dashes.</span></div>
+          <div class="error-row" role="row"><strong role="cell">STAY</strong><code role="cell">... - .- -.--</code><span role="cell">S, T, A, Y as four separate groups.</span></div>
+          <div class="error-row" role="row"><strong role="cell">I LOVE YOU</strong><code role="cell">.. / .-.. --- ...- . / -.-- --- ..-</code><span role="cell">The spaced slash marks each word break.</span></div>
+          <div class="error-row" role="row"><strong role="cell">A</strong><code role="cell">.-</code><span role="cell">Dot-dash. The letter N is the reverse, -. </span></div>
+          <div class="error-row" role="row"><strong role="cell">I</strong><code role="cell">..</code><span role="cell">Two dots. Three dots is S; one dot is E.</span></div>
+          <div class="error-row" role="row"><strong role="cell">D</strong><code role="cell">-..</code><span role="cell">Dash-dot-dot. The reverse, ..-, is U.</span></div>
+          <div class="error-row" role="row"><strong role="cell">X</strong><code role="cell">-..-</code><span role="cell">Also used for the multiplication sign, so the decoder shows a warning.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Slash /</strong><code role="cell">-..-.</code><span role="cell">The punctuation mark. A slash with spaces around it is a word separator instead.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Period . and question mark ?</strong><code role="cell">.-.-.- · ..--..</code><span role="cell">Six-signal punctuation groups from the ITU table.</span></div>
+        </div>
+        <p>Type any other word or sentence into the translator above to get the same notation. The code is sometimes misspelled “Morris code”; it is named after Samuel Morse, and the modern International Morse alphabet is defined by the ITU.</p>
+      </section>
+
+      <section class="content-section alt" id="method" aria-labelledby="method-heading">
         <div class="section-heading"><p class="section-kicker">A character code with timing</p><h2 id="method-heading">How a text-to-Morse translator works</h2></div>
         <div class="prose-grid">
           <div>
@@ -132,7 +155,7 @@
         <p class="text-link"><a href="/guides/international-morse-code/">Open the complete International Morse code chart and spacing guide →</a></p>
       </section>
 
-      <section class="content-section alt" id="alphabet" aria-labelledby="alphabet-heading">
+      <section class="content-section" id="alphabet" aria-labelledby="alphabet-heading">
         <div class="section-heading"><p class="section-kicker">Quick reference</p><h2 id="alphabet-heading">International Morse code letters and numbers</h2><p>These groups cover the basic Latin alphabet and decimal digits. Keep each group intact when decoding; a space below means “next character,” not a timed signal inside the character.</p></div>
         <div class="error-table" role="table" aria-label="Compact International Morse letters and numbers chart">
           <div class="error-row error-head" role="row"><span role="columnheader">Range</span><span role="columnheader">Characters</span><span role="columnheader">Morse code groups</span></div>
@@ -147,7 +170,7 @@
         <p>The complete guide adds the ITU punctuation characters, accented E, miscellaneous operational signals, and the important distinction between the fraction-bar character <code>-..-.</code> and a slash used visually as a word separator.</p>
       </section>
 
-      <section class="content-section" aria-labelledby="decode-heading">
+      <section class="content-section alt" aria-labelledby="decode-heading">
         <div class="section-heading"><p class="section-kicker">Segmentation is required</p><h2 id="decode-heading">Why a Morse code decoder needs spaces</h2></div>
         <div class="prose-grid"><div>
           <p>A lookup table can decode <code>.... . .-.. .-.. ---</code> as HELLO because every space identifies the end of a character. Remove those spaces and <code>......-...-..---</code> can be divided in many ways. No decoder can recover the author's intended grouping from the two signal symbols alone.</p>
@@ -156,7 +179,7 @@
         </div><div class="callout-card"><strong>Example with two boundary levels</strong><p><code>.... . .-.. .-.. --- / .-- --- .-. .-.. -..</code> represents HELLO WORLD when spaces separate letters and the standalone slash separates words.</p><a href="/guides/international-morse-code/#spacing">Compare text separators with signal timing →</a></div></div>
       </section>
 
-      <section class="content-section alt" aria-labelledby="scope-heading">
+      <section class="content-section" aria-labelledby="scope-heading">
         <div class="section-heading"><p class="section-kicker">Report, do not invent</p><h2 id="scope-heading">Unsupported symbols, extensions, and common misconceptions</h2></div>
         <div class="error-table" role="table" aria-label="Morse translation scope and error cases">
           <div class="error-row error-head" role="row"><span role="columnheader">Input or claim</span><span role="columnheader">Why it needs care</span><span role="columnheader">Reliable treatment</span></div>
@@ -168,7 +191,7 @@
         </div>
       </section>
 
-      <section class="content-section" aria-labelledby="uses-heading">
+      <section class="content-section alt" aria-labelledby="uses-heading">
         <div class="section-heading"><p class="section-kicker">Useful for explicit text notation</p><h2 id="uses-heading">When to use this Morse code translator</h2></div>
         <div class="use-case-grid">
           <article><h3>Check a handwritten message</h3><p>Enter separated dot-and-dash groups and verify each character. Keep a screenshot or the original source if ambiguous spacing matters.</p></article>
@@ -179,7 +202,7 @@
         <p>The interactive workspace can play manually triggered synthesized tones for a valid written result, with adjustable speed and pitch. It does not record microphone input, identify tones in an audio file, monitor a radio signal, train copying speed, or replace licensed emergency and radio operating procedures.</p>
       </section>
 
-      <section class="content-section alt" aria-labelledby="privacy-heading">
+      <section class="content-section" aria-labelledby="privacy-heading">
         <div class="section-heading"><p class="section-kicker">Local conversion, bounded work</p><h2 id="privacy-heading">Translate a copied message in the current browser tab</h2></div>
         <div class="prose-grid"><div>
           <p>Encoding, decoding, validation, and copying run in the current browser tab. LiveParse does not intentionally upload the entered message to a Morse conversion service, retain a translation history, or use the content to infer a language. A visible input limit keeps conversion and rendering responsive.</p>
@@ -188,13 +211,15 @@
         </div><div class="callout-card"><strong>Need the normative character list?</strong><p>The guide separates the symbols printed in ITU-R M.1677-1 from conventions often added by software and hobby references.</p><a href="/guides/international-morse-code/">Read the International Morse code guide →</a></div></div>
       </section>
 
-      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
-        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Morse code translator FAQ</h2></div>
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Morse code translator questions</p><h2 id="faq-heading">Morse code translator FAQ</h2></div>
         <div class="faq-list">
-          <details open><summary>How does the Morse code translator convert text?</summary><p>It maps each supported letter, digit, or punctuation mark to its International Morse code sequence. Character groups remain separate, and text spaces become explicit word boundaries so the result can be decoded without guessing where one symbol ends and the next begins.</p></details>
-          <details><summary>How should dots and dashes be separated when decoding Morse code?</summary><p>Keep the dots and dashes for one character together, separate character groups with spaces, and use the word separator shown by the interface between words. A continuous stream such as .-.- is ambiguous because several different character groupings can produce it.</p></details>
-          <details><summary>Is a slash part of Morse code or a word separator?</summary><p>Context matters. This interface can use a standalone slash between surrounding spaces as a readable word delimiter, while the encoded slash punctuation mark is the five-signal group -..-. Keeping those two forms distinct prevents a word break from being decoded as punctuation.</p></details>
-          <details><summary>Does the translator support every language and symbol?</summary><p>No. International Morse code defines a limited repertoire rather than a code for every Unicode character. The tool reports unsupported text instead of silently deleting it, and it does not transliterate names or translate the meaning of a sentence into another language.</p></details>
+          <details open><summary>How do I translate English to Morse code?</summary><p>Set the direction to text to Morse, type the English message, and the translator outputs one dot-and-dash group per letter, digit, or punctuation mark. Letters are separated by spaces and words by a spaced slash, so the result can be copied and decoded again without guessing.</p></details>
+          <details><summary>How do I translate Morse code to English text?</summary><p>Set the direction to Morse to text, paste the dots and dashes with a space between each letter and a spaced slash between words, and the decoder returns the text. Unknown groups are reported at their position instead of being dropped.</p></details>
+          <details><summary>What is SOS in Morse code?</summary><p>SOS is ... --- ...: three dots, three dashes, three dots. In real signalling it is sent as one continuous group without letter gaps, which is why it is so easy to recognize. The translator writes it with spaces so each letter stays visible.</p></details>
+          <details><summary>Can it decode Morse code without spaces?</summary><p>No decoder can do that reliably. A stream such as ......-...-..--- can be split into many different letter sequences, so the boundaries must come from the spacing or from the original timing. Add a space between letters and a spaced slash between words, then decode.</p></details>
+          <details><summary>Does the translator handle numbers and punctuation?</summary><p>Yes. Digits 0 to 9 use the five-signal groups shown in the chart, and the ITU punctuation marks such as period .-.-.-, comma --..--, question mark ..--.., and slash -..-. are supported. Characters outside International Morse are reported rather than silently removed.</p></details>
+          <details><summary>Can I hear the Morse code?</summary><p>Yes. After translating, use the play control to hear synthesized tones at an adjustable speed and pitch. The audio is generated in the browser, and nothing is recorded or uploaded.</p></details>
           <details><summary>Is Morse code binary or encryption?</summary><p>No. Morse uses short and long signals plus meaningful gaps, so it cannot be reduced to two symbols without also preserving timing or separators. It is a public character code, not encryption, and anyone who knows the code can read the message.</p></details>
           <details><summary>Is my text or Morse code uploaded?</summary><p>No. Translation and validation run in the current browser tab without intentionally sending the entered message to a conversion service. The bounded input limit protects responsiveness; browser extensions, clipboard managers, and anything you do with a copied result remain separate boundaries.</p></details>
         </div>
