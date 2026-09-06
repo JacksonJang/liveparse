@@ -163,7 +163,7 @@ release_date: 2026-08-04</code></pre>
             <p>The <a href="/yaml-validator/">LiveParse YAML Validator</a> defaults to YAML 1.2 with the core schema and offers YAML 1.1 as an explicit compatibility selection. It performs a strict local syntax check, rejects unresolved aliases, and detects duplicate scalar mapping keys. It does not deeply compare complex collection keys or load a Kubernetes OpenAPI schema, the Compose Specification, a CI vendor's schema, or application business rules.</p>
             <p>The <a href="/yaml-formatter/">YAML Formatter</a> parses and reserializes content. Formatting may change quoting, scalar style, flow versus block style, equivalent numeric spelling, comments, and whitespace. It stops before a precision-losing number or timestamp would change value, but it is still not a source-preserving fixer. The <a href="/yaml-viewer/">YAML Viewer</a> exposes resolved scalar types, anchors, aliases, tags, non-string keys, and document boundaries so version differences are visible before conversion.</p>
             <p>When using <a href="/yaml-to-json/">YAML to JSON</a>, remember that JSON has fewer representational features. LiveParse stops on alias or complex mapping keys, <code>!!omap</code>, <code>!!pairs</code>, <code>!!binary</code>, <code>!!set</code>, custom or unresolved tags, non-finite values, and precision-losing numbers or timestamps. It uses a maximum alias count of 50 per YAML document, rejects cycles, converts a multi-document stream to a top-level JSON array, and reports presentation loss such as dropped comments. Under YAML 1.1, an unquoted <code>&lt;&lt;</code> merge-tag key stops conversion; quoted YAML 1.1 <code>"&lt;&lt;"</code> and literal YAML 1.2 Core <code>&lt;&lt;</code> remain ordinary keys. The reverse <a href="/json-to-yaml/">JSON to YAML</a> path emits a YAML 1.2-compatible representation and preserves exact JSON number tokens in text, while warning that some later JavaScript consumers may still lose numeric precision.</p>
-            <p>After conversion, inspect generated data with the <a href="/">JSON Formatter and Validator</a>. For a useful contrast, the <a href="/xml-validator/">XML Validator</a> also separates basic syntax from grammar validity: different formats, same rule that parser success is not application-schema proof.</p>
+            <p>After conversion, inspect generated data with the <a href="/json-formatter/">JSON Formatter and Validator</a>. For a useful contrast, the <a href="/xml-validator/">XML Validator</a> also separates basic syntax from grammar validity: different formats, same rule that parser success is not application-schema proof.</p>
 
             <h2 id="migration">A safe YAML 1.1 to 1.2 migration checklist</h2>
             <ol>
@@ -233,7 +233,7 @@ release_date: 2026-08-04</code></pre>
 
     <footer class="site-footer">
       <p>LiveParse · Private, browser-based data tools for developers</p>
-      <p><a href="/">JSON Tools</a> · <a href="/yaml-validator/">YAML Validator</a> · <a href="/yaml-formatter/">YAML Formatter</a> · <a href="/yaml-to-json/">YAML to JSON</a> · <a href="/privacy/">Privacy</a></p>
+      <p><a href="/json-formatter/">JSON Tools</a> · <a href="/yaml-validator/">YAML Validator</a> · <a href="/yaml-formatter/">YAML Formatter</a> · <a href="/yaml-to-json/">YAML to JSON</a> · <a href="/privacy/">Privacy</a></p>
     </footer>
   </body>
 </html>

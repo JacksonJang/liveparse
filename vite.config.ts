@@ -11,6 +11,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(projectRoot, 'index.html'),
+        jsonFormatter: resolve(projectRoot, 'json-formatter/index.html'),
         koJsonParser: resolve(projectRoot, 'ko/json-parser/index.html'),
         jsonRepair: resolve(projectRoot, 'json-repair/index.html'),
         jsonlParser: resolve(projectRoot, 'jsonl-parser/index.html'),

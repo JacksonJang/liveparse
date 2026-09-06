@@ -76,6 +76,7 @@ const FAQ_PARITY_PATHS = new Set([
   '/guides/common-yaml-errors/',
 ]);
 const requiredPages = [
+  { relativePath: 'json-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/json-formatter/`, label: 'JSON Formatter tool' },
   { relativePath: 'ko/json-parser/index.html', canonical: `${CANONICAL_ORIGIN}/ko/json-parser/`, label: 'Korean JSON parser' },
   { relativePath: 'json-repair/index.html', canonical: `${CANONICAL_ORIGIN}/json-repair/`, label: 'JSON Repair tool' },
   { relativePath: 'jsonl-parser/index.html', canonical: `${CANONICAL_ORIGIN}/jsonl-parser/`, label: 'JSONL Parser tool' },
@@ -154,7 +155,14 @@ const CHARACTER_COUNTER_HREFLANGS = new Map([
   ['ko', `${CANONICAL_ORIGIN}/ko/character-counter/`],
   ['x-default', `${CANONICAL_ORIGIN}/character-counter/`],
 ]);
+const JSON_FORMATTER_HREFLANGS = new Map([
+  ['en', `${CANONICAL_ORIGIN}/json-formatter/`],
+  ['ko', `${CANONICAL_ORIGIN}/ko/json-parser/`],
+  ['x-default', `${CANONICAL_ORIGIN}/json-formatter/`],
+]);
 const EXPECTED_HREFLANGS = new Map([
+  [`${CANONICAL_ORIGIN}/json-formatter/`, JSON_FORMATTER_HREFLANGS],
+  [`${CANONICAL_ORIGIN}/ko/json-parser/`, JSON_FORMATTER_HREFLANGS],
   [`${CANONICAL_ORIGIN}/word-counter/`, WORD_COUNTER_HREFLANGS],
   [`${CANONICAL_ORIGIN}/es/contador-de-palabras/`, WORD_COUNTER_HREFLANGS],
   [`${CANONICAL_ORIGIN}/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
@@ -1126,14 +1134,14 @@ async function main() {
   const homepagePath = join(distRoot, 'index.html');
   const homepage = htmlByPath.get(homepagePath) ?? (await readRequired(homepagePath, 'homepage'));
   if (homepage !== null) {
-    validatePageBasics(homepage, 'homepage', `${CANONICAL_ORIGIN}/`);
+    validatePageBasics(homepage, 'homepage', `${CANONICAL_ORIGIN}/`, { requireJson: false, requireParsing: false });
     validateAtomAutodiscovery(homepage, 'homepage');
     const homepageTitle = titleValues(homepage)[0] || '';
     const homepageH1 = h1Values(homepage)[0] || '';
-    if (!/\bjson\s+formatter\b/i.test(homepageTitle)) fail('homepage: title must target the phrase "JSON Formatter"');
-    if (!/\bjson\s+formatter\b/i.test(homepageH1)) fail('homepage: H1 must target the phrase "JSON Formatter"');
-    if (!/\bviewer\b/i.test(homepageTitle)) fail('homepage: title must target JSON viewer intent');
-    if (!/\bviewer\b/i.test(homepageH1)) fail('homepage: H1 must target JSON viewer intent');
+    if (!/\bliveparse\b/i.test(homepageTitle)) fail('homepage: title must name the LiveParse brand');
+    if (!/\bliveparse\b/i.test(homepageH1)) fail('homepage: H1 must name the LiveParse brand');
+    if (!/\bdeveloper\s+tools\b/i.test(homepageTitle)) fail('homepage: title must describe the developer tools hub');
+    if (!/href="\/json-formatter\/"/.test(homepage)) fail('homepage: must link to the JSON formatter page');
   }
 
   const guidesIndexPath = join(distRoot, 'guides', 'index.html');
@@ -1234,6 +1242,14 @@ async function main() {
     validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
     if (requirement.relativePath === 'ascii-table/index.html') {
       validateAsciiTableRows(page, requirement.label);
+    }
+    if (requirement.relativePath === 'json-formatter/index.html') {
+      const pageTitle = titleValues(page)[0] || '';
+      const pageH1 = h1Values(page)[0] || '';
+      if (!/\bjson\s+formatter\b/i.test(pageTitle)) fail(`${requirement.label}: title must target the phrase "JSON Formatter"`);
+      if (!/\bjson\s+formatter\b/i.test(pageH1)) fail(`${requirement.label}: H1 must target the phrase "JSON Formatter"`);
+      if (!/\bviewer\b/i.test(pageTitle)) fail(`${requirement.label}: title must target JSON viewer intent`);
+      if (!/\bviewer\b/i.test(pageH1)) fail(`${requirement.label}: H1 must target JSON viewer intent`);
     }
     if (requirement.topicPattern) {
       const topicFields = [

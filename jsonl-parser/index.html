@@ -92,7 +92,7 @@
       <nav class="jsonl-nav" aria-label="Primary navigation">
         <a class="jsonl-brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="jsonl-nav-links">
-          <a href="/">JSON Formatter</a>
+          <a href="/json-formatter/">JSON Formatter</a>
           <a href="/json-compare/">JSON Compare</a>
           <a href="/json-to-csv/">JSON to CSV</a>
           <a href="/json-repair/">JSON Repair</a>
@@ -239,7 +239,7 @@
         <div class="jsonl-faq">
           <details open><summary>Are JSONL and NDJSON the same thing?</summary><p>For most tools, yes: both mean one complete JSON value per line. Naming and media-type conventions vary, but the line-oriented data model is the same. LiveParse accepts both <code>.jsonl</code> and <code>.ndjson</code> files.</p></details>
           <details><summary>Does each line need to be a JSON object?</summary><p>No. A strict JSON string, array, number, boolean, or null can also be a record. Objects produce property columns; non-object records appear in a <code>$value</code> column.</p></details>
-          <details><summary>Can one record span several lines?</summary><p>No. JSONL uses the physical line ending as the record delimiter. If you paste one pretty-printed JSON document, LiveParse detects that case and directs you to the regular <a href="/">JSON Parser</a>.</p></details>
+          <details><summary>Can one record span several lines?</summary><p>No. JSONL uses the physical line ending as the record delimiter. If you paste one pretty-printed JSON document, LiveParse detects that case and directs you to the regular <a href="/json-formatter/">JSON Parser</a>.</p></details>
           <details><summary>What happens to invalid lines during CSV export?</summary><p>They are excluded. The error list keeps their physical line, column, parser code, and preview visible, while valid records remain filterable and exportable. LiveParse does not guess a repair during conversion.</p></details>
           <details><summary>Are large integers converted to scientific notation?</summary><p>No. Every JSON number remains an original text token. CSV cells use that exact token, including 64-bit IDs, decimal spelling, exponent notation, and negative zero.</p></details>
           <details><summary>How are nested objects and arrays converted to CSV?</summary><p>They stay as compact JSON inside one CSV field. This avoids lossy flattening rules and preserves duplicate object members and exact number lexemes.</p></details>
@@ -261,7 +261,7 @@
     <footer class="jsonl-site-footer">
       <div><a class="jsonl-brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, lossless browser tools for JSON data.</p></div>
       <div class="jsonl-footer-links">
-        <a href="/">JSON Formatter</a>
+        <a href="/json-formatter/">JSON Formatter</a>
         <a href="/json-compare/">JSON Compare</a>
         <a href="/json-to-csv/">JSON to CSV</a>
         <a href="/json-repair/">JSON Repair</a>

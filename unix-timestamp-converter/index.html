@@ -92,7 +92,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="nav-links">
-          <a href="/">JSON Formatter</a>
+          <a href="/json-formatter/">JSON Formatter</a>
           <a href="/json-compare/">JSON Compare</a>
           <a href="/json-to-csv/">JSON to CSV</a>
           <a href="#timestamp-units">Timestamp units</a>
@@ -210,7 +210,7 @@
           <div>
             <p>Batch conversion is useful when a log excerpt, database column, or event list contains more than one timestamp. Paste one value per line and review the detected or selected unit beside each output. Mixed-unit data deserves special attention: a seconds field copied next to a millisecond field can look like a plausible list of integers even though one result lands thousands of years away.</p>
             <p>For production migrations, preserve the raw column, add a separate normalized column, and record the transformation rule. Reject or quarantine rows whose unit, range, or timezone meaning is unknown. A convenient converter is a review aid; it cannot recover metadata that the source system never recorded.</p>
-            <p>When timestamps are embedded in JSON, check the field’s schema before extracting them. JSON itself has no timestamp type, so a number named <code>createdAt</code> could be seconds or milliseconds, while a string could be ISO text or a numeric token. Use the <a href="/">JSON formatter and validator</a> to inspect payload structure, and the <a href="/json-compare/">JSON comparison tool</a> to verify that a migration changed only intended fields.</p>
+            <p>When timestamps are embedded in JSON, check the field’s schema before extracting them. JSON itself has no timestamp type, so a number named <code>createdAt</code> could be seconds or milliseconds, while a string could be ISO text or a numeric token. Use the <a href="/json-formatter/">JSON formatter and validator</a> to inspect payload structure, and the <a href="/json-compare/">JSON comparison tool</a> to verify that a migration changed only intended fields.</p>
           </div>
           <dl class="definition-list">
             <div><dt>Keep raw</dt><dd>Retain the source token for audit, rollback, and precision checks.</dd></div>
@@ -273,7 +273,7 @@
 
     <footer class="site-footer">
       <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based JSON, timestamp, and data conversion tools.</p></div>
-      <div class="footer-links"><a href="/">JSON Formatter</a><a href="/json-compare/">JSON Compare</a><a href="/json-to-csv/">JSON to CSV</a><a href="/discord-timestamp-generator/">Discord Timestamp</a><a href="/jsonl-parser/">JSONL Parser</a><a href="/privacy/">Privacy</a></div>
+      <div class="footer-links"><a href="/json-formatter/">JSON Formatter</a><a href="/json-compare/">JSON Compare</a><a href="/json-to-csv/">JSON to CSV</a><a href="/discord-timestamp-generator/">Discord Timestamp</a><a href="/jsonl-parser/">JSONL Parser</a><a href="/privacy/">Privacy</a></div>
       <p class="footer-note">© 2026 Jackson Jang. Input is processed locally in your browser.</p>
     </footer>
     <noscript><p class="noscript-note">JavaScript is required for the interactive Unix timestamp converter. The explanatory content remains available without it.</p></noscript>

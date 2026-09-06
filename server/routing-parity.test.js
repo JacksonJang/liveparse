@@ -55,12 +55,11 @@ describe('production routing parity', () => {
     }
   });
 
-  it('consolidates common JSON parser and formatter paths into the canonical homepage', async () => {
+  it('consolidates common JSON parser and formatter paths into the JSON formatter page', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const redirects = new Map(routeRedirects(source));
     const aliases = [
       '/json-parser',
-      '/json-formatter',
       '/json-validator',
       '/json-beautifier',
       '/json-viewer',
@@ -69,10 +68,12 @@ describe('production routing parity', () => {
     ];
 
     for (const alias of aliases) {
-      expect(redirects.get(alias)).toBe('/');
-      expect(redirects.get(`${alias}/`)).toBe('/');
+      expect(redirects.get(alias)).toBe('/json-formatter/');
+      expect(redirects.get(`${alias}/`)).toBe('/json-formatter/');
     }
     expect(redirects.has('/')).toBe(false);
+    expect(redirects.has('/json-formatter')).toBe(false);
+    expect(directoryRoutes(source)).toContain('/json-formatter');
   });
 
   it('includes the UUID generator, validator, decoder, and guide cluster with intentional aliases', async () => {
