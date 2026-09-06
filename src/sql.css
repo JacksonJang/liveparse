@@ -6,12 +6,12 @@
 .sql-app {
   --sql-deep: #172431;
   --sql-ink: #293b49;
-  --sql-muted: #687985;
+  --sql-muted: #5b6d79;
   --sql-line: rgba(43, 77, 91, .17);
   --sql-teal: #087f78;
   --sql-teal-dark: #055d59;
   --sql-teal-pale: #e5f8f5;
-  --sql-coral: #c35c39;
+  --sql-coral: #ad4f2e;
   color: var(--sql-ink);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, .88);

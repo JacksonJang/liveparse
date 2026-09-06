@@ -5,13 +5,13 @@
   --compare-line: var(--line, rgba(17, 91, 105, .18));
   --compare-aqua: var(--aqua-dark, #075668);
   --compare-aqua-pale: var(--aqua-pale, #e3f7fa);
-  --compare-mint: var(--mint, #168654);
+  --compare-mint: var(--mint, #12744a);
   --compare-mint-pale: var(--mint-pale, #e2f7ec);
   --compare-violet: var(--violet, #6e4cc9);
   --compare-violet-pale: var(--violet-pale, #f0ebff);
   --compare-coral: #a83d34;
   --compare-coral-pale: #fff0ed;
-  --compare-sun: #a86600;
+  --compare-sun: #8f5700;
   --compare-sun-pale: #fff5d8;
   overflow: hidden;
   color: var(--compare-ink);
@@ -301,3 +301,7 @@
 @media (prefers-reduced-motion: reduce) {
   .compare-button { transition: none; }
 }
+
+/* Contrast: success states use the darker green for text and white-on-green badges */
+.compare-live-status strong { background: #12744a; }
+.compare-summary-item.added strong { color: #12744a; }

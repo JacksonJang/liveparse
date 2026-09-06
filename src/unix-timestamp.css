@@ -10,9 +10,9 @@
   --epoch-line: var(--line, rgba(17, 91, 105, .18));
   --epoch-aqua: var(--aqua-dark, #075668);
   --epoch-aqua-pale: var(--aqua-pale, #dff7fb);
-  --epoch-mint: #168654;
+  --epoch-mint: #12744a;
   --epoch-mint-pale: var(--mint-pale, #ddf8eb);
-  --epoch-sun: #a86600;
+  --epoch-sun: #8f5700;
   --epoch-sun-pale: var(--sun-pale, #fff3cf);
   --epoch-coral: #a83d34;
   --epoch-coral-pale: var(--coral-pale, #fff0ed);

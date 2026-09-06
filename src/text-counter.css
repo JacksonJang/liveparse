@@ -31,7 +31,7 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #168654;
+  background: #12744a;
   box-shadow: 0 0 0 5px rgba(22, 134, 84, .13);
 }
 
@@ -272,7 +272,7 @@
 .text-limit.over { border-color: rgba(172, 59, 48, .22); background: #fff5f2; }
 .text-limit.over strong { color: #9b342d; }
 .text-progress { overflow: hidden; height: 8px; border-radius: 999px; background: rgba(18, 108, 70, .12); }
-.text-progress > span { display: block; height: 100%; border-radius: inherit; background: #168654; transition: width .18s ease; }
+.text-progress > span { display: block; height: 100%; border-radius: inherit; background: #12744a; transition: width .18s ease; }
 .text-limit.over .text-progress > span { background: #b4473d; }
 
 .text-error,
