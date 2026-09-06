@@ -481,7 +481,7 @@
   border-radius: 8px;
   color: #153d46;
   background: transparent;
-  font: 10px/1.35 "SFMono-Regular", "Cascadia Code", "Fira Code", Consolas, monospace;
+  font: 12px/1.35 "SFMono-Regular", "Cascadia Code", "Fira Code", Consolas, monospace;
 }
 .binary-value-copy:hover { border-color: var(--line); background: var(--aqua-pale); }
 

@@ -112,7 +112,7 @@
 .jwt-time-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 10px; }
 .jwt-time-controls label { min-width: 0; display: grid; gap: 6px; }
 .jwt-time-controls label span { color: var(--jwt-deep); font-size: 12px; font-weight: 900; }
-.jwt-time-controls input { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--jwt-line); border-radius: 11px; outline: 0; color: var(--jwt-deep); background: #fff; font: 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+.jwt-time-controls input { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--jwt-line); border-radius: 11px; outline: 0; color: var(--jwt-deep); background: #fff; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
 .jwt-time-row { display: grid; grid-template-columns: 50px 92px minmax(80px, .72fr) minmax(130px, 1.35fr); }
 .jwt-time-row code { color: var(--jwt-indigo-dark); }
 .jwt-time-row span { color: var(--jwt-muted); }

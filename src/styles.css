@@ -258,3 +258,6 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* Touch-friendly minimum for compact icon buttons */
 .lp-tree-button { min-height: 32px; }
+
+/* Readability floor: <small> must not drop below 12px on tool pages */
+small { font-size: 12px; }

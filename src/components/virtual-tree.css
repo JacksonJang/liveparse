@@ -88,7 +88,7 @@
   flex: 1 0 100%;
   margin: 0;
   color: #8a4708;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.35;
 }
 
@@ -96,7 +96,7 @@
   flex: 1 0 100%;
   margin: 0;
   color: var(--muted, #526d75);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.35;
 }
 
@@ -173,7 +173,7 @@
   color: var(--aqua-dark, #075668);
   background: #fff;
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
   line-height: 1;
 }
@@ -185,7 +185,7 @@
   border-radius: 999px;
   color: #4b3500;
   background: #f5ca65;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
   line-height: 18px;
   text-align: center;
@@ -204,7 +204,7 @@
   color: #8a2f28;
   background: #fff0ed;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 850;
   line-height: 17px;
 }
@@ -225,7 +225,7 @@
   color: #fff;
   background: #546e75;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 850;
   line-height: 17px;
 }
@@ -263,6 +263,6 @@
   .lp-tree-toolbar { align-items: stretch; gap: 4px; padding: 6px; }
   .lp-tree-search { flex-basis: 100%; }
   .lp-tree-actions { width: 100%; }
-  .lp-tree-button { min-height: 26px; padding: 3px 6px; font-size: 10px; }
+  .lp-tree-button { min-height: 26px; padding: 3px 6px; font-size: 12px; }
   .lp-tree-actions .lp-tree-button { flex: 1 1 auto; white-space: normal; line-height: 1.15; }
 }

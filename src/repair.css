@@ -154,7 +154,7 @@ code, pre, textarea { font-family: "SFMono-Regular", "Cascadia Code", "Fira Code
 .diff-header span + span, .diff-side + .diff-side { border-left: 1px solid rgba(17,91,105,.18); }
 .diff-row + .diff-row { border-top: 1px solid rgba(17,91,105,.12); }
 .diff-side { min-width: 0; display: grid; grid-template-columns: 44px minmax(0, 1fr); }
-.line-number { padding: 7px 8px; color: #6f858b; border-right: 1px solid rgba(17,91,105,.1); background: #f0f6f7; font: 10px/1.5 "SFMono-Regular", Consolas, monospace; text-align: right; user-select: none; }
+.line-number { padding: 7px 8px; color: #6f858b; border-right: 1px solid rgba(17,91,105,.1); background: #f0f6f7; font: 12px/1.5 "SFMono-Regular", Consolas, monospace; text-align: right; user-select: none; }
 .diff-side code { min-width: 0; min-height: 34px; display: block; overflow-wrap: anywhere; padding: 7px 10px; color: #294950; font-size: 12px; line-height: 1.55; white-space: pre-wrap; }
 .diff-delete .diff-side:first-child, .diff-replace .diff-side:first-child { background: #fff7f5; }
 .diff-insert .diff-side:last-child, .diff-replace .diff-side:last-child { background: #f4fff8; }
