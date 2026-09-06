@@ -203,7 +203,7 @@ function App() {
           <div className="converter-panel-header">
             <div><h3 id="converter-input-title">{page.inputLabel}</h3><p>{page.inputHelp}</p></div>
             <div className="converter-actions">
-              <input ref={fileInputRef} className="visually-hidden" type="file" accept={page.accept} onChange={loadFile} tabIndex={-1} />
+              <input ref={fileInputRef} className="visually-hidden" type="file" aria-label="Open a local file" accept={page.accept} onChange={loadFile} tabIndex={-1} />
               <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>Open file</button>
               <button type="button" className="ghost-button danger" onClick={clear}>Clear</button>
             </div>

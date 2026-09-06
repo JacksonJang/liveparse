@@ -496,6 +496,7 @@ function JsonEditor({
             ref={fileInputRef}
             className="compare-visually-hidden"
             type="file"
+            aria-label="Open a local JSON file"
             accept=".json,.jsonc,.txt,application/json,text/json,text/plain"
             onChange={onOpenFile}
             tabIndex={-1}

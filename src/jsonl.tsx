@@ -315,7 +315,7 @@ function App() {
               {(Object.keys(examples) as ExampleName[]).map((name) => <option key={name}>{name}</option>)}
             </select>
           </label>
-          <input ref={fileInputRef} className="jsonl-visually-hidden" type="file" accept=".jsonl,.ndjson,.json,.txt,application/x-ndjson,application/json,text/plain" onChange={loadFile} />
+          <input ref={fileInputRef} className="jsonl-visually-hidden" type="file" aria-label="Open a local JSONL file" accept=".jsonl,.ndjson,.json,.txt,application/x-ndjson,application/json,text/plain" onChange={loadFile} />
           <button type="button" className="jsonl-button secondary" onClick={() => fileInputRef.current?.click()}>Open file</button>
           <button type="button" className="jsonl-button danger" onClick={() => { replaceInput(''); setFilter(''); }}>Clear</button>
         </div>

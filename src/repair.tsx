@@ -138,7 +138,7 @@ function RepairApp() {
               <p>{lines === null ? '…' : lines.toLocaleString()} lines · {input.length.toLocaleString()} characters</p>
             </div>
             <div className="button-row">
-              <input ref={fileInput} className="visually-hidden" type="file" accept=".json,.jsonc,.txt,application/json,text/plain" onChange={openFile} tabIndex={-1} />
+              <input ref={fileInput} className="visually-hidden" type="file" aria-label="Open a local file" accept=".json,.jsonc,.txt,application/json,text/plain" onChange={openFile} tabIndex={-1} />
               <button className="secondary-button" type="button" onClick={() => fileInput.current?.click()}>Open file</button>
               <button className="secondary-button danger-button" type="button" onClick={() => setInput('')}>Clear</button>
             </div>

@@ -452,7 +452,7 @@ function YamlToolApp(): React.JSX.Element {
             <button type="button" className="xml-button primary" disabled={busy} onClick={run}>{busy ? copy.busy : copy.action}</button>
             <button type="button" className="xml-button" disabled={busy} onClick={() => updateInput(YAML_SAMPLES[mode], 'Synthetic sample restored. Run the operation when ready.')}>Load sample</button>
             <button type="button" className="xml-button" disabled={busy} onClick={() => fileInputRef.current?.click()}>Open file</button>
-            <input ref={fileInputRef} className="visually-hidden" type="file" accept={mode === 'json-to-yaml' ? '.json,application/json,text/plain' : '.yaml,.yml,application/yaml,text/yaml,text/plain'} onChange={(event) => void loadFile(event.target.files?.[0])} />
+            <input ref={fileInputRef} className="visually-hidden" type="file" aria-label="Open a local file" accept={mode === 'json-to-yaml' ? '.json,application/json,text/plain' : '.yaml,.yml,application/yaml,text/yaml,text/plain'} onChange={(event) => void loadFile(event.target.files?.[0])} />
             <button type="button" className="xml-button quiet" disabled={busy || !input} onClick={() => updateInput('', 'Input cleared. Nothing was uploaded or stored.')}>Clear</button>
           </div>
         </section>

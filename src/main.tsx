@@ -440,7 +440,7 @@ function App() {
             title={t.inputTitle}
             meta={t.inputMeta(lineCount, input.length.toLocaleString())}
             actions={<>
-              <input ref={fileInputRef} className="visually-hidden" type="file" accept=".json,application/json,text/json,text/plain" onChange={loadFile} tabIndex={-1} />
+              <input ref={fileInputRef} className="visually-hidden" type="file" aria-label="Open a local file" accept=".json,application/json,text/json,text/plain" onChange={loadFile} tabIndex={-1} />
               <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>{t.openFile}</button>
               <button type="button" className="ghost-button" onClick={formatInput} disabled={!isValid}>{t.format}</button>
               <button type="button" className="ghost-button" onClick={minifyInput} disabled={!isValid}>{t.minify}</button>

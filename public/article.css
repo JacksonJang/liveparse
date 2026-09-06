@@ -603,3 +603,7 @@ tr:last-child td {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Breadcrumb: keep the trail on one wrapping line */
+nav.byline[aria-label="Breadcrumb"], nav[aria-label="Breadcrumb"] { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 4px 8px; margin: 0 0 14px; font-size: 14px; text-align: left; color: var(--muted, #526d75); }
+nav[aria-label="Breadcrumb"] a { font-weight: 700; }
