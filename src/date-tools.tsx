@@ -761,10 +761,10 @@ function weekendLabel(days: readonly IsoWeekday[]): string {
 }
 
 function BusinessDaysCalculator() {
-  const [mode, setMode] = useState<BusinessMode>(() => queryChoice('mode', ['count', 'add'] as const, 'count'));
+  const [mode, setMode] = useState<BusinessMode>(() => queryChoice('mode', ['count', 'add'] as const, 'add'));
   const [startDate, setStartDate] = useState(() => queryDate('start', TODAY));
   const [endDate, setEndDate] = useState(() => queryDate('end', DEFAULT_RANGE_END));
-  const [amount, setAmount] = useState(() => queryText('amount', '10', 9));
+  const [amount, setAmount] = useState(() => queryText('amount', '5', 9));
   const [weekendPreset, setWeekendPreset] = useState<WeekendPreset>(() => queryChoice('weekend', ['sat-sun', 'fri-sat', 'sun-only', 'custom'] as const, 'sat-sun'));
   const [customWeekend, setCustomWeekend] = useState<IsoWeekday[]>(initialCustomWeekend);
   const [holidaysText, setHolidaysText] = useState(() => queryText('holidays', '', 100_000));
@@ -773,10 +773,10 @@ function BusinessDaysCalculator() {
   const calculator = useCalculator();
 
   const reset = () => {
-    setMode('count');
+    setMode('add');
     setStartDate(TODAY);
     setEndDate(DEFAULT_RANGE_END);
-    setAmount('10');
+    setAmount('5');
     setWeekendPreset('sat-sun');
     setCustomWeekend([6, 7]);
     setHolidaysText('');
@@ -868,17 +868,12 @@ function BusinessDaysCalculator() {
     });
   };
 
-  const applyPreset = (kind: 'month' | 'add' | 'holiday') => {
+  const applyPreset = (kind: 'month' | 'holiday') => {
     if (kind === 'month') {
       const today = parseIsoDate(TODAY);
       setMode('count');
       setStartDate(formatIsoDate({ year: today.year, month: today.month, day: 1 }));
       setEndDate(formatIsoDate({ year: today.year, month: today.month, day: daysInMonth(today.year, today.month) }));
-      setHolidaysText('');
-    } else if (kind === 'add') {
-      setMode('add');
-      setStartDate(TODAY);
-      setAmount('10');
       setHolidaysText('');
     } else {
       setMode('count');
@@ -887,6 +882,15 @@ function BusinessDaysCalculator() {
       setHolidaysText('2025-12-25\n2026-01-01');
     }
     setWeekendPreset('sat-sun');
+    calculator.clear();
+  };
+
+  const applyAddPreset = (businessDays: number) => {
+    setMode('add');
+    setStartDate(TODAY);
+    setAmount(String(businessDays));
+    setWeekendPreset('sat-sun');
+    setHolidaysText('');
     calculator.clear();
   };
 
@@ -965,8 +969,10 @@ function BusinessDaysCalculator() {
           )}
         </div>
         <Presets>
+          <button className="date-chip" type="button" onClick={() => applyAddPreset(5)}>5 business days from today</button>
+          <button className="date-chip" type="button" onClick={() => applyAddPreset(7)}>7 business days from today</button>
+          <button className="date-chip" type="button" onClick={() => applyAddPreset(10)}>10 business days from today</button>
           <button className="date-chip" type="button" onClick={() => applyPreset('month')}>This calendar month</button>
-          <button className="date-chip" type="button" onClick={() => applyPreset('add')}>Add 10 business days</button>
           <button className="date-chip" type="button" onClick={() => applyPreset('holiday')}>Year-end holidays</button>
         </Presets>
       </InputPanel>

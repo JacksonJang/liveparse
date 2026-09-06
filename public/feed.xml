@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-08-04T11:30:12+09:00</updated>
+  <updated>2026-09-06T09:48:56+09:00</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,25 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/business-days-calculator/</id>
+    <title>Business Days Calculator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/business-days-calculator/" />
+    <published>2026-08-04T11:30:12+09:00</published>
+    <updated>2026-09-06T09:48:56+09:00</updated>
+    <category term="Business days" />
+    <summary>Calculate 5, 7, 10, 30, or 45 business days from today, or count workdays between dates with configurable weekends and holidays.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/morse-code-translator/</id>
+    <title>Morse Code Translator</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/morse-code-translator/" />
+    <published>2026-08-04T09:39:03+09:00</published>
+    <updated>2026-09-06T09:48:56+09:00</updated>
+    <category term="Morse code and text translation" />
+    <summary>Translate English text to International Morse code or decode spaced dots and dashes back to text, then copy or play the result.</summary>
+  </entry>
 
   <entry>
     <id>https://liveparse.com/age-calculator/</id>
@@ -48,15 +67,6 @@
     <updated>2026-08-04T11:30:12+09:00</updated>
     <category term="Date differences" />
     <summary>Count elapsed days between two dates with explicit inclusive or exclusive endpoint choices and a calendar breakdown.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/business-days-calculator/</id>
-    <title>Business Days Calculator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/business-days-calculator/" />
-    <published>2026-08-04T11:30:12+09:00</published>
-    <updated>2026-08-04T11:30:12+09:00</updated>
-    <category term="Business days" />
-    <summary>Count or add workdays with configurable weekend days and optional holiday exclusions.</summary>
   </entry>
   <entry>
     <id>https://liveparse.com/time-duration-calculator/</id>
@@ -150,15 +160,6 @@
     <summary>Understand how dimensions, codec, quality, transparency, animation, and metadata affect image file size before compressing or converting.</summary>
   </entry>
 
-  <entry>
-    <id>https://liveparse.com/morse-code-translator/</id>
-    <title>Morse Code Translator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/morse-code-translator/" />
-    <published>2026-08-04T09:39:03+09:00</published>
-    <updated>2026-08-04T09:39:03+09:00</updated>
-    <category term="Morse code and text translation" />
-    <summary>Translate supported text to International Morse code or decode explicit dot-and-dash tokens locally with visible separators and strict diagnostics.</summary>
-  </entry>
   <entry>
     <id>https://liveparse.com/guides/international-morse-code/</id>
     <title>International Morse Code Reference</title>

@@ -4,12 +4,18 @@
 // The export is produced by Search Console → Performance → Export → Download CSV (a zip with Pages.csv, Queries.csv, ...).
 
 import { readFile, readdir, stat, mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { platform, tmpdir } from 'node:os';
 import { basename, join, resolve } from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
+
+export function zipExtractionCommand(target, directory, platformName = platform()) {
+  return platformName === 'darwin'
+    ? { command: 'ditto', args: ['-x', '-k', target, directory] }
+    : { command: 'unzip', args: ['-q', '-o', target, '-d', directory] };
+}
 
 export function parseCsv(source) {
   const rows = [];
@@ -103,7 +109,8 @@ async function collectCsvFiles(input) {
   }
   if (target.toLowerCase().endsWith('.zip')) {
     const directory = await mkdtemp(join(tmpdir(), 'gsc-export-'));
-    await execFileAsync('unzip', ['-q', '-o', target, '-d', directory]);
+    const extraction = zipExtractionCommand(target, directory);
+    await execFileAsync(extraction.command, extraction.args);
     const files = await collectCsvFiles(directory);
     return files.map((file) => ({ file, cleanup: directory }));
   }

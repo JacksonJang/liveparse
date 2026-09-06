@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { expectedCtr, parseCsv, parsePerformanceRows, rankOpportunities } from './report-search-console.mjs';
+import { expectedCtr, parseCsv, parsePerformanceRows, rankOpportunities, zipExtractionCommand } from './report-search-console.mjs';
 
 describe('report-search-console', () => {
   it('parses quoted CSV fields with commas and escaped quotes', () => {
@@ -28,5 +28,16 @@ describe('report-search-console', () => {
     expect(ranked.map((row) => row.key)).toEqual(['page-b', 'page-a']);
     expect(ranked[0].missedClicks).toBeCloseTo(100 * expectedCtr(2));
     expect(ranked[1].missedClicks).toBeCloseTo(400 * expectedCtr(6) - 1);
+  });
+
+  it('uses the macOS archive tool for Unicode export filenames', () => {
+    expect(zipExtractionCommand('/tmp/search.zip', '/tmp/export', 'darwin')).toEqual({
+      command: 'ditto',
+      args: ['-x', '-k', '/tmp/search.zip', '/tmp/export'],
+    });
+    expect(zipExtractionCommand('/tmp/search.zip', '/tmp/export', 'linux')).toEqual({
+      command: 'unzip',
+      args: ['-q', '-o', '/tmp/search.zip', '-d', '/tmp/export'],
+    });
   });
 });

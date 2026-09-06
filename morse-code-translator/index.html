@@ -7,8 +7,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Morse Code Translator – English to Morse &amp; Morse to Text | LiveParse</title>
-    <meta name="description" content="Free Morse code translator. Convert English text to Morse code or decode Morse code to English text instantly. Letters, numbers, punctuation, SOS, and playable audio. No sign-up." />
+    <title>Morse Code Translator | English ↔ Morse Decoder | LiveParse</title>
+    <meta name="description" content="Translate English to Morse code or decode dots and dashes back to text. Copy the result or play it as audio. Free, private, and no sign-up." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/morse-code-translator/" />
@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="/src/morse-code-translator.css" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/morse-code-translator/" />
-    <meta property="og:title" content="Morse Code Translator – English to Morse Code and Back" />
-    <meta property="og:description" content="Type English and get Morse code, or paste dots and dashes and get the text back. Play the result as audio. Free, in your browser." />
+    <meta property="og:title" content="Morse Code Translator | English ↔ Morse Decoder" />
+    <meta property="og:description" content="Translate English to Morse code or decode dots and dashes back to text. Copy the result or play it as audio, free in your browser." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -25,8 +25,8 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="LiveParse browser-based Morse code translator" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Morse Code Translator and Decoder | LiveParse" />
-    <meta name="twitter:description" content="Translate English to Morse code or Morse to text, play it as audio, and check every letter against the ITU chart." />
+    <meta name="twitter:title" content="Morse Code Translator | English ↔ Morse Decoder" />
+    <meta name="twitter:description" content="Translate English to Morse code or decode Morse to text, copy the result, and play it as audio." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#3458d4" />
     <script type="application/ld+json">
@@ -57,6 +57,16 @@
             ],
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
             "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/morse-code-translator/#webpage",
+            "url": "https://liveparse.com/morse-code-translator/",
+            "name": "Morse Code Translator | English to Morse Decoder",
+            "description": "Translate English text to International Morse code or decode separated dots and dashes back to text.",
+            "dateModified": "2026-09-06",
+            "inLanguage": "en",
+            "mainEntity": { "@id": "https://liveparse.com/morse-code-translator/#application" }
           },
           {
             "@type": "BreadcrumbList",
@@ -94,9 +104,9 @@
       <div class="seo-hero">
         <div class="seo-hero-copy">
           <p class="eyebrow">Free · English to Morse · Morse to text · Audio playback</p>
-          <h1>Morse Code Translator</h1>
-          <p class="hero-lead">Type English and get Morse code, or paste dots and dashes and get the text back. The translator covers letters, numbers, and punctuation, plays the result as sound, and keeps every character boundary explicit so nothing is guessed.</p>
-          <div class="hero-cta-row"><a class="hero-cta" href="#morse-tool">Translate Morse code now</a><span>Free · No sign-up · Runs in your browser</span></div>
+          <h1>Morse Code Translator &amp; Decoder</h1>
+          <p class="hero-lead">Translate English text to Morse code, or decode spaced dots and dashes back to readable text. Copy the result or play it as sound, with letters, numbers, punctuation, and character boundaries handled explicitly.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#morse-tool">Translate or decode now</a><span>Free · Private · No sign-up</span></div>
         </div>
         <div class="hero-example" aria-label="Morse code example for SOS">
           <div class="example-bar"><span></span><span></span><span></span><strong>clear boundaries</strong></div>
@@ -125,6 +135,8 @@
           <div class="error-row" role="row"><strong role="cell">YES</strong><code role="cell">-.-- . ...</code><span role="cell">Y is four signals; E is the single dot.</span></div>
           <div class="error-row" role="row"><strong role="cell">NO</strong><code role="cell">-. ---</code><span role="cell">N is dash-dot; O is three dashes.</span></div>
           <div class="error-row" role="row"><strong role="cell">STAY</strong><code role="cell">... - .- -.--</code><span role="cell">S, T, A, Y as four separate groups.</span></div>
+          <div class="error-row" role="row"><strong role="cell">MESSAGE</strong><code role="cell">-- . ... ... .- --. .</code><span role="cell">Seven letters, with repeated S and E groups kept separate.</span></div>
+          <div class="error-row" role="row"><strong role="cell">TEXT</strong><code role="cell">- . -..- -</code><span role="cell">T, E, X, T; X is dash-dot-dot-dash.</span></div>
           <div class="error-row" role="row"><strong role="cell">I LOVE YOU</strong><code role="cell">.. / .-.. --- ...- . / -.-- --- ..-</code><span role="cell">The spaced slash marks each word break.</span></div>
           <div class="error-row" role="row"><strong role="cell">A</strong><code role="cell">.-</code><span role="cell">Dot-dash. The letter N is the reverse, -. </span></div>
           <div class="error-row" role="row"><strong role="cell">I</strong><code role="cell">..</code><span role="cell">Two dots. Three dots is S; one dot is E.</span></div>
