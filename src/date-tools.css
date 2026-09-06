@@ -583,3 +583,14 @@
 @media (max-width: 620px) {
   .date-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Weekday matrix: N business days from each starting weekday */
+.weekday-matrix-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+.weekday-matrix { width: 100%; border-collapse: collapse; font-size: 14px; }
+.weekday-matrix th, .weekday-matrix td { padding: 12px 14px; border-top: 1px solid var(--line); text-align: left; white-space: nowrap; vertical-align: top; }
+.weekday-matrix thead th { border-top: 0; background: rgba(8, 116, 135, .06); color: var(--ink-deep); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+.weekday-matrix th[scope='row'] { color: var(--ink-deep); font-weight: 800; }
+.weekday-matrix td { color: var(--ink-deep); font-weight: 700; }
+.weekday-matrix td small { display: block; color: var(--muted); font-size: 12px; font-weight: 500; }
+.weekday-matrix tr.weekend th, .weekday-matrix tr.weekend td { background: rgba(243, 181, 44, .08); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; white-space: nowrap; }

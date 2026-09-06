@@ -354,3 +354,31 @@
   .morse-link-button,
   .morse-tabs button { transition: none; }
 }
+
+/* Letter and number list */
+.morse-letter-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 14px; margin: 18px 0 0; padding: 0; list-style: none; }
+.morse-letter-list li { padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 14px; color: var(--muted); }
+.morse-letter-list li strong { color: var(--ink-deep); font-size: 15px; }
+.morse-letter-list li code { color: #873b33; background: var(--coral-pale); padding: 1px 6px; border-radius: 5px; font-weight: 700; letter-spacing: .08em; }
+
+/* Flash light panel */
+.morse-flash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 74px;
+  border: 1px solid rgba(8, 116, 135, .22);
+  border-radius: 12px;
+  background: #0b2a31;
+  color: rgba(255, 255, 255, .5);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.morse-flash.on {
+  border-color: #ffd633;
+  background: #fff3b0;
+  color: #6b4d00;
+  box-shadow: 0 0 0 4px rgba(255, 224, 102, .55), 0 0 30px rgba(255, 214, 51, .9);
+}

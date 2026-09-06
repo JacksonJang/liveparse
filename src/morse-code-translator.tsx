@@ -118,6 +118,10 @@ function MorseCodeTranslator() {
   const [wpm, setWpm] = useState(20);
   const [pitch, setPitch] = useState(600);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFlashing, setIsFlashing] = useState(false);
+  const [flashOn, setFlashOn] = useState(false);
+  const flashRef = useRef<{ raf: number } | null>(null);
+  const busy = isPlaying || isFlashing;
   const outputRef = useRef<HTMLTextAreaElement>(null);
   const playbackRef = useRef<ActivePlayback | null>(null);
 
@@ -147,7 +151,54 @@ function MorseCodeTranslator() {
     && !audioSignalLimitExceeded
     && !audioDurationLimitExceeded;
 
+  const stopFlash = () => {
+    const active = flashRef.current;
+    flashRef.current = null;
+    if (active) window.cancelAnimationFrame(active.raf);
+    setFlashOn(false);
+    setIsFlashing(false);
+  };
+
+  // Drives the on-screen light panel from the same timeline as the tone, so light and sound stay in step.
+  const startFlash = (unitSeconds: number, onFinish?: () => void) => {
+    stopFlash();
+    const { segments, totalUnits } = toneTimeline;
+    const unitMs = unitSeconds * 1000;
+    const startedAt = performance.now() + 40;
+    const state = { raf: 0 };
+    let index = 0;
+    let lastOn = false;
+    const tick = (now: number) => {
+      if (flashRef.current !== state) return;
+      const units = (now - startedAt) / unitMs;
+      while (index < segments.length && units >= segments[index].startUnits + segments[index].durationUnits) index += 1;
+      const on = index < segments.length && units >= segments[index].startUnits;
+      if (on !== lastOn) {
+        lastOn = on;
+        setFlashOn(on);
+      }
+      if (units >= totalUnits + 0.5) {
+        flashRef.current = null;
+        setFlashOn(false);
+        setIsFlashing(false);
+        onFinish?.();
+        return;
+      }
+      state.raf = window.requestAnimationFrame(tick);
+    };
+    flashRef.current = state;
+    setIsFlashing(true);
+    state.raf = window.requestAnimationFrame(tick);
+  };
+
+  const playFlash = () => {
+    if (!canPlayAudio || busy) return;
+    startFlash(1.2 / wpm, () => setActivity('Light flash finished.'));
+    setActivity(`Flashing Morse as light at ${wpm} WPM. Watch the light panel; no sound is played.`);
+  };
+
   const disposePlayback = (announce: boolean) => {
+    stopFlash();
     const active = playbackRef.current;
     playbackRef.current = null;
     if (active) {
@@ -161,7 +212,7 @@ function MorseCodeTranslator() {
       void active.context.close().catch(() => undefined);
     }
     setIsPlaying(false);
-    if (announce) setActivity('Tone playback stopped.');
+    if (announce) setActivity('Playback stopped.');
   };
 
   useEffect(() => () => {
@@ -178,12 +229,18 @@ function MorseCodeTranslator() {
     void active.context.close().catch(() => undefined);
   }, []);
 
+  useEffect(() => () => {
+    const active = flashRef.current;
+    flashRef.current = null;
+    if (active) window.cancelAnimationFrame(active.raf);
+  }, []);
+
   const updateInput = (nextInput: string) => {
     if (nextInput.length > MAX_MORSE_INPUT_CODE_UNITS) {
       setActivity(`Input is limited to ${MAX_MORSE_INPUT_CODE_UNITS.toLocaleString('en-US')} UTF-16 code units.`);
       return;
     }
-    if (isPlaying) disposePlayback(false);
+    if (busy) disposePlayback(false);
     setSessions((current) => ({
       ...current,
       [direction]: { ...current[direction], input: nextInput },
@@ -193,7 +250,7 @@ function MorseCodeTranslator() {
 
   const chooseDirection = (nextDirection: Direction) => {
     if (nextDirection === direction) return;
-    if (isPlaying) disposePlayback(false);
+    if (busy) disposePlayback(false);
     setDirection(nextDirection);
     const nextSession = sessions[nextDirection];
     const nextIsStale = nextSession.result !== null && nextSession.input !== nextSession.convertedInput;
@@ -207,7 +264,7 @@ function MorseCodeTranslator() {
       setActivity('Enter text or written Morse code before converting.');
       return;
     }
-    if (isPlaying) disposePlayback(false);
+    if (busy) disposePlayback(false);
     const nextResult = convert(direction, session.input);
     setSessions((current) => ({
       ...current,
@@ -229,7 +286,7 @@ function MorseCodeTranslator() {
   };
 
   const loadSample = () => {
-    if (isPlaying) disposePlayback(false);
+    if (busy) disposePlayback(false);
     setSessions((current) => ({
       ...current,
       [direction]: { input: page.sample, result: null, convertedInput: '' },
@@ -238,7 +295,7 @@ function MorseCodeTranslator() {
   };
 
   const clear = () => {
-    if (isPlaying) disposePlayback(false);
+    if (busy) disposePlayback(false);
     setSessions((current) => ({
       ...current,
       [direction]: { input: '', result: null, convertedInput: '' },
@@ -309,12 +366,14 @@ function MorseCodeTranslator() {
         window.clearTimeout(playback.timer);
         oscillator.onended = null;
         void context?.close().catch(() => undefined);
+        stopFlash();
         setIsPlaying(false);
         setActivity('Tone playback finished.');
       };
       oscillator.onended = finishPlayback;
       playback.timer = window.setTimeout(finishPlayback, (durationSeconds + 0.35) * 1000);
       playbackRef.current = playback;
+      startFlash(unitSeconds);
       setIsPlaying(true);
       setActivity(`Playing synthesized Morse at ${wpm} WPM and ${pitch} Hz. Audio stays in this tab.`);
     } catch {
@@ -456,7 +515,8 @@ function MorseCodeTranslator() {
               </div>
 
               <section className="morse-audio" aria-labelledby="morse-audio-heading">
-                <header><strong id="morse-audio-heading">Synthesized tone playback</strong><span>Manual playback only</span></header>
+                <header><strong id="morse-audio-heading">Tone and light playback</strong><span>Manual playback only</span></header>
+                <div className={`morse-flash${flashOn ? ' on' : ''}`} role="img" aria-label={flashOn ? 'Light on' : 'Light off'}>{busy ? (flashOn ? 'On' : 'Off') : 'Light panel'}</div>
                 <div className="morse-audio-controls">
                   <label className="morse-field">
                     <span>Speed (5–40 WPM)</span>
@@ -466,7 +526,7 @@ function MorseCodeTranslator() {
                       max={40}
                       step={1}
                       value={wpm}
-                      disabled={isPlaying}
+                      disabled={busy}
                       onChange={(event) => {
                         const next = event.currentTarget.valueAsNumber;
                         if (Number.isFinite(next)) setWpm(Math.min(40, Math.max(5, next)));
@@ -481,7 +541,7 @@ function MorseCodeTranslator() {
                       max={1000}
                       step={10}
                       value={pitch}
-                      disabled={isPlaying}
+                      disabled={busy}
                       onChange={(event) => {
                         const next = event.currentTarget.valueAsNumber;
                         if (Number.isFinite(next)) setPitch(Math.min(1000, Math.max(300, next)));
@@ -490,8 +550,9 @@ function MorseCodeTranslator() {
                   </label>
                 </div>
                 <div className="morse-actions">
-                  <button type="button" className="morse-button primary" onClick={() => void playAudio()} disabled={!canPlayAudio || isPlaying}>Play tone</button>
-                  <button type="button" className="morse-button" onClick={() => disposePlayback(true)} disabled={!isPlaying}>Stop</button>
+                  <button type="button" className="morse-button primary" onClick={() => void playAudio()} disabled={!canPlayAudio || busy}>Play tone</button>
+                  <button type="button" className="morse-button" onClick={playFlash} disabled={!canPlayAudio || busy}>Flash light</button>
+                  <button type="button" className="morse-button" onClick={() => disposePlayback(true)} disabled={!busy}>Stop</button>
                 </div>
                 <p className="morse-status">
                   {audioSignalLimitExceeded
