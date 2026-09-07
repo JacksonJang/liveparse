@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { expectedCtr, parseCsv, parsePerformanceRows, rankOpportunities, zipExtractionCommand } from './report-search-console.mjs';
+import {
+  comparePerformanceRows,
+  expectedCtr,
+  parseCsv,
+  parseExportFilters,
+  parsePerformanceRows,
+  rankOpportunities,
+  summarizePerformanceRows,
+  zipExtractionCommand,
+} from './report-search-console.mjs';
 
 describe('report-search-console', () => {
   it('parses quoted CSV fields with commas and escaped quotes', () => {
@@ -39,5 +48,33 @@ describe('report-search-console', () => {
       command: 'unzip',
       args: ['-q', '-o', '/tmp/search.zip', '-d', '/tmp/export'],
     });
+  });
+
+  it('reads Korean and English export periods', () => {
+    expect(parseExportFilters('필터,값\n검색 유형,웹\n기간,지난 24시간\n')).toMatchObject({ 기간: '지난 24시간' });
+    expect(parseExportFilters('Filter,Value\nSearch type,Web\nDate range,Last 3 months\n')).toMatchObject({
+      'date range': 'Last 3 months',
+    });
+  });
+
+  it('summarizes chart totals with an impression-weighted position', () => {
+    expect(summarizePerformanceRows([
+      { clicks: 1, impressions: 10, position: 20 },
+      { clicks: 0, impressions: 30, position: 40 },
+    ])).toEqual({ clicks: 1, ctr: 0.025, impressions: 40, weightedPosition: 35 });
+  });
+
+  it('compares only matching rows and weights position changes by current impressions', () => {
+    const comparison = comparePerformanceRows([
+      { key: 'a', impressions: 3, position: 20 },
+      { key: 'b', impressions: 1, position: 50 },
+      { key: 'new', impressions: 5, position: 10 },
+    ], [
+      { key: 'a', impressions: 20, position: 30 },
+      { key: 'b', impressions: 10, position: 46 },
+    ]);
+    expect(comparison.currentImpressions).toBe(4);
+    expect(comparison.matches.map((match) => match.current.key)).toEqual(['a', 'b']);
+    expect(comparison.weightedPositionImprovement).toBe(6.5);
   });
 });
