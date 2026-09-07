@@ -7,6 +7,7 @@ import {
   parsePerformanceRows,
   rankOpportunities,
   summarizePerformanceRows,
+  summarizeVisibilityBands,
   zipExtractionCommand,
 } from './report-search-console.mjs';
 
@@ -62,6 +63,15 @@ describe('report-search-console', () => {
       { clicks: 1, impressions: 10, position: 20 },
       { clicks: 0, impressions: 30, position: 40 },
     ])).toEqual({ clicks: 1, ctr: 0.025, impressions: 40, weightedPosition: 35 });
+  });
+
+  it('separates impressions by row-average visibility bands', () => {
+    expect(summarizeVisibilityBands([
+      { impressions: 3, position: 8 },
+      { impressions: 5, position: 15 },
+      { impressions: 7, position: 42 },
+      { impressions: 9, position: 0 },
+    ])).toEqual({ beyond20Impressions: 7, top10Impressions: 3, top20Impressions: 8 });
   });
 
   it('compares only matching rows and weights position changes by current impressions', () => {

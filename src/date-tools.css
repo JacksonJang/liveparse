@@ -239,6 +239,12 @@
 .date-chip:hover,
 .date-tab:hover { transform: translateY(-1px); }
 
+.date-chip:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+  transform: none;
+}
+
 .date-chip[aria-pressed='true'],
 .date-tab[aria-selected='true'] {
   color: #fff;

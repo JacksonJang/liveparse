@@ -26,6 +26,7 @@ import {
   type IsoWeekday,
   type TimeDurationResult,
 } from './lib/date-tools';
+import { usFederalHolidays } from './lib/us-federal-holidays';
 import './styles.css';
 import './date-tools.css';
 
@@ -216,10 +217,10 @@ function useCalculator() {
     }
   };
 
-  const clear = () => {
+  const clear = (message = 'Inputs reset.') => {
     setResult(null);
     setError(null);
-    setStatus('Inputs reset.');
+    setStatus(message);
   };
 
   const copyResult = async () => {
@@ -846,9 +847,9 @@ function BusinessDaysCalculator() {
     }));
   };
 
-  // Links such as ?mode=add&amount=5 should answer immediately instead of waiting for a click.
+  // Default and shared Add-mode visits should answer immediately instead of waiting for a click.
   useEffect(() => {
-    if (SHARED_QUERY.get('mode') !== 'add' || !SHARED_QUERY.has('amount')) return;
+    if (mode !== 'add') return;
     const steps = Number(amount);
     if (!Number.isInteger(steps) || Math.abs(steps) > 3_652_058) return;
     runAdd(startDate, steps);
@@ -978,6 +979,34 @@ function BusinessDaysCalculator() {
     calculator.clear();
   };
 
+  const holidayPresetYear = isValidIsoDate(startDate) ? parseIsoDate(startDate).year : todayDate.year;
+  const canLoadUsFederalHolidays = holidayPresetYear >= 2021 && holidayPresetYear <= 9_998;
+  const applyUsFederalHolidayPreset = () => {
+    const holidays = usFederalHolidays(holidayPresetYear);
+    const holidayDates = holidays.map((holiday) => holiday.date);
+    const nextHolidaysText = holidayDates.join('\n');
+    setWeekendPreset('sat-sun');
+    setHolidaysText(nextHolidaysText);
+    if (mode !== 'add') {
+      calculator.clear(`Loaded ${holidays.length} U.S. federal holiday dates for ${holidayPresetYear}. Calculate to apply them.`);
+      return;
+    }
+    calculator.calculate(() => {
+      const businessAmount = requireWholeNumber(amount, 'Business days to add', { minimum: -3_652_058, maximum: 3_652_058 });
+      return buildAddResult(requireDate(startDate, 'Start date'), businessAmount, [6, 7], holidayDates, {
+        mode: 'add',
+        start: startDate,
+        end: endDate,
+        amount,
+        weekend: 'sat-sun',
+        customWeekend: customWeekend.join(','),
+        holidays: nextHolidaysText,
+        includeStart,
+        includeEnd,
+      });
+    });
+  };
+
   return (
     <CalculatorLayout mode="business-days-calculator" lead={quickStrip}>
       <InputPanel
@@ -1037,7 +1066,7 @@ function BusinessDaysCalculator() {
           <label className="date-field date-field-wide">
             <span>Holiday dates (optional)</span>
             <textarea className="date-textarea" value={holidaysText} onChange={(event) => setHolidaysText(event.target.value)} placeholder={'2026-01-01\n2026-12-25'} spellCheck={false} />
-            <small>One strict YYYY-MM-DD date per line. Blank lines and duplicates are ignored.</small>
+            <small>One strict YYYY-MM-DD date per line. Blank lines and duplicates are ignored. The U.S. preset follows the <a href="https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/" target="_blank" rel="noreferrer">OPM federal schedule</a> for a standard Monday–Friday workweek; verify other closures.</small>
           </label>
           {mode === 'count' && (
             <div className="date-field date-field-wide">
@@ -1056,6 +1085,7 @@ function BusinessDaysCalculator() {
           <button className="date-chip" type="button" onClick={() => applyAddPreset(5)}>5 business days from today</button>
           <button className="date-chip" type="button" onClick={() => applyAddPreset(7)}>7 business days from today</button>
           <button className="date-chip" type="button" onClick={() => applyAddPreset(10)}>10 business days from today</button>
+          <button className="date-chip" type="button" onClick={applyUsFederalHolidayPreset} disabled={!canLoadUsFederalHolidays}>U.S. federal holidays ({holidayPresetYear})</button>
           <button className="date-chip" type="button" onClick={() => applyPreset('month')}>This calendar month</button>
           <button className="date-chip" type="button" onClick={() => applyPreset('holiday')}>Year-end holidays</button>
         </Presets>

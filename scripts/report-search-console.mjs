@@ -94,6 +94,21 @@ export function summarizePerformanceRows(rows) {
   };
 }
 
+export function summarizeVisibilityBands(rows) {
+  const visibleRows = rows.filter((row) => row.impressions > 0 && row.position > 0);
+  const impressionsAtOrAbove = (maximumPosition) => visibleRows
+    .filter((row) => row.position <= maximumPosition)
+    .reduce((sum, row) => sum + row.impressions, 0);
+  const totalImpressions = visibleRows.reduce((sum, row) => sum + row.impressions, 0);
+  const top10Impressions = impressionsAtOrAbove(10);
+  const top20Impressions = impressionsAtOrAbove(20);
+  return {
+    beyond20Impressions: totalImpressions - top20Impressions,
+    top10Impressions,
+    top20Impressions,
+  };
+}
+
 export function comparePerformanceRows(currentRows, previousRows) {
   const previousByKey = new Map(previousRows.map((row) => [row.key, row]));
   const matches = currentRows
@@ -241,10 +256,12 @@ function printExport(report, thresholds, limit, label = 'Export') {
   }
   for (const [name, rows] of [['Queries', report.queriesRows], ['Pages', report.pagesRows]]) {
     const summary = summarizePerformanceRows(rows);
+    const visibility = summarizeVisibilityBands(rows);
     console.log(`\n${name} table row sum: ${rows.length} rows, ${formatSummary(summary)}`);
+    console.log(`Average-position visibility: top 10 = ${visibility.top10Impressions} impressions, top 20 = ${visibility.top20Impressions} impressions, beyond 20 = ${visibility.beyond20Impressions} impressions.`);
     console.log(formatTable('Biggest click-through gaps (impressions >= ' + thresholds.minImpressions + ', position <= ' + thresholds.maxPosition + '):', rankOpportunities(rows, thresholds), limit));
   }
-  console.log('\nNote: query and page table row sums are dimension totals, not the property chart total. Rare queries can be omitted, and multiple page results can make page impressions exceed the property total.');
+  console.log('\nNote: visibility bands classify each row by its average position; they are not an exact per-impression rank distribution. Query and page row sums are dimension totals, not the property chart total. Rare queries can be omitted, and multiple page results can make page impressions exceed the property total.');
 }
 
 async function main() {
