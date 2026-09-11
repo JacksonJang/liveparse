@@ -1,6 +1,34 @@
 # LiveParse
 
-LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, generating, encoding, decoding, converting, calculating, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, its YAML tools format, validate syntax, display a non-expanding tree, and convert between YAML and JSON with explicit type and alias policies, its SQL tools format fifteen database dialects in a time-bounded Web Worker without executing queries, and its XML tools format, check well-formedness, and build a safe text-only tree in a disposable worker without external DTD or schema retrieval. Its URL tools distinguish component, full-URI, RFC 3986, and form encoding; strictly decode one intentional round; inspect WHATWG URL components; and preserve ordered duplicate query fields. Its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation, its calendar tools calculate ages, date differences, business days, clock durations, ISO week numbers, and birthday countdowns without timezone-dependent date-only math, its image tools resize, compress, and convert supported static images locally, its Base64 tools handle text, files, Base64URL, and Data URLs with RFC diagnostics, and its number and byte tools convert arbitrary-precision integers, interpret explicit-width two's complement, translate strict UTF-8 bytes, and expose the complete 7-bit ASCII table. Its hash and checksum tools calculate SHA-256, SHA-384, SHA-512, and legacy MD5 digests from UTF-8 text or exact file bytes, its UUID tools generate RFC 9562 UUID v4 and v7 values, inspect versions 1 through 8, and decode the standard fields defined for v1, v6, and v7, and its JWT tools decode strict compact JWS input while keeping cryptographic verification separate. The production site is available at [liveparse.com](https://liveparse.com/).
+**Free developer tools that never upload your data.** Format JSON, SQL, YAML, and XML; calculate business days, ages, and timestamps; compress images; encode Base64 and URLs; hash files; generate UUIDs; decode JWTs; translate Morse code. Every tool runs inside your browser tab, so pasted data and selected files stay on your machine.
+
+### → [liveparse.com](https://liveparse.com/)
+
+No account, no advertising, no analytics cookies, no upload endpoint.
+
+## Tools
+
+| | |
+| --- | --- |
+| **JSON** | [Formatter & viewer](https://liveparse.com/json-formatter/) · [Compare](https://liveparse.com/json-compare/) · [Repair](https://liveparse.com/json-repair/) · [JSONL](https://liveparse.com/jsonl-parser/) · [to CSV](https://liveparse.com/json-to-csv/) · [from CSV](https://liveparse.com/csv-to-json/) |
+| **YAML & XML** | [YAML formatter](https://liveparse.com/yaml-formatter/) · [YAML to JSON](https://liveparse.com/yaml-to-json/) · [XML formatter](https://liveparse.com/xml-formatter/) · [XML validator](https://liveparse.com/xml-validator/) |
+| **SQL** | [Formatter for 15 dialects](https://liveparse.com/sql-formatter/) |
+| **Dates & time** | [Business days](https://liveparse.com/business-days-calculator/) · [Unix timestamp](https://liveparse.com/unix-timestamp-converter/) · [Discord timestamp](https://liveparse.com/discord-timestamp-generator/) · [Age](https://liveparse.com/age-calculator/) · [Week number](https://liveparse.com/week-number-calculator/) |
+| **Encoding** | [Base64](https://liveparse.com/base64-decoder/) · [URL](https://liveparse.com/url-encoder/) · [Binary & hex](https://liveparse.com/binary-converter/) · [ASCII table](https://liveparse.com/ascii-table/) · [Morse code](https://liveparse.com/morse-code-translator/) |
+| **Security** | [Hashes](https://liveparse.com/hash-generator/) · [File checksum](https://liveparse.com/file-checksum/) · [UUIDs](https://liveparse.com/uuid-generator/) · [JWT decoder](https://liveparse.com/jwt-decoder/) |
+| **Images & text** | [Compressor](https://liveparse.com/image-compressor/) · [Resizer](https://liveparse.com/image-resizer/) · [Word counter](https://liveparse.com/word-counter/) · [Character counter](https://liveparse.com/character-counter/) |
+| **Reading** | [Guides](https://liveparse.com/guides/) · [About](https://liveparse.com/about/) · [Privacy](https://liveparse.com/privacy/) |
+
+## What makes it different
+
+- **Lossless JSON.** 64-bit IDs, exponent notation, trailing zeroes, member order, and duplicate keys survive formatting instead of being silently rewritten by `JSON.parse`.
+- **Nothing is uploaded.** There is no formatter API or database behind the tools. Heavy work runs in disposable Web Workers with explicit size and time limits.
+- **Honest limits.** Each tool states what it does not do: no JWT signature verification, no XML schema validation, no guessed Morse spacing, no silent target-size failures.
+- **Standards first.** Tools cite the RFC, W3C, WHATWG, ECMA, or ITU document they implement.
+
+## In detail
+
+LiveParse is a local-first developer data toolkit for validating, formatting, comparing, repairing, generating, encoding, decoding, converting, calculating, and exploring data directly in the browser. Its JSON tools preserve original numeric lexemes and duplicate object members instead of silently changing them, its YAML tools format, validate syntax, display a non-expanding tree, and convert between YAML and JSON with explicit type and alias policies, its SQL tools format fifteen database dialects in a time-bounded Web Worker without executing queries, and its XML tools format, check well-formedness, and build a safe text-only tree in a disposable worker without external DTD or schema retrieval. Its URL tools distinguish component, full-URI, RFC 3986, and form encoding; strictly decode one intentional round; inspect WHATWG URL components; and preserve ordered duplicate query fields. Its timestamp tools cover exact epoch conversion and timezone-aware Discord timestamp generation, its calendar tools calculate ages, date differences, business days, clock durations, ISO week numbers, and birthday countdowns without timezone-dependent date-only math, its image tools resize, compress, and convert supported static images locally, its Base64 tools handle text, files, Base64URL, and Data URLs with RFC diagnostics, and its number and byte tools convert arbitrary-precision integers, interpret explicit-width two's complement, translate strict UTF-8 bytes, and expose the complete 7-bit ASCII table. Its hash and checksum tools calculate SHA-256, SHA-384, SHA-512, and legacy MD5 digests from UTF-8 text or exact file bytes, its UUID tools generate RFC 9562 UUID v4 and v7 values, inspect versions 1 through 8, and decode the standard fields defined for v1, v6, and v7, and its JWT tools decode strict compact JWS input while keeping cryptographic verification separate.
 
 ## Features
 
