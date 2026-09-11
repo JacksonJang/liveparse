@@ -81,6 +81,8 @@ function localToday(): string {
 }
 
 const TODAY = localToday();
+// Landing pages such as /5-business-days-from-today/ preset the business-day amount through <body data-business-days>.
+const PRESET_BUSINESS_DAYS = /^-?\d{1,9}$/.test(document.body.dataset.businessDays ?? '') ? String(document.body.dataset.businessDays) : null;
 const DEFAULT_BIRTH_DATE = formatIsoDate(addYears(TODAY, -30).date);
 const DEFAULT_RANGE_END = formatIsoDate(addDays(TODAY, 30));
 
@@ -771,7 +773,7 @@ function BusinessDaysCalculator() {
   const [mode, setMode] = useState<BusinessMode>(() => queryChoice('mode', ['count', 'add'] as const, 'add'));
   const [startDate, setStartDate] = useState(() => queryDate('start', TODAY));
   const [endDate, setEndDate] = useState(() => queryDate('end', DEFAULT_RANGE_END));
-  const [amount, setAmount] = useState(() => queryText('amount', '5', 9));
+  const [amount, setAmount] = useState(() => queryText('amount', PRESET_BUSINESS_DAYS ?? '5', 9));
   const [weekendPreset, setWeekendPreset] = useState<WeekendPreset>(() => queryChoice('weekend', ['sat-sun', 'fri-sat', 'sun-only', 'custom'] as const, 'sat-sun'));
   const [customWeekend, setCustomWeekend] = useState<IsoWeekday[]>(initialCustomWeekend);
   const [holidaysText, setHolidaysText] = useState(() => queryText('holidays', '', 100_000));

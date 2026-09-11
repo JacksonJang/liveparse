@@ -607,3 +607,7 @@ tr:last-child td {
 /* Breadcrumb: keep the trail on one wrapping line */
 nav.byline[aria-label="Breadcrumb"], nav[aria-label="Breadcrumb"] { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 4px 8px; margin: 0 0 14px; font-size: 14px; text-align: left; color: var(--muted, #526d75); }
 nav[aria-label="Breadcrumb"] a { font-weight: 700; }
+
+/* Morse alphabet tables: let the spoken column wrap on phones instead of forcing horizontal scroll */
+.alphabet-table td, .alphabet-table th { white-space: normal; }
+.alphabet-table code { white-space: nowrap; }

@@ -404,6 +404,8 @@ describe('production routing parity', () => {
       ['/days-calculator', '/days-between-dates/'],
       ['/working-days-calculator', '/business-days-calculator/'],
       ['/workdays-calculator', '/business-days-calculator/'],
+      ['/business-days-from-today', '/business-days-calculator/'],
+      ['/business-day-calculator', '/business-days-calculator/'],
       ['/hours-calculator', '/time-duration-calculator/'],
       ['/time-difference-calculator', '/time-duration-calculator/'],
       ['/iso-week-number', '/week-number-calculator/'],
