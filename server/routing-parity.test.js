@@ -637,3 +637,11 @@ describe('production routing parity', () => {
     expect(actualAliases).toEqual(completeExpectedAliases);
   });
 });
+
+describe('staged build artifacts', () => {
+  it('never serves the Cloudflare Sites copy or its deployment files', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    expect(source).toContain("const PRIVATE_BUILD_PREFIXES = ['/client', '/server', '/.openai'];");
+    expect(source).toContain('if (isPrivateBuildPath(requestPath)) return null;');
+  });
+});

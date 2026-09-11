@@ -699,7 +699,18 @@ function isWithin(root, candidate) {
   return pathFromRoot === '' || (!isAbsolute(pathFromRoot) && pathFromRoot !== '..' && !pathFromRoot.startsWith(`..${sep}`));
 }
 
+// The build stages a Cloudflare Sites copy of the whole site in dist/client plus a worker
+// entry and hosting metadata. Serving those from this origin would publish every page twice
+// and expose deployment artifacts, so they are not reachable over HTTP.
+const PRIVATE_BUILD_PREFIXES = ['/client', '/server', '/.openai'];
+
+function isPrivateBuildPath(requestPath) {
+  const normalized = requestPath.toLowerCase();
+  return PRIVATE_BUILD_PREFIXES.some((prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`));
+}
+
 async function findStaticFile(distRoot, requestPath) {
+  if (isPrivateBuildPath(requestPath)) return null;
   const candidate = resolve(distRoot, requestPath.slice(1));
   if (!isWithin(distRoot, candidate)) return null;
 
@@ -739,17 +750,25 @@ function cacheControl(requestPath, filePath) {
   // Cloudflare RUM beacon that this site's Content-Security-Policy then blocks.
   if (['.htm', '.html'].includes(extname(filePath).toLowerCase())) return 'no-cache, no-transform';
   if (isHashedAsset(requestPath)) return 'public, max-age=31536000, immutable';
+  // Images and icons are replaced only by a deploy; feeds and sitemaps must stay fresh.
+  if (LONG_LIVED_EXTENSIONS.has(extname(filePath).toLowerCase())) return 'public, max-age=86400';
   return 'public, max-age=300';
 }
 
 // Cloudflare will not compress responses marked `no-transform`, so the origin compresses
 // text itself. Keeping compression here also shrinks what travels through the tunnel.
+const LONG_LIVED_EXTENSIONS = new Set(['.avif', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.svg', '.webp', '.woff', '.woff2']);
+
 const COMPRESSIBLE_EXTENSIONS = new Set([
   '.css', '.htm', '.html', '.js', '.json', '.map', '.mjs', '.svg', '.txt', '.webmanifest', '.xml',
 ]);
 
+function isCompressible(filePath) {
+  return COMPRESSIBLE_EXTENSIONS.has(extname(filePath).toLowerCase());
+}
+
 function negotiateEncoding(request, filePath, fileStat) {
-  if (!COMPRESSIBLE_EXTENSIONS.has(extname(filePath).toLowerCase())) return null;
+  if (!isCompressible(filePath)) return null;
   if (fileStat.size < 1024) return null;
   const accepted = firstHeaderValue(request.headers['accept-encoding']).toLowerCase();
   if (/(^|[\s,])br([;,]|$)/.test(accepted)) return 'br';
@@ -763,8 +782,9 @@ function compressorFor(encoding) {
     : createGzip({ level: 6 });
 }
 
-function etagFor(fileStat) {
-  return `W/\"${fileStat.size.toString(16)}-${Math.trunc(fileStat.mtimeMs).toString(16)}\"`;
+function etagFor(fileStat, encoding = null) {
+  const variant = encoding ? `-${encoding}` : '';
+  return `W/\"${fileStat.size.toString(16)}-${Math.trunc(fileStat.mtimeMs).toString(16)}${variant}\"`;
 }
 
 function isNotModified(request, fileStat, etag) {
@@ -815,7 +835,8 @@ async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCoun
   }
 
   const { filePath, fileStat } = staticFile;
-  const etag = etagFor(fileStat);
+  const encoding = negotiateEncoding(request, filePath, fileStat);
+  const etag = etagFor(fileStat, encoding);
   response.statusCode = 200;
   setSecurityHeaders(response);
   response.setHeader(
@@ -824,13 +845,11 @@ async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCoun
       ? 'application/atom+xml; charset=utf-8'
       : MIME_TYPES.get(extname(filePath).toLowerCase()) || 'application/octet-stream',
   );
-  const encoding = negotiateEncoding(request, filePath, fileStat);
-  if (encoding) {
-    response.setHeader('Content-Encoding', encoding);
-    response.setHeader('Vary', 'Accept-Encoding');
-  } else {
-    response.setHeader('Content-Length', fileStat.size);
-  }
+  // Vary must be present whether or not this particular response was compressed, so shared
+  // caches key both variants instead of reusing one for every client.
+  if (isCompressible(filePath)) response.setHeader('Vary', 'Accept-Encoding');
+  if (encoding) response.setHeader('Content-Encoding', encoding);
+  else response.setHeader('Content-Length', fileStat.size);
   response.setHeader('Cache-Control', cacheControl(requestPath, filePath));
   response.setHeader('ETag', etag);
   response.setHeader('Last-Modified', fileStat.mtime.toUTCString());
