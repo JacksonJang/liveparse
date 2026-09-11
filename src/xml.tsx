@@ -18,6 +18,9 @@ import type {
 import './styles.css';
 import './xml.css';
 
+// Inputs above this size skip automatic running; the status text points to the button instead.
+const AUTO_RUN_MAX_CHARACTERS = 20_000;
+
 const OPERATION_TIMEOUT_MILLISECONDS = 2_000;
 const WORKER_LOAD_TIMEOUT_MILLISECONDS = 12_000;
 
@@ -291,6 +294,8 @@ function XmlToolApp(): React.JSX.Element {
       ? `Only the first ${MAX_XML_INPUT_CHARACTERS.toLocaleString('en-US')} UTF-16 code units were kept.`
       : next.length >= XML_LARGE_INPUT_WARNING_CHARACTERS
         ? `Large XML loaded (${next.length.toLocaleString('en-US')} UTF-16 code units). The local operation may use substantial browser memory; split the document when possible.`
+        : next.length > AUTO_RUN_MAX_CHARACTERS
+          ? `Automatic running is limited to ${AUTO_RUN_MAX_CHARACTERS.toLocaleString('en-US')} UTF-16 code units. Choose the tool button to run this document.`
         : 'Input changed. Running the tool…');
   };
 
@@ -301,7 +306,7 @@ function XmlToolApp(): React.JSX.Element {
 
   // Run automatically for typical document sizes; the button remains for explicit re-runs.
   useEffect(() => {
-    if (!input.trim() || input.length > 20_000) return;
+    if (!input.trim() || input.length > AUTO_RUN_MAX_CHARACTERS) return;
     const timer = window.setTimeout(() => runTool(), 500);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps

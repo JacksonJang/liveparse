@@ -37,6 +37,7 @@ interface ActivePlayback {
 
 const TEXT_SAMPLE = 'HELLO WORLD';
 const MORSE_SAMPLE = '.... . .-.. .-.. --- / .-- --- .-. .-.. -..';
+const AUTO_CONVERT_MAX_CODE_UNITS = 20_000;
 const MAX_AUDIO_SIGNALS = 2_000;
 const MAX_AUDIO_SECONDS = 300;
 
@@ -245,7 +246,9 @@ function MorseCodeTranslator() {
       ...current,
       [direction]: { ...current[direction], input: nextInput },
     }));
-    setActivity('Converting…');
+    setActivity(nextInput.length > AUTO_CONVERT_MAX_CODE_UNITS
+      ? `Automatic conversion is limited to ${AUTO_CONVERT_MAX_CODE_UNITS.toLocaleString('en-US')} characters. Choose Convert to run this message.`
+      : 'Converting…');
   };
 
   const chooseDirection = (nextDirection: Direction) => {
@@ -287,7 +290,7 @@ function MorseCodeTranslator() {
 
   // Live conversion: the result follows the input as you type; Convert remains for very large inputs.
   useEffect(() => {
-    if (!session.input || session.input === session.convertedInput || session.input.length > 20_000) return;
+    if (!session.input || session.input === session.convertedInput || session.input.length > AUTO_CONVERT_MAX_CODE_UNITS) return;
     const timer = window.setTimeout(() => runConversion(), 250);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps

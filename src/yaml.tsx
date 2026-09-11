@@ -20,6 +20,9 @@ import './styles.css';
 import './xml.css';
 import './yaml.css';
 
+// Inputs above this size skip automatic running; the status text points to the button instead.
+const AUTO_RUN_MAX_CHARACTERS = 20_000;
+
 const OPERATION_TIMEOUT_MILLISECONDS = 2_000;
 const WORKER_LOAD_TIMEOUT_MILLISECONDS = 12_000;
 
@@ -312,9 +315,11 @@ function YamlToolApp(): React.JSX.Element {
     setActivity(message);
   }, [stopWorker]);
 
-  const updateInput = (value: string, message = 'Input changed. Running the local operation…') => {
+  const updateInput = (value: string, message?: string) => {
     setInput(value);
-    resetForChange(message);
+    resetForChange(message ?? (value.length > AUTO_RUN_MAX_CHARACTERS
+      ? `Automatic running is limited to ${AUTO_RUN_MAX_CHARACTERS.toLocaleString('en-US')} characters. Use the run button for this document.`
+      : 'Input changed. Running the local operation…'));
   };
 
   const updateOptions = (next: YamlOptions) => {
@@ -332,7 +337,7 @@ function YamlToolApp(): React.JSX.Element {
 
   // Run automatically for typical document sizes; the button remains for explicit re-runs.
   useEffect(() => {
-    if (!input.trim() || input.length > 20_000) return;
+    if (!input.trim() || input.length > AUTO_RUN_MAX_CHARACTERS) return;
     const timer = window.setTimeout(() => run(), 500);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
