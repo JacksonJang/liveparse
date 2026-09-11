@@ -573,7 +573,8 @@ export default {
     if (url.pathname.startsWith('/assets/') && /-[A-Za-z0-9_-]{8,}\.[^/]+$/.test(url.pathname)) {
       headers.set('Cache-Control', 'public, max-age=31536000, immutable');
     } else if ((headers.get('Content-Type') || '').includes('text/html')) {
-      headers.set('Cache-Control', 'no-cache');
+      // `no-transform` keeps the CDN from injecting the RUM beacon into HTML.
+      headers.set('Cache-Control', 'no-cache, no-transform');
     }
 
     return new Response(assetResponse.body, {

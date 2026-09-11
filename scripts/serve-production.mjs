@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createReadStream } from 'node:fs';
+import { createBrotliCompress, createGzip, constants as zlibConstants } from 'node:zlib';
 import { realpath, stat } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, isAbsolute, relative, resolve, sep } from 'node:path';
@@ -734,9 +735,32 @@ function isHashedAsset(requestPath) {
 }
 
 function cacheControl(requestPath, filePath) {
-  if (['.htm', '.html'].includes(extname(filePath).toLowerCase())) return 'no-cache';
+  // `no-transform` keeps the CDN from rewriting HTML, which is what injects the
+  // Cloudflare RUM beacon that this site's Content-Security-Policy then blocks.
+  if (['.htm', '.html'].includes(extname(filePath).toLowerCase())) return 'no-cache, no-transform';
   if (isHashedAsset(requestPath)) return 'public, max-age=31536000, immutable';
   return 'public, max-age=300';
+}
+
+// Cloudflare will not compress responses marked `no-transform`, so the origin compresses
+// text itself. Keeping compression here also shrinks what travels through the tunnel.
+const COMPRESSIBLE_EXTENSIONS = new Set([
+  '.css', '.htm', '.html', '.js', '.json', '.map', '.mjs', '.svg', '.txt', '.webmanifest', '.xml',
+]);
+
+function negotiateEncoding(request, filePath, fileStat) {
+  if (!COMPRESSIBLE_EXTENSIONS.has(extname(filePath).toLowerCase())) return null;
+  if (fileStat.size < 1024) return null;
+  const accepted = firstHeaderValue(request.headers['accept-encoding']).toLowerCase();
+  if (/(^|[\s,])br([;,]|$)/.test(accepted)) return 'br';
+  if (/(^|[\s,])gzip([;,]|$)/.test(accepted)) return 'gzip';
+  return null;
+}
+
+function compressorFor(encoding) {
+  return encoding === 'br'
+    ? createBrotliCompress({ params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 5 } })
+    : createGzip({ level: 6 });
 }
 
 function etagFor(fileStat) {
@@ -800,7 +824,13 @@ async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCoun
       ? 'application/atom+xml; charset=utf-8'
       : MIME_TYPES.get(extname(filePath).toLowerCase()) || 'application/octet-stream',
   );
-  response.setHeader('Content-Length', fileStat.size);
+  const encoding = negotiateEncoding(request, filePath, fileStat);
+  if (encoding) {
+    response.setHeader('Content-Encoding', encoding);
+    response.setHeader('Vary', 'Accept-Encoding');
+  } else {
+    response.setHeader('Content-Length', fileStat.size);
+  }
   response.setHeader('Cache-Control', cacheControl(requestPath, filePath));
   response.setHeader('ETag', etag);
   response.setHeader('Last-Modified', fileStat.mtime.toUTCString());
@@ -843,7 +873,16 @@ async function handleRequest(distRoot, searchReferralCounter, claimedCrawlerCoun
     if (!response.headersSent) sendText(request, response, 500, 'Internal Server Error');
     else response.destroy(error);
   });
-  stream.pipe(response);
+  if (!encoding) {
+    stream.pipe(response);
+    return;
+  }
+  const compressor = compressorFor(encoding);
+  compressor.on('error', (error) => {
+    console.error(`Failed to compress ${filePath}:`, error);
+    response.destroy(error);
+  });
+  stream.pipe(compressor).pipe(response);
 }
 
 async function main() {
