@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   analyzeTextInput,
@@ -286,6 +286,14 @@ function HashToolApp({ mode }: { mode: PageMode }): React.JSX.Element {
       setError('Choose a file no larger than 64 MiB. This tool buffers the complete file for the browser digest API.');
     }
   };
+
+  // Hash text as you type; file hashing stays explicit because it reads the whole file.
+  useEffect(() => {
+    if (sourceMode !== 'text' || !text || textTooLarge) return;
+    const timer = window.setTimeout(() => { void calculate(); }, 300);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, algorithm, sourceMode]);
 
   const calculate = async () => {
     if (sourceMode === 'file' && !file) {

@@ -95,14 +95,22 @@ function SqlFormatterApp(): React.JSX.Element {
       ? `Only the first ${MAX_SQL_INPUT_CHARACTERS.toLocaleString('en-US')} characters were kept.`
       : next.length >= SQL_LARGE_INPUT_WARNING_CHARACTERS
         ? `Large query loaded (${next.length.toLocaleString('en-US')} characters). Formatting can use substantial browser memory; split generated scripts when possible.`
-      : 'Input changed. Format again to produce a matching result.');
+      : 'Formatting…');
   };
 
   const changeOptions = (changes: Partial<SqlFormatOptions>) => {
     const next = { ...options, ...changes };
     setOptions(next);
-    invalidateOutput(`Formatting settings changed. Run the ${dialectLabel(next.dialect)} formatter again.`);
+    invalidateOutput(`Formatting settings changed. Reformatting with the ${dialectLabel(next.dialect)} profile…`);
   };
+
+  // Format automatically for typical query sizes; very large scripts still use the button.
+  useEffect(() => {
+    if (!input.trim() || input.length > 20_000) return;
+    const timer = window.setTimeout(() => formatInput(), 500);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, options]);
 
   const formatInput = (event?: React.FormEvent) => {
     event?.preventDefault();

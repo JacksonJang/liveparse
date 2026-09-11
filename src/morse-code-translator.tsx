@@ -245,7 +245,7 @@ function MorseCodeTranslator() {
       ...current,
       [direction]: { ...current[direction], input: nextInput },
     }));
-    setActivity('Input changed. Choose Convert to refresh the result.');
+    setActivity('Converting…');
   };
 
   const chooseDirection = (nextDirection: Direction) => {
@@ -255,7 +255,7 @@ function MorseCodeTranslator() {
     const nextSession = sessions[nextDirection];
     const nextIsStale = nextSession.result !== null && nextSession.input !== nextSession.convertedInput;
     setActivity(nextIsStale
-      ? 'Your saved input has changed. Choose Convert to refresh its result.'
+      ? 'Your saved input has changed and is being converted.'
       : `${directionCopy[nextDirection].tab} input restored.`);
   };
 
@@ -285,13 +285,21 @@ function MorseCodeTranslator() {
     }
   };
 
+  // Live conversion: the result follows the input as you type; Convert remains for very large inputs.
+  useEffect(() => {
+    if (!session.input || session.input === session.convertedInput || session.input.length > 20_000) return;
+    const timer = window.setTimeout(() => runConversion(), 250);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session.input, session.convertedInput, direction]);
+
   const loadSample = () => {
     if (busy) disposePlayback(false);
     setSessions((current) => ({
       ...current,
       [direction]: { input: page.sample, result: null, convertedInput: '' },
     }));
-    setActivity('Sample loaded. Choose Convert to create a fresh result.');
+    setActivity('Sample loaded.');
   };
 
   const clear = () => {
@@ -400,7 +408,7 @@ function MorseCodeTranslator() {
       <div className="morse-body">
         <div className="morse-intro">
           <div><p>Choose a direction</p><h2>Translate with boundaries intact</h2></div>
-          <span>Conversion is explicit: edit an input, then choose Convert. Each direction keeps its own input while you switch tabs.</span>
+          <span>The result updates as you type. Each direction keeps its own input while you switch tabs.</span>
         </div>
 
         <div className="morse-tabs" role="tablist" aria-label="Translation direction">

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ASCII_TABLE,
@@ -141,6 +141,13 @@ function NumericWorkbench({
     if (message) onStatus(message);
   };
 
+  useEffect(() => {
+    if (!input.trim()) return;
+    const timer = window.setTimeout(() => convert(), 300);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, sourceRadix, customRadix, allowSeparators]);
+
   const convert = () => {
     try {
       const effectiveRadix = binaryPage ? sourceRadix : 16;
@@ -224,6 +231,13 @@ function TwosComplementPanel({ onStatus }: { onStatus: (message: string) => void
     invalidate();
     onStatus(next === 'signed-value' ? 'Signed-value encoding selected. Bit width is now an explicit range contract.' : 'Bit-pattern interpretation selected. A leading sign is not accepted as part of the word.');
   };
+
+  useEffect(() => {
+    if (!input.trim()) return;
+    const timer = window.setTimeout(() => convert(), 300);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, radix, width, mode]);
 
   const convert = () => {
     try {
@@ -314,6 +328,13 @@ function ByteWorkbench({
       ? `Strict ${kind === 'binary' ? '8-bit binary' : 'hex byte'} decoding selected. Invalid UTF-8 will be rejected.`
       : `UTF-8 text encoding selected. Unicode is not normalized and a BOM is not added.`);
   };
+
+  useEffect(() => {
+    if (!input.trim()) return;
+    const timer = window.setTimeout(() => convert(), 300);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [decodeInput, encodeInput, direction, kind]);
 
   const convert = () => {
     try {

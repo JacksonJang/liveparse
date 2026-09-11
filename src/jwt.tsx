@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   decodeJwtCompact,
@@ -176,7 +176,7 @@ function JwtApp({ mode }: { mode: PageMode }): React.JSX.Element {
   const [skew, setSkew] = useState('0');
   const [decoded, setDecoded] = useState<DecodedJwt | null>(null);
   const [evaluation, setEvaluation] = useState<JwtTimeEvaluation | null>(null);
-  const [message, setMessage] = useState('Ready. Press Decode JWT to inspect the sample or replace it with your own token.');
+  const [message, setMessage] = useState('Decoding as you type. Paste your own token to replace the sample.');
   const [decodeError, setDecodeError] = useState<string | null>(null);
   const [timeError, setTimeError] = useState<string | null>(null);
 
@@ -208,6 +208,14 @@ function JwtApp({ mode }: { mode: PageMode }): React.JSX.Element {
       setMessage('Decode failed. The token was not sent anywhere.');
     }
   };
+
+  // Decode as you paste, like most JWT debuggers; the button remains for explicit re-runs.
+  useEffect(() => {
+    if (!input.trim()) return;
+    const timer = window.setTimeout(() => runDecode(), 300);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, skew]);
 
   const refreshTime = () => {
     if (!decoded) return;

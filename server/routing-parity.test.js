@@ -321,6 +321,12 @@ describe('production routing parity', () => {
     const directories = directoryRoutes(source);
     const redirects = new Map(routeRedirects(source));
     const canonicalTargets = new Set([
+      '/compress-image-to-20kb/',
+      '/compress-image-to-50kb/',
+      '/compress-image-to-100kb/',
+      '/compress-image-to-200kb/',
+      '/compress-image-to-500kb/',
+      '/compress-image-to-1mb/',
       '/image-compressor/',
       '/image-resizer/',
       '/png-to-jpg/',
@@ -328,16 +334,16 @@ describe('production routing parity', () => {
       '/webp-to-png/',
     ]);
     const expectedAliases = new Map([
+      ['/compress-jpeg-to-100kb', '/compress-image-to-100kb/'],
+      ['/compress-png-to-100kb', '/compress-image-to-100kb/'],
+      ['/reduce-image-size-to-100kb', '/compress-image-to-100kb/'],
+      ['/compress-jpeg-to-200kb', '/compress-image-to-200kb/'],
+      ['/compress-image-to-1024kb', '/compress-image-to-1mb/'],
+      ['/compress-photo-to-1mb', '/compress-image-to-1mb/'],
       ['/compress-image', '/image-compressor/'],
       ['/image-compress', '/image-compressor/'],
       ['/photo-compressor', '/image-compressor/'],
       ['/reduce-image-size', '/image-compressor/'],
-      ['/compress-image-to-20kb', '/image-compressor/'],
-      ['/compress-image-to-50kb', '/image-compressor/'],
-      ['/compress-image-to-100kb', '/image-compressor/'],
-      ['/compress-image-to-200kb', '/image-compressor/'],
-      ['/compress-image-to-500kb', '/image-compressor/'],
-      ['/compress-image-to-1mb', '/image-compressor/'],
       ['/reduce-image-size-in-kb', '/image-compressor/'],
       ['/resize-image', '/image-resizer/'],
       ['/photo-resizer', '/image-resizer/'],

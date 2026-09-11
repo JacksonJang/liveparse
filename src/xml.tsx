@@ -291,16 +291,24 @@ function XmlToolApp(): React.JSX.Element {
       ? `Only the first ${MAX_XML_INPUT_CHARACTERS.toLocaleString('en-US')} UTF-16 code units were kept.`
       : next.length >= XML_LARGE_INPUT_WARNING_CHARACTERS
         ? `Large XML loaded (${next.length.toLocaleString('en-US')} UTF-16 code units). The local operation may use substantial browser memory; split the document when possible.`
-        : 'Input changed. Run the tool again to produce a matching result.');
+        : 'Input changed. Running the tool…');
   };
 
   const changeOptions = (changes: Partial<XmlFormatOptions>) => {
     setOptions((current) => ({ ...current, ...changes }));
-    invalidateResult('Formatting settings changed. Format again to produce a matching result.');
+    invalidateResult('Formatting settings changed. Reformatting…');
   };
 
-  const runTool = (event: React.FormEvent) => {
-    event.preventDefault();
+  // Run automatically for typical document sizes; the button remains for explicit re-runs.
+  useEffect(() => {
+    if (!input.trim() || input.length > 20_000) return;
+    const timer = window.setTimeout(() => runTool(), 500);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, options, mode]);
+
+  const runTool = (event?: React.FormEvent) => {
+    event?.preventDefault();
     stopWorker();
     setError(null);
     setResult(null);

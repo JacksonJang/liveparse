@@ -140,6 +140,9 @@ const PAGE_COPY: Record<PageMode, PageCopy> = {
 
 const TARGET_PRESETS_KB = [20, 50, 100, 200, 500, 1024] as const;
 const DEFAULT_TARGET_KB = 200;
+// Landing pages such as /compress-image-to-100kb/ preset the target through <body data-target-kb>.
+const PRESET_TARGET_KB = Number(document.body.dataset.targetKb);
+const INITIAL_TARGET_KB = Number.isFinite(PRESET_TARGET_KB) && PRESET_TARGET_KB > 0 ? PRESET_TARGET_KB : DEFAULT_TARGET_KB;
 const DEFAULT_QUALITY = 82;
 const DEFAULT_WIDTH = 1200;
 const DEFAULT_HEIGHT = 800;
@@ -190,14 +193,15 @@ function ImageToolsApp({ pageMode }: { pageMode: PageMode }) {
   const [items, setItemsState] = useState<BatchItem[]>([]);
   const [dragging, setDragging] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const autoRunRef = useRef(false);
   const [progress, setProgress] = useState<ProgressState>({ completed: 0, total: 0 });
   const [activity, setActivity] = useState(`Ready. ${page.acceptedLabel} files stay in this browser tab.`);
 
   const [outputChoice, setOutputChoice] = useState<OutputChoice>('original');
   const [quality, setQuality] = useState(DEFAULT_QUALITY);
   const [background, setBackground] = useState('#ffffff');
-  const [targetKb, setTargetKb] = useState(DEFAULT_TARGET_KB);
-  const [targetInput, setTargetInput] = useState(String(DEFAULT_TARGET_KB));
+  const [targetKb, setTargetKb] = useState(INITIAL_TARGET_KB);
+  const [targetInput, setTargetInput] = useState(String(INITIAL_TARGET_KB));
   const [resizeUnit, setResizeUnit] = useState<ResizeUnit>('pixels');
   const [width, setWidth] = useState(DEFAULT_WIDTH);
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
@@ -356,10 +360,21 @@ function ImageToolsApp({ pageMode }: { pageMode: PageMode }) {
     setActivity(details || `The batch already contains ${MAX_IMAGE_FILES} files.`);
 
     const itemsToProbe = queued.filter((item) => item.stage === 'probing');
+    if (itemsToProbe.length > 0) autoRunRef.current = true;
     void (async () => {
       for (const item of itemsToProbe) await probeQueuedItem(item);
     })();
   };
+
+  // Start processing automatically once newly added images are probed, matching drag-and-drop compressors.
+  useEffect(() => {
+    if (!autoRunRef.current || processing) return;
+    if (items.some((item) => item.stage === 'probing')) return;
+    if (!items.some((item) => item.stage === 'ready' && item.result === null)) { autoRunRef.current = false; return; }
+    autoRunRef.current = false;
+    void runProcessing();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, processing]);
 
   const removeItem = (id: number) => {
     if (processing) cancelActiveJob('Processing cancelled because the batch changed. Completed results remain available.');
@@ -828,7 +843,7 @@ function ImageToolsApp({ pageMode }: { pageMode: PageMode }) {
             <div>
               <p>02 · Choose output</p>
               <h2 id="image-tools-settings-title">Processing settings</h2>
-              <small>Nothing runs until you choose the process button.</small>
+              <small>Processing starts automatically when images are added. Use the button to run again after changing settings.</small>
             </div>
           </div>
 

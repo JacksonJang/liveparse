@@ -312,14 +312,14 @@ function YamlToolApp(): React.JSX.Element {
     setActivity(message);
   }, [stopWorker]);
 
-  const updateInput = (value: string, message = 'Input changed. Run the local operation to create a current result.') => {
+  const updateInput = (value: string, message = 'Input changed. Running the local operation…') => {
     setInput(value);
     resetForChange(message);
   };
 
   const updateOptions = (next: YamlOptions) => {
     setOptions(next);
-    resetForChange('An option changed. Run the local operation again before using the result.');
+    resetForChange('An option changed. Running the local operation again…');
   };
 
   const finishWithFailure = useCallback((nextFailure: ToolFailure) => {
@@ -329,6 +329,14 @@ function YamlToolApp(): React.JSX.Element {
     setFailure(nextFailure);
     setActivity(nextFailure.line ? `Stopped at line ${nextFailure.line}${nextFailure.column ? `, column ${nextFailure.column}` : ''}.` : 'The local operation stopped without a usable result.');
   }, [stopWorker]);
+
+  // Run automatically for typical document sizes; the button remains for explicit re-runs.
+  useEffect(() => {
+    if (!input.trim() || input.length > 20_000) return;
+    const timer = window.setTimeout(() => run(), 500);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, options, mode]);
 
   const run = () => {
     if (!input.trim()) {
