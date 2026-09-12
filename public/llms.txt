@@ -1,0 +1,76 @@
+# LiveParse
+
+> Free developer tools that run entirely in the visitor's browser: formatters and validators for JSON, YAML, XML, and SQL; business-day, date, and Unix timestamp calculators; Base64, URL, binary, and Morse code translators; hash, checksum, UUID, and JWT tools; and image compression. Nothing a visitor pastes or selects is uploaded, and there is no account, advertising, or analytics cookie.
+
+Every page is server-rendered static HTML with its own explanation, worked examples, limits, and FAQ, so the content can be read without executing JavaScript. Tools state what they do not do, such as the JWT decoder never verifying signatures and the SQL formatter never executing a query. Content is written and maintained by Jackson Jang.
+
+## JSON
+
+- [/json-formatter/](https://liveparse.com/json-formatter/): Format, validate, minify, and explore JSON without rounding 64-bit numbers or dropping duplicate keys
+- [/json-compare/](https://liveparse.com/json-compare/): Compare two JSON documents semantically and inspect every changed path
+- [/json-repair/](https://liveparse.com/json-repair/): Repair malformed JSON with a diff, a confidence score, and a change log
+- [/jsonl-parser/](https://liveparse.com/jsonl-parser/): Validate JSONL and NDJSON line by line and export CSV
+- [/json-to-csv/](https://liveparse.com/json-to-csv/): Convert JSON to spreadsheet-safe CSV
+- [/csv-to-json/](https://liveparse.com/csv-to-json/): Convert CSV to a valid JSON array
+
+## YAML and XML
+
+- [/yaml-formatter/](https://liveparse.com/yaml-formatter/): Pretty-print YAML 1.1 or 1.2 in a bounded local worker
+- [/yaml-to-json/](https://liveparse.com/yaml-to-json/): Convert YAML to strict JSON with exact number tokens
+- [/json-to-yaml/](https://liveparse.com/json-to-yaml/): Convert strict JSON to YAML 1.2
+- [/xml-formatter/](https://liveparse.com/xml-formatter/): Pretty-print XML 1.0 without fetching external DTDs
+- [/xml-validator/](https://liveparse.com/xml-validator/): Check XML well-formedness and namespace constraints
+
+## SQL
+
+- [/sql-formatter/](https://liveparse.com/sql-formatter/): Format SQL for fifteen dialects; queries are never executed
+
+## Dates and time
+
+- [/business-days-calculator/](https://liveparse.com/business-days-calculator/): Add business days from today or count working days between two dates, skipping weekends and your holidays
+- [/5-business-days-from-today/](https://liveparse.com/5-business-days-from-today/): The exact date five business days from today
+- [/10-business-days-from-today/](https://liveparse.com/10-business-days-from-today/): The exact date ten business days from today
+- [/unix-timestamp-converter/](https://liveparse.com/unix-timestamp-converter/): Convert epoch seconds, milliseconds, microseconds, and nanoseconds without losing precision
+- [/discord-timestamp-generator/](https://liveparse.com/discord-timestamp-generator/): Generate all nine Discord timestamp formats for any timezone
+- [/age-calculator/](https://liveparse.com/age-calculator/): Exact calendar age with a stated February 29 policy
+- [/week-number-calculator/](https://liveparse.com/week-number-calculator/): ISO 8601 week-year, week number, and week boundaries
+
+## Encoding and numbers
+
+- [/base64-decoder/](https://liveparse.com/base64-decoder/): Decode Base64, Base64URL, files, and Data URLs with RFC diagnostics
+- [/base64-encoder/](https://liveparse.com/base64-encoder/): Encode text or files as Base64, Base64URL, or a Data URL
+- [/url-encoder/](https://liveparse.com/url-encoder/): Percent-encode with component, RFC 3986, full-URI, or form rules kept distinct
+- [/url-parser/](https://liveparse.com/url-parser/): Inspect WHATWG URL components without requesting the address
+- [/binary-converter/](https://liveparse.com/binary-converter/): Convert exact integers between any bases from 2 to 36
+- [/ascii-table/](https://liveparse.com/ascii-table/): All 128 standard ASCII codes, searchable
+- [/morse-code-translator/](https://liveparse.com/morse-code-translator/): Translate English to Morse code and back, with sound and light playback
+- [/morse-code-alphabet/](https://liveparse.com/morse-code-alphabet/): The full International Morse code alphabet, numbers, and punctuation
+
+## Hashes, identifiers, and tokens
+
+- [/hash-generator/](https://liveparse.com/hash-generator/): SHA-256, SHA-384, SHA-512, and MD5 from text or exact file bytes
+- [/file-checksum/](https://liveparse.com/file-checksum/): Verify a downloaded file against a published checksum locally
+- [/uuid-generator/](https://liveparse.com/uuid-generator/): Generate RFC 9562 UUID v4 and v7 values
+- [/uuid-decoder/](https://liveparse.com/uuid-decoder/): Decode UUID version, variant, and embedded timestamps
+- [/jwt-decoder/](https://liveparse.com/jwt-decoder/): Decode a compact JWT header and payload; signatures are never verified
+
+## Images and text
+
+- [/image-compressor/](https://liveparse.com/image-compressor/): Compress JPEG, PNG, or WebP toward a target file size in the browser
+- [/compress-image-to-100kb/](https://liveparse.com/compress-image-to-100kb/): Compress an image to 100 KB
+- [/compress-image-to-1mb/](https://liveparse.com/compress-image-to-1mb/): Compress an image to 1 MB
+- [/image-resizer/](https://liveparse.com/image-resizer/): Resize images by pixels or percent
+- [/word-counter/](https://liveparse.com/word-counter/): Count words, sentences, paragraphs, and reading time
+- [/character-counter/](https://liveparse.com/character-counter/): Count graphemes, code points, UTF-16 units, and UTF-8 bytes
+
+## Background reading
+
+- [/guides/](https://liveparse.com/guides/): Standards-based guides explaining the formats behind each tool
+- [/about/](https://liveparse.com/about/): What LiveParse is, who builds it, and its principles
+- [/privacy/](https://liveparse.com/privacy/): How data is handled: tool input never leaves the browser
+
+## Optional
+
+- [Full sitemap](https://liveparse.com/sitemap.xml): every canonical URL with its last modification date
+- [Atom feed](https://liveparse.com/feed.xml): recently published tools and guides
+- [Source code](https://github.com/JacksonJang/liveparse): the complete implementation

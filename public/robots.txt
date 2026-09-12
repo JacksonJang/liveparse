@@ -1,4 +1,37 @@
+# LiveParse welcomes search engines and AI assistants that cite their sources.
+# Every page is static HTML, so no JavaScript execution is required to read it.
+
 User-agent: *
+Allow: /
+
+# AI assistants and answer engines. Listed explicitly so the permission is
+# unambiguous: fetching these pages to answer a question and cite liveparse.com
+# is allowed.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 Sitemap: https://liveparse.com/sitemap.xml
