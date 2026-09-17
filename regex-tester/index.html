@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Regex Tester &amp; Debugger Online | LiveParse</title>
+    <meta name="description" content="Test regex patterns locally with JavaScript, highlight every match, inspect capture groups, apply replacements, and stop slow regexes safely." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/regex-tester/" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/regex.css" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/regex-tester/" />
+    <meta property="og:title" content="Regex Tester, Highlighter &amp; Debugger | LiveParse" />
+    <meta property="og:description" content="Evaluate JavaScript RegExp in a local Web Worker with capture groups, replacement preview, and a slow-pattern timeout." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse browser-based regular expression tester" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Regex Tester with Capture Groups | LiveParse" />
+    <meta name="twitter:description" content="Highlight matches, inspect groups, and test replacements without uploading text." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#7c3aed" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/regex-tester/#application",
+            "name": "LiveParse Regex Tester",
+            "url": "https://liveparse.com/regex-tester/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Regular expression tester",
+            "operatingSystem": "Any operating system with a modern web browser",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "inLanguage": "en",
+            "description": "Test JavaScript regular expressions in the browser with highlighted matches, capture groups, replacement previews, explicit flags, and a local worker timeout.",
+            "featureList": [
+              "Evaluate JavaScript RegExp without uploading text",
+              "Highlight ordered matches and inspect named or numbered groups",
+              "Toggle global, ignore-case, multiline, dot-all, Unicode, sticky, and indices flags",
+              "Preview $&, $1, and $<name> replacement patterns",
+              "Run matching in a replaceable local Web Worker",
+              "Stop backtracking-heavy expressions after one second"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/regex-tester/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Regex Tester", "item": "https://liveparse.com/regex-tester/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/regex-tester/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is a regex tester?", "acceptedAnswer": { "@type": "Answer", "text": "A regex tester evaluates a regular expression against sample text and shows where it matches. This tester also highlights each match, lists capture groups, applies JavaScript replacement syntax, and reports invalid patterns or expressions that run too long." } },
+              { "@type": "Question", "name": "Which regex flavor does LiveParse use?", "acceptedAnswer": { "@type": "Answer", "text": "LiveParse uses the JavaScript RegExp engine in your browser. It supports JavaScript flags and syntax, so a pattern written for PCRE, .NET, Java, Go, or RE2 may need changes before it behaves the same here." } },
+              { "@type": "Question", "name": "How do I test every regex match?", "acceptedAnswer": { "@type": "Answer", "text": "Turn on the global flag to collect non-overlapping matches in document order. The interface shows the first 500 matches and clearly labels the limit instead of pretending that the list is complete." } },
+              { "@type": "Question", "name": "How do named capture groups appear?", "acceptedAnswer": { "@type": "Answer", "text": "Named groups appear with their name, while unnamed groups appear as $1, $2, and later numbers. A group that did not participate in the match is labeled undefined rather than being shown as an empty string." } },
+              { "@type": "Question", "name": "Why did my regex time out?", "acceptedAnswer": { "@type": "Answer", "text": "Nested quantifiers and broad alternation can create catastrophic backtracking. LiveParse evaluates in a local Web Worker and stops after one second so one expression cannot freeze the page. Anchor the pattern, reduce ambiguity, or test a smaller sample." } },
+              { "@type": "Question", "name": "Is my regex or sample text uploaded?", "acceptedAnswer": { "@type": "Answer", "text": "No. Matching and replacement run in the current browser tab. The page does not send the pattern, sample text, or result to a regex API, and no match history is stored." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="regex-page" data-page="regex-tester">
+    <a class="skip-link" href="#regex-tool">Skip to the regex tester</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/regex-tester/" aria-current="page">Regex Tester</a><a href="/json-formatter/">JSON Formatter</a><a href="/url-parser/">URL Parser</a><a href="#faq">FAQ</a><a href="/privacy/">Privacy</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">JavaScript RegExp · Capture groups · Local worker</p>
+          <h1>Regex Tester</h1>
+          <p class="hero-lead">Test a JavaScript regular expression against your own sample text, highlight every ordered match, inspect capture groups, preview replacements, and stop a backtracking-heavy pattern before it freezes the tab.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#regex-tool">Test a regex</a><span>Free · No uploads · Browser local</span></div>
+        </div>
+        <div class="hero-example" aria-label="Regular expression matching example">
+          <div class="example-bar"><span></span><span></span><span></span><strong>regex tester</strong></div>
+          <pre><code><span class="property">pattern</span> <span class="string">/(?&lt;level&gt;WARN|ERROR) .+/</span>
+<span class="property">match</span>   <span class="boolean">ERROR database timeout</span>
+<span class="property">groups</span>  level=ERROR</code></pre>
+          <p><strong>See exactly what matched</strong><span>Groups, offsets, and lengths</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="regex-tool" aria-labelledby="regex-tool-heading">
+        <div><p class="section-kicker">Set the meaning before reading the result</p><h2 id="regex-tool-heading">Test, highlight, and debug regular expressions</h2></div>
+        <p>Enter RegExp source without delimiters, choose flags explicitly, and paste representative text. Matches are numbered with offsets and capture groups, while JavaScript replacement syntax can be previewed before it reaches code.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Regex tester loading"><p><strong>Loading the regex tester…</strong></p><p>Enable JavaScript to evaluate patterns. The flag, matching, replacement, and safety guidance below remains readable without it.</p></section></div>
+
+      <section class="content-section" aria-labelledby="regex-reading-heading">
+        <div class="section-heading"><p class="section-kicker">Read a match in context</p><h2 id="regex-reading-heading">How to read regex test results</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>A regular expression describes a shape, not necessarily one exact string. The highlighted span answers “what matched?”; the starting offset and length answer “where?”; and capture groups answer “which part of the pattern captured what?” Read those three together before changing production code.</p>
+            <p>The <code>global</code> flag changes the result from one answer to a complete sequence of non-overlapping matches. The <code>sticky</code> flag constrains a match to <code>lastIndex</code>. <code>ignore case</code>, <code>multiline</code>, <code>dot all</code>, <code>Unicode</code>, and <code>indices</code> also change semantics, so the tester keeps every flag visible instead of hiding behavior in a copied string.</p>
+            <p>Capture groups can be optional or repeat. JavaScript exposes an absent group as <code>undefined</code>, which is not the same as an empty string. When a group repeats, later captures replace earlier ones. Named groups make intent clearer, but they do not remove either boundary case.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Offset</dt><dd>The zero-based UTF-16 code-unit position where the match begins.</dd></div>
+            <div><dt>Length</dt><dd>The match length in UTF-16 code units, including newline characters when the pattern allows them.</dd></div>
+            <div><dt>Group</dt><dd>A parenthesized submatch; named groups also receive a readable label.</dd></div>
+            <div><dt>Replacement</dt><dd>A second preview using JavaScript’s <code>$&amp;</code>, <code>$1</code>, and <code>$&lt;name&gt;</code> syntax.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="regex-safety-heading">
+        <div class="section-heading"><p class="section-kicker">Responsive by design</p><h2 id="regex-safety-heading">A slow regex should not freeze the page</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Some expressions, especially nested quantifiers and broad alternation, can spend enormous time backtracking before they fail. LiveParse sends each evaluation to a local Web Worker and replaces that worker after one second. The page stays interactive and explains the timeout instead of leaving a browser tab unusable.</p>
+            <p>The tester also bounds pattern, sample, match, and highlight sizes. Those limits are deliberately visible: a large input may be valid, but rendering millions of marks would make the result harder to use rather than easier.</p>
+            <p>For untrusted production matching, prefer RE2-style bounded engines or explicit time limits. A UI timeout protects this page; it cannot turn an algorithmically expensive expression into a safe server control. Review the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp" rel="external">JavaScript RegExp reference</a> for engine-specific syntax.</p>
+          </div>
+          <div class="callout-card"><strong>Timeout is a diagnostic</strong><p>When a pattern times out, anchor it, remove ambiguous nesting, split the work, or test a smaller representative sample.</p><a href="#regex-tool">Return to the tester →</a></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="regex-privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Private debugging</p><h2 id="regex-privacy-heading">Your pattern and sample stay on your machine</h2></div>
+        <div class="prose-grid"><div>
+          <p>The pattern, sample text, matches, and replacement preview are processed in this browser tab. LiveParse does not send them to a regex endpoint or store a conversion history. The page contains no advertising or analytics cookies.</p>
+          <p>Local processing is not a promise that the text is safe to share. Redact credentials, tokens, personal data, and proprietary content before copying a result into an issue, prompt, chat, screenshot, or repository.</p>
+        </div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Regex tester FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>What is a regex tester?</summary><p>A regex tester evaluates a regular expression against sample text and shows where it matches. This tester also highlights each match, lists capture groups, applies JavaScript replacement syntax, and reports invalid patterns or expressions that run too long.</p></details>
+          <details><summary>Which regex flavor does LiveParse use?</summary><p>LiveParse uses the JavaScript RegExp engine in your browser. It supports JavaScript flags and syntax, so a pattern written for PCRE, .NET, Java, Go, or RE2 may need changes before it behaves the same here.</p></details>
+          <details><summary>How do I test every regex match?</summary><p>Turn on the global flag to collect non-overlapping matches in document order. The interface shows the first 500 matches and clearly labels the limit instead of pretending that the list is complete.</p></details>
+          <details><summary>How do named capture groups appear?</summary><p>Named groups appear with their name, while unnamed groups appear as $1, $2, and later numbers. A group that did not participate in the match is labeled undefined rather than being shown as an empty string.</p></details>
+          <details><summary>Why did my regex time out?</summary><p>Nested quantifiers and broad alternation can create catastrophic backtracking. LiveParse evaluates in a local Web Worker and stops after one second so one expression cannot freeze the page. Anchor the pattern, reduce ambiguity, or test a smaller sample.</p></details>
+          <details><summary>Is my regex or sample text uploaded?</summary><p>No. Matching and replacement run in the current browser tab. The page does not send the pattern, sample text, or result to a regex API, and no match history is stored.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Continue testing locally</p><h2 id="related-heading">Related LiveParse tools</h2></div><ul><li><a href="/json-formatter/">JSON Formatter</a></li><li><a href="/query-string-parser/">Query String Parser</a></li><li><a href="/url-parser/">URL Parser</a></li><li><a href="/ascii-table/">ASCII Table</a></li><li><a href="/word-counter/">Word Counter</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for exact data work.</p></div><div class="footer-links"><a href="/regex-tester/">Regex Tester</a><a href="/json-formatter/">JSON</a><a href="/guides/">Guides</a><a href="/privacy/">Privacy</a></div><p class="footer-note">Reviewed September 16, 2026 · Regex input stays local · No advertising or analytics cookies</p></footer>
+    <noscript><p class="noscript-note">JavaScript is required to evaluate patterns interactively. The RegExp flavor, flag, capture-group, replacement, timeout, and privacy guidance remains readable without it.</p></noscript>
+    <script type="module" src="/src/regex.tsx"></script>
+  </body>
+</html>

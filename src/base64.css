@@ -173,9 +173,26 @@
   .base64-toolbar, .base64-output-heading, .base64-activity { align-items: stretch; flex-direction: column; }
   .base64-mode-tabs { width: 100%; }
   .base64-mode-tabs a { flex: 1; }
-  .base64-settings-grid, .base64-conversions, .base64-image-preview { grid-template-columns: 1fr; }
+  .base64-mode-tabs a,
+  .base64-view-tabs button,
+  .base64-quiet-button,
+  .base64-primary-button,
+  .base64-presets button,
+  .base64-file-button span,
+  .base64-file-card button,
+  .base64-conversions button { min-height: 44px; }
+  .base64-settings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .base64-settings-grid > label:first-child,
+  .base64-check-row,
+  .base64-full-field { grid-column: 1 / -1; }
+  .base64-conversions, .base64-image-preview { grid-template-columns: 1fr; }
   .base64-output-actions { justify-content: flex-start; }
-  .base64-full-field { grid-column: auto; }
+  .base64-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .base64-presets strong { grid-column: 1 / -1; }
+  .base64-presets button { width: 100%; }
+  .base64-file-button { width: 100%; }
+  .base64-file-button span { width: 100%; justify-content: center; }
+  .base64-conversions button { padding: 9px 12px; }
 }
 
 @media (max-width: 470px) {

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -14,9 +15,6 @@
     <meta name="apple-mobile-web-app-title" content="LiveParse" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/json-formatter/" />
-    <link rel="alternate" hreflang="en" href="https://liveparse.com/json-formatter/" />
-    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/json-parser/" />
-    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/json-formatter/" />
     <link rel="alternate" type="application/atom+xml" title="LiveParse Developer Tool Updates" href="https://liveparse.com/feed.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/json-formatter/" />
@@ -65,6 +63,7 @@
               "Two-space or four-space formatting",
               "JSON minification",
               "Interactive JSON tree view",
+              "Mobile-sized tree search, match navigation, and copy controls",
               "Syntax highlighting",
               "Local browser processing"
             ],
@@ -80,7 +79,7 @@
             "url": "https://liveparse.com/json-formatter/",
             "name": "JSON Formatter, Validator, and Viewer Online",
             "description": "Format, beautify, validate, minify, and view JSON without altering large numbers or duplicate keys.",
-            "dateModified": "2026-09-06",
+            "dateModified": "2026-09-16",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/json-formatter/#application" },
@@ -120,7 +119,7 @@
           <a href="/jwt-decoder/">JWT</a>
           <a href="/json-repair/">JSON Repair</a>
           <a href="/jsonl-parser/">JSONL</a>
-          <a href="/ko/json-parser/" lang="ko">한국어</a>
+
         </div>
       </nav>
       <div class="seo-hero">
@@ -159,6 +158,17 @@
         </section>
       </div>
 
+      <section class="content-section" id="how-to-format-json" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Quick start</p><h2 id="how-heading">How to format and validate JSON online</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Paste or open JSON</h3><p>Paste a JSON document or use <strong>Open file</strong>. Validation runs automatically and shows the first syntax error with its location.</p></li>
+          <li><span>2</span><h3>Format or minify</h3><p>Choose two or four spaces, then select <strong>Format</strong> for readable JSON or <strong>Minify</strong> for compact output.</p></li>
+          <li><span>3</span><h3>Explore or export</h3><p>Switch to <strong>Tree</strong> to explore nested values, or copy and download the formatted text.</p></li>
+        </ol>
+        <p>For example, formatting <code>{&quot;id&quot;:9007199254740993,&quot;amount&quot;:1.2300}</code> adds indentation while keeping both <code>9007199254740993</code> and <code>1.2300</code> exactly as written. Duplicate keys are also preserved and flagged. Formatting checks JSON syntax; it does not validate an application schema.</p>
+        <p>All parsing and formatting runs in a browser worker. Pasted text and opened files stay in this tab.</p>
+      </section>
+
       <section class="content-section" id="what-is-a-json-formatter" aria-labelledby="what-heading">
         <div class="section-heading">
           <p class="section-kicker">The essentials</p>
@@ -179,19 +189,6 @@
         </div>
       </section>
 
-      <section class="content-section alt" id="how-to-format-json" aria-labelledby="how-heading">
-        <div class="section-heading">
-          <p class="section-kicker">Three quick steps</p>
-          <h2 id="how-heading">How to format and validate JSON online</h2>
-          <p>You can move from a raw payload to a readable result without uploading a file or creating an account.</p>
-        </div>
-        <ol class="steps-grid">
-          <li><span>1</span><h3>Paste your JSON</h3><p>Copy an API response, webhook body, or configuration object into the input panel. You can also load a built-in example.</p></li>
-          <li><span>2</span><h3>Check the result</h3><p>Valid input is parsed immediately. Invalid input shows the parser message plus a line and column when the browser provides a position.</p></li>
-          <li><span>3</span><h3>Format or explore</h3><p>Pretty-print with two or four spaces, minify for transport, copy the output, or open the tree to inspect nested values.</p></li>
-        </ol>
-      </section>
-
       <section class="content-section" id="common-json-errors" aria-labelledby="errors-heading">
         <div class="section-heading split-heading">
           <div><p class="section-kicker">Debug faster</p><h2 id="errors-heading">Common JSON syntax errors</h2></div>
@@ -202,7 +199,7 @@
           <div class="error-row" role="row"><strong role="cell">Trailing comma</strong><code role="cell">{"ok": true,}</code><span role="cell">Remove the comma before <code>}</code> or <code>]</code>.</span></div>
           <div class="error-row" role="row"><strong role="cell">Single quotes</strong><code role="cell">{'name': 'Ada'}</code><span role="cell">Use double quotes around keys and strings.</span></div>
           <div class="error-row" role="row"><strong role="cell">Unquoted key</strong><code role="cell">{status: "ok"}</code><span role="cell">Write the key as <code>"status"</code>.</span></div>
-          <div class="error-row" role="row"><strong role="cell">Bad escape</strong><code role="cell">{"path": "C:\new"}</code><span role="cell">Escape a backslash as <code>\\</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Bad escape</strong><code role="cell">{"path": "C:\users"}</code><span role="cell">Escape a backslash as <code>\\</code>.</span></div>
         </div>
       </section>
 
@@ -227,65 +224,16 @@
       </section>
 
       <section class="content-section alt" aria-labelledby="tools-heading">
-        <div class="section-heading"><p class="section-kicker">More private developer tools</p><h2 id="tools-heading">Format, validate, view, compare, and convert data</h2><p>Move directly from formatting to the next job without sending the payload to another conversion service.</p></div>
+        <div class="section-heading"><p class="section-kicker">Continue working with JSON</p><h2 id="tools-heading">Repair, compare, and convert JSON</h2><p>Choose the next tool for your document. Every tool processes the input in your browser.</p></div>
         <div class="use-case-grid">
-          <article><h3><a href="/xml-formatter/">XML Formatter &amp; Beautifier</a></h3><p>Pretty-print XML 1.0 structure locally with controlled indentation, bounded input and depth limits, and an explicit warning when DTD grammar remains opaque. Learn the difference between <a href="/guides/xml-well-formed-vs-valid/">well-formed and valid XML</a>.</p></article>
-          <article><h3><a href="/xml-validator/">XML Validator</a></h3><p>Check XML well-formedness, locate syntax problems, and review document statistics without uploading the source or retrieving external definitions.</p></article>
-          <article><h3><a href="/xml-viewer/">XML Viewer</a></h3><p>Explore elements, attributes, namespaces, comments, CDATA, and text in a readable tree rendered as text rather than active page markup.</p></article>
-          <article><h3><a href="/yaml-formatter/">YAML Formatter &amp; Beautifier</a></h3><p>Parse and reserialize YAML 1.2 or YAML 1.1 with bounded input, depth, and node limits, plus clear warnings about presentation changes.</p></article>
-          <article><h3><a href="/yaml-validator/">YAML Validator</a></h3><p>Check YAML syntax, unresolved aliases, and duplicate scalar mapping keys with precise error locations. Review <a href="/guides/common-yaml-errors/">common YAML errors</a> without implying application-schema validation.</p></article>
-          <article><h3><a href="/yaml-viewer/">YAML Viewer</a></h3><p>Explore multi-document YAML, mappings, sequences, scalar types, anchors, aliases, and tags in a non-expanding searchable tree.</p></article>
-          <article><h3><a href="/yaml-to-json/">YAML to JSON Converter</a></h3><p>Convert YAML data to strict JSON with exact big integers, bounded alias expansion, collision checks, and explicit <a href="/guides/yaml-to-json-types/">type-conversion rules</a>.</p></article>
-          <article><h3><a href="/json-to-yaml/">JSON to YAML Converter</a></h3><p>Turn strict JSON into YAML 1.2 while retaining exact number tokens and rejecting duplicate JSON object keys.</p></article>
-          <article><h3><a href="/json-compare/">JSON Compare &amp; Diff</a></h3><p>Compare two JSON documents semantically, preserve duplicate keys and exact number tokens, and inspect each changed path.</p></article>
-          <article><h3><a href="/json-to-csv/">JSON to CSV</a></h3><p>Flatten nested object fields, keep 64-bit IDs exact, neutralize spreadsheet formulas, and download clean CSV.</p></article>
-          <article><h3><a href="/csv-to-json/">CSV to JSON</a></h3><p>Parse quoted and multiline CSV, normalize headers, control type inference, and download a valid JSON array.</p></article>
-          <article><h3><a href="/unix-timestamp-converter/">Unix Timestamp Converter</a></h3><p>Convert epoch seconds, milliseconds, microseconds, and nanoseconds to dates without rounding 64-bit timestamp values.</p></article>
-          <article><h3><a href="/discord-timestamp-generator/">Discord Timestamp Generator</a></h3><p>Choose any IANA timezone, decode existing tags, and copy all nine currently documented Discord timestamp formats.</p></article>
-          <article><h3><a href="/age-calculator/">Age Calculator</a></h3><p>Calculate exact calendar age from a birth date to today in years, months, and days, with an explicit February 29 birthday policy.</p></article>
-          <article><h3><a href="/age-calculator-on-specific-date/">Age on a Specific Date</a></h3><p>Find a person's exact calendar age on a past or future reference date without relying on timezone-sensitive timestamp math.</p></article>
-          <article><h3><a href="/date-calculator/">Date Calculator</a></h3><p>Add or subtract days, weeks, months, or years from a calendar date with transparent end-of-month behavior.</p></article>
-          <article><h3><a href="/days-between-dates/">Days Between Dates</a></h3><p>Count elapsed days between two dates, choose inclusive or exclusive endpoints, and compare the result with a calendar breakdown.</p></article>
-          <article><h3><a href="/business-days-calculator/">Business Days Calculator</a></h3><p>Count or add weekdays with configurable weekend days and an optional list of excluded holiday dates.</p></article>
-          <article><h3><a href="/time-duration-calculator/">Time Duration Calculator</a></h3><p>Calculate hours and minutes between clock times, including overnight spans and an optional break duration.</p></article>
-          <article><h3><a href="/week-number-calculator/">Week Number Calculator</a></h3><p>Look up the ISO 8601 week-year, week number, weekday, and Monday-to-Sunday range for any valid date.</p></article>
-          <article><h3><a href="/birthday-countdown/">Birthday Countdown</a></h3><p>Count calendar days until the next birthday and see the next birthday date and age, including a stated leap-day rule. Read how <a href="/guides/calendar-date-arithmetic-dst-leap-years/">calendar arithmetic handles DST and leap years</a>.</p></article>
-          <article><h3><a href="/base64-decoder/">Base64 Decoder</a></h3><p>Decode standard Base64, Base64URL, files, and Data URLs with exact RFC diagnostics and safe binary downloads.</p></article>
-          <article><h3><a href="/base64-encoder/">Base64 Encoder</a></h3><p>Encode UTF-8 text or local files as padded Base64, unpadded Base64URL, or a complete Data URL.</p></article>
-          <article><h3><a href="/binary-converter/">Binary Converter</a></h3><p>Convert exact integers between binary, decimal, hexadecimal, octal, and any base from 2 through 36 without rounding large values. Fixed-width signed interpretation stays explicit through <a href="/guides/twos-complement-signed-binary/">two's complement rules</a>.</p></article>
-          <article><h3><a href="/hex-converter/">Hex Converter</a></h3><p>Convert hexadecimal integers to other number bases, or deliberately switch to a separate strict hex-byte and UTF-8 workflow so the number <code>41</code> is never silently confused with the text byte <code>A</code>.</p></article>
-          <article><h3><a href="/binary-translator/">Binary Translator</a></h3><p>Translate Unicode text to exact 8-bit UTF-8 binary bytes and back with fatal decoding errors, preserved byte order, and no recursive or guessed interpretation.</p></article>
-          <article><h3><a href="/ascii-table/">ASCII Table</a></h3><p>Search all 128 standard ASCII codes by symbol, control abbreviation, decimal, hexadecimal, octal, or binary. Compare the 7-bit table with <a href="/guides/ascii-vs-unicode-utf8/">Unicode and UTF-8</a>.</p></article>
-          <article><h3><a href="/morse-code-translator/">Morse Code Translator</a></h3><p>Translate plain text to International Morse code or decode explicit dot-and-dash tokens with visible separators, unsupported-symbol diagnostics, and no remote translation service.</p></article>
-          <article><h3><a href="/image-compressor/">Image Compressor</a></h3><p>Compress JPEG, PNG, or WebP images toward 20KB, 50KB, 100KB, 200KB, 500KB, 1MB, or a custom limit. The result reports whether the browser encoder actually reached the target.</p></article>
-          <article><h3><a href="/image-resizer/">Image Resizer</a></h3><p>Resize photos by pixels or percent with aspect-ratio, contain, cover, no-upscale, output-format, quality, and background controls.</p></article>
-          <article><h3><a href="/png-to-jpg/">PNG to JPG Converter</a></h3><p>Convert static PNG files to JPEG in this tab, choosing the quality and the color that replaces transparent pixels.</p></article>
-          <article><h3><a href="/webp-to-jpg/">WebP to JPG Converter</a></h3><p>Turn static WebP images into broadly compatible JPEG files with an explicit quality setting and transparency background.</p></article>
-          <article><h3><a href="/webp-to-png/">WebP to PNG Converter</a></h3><p>Convert static WebP images to lossless PNG while preserving decoded transparency and showing the resulting file-size tradeoff.</p></article>
-          <article><h3><a href="/word-counter/">Word Counter</a></h3><p>Count locale-aware word-like segments, sentences, paragraphs, and lines, then estimate reading or speaking time with an explicit words-per-minute setting.</p></article>
-          <article><h3><a href="/character-counter/">Character Counter</a></h3><p>Measure user-perceived grapheme clusters, Unicode code points, UTF-16 code units, and strict UTF-8 bytes without silently normalizing the text.</p></article>
-          <article lang="es"><h3><a href="/es/contador-de-palabras/" hreflang="es">Contador de palabras</a></h3><p>Cuenta palabras, frases, párrafos y líneas con segmentación configurada para español y estimaciones transparentes de lectura y locución.</p></article>
-          <article lang="es"><h3><a href="/es/contador-de-caracteres/" hreflang="es">Contador de caracteres</a></h3><p>Compara grafemas visibles, caracteres sin espacios, puntos de código, unidades UTF-16 y bytes UTF-8 sin subir el texto.</p></article>
-          <article lang="ja"><h3><a href="/ja/character-counter/" hreflang="ja">文字数カウント</a></h3><p>空白を含む・含まない文字数、Unicodeの書記素・コードポイント・UTF-16・UTF-8をブラウザ内で確認できます。</p></article>
-          <article lang="ko"><h3><a href="/ko/character-counter/" hreflang="ko">글자수 세기</a></h3><p>공백 포함·제외 글자 수와 grapheme, 코드 포인트, UTF-16, UTF-8 바이트를 구분해 브라우저에서 계산합니다.</p></article>
-          <article><h3><a href="/url-encoder/">URL Encoder</a></h3><p>Percent-encode a URL component, full URI, RFC 3986 component, or form field locally without mixing their delimiter and space rules.</p></article>
-          <article><h3><a href="/url-decoder/">URL Decoder</a></h3><p>Strictly decode one percent-encoding round as a component, full URI, or form value and surface malformed escapes instead of hiding them.</p></article>
-          <article><h3><a href="/url-parser/">URL Parser</a></h3><p>Inspect WHATWG URL components, an optional relative-URL base, IDN serialization, path segments, and ordered query parameters without fetching the address.</p></article>
-          <article><h3><a href="/query-string-parser/">Query String Parser</a></h3><p>Preserve query parameter order, duplicate names, blank values, and form-style plus signs, then copy lossless pair or map-of-arrays JSON.</p></article>
-          <article><h3><a href="/hash-generator/">Hash Generator</a></h3><p>Calculate MD5, SHA-256, SHA-384, or SHA-512 for exact UTF-8 text and compare digests without sending the input to a server.</p></article>
-          <article><h3><a href="/sha256-generator/">SHA-256 Generator</a></h3><p>Create a SHA-256 digest in hexadecimal or Base64, inspect the exact byte count, and avoid newline or encoding surprises.</p></article>
-          <article><h3><a href="/md5-generator/">MD5 Generator</a></h3><p>Reproduce legacy MD5 checksums locally with a prominent warning that MD5 is collision-broken and unsuitable for security decisions.</p></article>
-          <article><h3><a href="/file-checksum/">File Checksum Tool</a></h3><p>Hash a selected local file and compare its checksum while keeping both the file and expected digest inside the browser tab.</p></article>
-          <article><h3><a href="/uuid-generator/">UUID Generator</a></h3><p>Generate UUID v4, UUID v7, and GUID-compatible text in bulk with secure browser randomness and copy-ready output.</p></article>
-          <article><h3><a href="/uuid-v4-generator/">UUID v4 Generator</a></h3><p>Create random RFC 9562 UUID v4 identifiers locally with browser cryptography, then review how 122 random bits affect <a href="/guides/uuid-collision-probability/">UUID collision probability</a>.</p></article>
-          <article><h3><a href="/uuid-v7-generator/">UUID v7 Generator</a></h3><p>Create time-ordered RFC 9562 identifiers, keep batches increasing, and inspect their embedded Unix-millisecond timestamp.</p></article>
-          <article><h3><a href="/uuid-validator/">UUID Validator</a></h3><p>Check strict or normalized UUID text, version, variant, Nil or Max status, and UUID v7 UTC time.</p></article>
-          <article><h3><a href="/uuid-decoder/">UUID Decoder</a></h3><p>Inspect version 1 through 8, variant, bytes, and timestamps encoded by UUID v1, v6, or v7. Read the <a href="/guides/uuid-versions-explained/">UUID versions guide</a> to interpret each layout.</p></article>
-          <article><h3><a href="/sql-formatter/">SQL Formatter &amp; Beautifier</a></h3><p>Format Standard SQL, MySQL, PostgreSQL, BigQuery, SQL Server, and ten more dialects locally with explicit layout controls.</p></article>
-          <article><h3><a href="/jwt-decoder/">JWT Decoder</a></h3><p>Decode strict Base64URL header and payload JSON locally, preserve exact claims, and keep signature verification visibly separate.</p></article>
-          <article><h3><a href="/jwt-expiration-checker/">JWT Expiration Checker</a></h3><p>Inspect exp, nbf, and iat as exact UTC times with explicit clock skew and no misleading token-validity claim.</p></article>
-          <article><h3><a href="/json-repair/">JSON Repair</a></h3><p>Fix common invalid or truncated JSON, then review the exact assumptions and changes before copying the result.</p></article>
+          <article><h3><a href="/json-repair/">JSON Repair</a></h3><p>Fix trailing commas, single quotes, or truncated JSON, review each proposed edit, then return here to format and validate the repaired document.</p></article>
+          <article><h3><a href="/json-compare/">JSON Compare &amp; Diff Checker</a></h3><p>Compare two API responses by their parsed values, inspect changed paths, and distinguish formatting changes from data changes.</p></article>
+          <article><h3><a href="/jsonl-parser/">JSONL Parser</a></h3><p>Validate newline-delimited JSON logs one record at a time, locate invalid lines, and inspect records without losing large numeric IDs.</p></article>
+          <article><h3><a href="/json-to-csv/">JSON to CSV Converter</a></h3><p>Turn arrays of JSON records into CSV with explicit column selection and nested-value handling.</p></article>
+          <article><h3><a href="/guides/common-json-errors/">Fix common JSON errors</a></h3><p>Find examples of missing commas, invalid quotes, trailing commas, and incomplete values with corrected JSON you can try.</p></article>
+          <article><h3><a href="/guides/json-parser-vs-formatter-validator/">JSON parser, formatter, or validator?</a></h3><p>Understand what parsing, syntax validation, and formatting check, and when your application also needs schema validation.</p></article>
         </div>
+        <p><a href="/#tools">Browse all LiveParse developer tools</a></p>
       </section>
 
       <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
@@ -351,10 +299,10 @@
         <a href="/webp-to-png/">WebP to PNG</a>
         <a href="/word-counter/">Word Counter</a>
         <a href="/character-counter/">Character Counter</a>
-        <a href="/es/contador-de-palabras/" lang="es" hreflang="es">Contador de palabras</a>
-        <a href="/es/contador-de-caracteres/" lang="es" hreflang="es">Contador de caracteres</a>
-        <a href="/ja/character-counter/" lang="ja" hreflang="ja">文字数カウント</a>
-        <a href="/ko/character-counter/" lang="ko" hreflang="ko">글자수 세기</a>
+
+
+
+
         <a href="/url-encoder/">URL Encoder</a>
         <a href="/url-decoder/">URL Decoder</a>
         <a href="/url-parser/">URL Parser</a>
@@ -373,12 +321,12 @@
         <a href="/json-repair/">JSON Repair</a>
         <a href="/jsonl-parser/">JSONL Parser</a>
         <a href="/guides/">Guides</a>
-        <a href="/ko/json-parser/" lang="ko">한국어</a>
+
         <a href="/about/">About LiveParse</a>
         <a href="/privacy/">Privacy &amp; cookies</a>
         <a href="https://github.com/JacksonJang" target="_blank" rel="noreferrer">Creator profile</a>
       </div>
-      <p class="footer-note">Last reviewed August 4, 2026 · Tool input stays local · No advertising or analytics cookies</p>
+      <p class="footer-note">Last reviewed September 16, 2026 · Tool input stays local · No advertising or analytics cookies</p>
     </footer>
 
     <noscript><p class="noscript-note">JavaScript is required to run the interactive parser. The JSON reference and guides remain available without it.</p></noscript>

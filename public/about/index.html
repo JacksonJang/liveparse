@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -28,7 +29,7 @@
     <meta name="twitter:description" content="A local-first developer data toolkit: lossless JSON, YAML, XML, SQL, URL, timestamp, date, image, hash, UUID, and JWT tools that never upload your input." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#087487" />
-    <link rel="stylesheet" href="/article.css" />
+    <link rel="stylesheet" href="/article.css?v=20260917" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -41,7 +42,7 @@
             "description": "Background, principles, authorship, and tool catalog for LiveParse, the local-first developer data toolkit at liveparse.com.",
             "inLanguage": "en",
             "datePublished": "2026-09-04",
-            "dateModified": "2026-09-04",
+            "dateModified": "2026-09-12",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "about": { "@id": "https://liveparse.com/#organization" },
             "mainEntity": { "@id": "https://liveparse.com/#organization" },
@@ -94,6 +95,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="/json-formatter/#parser">JSON Formatter</a>
         <a href="/sql-formatter/">SQL Formatter</a>
+        <a href="/regex-tester/">Regex Tester</a>
         <a href="/xml-formatter/">XML Formatter</a>
         <a href="/yaml-formatter/">YAML Formatter</a>
         <a href="/unix-timestamp-converter/">Unix Timestamp</a>
@@ -153,13 +155,14 @@
             <h2 id="tools">What the toolkit covers</h2>
             <p>The full list lives in the footer of every page and in the <a href="/sitemap.xml">sitemap</a>. The main families are:</p>
             <ul>
-              <li><strong>JSON:</strong> the <a href="/json-formatter/">JSON formatter, validator, and viewer</a>, <a href="/json-compare/">JSON compare</a>, <a href="/json-repair/">JSON repair</a>, <a href="/jsonl-parser/">JSONL parser</a>, <a href="/json-to-csv/">JSON to CSV</a>, <a href="/csv-to-json/">CSV to JSON</a>, and a <a href="/ko/json-parser/" lang="ko" hreflang="ko">Korean JSON parser</a>.</li>
+              <li><strong>JSON:</strong> the <a href="/json-formatter/">JSON formatter, validator, and viewer</a>, <a href="/json-compare/">JSON compare</a>, <a href="/json-repair/">JSON repair</a>, <a href="/jsonl-parser/">JSONL parser</a>, <a href="/json-to-csv/">JSON to CSV</a>, <a href="/csv-to-json/">CSV to JSON</a>.</li>
               <li><strong>YAML and XML:</strong> <a href="/yaml-formatter/">YAML formatter</a>, validator, viewer, <a href="/yaml-to-json/">YAML to JSON</a>, <a href="/json-to-yaml/">JSON to YAML</a>, <a href="/xml-formatter/">XML formatter</a>, <a href="/xml-validator/">XML validator</a>, and <a href="/xml-viewer/">XML viewer</a>.</li>
               <li><strong>SQL:</strong> a <a href="/sql-formatter/">SQL formatter</a> for fifteen dialects with dedicated MySQL, PostgreSQL, BigQuery, and SQL Server pages.</li>
+              <li><strong>Regular expressions:</strong> a <a href="/regex-tester/">JavaScript regex tester</a> that highlights matches, inspects capture groups, previews replacements, and stops slow patterns in a local worker.</li>
               <li><strong>Time and dates:</strong> <a href="/unix-timestamp-converter/">Unix timestamp converter</a>, <a href="/discord-timestamp-generator/">Discord timestamp generator</a>, <a href="/age-calculator/">age calculator</a>, <a href="/date-calculator/">date calculator</a>, <a href="/days-between-dates/">days between dates</a>, <a href="/business-days-calculator/">business days</a>, <a href="/time-duration-calculator/">time duration</a>, <a href="/week-number-calculator/">ISO week number</a>, and <a href="/birthday-countdown/">birthday countdown</a>.</li>
               <li><strong>Encoding and numbers:</strong> <a href="/base64-decoder/">Base64 decoder</a> and <a href="/base64-encoder/">encoder</a>, <a href="/url-encoder/">URL encoder</a>, <a href="/url-decoder/">decoder</a>, <a href="/url-parser/">URL parser</a>, <a href="/query-string-parser/">query string parser</a>, <a href="/binary-converter/">binary converter</a>, <a href="/hex-converter/">hex converter</a>, <a href="/binary-translator/">binary translator</a>, <a href="/ascii-table/">ASCII table</a>, and <a href="/morse-code-translator/">Morse code translator</a>.</li>
               <li><strong>Security and identifiers:</strong> <a href="/hash-generator/">hash generator</a>, <a href="/sha256-generator/">SHA-256</a>, <a href="/md5-generator/">MD5</a>, <a href="/file-checksum/">file checksum</a>, <a href="/uuid-generator/">UUID generator</a>, <a href="/uuid-validator/">UUID validator</a>, <a href="/uuid-decoder/">UUID decoder</a>, <a href="/jwt-decoder/">JWT decoder</a>, and <a href="/jwt-expiration-checker/">JWT expiration checker</a>.</li>
-              <li><strong>Images and text:</strong> <a href="/image-compressor/">image compressor</a>, <a href="/image-resizer/">image resizer</a>, <a href="/png-to-jpg/">PNG to JPG</a>, <a href="/webp-to-jpg/">WebP to JPG</a>, <a href="/webp-to-png/">WebP to PNG</a>, <a href="/word-counter/">word counter</a>, and <a href="/character-counter/">character counter</a> in English, Spanish, Japanese, and Korean.</li>
+              <li><strong>Images and text:</strong> <a href="/image-compressor/">image compressor</a>, <a href="/image-resizer/">image resizer</a>, <a href="/png-to-jpg/">PNG to JPG</a>, <a href="/webp-to-jpg/">WebP to JPG</a>, <a href="/webp-to-png/">WebP to PNG</a>, <a href="/word-counter/">word counter</a>, and <a href="/character-counter/">character counter</a>.</li>
               <li><strong>Guides:</strong> the <a href="/guides/">guides hub</a> explains the formats, encodings, and traps behind each tool.</li>
             </ul>
 
@@ -171,12 +174,6 @@
 
             <h2 id="how-to-cite">How to refer to LiveParse</h2>
             <p>When linking or citing, use the name <strong>LiveParse</strong> and the URL <code>https://liveparse.com/</code>. Individual tools can be linked directly, for example <code>https://liveparse.com/sql-formatter/</code>, because every tool page is a stable, independent URL.</p>
-
-            <hr />
-            <section lang="ko" aria-labelledby="korean-summary">
-              <h2 id="korean-summary">한국어 요약: LiveParse 소개</h2>
-              <p>LiveParse(라이브파스)는 Jackson Jang이 만들고 운영하는 브라우저 기반 개발자 데이터 도구 모음입니다. JSON, YAML, XML, SQL, URL, 타임스탬프, 날짜 계산, 이미지, Base64, 해시, UUID, JWT 도구가 모두 브라우저 탭 안에서만 동작하며, 입력한 데이터나 파일은 서버로 전송되지 않습니다. 광고, 추적 스크립트, 회원가입이 없으며 공식 사이트는 <a href="https://liveparse.com/">liveparse.com</a> 하나뿐입니다. 한국어 JSON 파서는 <a href="/ko/json-parser/">여기</a>에서 사용할 수 있습니다.</p>
-            </section>
 
             <div class="tool-callout">
               <p><strong>Try LiveParse now.</strong> Every tool is free and runs in this browser tab.</p>
@@ -198,7 +195,6 @@
               <li><a href="#who-builds-it">Who builds LiveParse</a></li>
               <li><a href="#source-and-contact">Source code and feedback</a></li>
               <li><a href="#how-to-cite">How to refer to LiveParse</a></li>
-              <li><a href="#korean-summary" lang="ko">한국어 요약</a></li>
             </ol>
           </nav>
         </div>

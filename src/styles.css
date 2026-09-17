@@ -168,7 +168,25 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .steps-grid h3, .benefit-grid h3, .use-case-grid h3 { margin: 18px 0 8px; color: var(--ink-deep); font-size: 18px; letter-spacing: -.02em; }
 .use-case-grid h3 a { color: var(--aqua-dark); text-decoration: underline; text-decoration-color: rgba(8,116,135,.24); text-underline-offset: 4px; }
 .use-case-grid h3 a:hover { text-decoration-color: currentColor; }
+/* Make a simple card one comfortable target without hiding secondary links in summary cards. */
+.use-case-grid article:has(> h3 > a):not(:has(a:not(h3 a))) { position: relative; transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
+.use-case-grid article:has(> h3 > a):not(:has(a:not(h3 a))) > h3 a::after { position: absolute; inset: 0; content: ""; }
+.use-case-grid article:has(> h3 > a):not(:has(a:not(h3 a))):hover,
+.use-case-grid article:has(> h3 > a):not(:has(a:not(h3 a))):focus-within { border-color: rgba(8,116,135,.34); box-shadow: 0 14px 34px rgba(8,116,135,.08); transform: translateY(-1px); }
 .steps-grid p, .benefit-grid p, .use-case-grid p { margin: 0; color: var(--muted); line-height: 1.65; }
+.use-case-grid p a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--aqua-pale);
+  color: var(--aqua-dark);
+  font-weight: 800;
+  text-decoration: none;
+}
+.use-case-grid p a:hover { background: rgba(8,116,135,.15); }
 .error-table { overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
 .error-row { display: grid; grid-template-columns: .7fr 1fr 1.5fr; }
 .error-row > * { min-width: 0; padding: 15px 18px; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
@@ -216,6 +234,7 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
   .nav-links { justify-content: flex-start; flex-wrap: nowrap; gap: 6px; margin: 0 -12px; padding: 2px 12px 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { flex: 0 0 auto; padding: 8px 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, .85); font-size: 13px; white-space: nowrap; }
+  .nav-links a, .footer-links a, .references a { display: inline-flex; align-items: center; min-height: 44px; }
   .seo-hero { margin-top: 8px; padding: 30px 20px; border-radius: 25px; }
   h1 { font-size: clamp(34px, 10.5vw, 48px); line-height: .98; letter-spacing: -.045em; }
   .hero-lead { font-size: 16px; }
@@ -223,20 +242,35 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
   main { padding-block: 48px; }
   .tool-intro { margin-inline: 4px; }
   .parser-app { border-radius: 22px; }
-  .tool-toolbar, .tool-settings, .panel-header, .status-strip, .references { align-items: stretch; flex-direction: column; }
+  .tool-toolbar, .tool-settings, .panel-header, .references { align-items: stretch; flex-direction: column; }
   .tool-settings, .select-label, .select-label select { width: 100%; }
+  .select-label select { min-height: 44px; }
   .segmented { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
-  .segmented button { min-width: 0; white-space: normal; }
+  .segmented button { min-width: 0; min-height: 44px; white-space: normal; }
   .workspace { min-height: 920px; }
-  .workspace.side, .workspace.top { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(360px, 42vh) minmax(560px, 1fr); }
+  .workspace.side, .workspace.top { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(360px, 42vh) minmax(760px, 1fr); }
   .panel-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
-  .ghost-button, .primary-button { width: 100%; }
+  .ghost-button, .primary-button { width: 100%; min-height: 44px; }
+  .status-strip { flex-wrap: wrap; }
   .status-strip > span:last-child { white-space: normal; }
-  .option-row { overflow-x: auto; flex-wrap: nowrap; }
-  .option-row > * { flex: 0 0 auto; }
+  .option-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 8px;
+    overflow-x: visible;
+  }
+  .option-row > * { width: 100%; min-width: 0; }
+  .strict-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 12px; text-align: center; }
+  .toggle-chip { min-height: 44px; padding: 10px 12px; }
+  .indent-label { justify-content: space-between; }
+  .indent-label select { flex: 1; min-height: 44px; padding: 8px 10px; }
   .content-section { margin-top: 70px; }
   .content-section.alt { padding: 26px 18px; border-radius: 24px; }
   .steps-grid, .benefit-grid, .use-case-grid { grid-template-columns: 1fr; }
+  /* Cards with several links keep a directly comfortable heading target. */
+  .use-case-grid h3 a { display: inline-flex; align-items: center; min-height: 44px; }
+  .use-case-grid p a { min-width: 44px; min-height: 44px; padding: 8px 11px; }
   .split-heading { align-items: start; flex-direction: column; }
   .error-table { border: 0; border-radius: 0; background: transparent; }
   .error-head { display: none; }
@@ -257,7 +291,11 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .hub-page .hero-cta-row .text-link { font-size: 15px; }
 
 /* Touch-friendly minimum for compact icon buttons */
-.lp-tree-button { min-height: 32px; }
+.lp-tree-button { min-height: 38px; }
+
+@media (max-width: 760px) {
+  .lp-tree-button { min-height: 44px; }
+}
 
 /* Readability floor: <small> must not drop below 12px on tool pages */
 small { font-size: 12px; }

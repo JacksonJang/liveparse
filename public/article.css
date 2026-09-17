@@ -257,6 +257,9 @@ h1 {
 }
 
 .toc a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--muted);
   text-decoration: none;
 }
@@ -535,7 +538,12 @@ tr:last-child td {
 
   .toc {
     position: static;
-    grid-row: 1;
+    grid-row: auto;
+  }
+
+  .toc li {
+    margin-left: -1.1rem;
+    list-style: none;
   }
 }
 

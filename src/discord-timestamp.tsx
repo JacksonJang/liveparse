@@ -6,6 +6,7 @@ import {
   DISCORD_STYLE_DEFINITIONS,
   discordTimestampCode,
   discordTimestampPreview,
+  isValidTimeZone,
   MAX_DISCORD_INPUT_CHARACTERS,
   parseDiscordTimestampInput,
   parseWallClockInput,
@@ -43,8 +44,18 @@ function supportedTimeZones(): string[] {
     'America/Sao_Paulo', 'Asia/Dubai', 'Asia/Kolkata', 'Asia/Seoul', 'Asia/Shanghai',
     'Asia/Singapore', 'Asia/Tokyo', 'Australia/Sydney', 'Europe/Berlin', 'Europe/London',
     'Europe/Paris', 'Pacific/Auckland',
-  ];
+];
 }
+
+const COMMON_TIME_ZONES = [
+  'America/Los_Angeles',
+  'America/New_York',
+  'Europe/London',
+  'Europe/Berlin',
+  'Asia/Seoul',
+  'Asia/Tokyo',
+  'Australia/Sydney',
+];
 
 function pad(value: number): string {
   return String(value).padStart(2, '0');
@@ -86,6 +97,15 @@ function App() {
   const initialSeconds = useRef(Math.floor(Date.now() / 1_000));
   const localZone = useMemo(browserTimeZone, []);
   const timeZones = useMemo(supportedTimeZones, []);
+  const commonZones = useMemo(
+    () => COMMON_TIME_ZONES.filter((zone) => isValidTimeZone(zone)),
+    [],
+  );
+  const commonZoneSet = useMemo(() => new Set(commonZones), [commonZones]);
+  const otherTimeZones = useMemo(
+    () => timeZones.filter((zone) => zone !== localZone && !commonZoneSet.has(zone)),
+    [commonZoneSet, localZone, timeZones],
+  );
   const [sourceZoneChoice, setSourceZoneChoice] = useState('local');
   const sourceZone = sourceZoneChoice === 'local' ? localZone : sourceZoneChoice;
   const [previewZoneChoice, setPreviewZoneChoice] = useState('local');
@@ -276,8 +296,11 @@ function App() {
               <select value={sourceZoneChoice} onChange={(event) => changeSourceZone(event.target.value)}>
                 <option value="local">My browser — {localZone}</option>
                 <option value="UTC">UTC</option>
+                <optgroup label="Common timezones">
+                  {commonZones.map((zone) => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}
+                </optgroup>
                 <optgroup label="IANA timezones">
-                  {timeZones.filter((zone) => zone !== localZone).map((zone) => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}
+                  {otherTimeZones.map((zone) => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}
                 </optgroup>
               </select>
             </label>

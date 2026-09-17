@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -54,6 +55,7 @@
             "featureList": [
               "Generate all nine currently documented Discord timestamp styles",
               "Interpret date and time input in an IANA timezone",
+              "Choose common timezone shortcuts before browsing the full IANA list",
               "Warn about daylight-saving gaps and overlaps",
               "Decode existing Discord timestamp tags",
               "Detect likely milliseconds, microseconds, and nanoseconds",
@@ -69,7 +71,7 @@
             "url": "https://liveparse.com/discord-timestamp-generator/",
             "name": "Discord Timestamp Generator – All 9 Formats",
             "description": "Generate and decode timezone-aware Discord timestamp tags in all nine currently documented styles.",
-            "dateModified": "2026-08-03",
+            "dateModified": "2026-09-16",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/discord-timestamp-generator/#application" },
@@ -122,7 +124,7 @@
     <main>
       <section class="tool-intro" id="generator" aria-labelledby="generator-heading">
         <div><p class="section-kicker">Date → Discord code</p><h2 id="generator-heading">Generate, convert, or decode a Discord timestamp</h2></div>
-        <p>Pick an IANA timezone, use a quick future preset, or paste an existing <code>&lt;t:…&gt;</code> tag. The generator validates whole Unix seconds and keeps every date and message in this tab.</p>
+        <p>Pick a common or full IANA timezone, use a quick future preset, or paste an existing <code>&lt;t:…&gt;</code> tag. Touch-sized controls keep copying comfortable on phones, and the generator validates whole Unix seconds while keeping every date and message in this tab.</p>
       </section>
       <div id="root">
         <section class="parser-fallback" aria-label="Discord timestamp generator loading">
@@ -308,7 +310,7 @@
         <a href="/json-compare/">JSON Compare</a>
         <a href="/privacy/">Privacy &amp; cookies</a>
       </div>
-      <p class="footer-note">Last reviewed August 3, 2026 · Local date processing · Not affiliated with or endorsed by Discord</p>
+      <p class="footer-note">Last reviewed September 16, 2026 · Local date processing · Not affiliated with or endorsed by Discord</p>
     </footer>
 
     <noscript><p class="noscript-note">JavaScript is required to generate and decode timestamp codes. The format reference remains available without it.</p></noscript>

@@ -1,6 +1,6 @@
 # LiveParse
 
-> Free developer tools that run entirely in the visitor's browser: formatters and validators for JSON, YAML, XML, and SQL; business-day, date, and Unix timestamp calculators; Base64, URL, binary, and Morse code translators; hash, checksum, UUID, and JWT tools; and image compression. Nothing a visitor pastes or selects is uploaded, and there is no account, advertising, or analytics cookie.
+> Free developer tools that run entirely in the visitor's browser: formatters and validators for JSON, YAML, XML, and SQL; a JavaScript regular-expression tester; business-day, date, and Unix timestamp calculators; Base64, URL, binary, and Morse code translators; hash, checksum, UUID, and JWT tools; and image compression. Nothing a visitor pastes or selects is uploaded, and there is no account, advertising, or analytics cookie.
 
 Every page is server-rendered static HTML with its own explanation, worked examples, limits, and FAQ, so the content can be read without executing JavaScript. Tools state what they do not do, such as the JWT decoder never verifying signatures and the SQL formatter never executing a query. Content is written and maintained by Jackson Jang.
 
@@ -24,6 +24,10 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 ## SQL
 
 - [/sql-formatter/](https://liveparse.com/sql-formatter/): Format SQL for fifteen dialects; queries are never executed
+
+## Regular expressions
+
+- [/regex-tester/](https://liveparse.com/regex-tester/): Highlight JavaScript RegExp matches, inspect capture groups, preview replacements, and stop slow patterns in a local worker
 
 ## Dates and time
 
@@ -56,7 +60,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 
 ## Images and text
 
-- [/image-compressor/](https://liveparse.com/image-compressor/): Compress JPEG, PNG, or WebP toward a target file size in the browser
+- [/image-compressor/](https://liveparse.com/image-compressor/): Compress up to 20 JPEG, PNG, or WebP images toward target file sizes and export a ZIP in the browser
 - [/compress-image-to-100kb/](https://liveparse.com/compress-image-to-100kb/): Compress an image to 100 KB
 - [/compress-image-to-1mb/](https://liveparse.com/compress-image-to-1mb/): Compress an image to 1 MB
 - [/image-resizer/](https://liveparse.com/image-resizer/): Resize images by pixels or percent

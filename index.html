@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>LiveParse – Free Private Developer Tools for JSON, SQL, YAML, Dates &amp; More</title>
-    <meta name="description" content="63 free developer tools that run in your browser: JSON, SQL, and YAML formatters, timestamp and business day calculators, Base64, hashes, UUIDs, JWTs, images, and Morse code. No uploads, no sign-up." />
+    <meta name="description" content="Free developer tools that run in your browser: JSON, SQL, YAML, and regex tools, timestamp and business day calculators, Base64, hashes, UUIDs, JWTs, images, and Morse code. No uploads, no sign-up." />
     <meta name="author" content="Jackson Jang" />
     <meta name="application-name" content="LiveParse" />
     <meta name="apple-mobile-web-app-title" content="LiveParse" />
@@ -19,7 +20,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/" />
     <meta property="og:title" content="LiveParse – Free Private Developer Tools" />
-    <meta property="og:description" content="63 browser-based tools for JSON, SQL, YAML, XML, dates, encoding, hashes, UUIDs, JWTs, images, and Morse code. Nothing you paste is uploaded." />
+    <meta property="og:description" content="Browser-based tools for JSON, SQL, YAML, XML, regex, dates, encoding, hashes, UUIDs, JWTs, images, and Morse code. Nothing you paste is uploaded." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -41,7 +42,7 @@
             "url": "https://liveparse.com/",
             "name": "LiveParse",
             "alternateName": ["Liveparse", "Live Parse", "liveparse.com"],
-            "description": "Private browser-based tools for JSON, YAML, XML, SQL, images, tokens, identifiers, encoding, timestamps, and exact calendar calculations.",
+            "description": "Private browser-based tools for JSON, YAML, XML, SQL, regex, images, tokens, identifiers, encoding, timestamps, and exact calendar calculations.",
             "inLanguage": "en",
             "publisher": { "@id": "https://liveparse.com/#organization" }
           },
@@ -72,8 +73,8 @@
             "@id": "https://liveparse.com/#webpage",
             "url": "https://liveparse.com/",
             "name": "LiveParse: free private developer tools",
-            "description": "63 free developer tools that run in your browser: JSON, SQL, and YAML formatters, timestamp and business day calculators, Base64, hashes, UUIDs, JWTs, images, and Morse code. No uploads, no sign-up.",
-            "dateModified": "2026-09-06",
+            "description": "Free developer tools that run in your browser: JSON, SQL, YAML, and regex formatters and testers, timestamp and business day calculators, Base64, hashes, UUIDs, JWTs, images, and Morse code. No uploads, no sign-up.",
+            "dateModified": "2026-09-16",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "about": { "@id": "https://liveparse.com/#organization" },
@@ -84,18 +85,19 @@
             "@id": "https://liveparse.com/#featured-tools",
             "name": "Featured LiveParse tools",
             "itemListOrder": "https://schema.org/ItemListOrderAscending",
-            "numberOfItems": 10,
+            "numberOfItems": 11,
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "Business Days Calculator", "url": "https://liveparse.com/business-days-calculator/" },
               { "@type": "ListItem", "position": 2, "name": "Morse Code Translator", "url": "https://liveparse.com/morse-code-translator/" },
               { "@type": "ListItem", "position": 3, "name": "JSON Formatter, Validator & Viewer", "url": "https://liveparse.com/json-formatter/" },
-              { "@type": "ListItem", "position": 4, "name": "SQL Formatter", "url": "https://liveparse.com/sql-formatter/" },
-              { "@type": "ListItem", "position": 5, "name": "YAML Formatter", "url": "https://liveparse.com/yaml-formatter/" },
-              { "@type": "ListItem", "position": 6, "name": "Unix Timestamp Converter", "url": "https://liveparse.com/unix-timestamp-converter/" },
-              { "@type": "ListItem", "position": 7, "name": "Image Compressor", "url": "https://liveparse.com/image-compressor/" },
-              { "@type": "ListItem", "position": 8, "name": "Base64 Decoder", "url": "https://liveparse.com/base64-decoder/" },
-              { "@type": "ListItem", "position": 9, "name": "UUID Generator", "url": "https://liveparse.com/uuid-generator/" },
-              { "@type": "ListItem", "position": 10, "name": "JWT Decoder", "url": "https://liveparse.com/jwt-decoder/" }
+              { "@type": "ListItem", "position": 4, "name": "Regex Tester & Debugger", "url": "https://liveparse.com/regex-tester/" },
+              { "@type": "ListItem", "position": 5, "name": "SQL Formatter", "url": "https://liveparse.com/sql-formatter/" },
+              { "@type": "ListItem", "position": 6, "name": "YAML Formatter", "url": "https://liveparse.com/yaml-formatter/" },
+              { "@type": "ListItem", "position": 7, "name": "Unix Timestamp Converter", "url": "https://liveparse.com/unix-timestamp-converter/" },
+              { "@type": "ListItem", "position": 8, "name": "Image Compressor", "url": "https://liveparse.com/image-compressor/" },
+              { "@type": "ListItem", "position": 9, "name": "Base64 Decoder", "url": "https://liveparse.com/base64-decoder/" },
+              { "@type": "ListItem", "position": 10, "name": "UUID Generator", "url": "https://liveparse.com/uuid-generator/" },
+              { "@type": "ListItem", "position": 11, "name": "JWT Decoder", "url": "https://liveparse.com/jwt-decoder/" }
             ]
           }
         ]
@@ -112,19 +114,20 @@
           <a href="#yaml-xml">YAML &amp; XML</a>
           <a href="#sql">SQL</a>
           <a href="#dates">Dates</a>
+          <a href="/regex-tester/">Regex</a>
           <a href="#encoding">Encoding</a>
           <a href="#security">Hashes &amp; UUIDs</a>
           <a href="#images-text">Images &amp; text</a>
           <a href="/guides/">Guides</a>
           <a href="/about/">About</a>
-          <a href="/ko/json-parser/" lang="ko">한국어</a>
+
         </div>
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
-          <p class="eyebrow">63 tools · Free · No sign-up · Nothing uploaded</p>
+          <p class="eyebrow">Free tools · No sign-up · Nothing uploaded</p>
           <h1>LiveParse: free developer tools that never upload your data</h1>
-          <p class="hero-lead">Format JSON, SQL, YAML, and XML. Calculate business days, ages, and timestamps. Encode Base64 and URLs, hash files, generate UUIDs, decode JWTs, compress images, and translate Morse code. Every LiveParse tool runs inside this browser tab, so pasted data and selected files stay on your machine.</p>
+          <p class="hero-lead">Format JSON, SQL, YAML, and XML. Test regular expressions, calculate business days, ages, and timestamps. Encode Base64 and URLs, hash files, generate UUIDs, decode JWTs, compress images, and translate Morse code. Every LiveParse tool runs inside this browser tab, so pasted data and selected files stay on your machine.</p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#tools">Browse all tools</a>
             <a class="text-link" href="/json-formatter/">Open the JSON formatter <span aria-hidden="true">→</span></a>
@@ -169,7 +172,6 @@
           <article><h3><a href="/jsonl-parser/">JSONL / NDJSON Parser</a></h3><p>Line-level diagnostics, filtering, a paged table, and CSV export.</p></article>
           <article><h3><a href="/json-to-csv/">JSON to CSV</a></h3><p>Flatten nested fields, keep large IDs exact, and download clean CSV.</p></article>
           <article><h3><a href="/csv-to-json/">CSV to JSON</a></h3><p>Parse quoted and multiline CSV into a valid JSON array.</p></article>
-          <article lang="ko"><h3><a href="/ko/json-parser/" hreflang="ko">JSON 파서 (한국어)</a></h3><p>한국어 인터페이스의 무손실 JSON 파서·포매터·검증기.</p></article>
         </div>
       </section>
 
@@ -215,8 +217,9 @@
       </section>
 
       <section class="content-section" id="encoding" aria-labelledby="encoding-heading">
-        <div class="section-heading"><p class="section-kicker">Encoding and numbers</p><h2 id="encoding-heading">Encoding, URL, number, and code translators</h2><p>RFC-aware Base64 and URL handling, arbitrary-precision base conversion, and International Morse code.</p></div>
+        <div class="section-heading"><p class="section-kicker">Encoding and numbers</p><h2 id="encoding-heading">Regex, encoding, URL, and number tools</h2><p>JavaScript regex testing, RFC-aware Base64 and URL handling, arbitrary-precision base conversion, and International Morse code.</p></div>
         <div class="use-case-grid">
+          <article><h3><a href="/regex-tester/">Regex Tester &amp; Debugger</a></h3><p>Highlight matches, inspect groups, preview replacements, and stop slow patterns locally.</p></article>
           <article><h3><a href="/base64-decoder/">Base64 Decoder</a></h3><p>Standard Base64, Base64URL, files, and Data URLs with RFC diagnostics.</p></article>
           <article><h3><a href="/base64-encoder/">Base64 Encoder</a></h3><p>Encode UTF-8 text or local files as Base64, Base64URL, or a Data URL.</p></article>
           <article><h3><a href="/url-encoder/">URL Encoder</a></h3><p>Component, full-URI, RFC 3986, and form encoding kept distinct.</p></article>
@@ -251,17 +254,13 @@
       <section class="content-section" id="images-text" aria-labelledby="images-text-heading">
         <div class="section-heading"><p class="section-kicker">Images and text</p><h2 id="images-text-heading">Image converters and text counters</h2><p>Static images are decoded and re-encoded locally; text metrics use Unicode-aware segmentation.</p></div>
         <div class="use-case-grid">
-          <article><h3><a href="/image-compressor/">Image Compressor</a></h3><p>Compress JPEG, PNG, or WebP toward a target size such as 100 KB.</p></article>
+          <article><h3><a href="/image-compressor/">Image Compressor</a></h3><p>Compress up to 20 JPEG, PNG, or WebP images toward a target size, then download a ZIP.</p></article>
           <article><h3><a href="/image-resizer/">Image Resizer</a></h3><p>Resize by pixels or percent with aspect-ratio and no-upscale controls.</p></article>
           <article><h3><a href="/png-to-jpg/">PNG to JPG</a></h3><p>Convert PNG to JPEG with a chosen background for transparency.</p></article>
           <article><h3><a href="/webp-to-jpg/">WebP to JPG</a></h3><p>Turn WebP into broadly compatible JPEG.</p></article>
           <article><h3><a href="/webp-to-png/">WebP to PNG</a></h3><p>Lossless PNG output that preserves transparency.</p></article>
           <article><h3><a href="/word-counter/">Word Counter</a></h3><p>Words, sentences, paragraphs, and reading time.</p></article>
           <article><h3><a href="/character-counter/">Character Counter</a></h3><p>Graphemes, code points, UTF-16 units, and UTF-8 bytes.</p></article>
-          <article lang="es"><h3><a href="/es/contador-de-palabras/" hreflang="es">Contador de palabras</a></h3><p>Contador de palabras y frases para español.</p></article>
-          <article lang="es"><h3><a href="/es/contador-de-caracteres/" hreflang="es">Contador de caracteres</a></h3><p>Grafemas, puntos de código y bytes UTF-8.</p></article>
-          <article lang="ja"><h3><a href="/ja/character-counter/" hreflang="ja">文字数カウント</a></h3><p>空白を含む・含まない文字数と Unicode 単位を確認。</p></article>
-          <article lang="ko"><h3><a href="/ko/character-counter/" hreflang="ko">글자수 세기</a></h3><p>공백 포함·제외 글자 수와 UTF-8 바이트 계산.</p></article>
         </div>
       </section>
 
@@ -301,6 +300,7 @@
         <a href="/hash-generator/">Hash Generator</a>
         <a href="/uuid-generator/">UUID Generator</a>
         <a href="/jwt-decoder/">JWT Decoder</a>
+        <a href="/regex-tester/">Regex Tester</a>
         <a href="/image-compressor/">Image Compressor</a>
         <a href="/morse-code-translator/">Morse Code Translator</a>
         <a href="/guides/">Guides</a>
@@ -309,7 +309,7 @@
         <a href="/feed.xml">Atom feed</a>
         <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">Source on GitHub</a>
       </div>
-      <p class="footer-note">Last reviewed September 6, 2026 · Tool input stays local · No advertising or analytics cookies</p>
+      <p class="footer-note">Last reviewed September 16, 2026 · Tool input stays local · No advertising or analytics cookies</p>
     </footer>
   </body>
 </html>

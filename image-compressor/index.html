@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Image Compressor – Compress to File Size | LiveParse</title>
-    <meta name="description" content="Compress JPEG, PNG, or WebP images toward 20 KB–1 MB file-size targets with honest quality and resize limits, processed locally in your browser." />
+    <title>Image Compressor – Batch Compress to File Size | LiveParse</title>
+    <meta name="description" content="Batch-compress up to 20 JPEG, PNG, or WebP images toward 20 KB–1 MB targets, compare results, and download a local ZIP without uploads." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/image-compressor/" />
@@ -16,8 +17,8 @@
     <link rel="stylesheet" href="/src/image-tools.css" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/image-compressor/" />
-    <meta property="og:title" content="Image Compressor with Honest Target-Size Results" />
-    <meta property="og:description" content="Aim for a byte budget while keeping the best JPEG or WebP quality the browser can produce, with proportional resizing when required." />
+    <meta property="og:title" content="Batch Image Compressor with Honest Target Results" />
+    <meta property="og:description" content="Compress up to 20 local images toward a byte budget, compare quality and dimensions, then download individual files or one ZIP." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-image-tools.png" />
@@ -26,7 +27,7 @@
     <meta property="og:image:alt" content="LiveParse local image compressor" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Compress JPG, PNG, and WebP Locally | LiveParse" />
-    <meta name="twitter:description" content="Choose a target byte budget, compare dimensions and size, and download only after the browser reports what it achieved." />
+    <meta name="twitter:description" content="Choose a target byte budget for up to 20 images, compare results, and download a ZIP after local processing." />
     <meta name="twitter:image" content="https://liveparse.com/og-image-tools.png" />
     <meta name="theme-color" content="#087487" />
     <script type="application/ld+json">
@@ -44,9 +45,10 @@
             "browserRequirements": "Requires JavaScript, Canvas, image decoding, and browser image encoders",
             "isAccessibleForFree": true,
             "inLanguage": "en",
-            "description": "Compress a validated static JPEG, PNG, or WebP image toward a selected byte budget with explicit output-format, quality, resize, and browser-encoder limits.",
+            "description": "Compress validated static JPEG, PNG, or WebP images toward a selected byte budget with explicit batch, output-format, quality, resize, and browser-encoder limits.",
             "featureList": [
               "Target 20 KB, 50 KB, 100 KB, 200 KB, 500 KB, or 1 MB",
+              "Queue up to 20 local images and download every completed result as one ZIP",
               "Search JPEG and WebP quality for the highest result at or below the target",
               "Reduce dimensions proportionally when quality alone cannot meet the target",
               "Re-encode PNG without pretending that a Canvas quality value controls PNG compression",
@@ -73,6 +75,7 @@
               { "@type": "Question", "name": "Does the quality control compress PNG files?", "acceptedAnswer": { "@type": "Answer", "text": "No. The browser Canvas PNG encoder does not expose a lossy quality control. PNG output is re-encoded and may be resized proportionally when needed, but a JPEG-style quality search is not presented as PNG compression." } },
               { "@type": "Question", "name": "What happens when the original image is already below the target?", "acceptedAnswer": { "@type": "Answer", "text": "When Original format is selected and the source is already at or below the target, the original file bytes are returned unchanged. Choosing another output format still requires decoding and re-encoding." } },
               { "@type": "Question", "name": "Which images can this compressor process?", "acceptedAnswer": { "@type": "Answer", "text": "It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, files with unsupported signatures, and images the browser cannot decode are rejected." } },
+              { "@type": "Question", "name": "Can I compress multiple images at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Add up to 20 validated static images with a 100 MiB aggregate limit, remove individual files before processing, then download selected results or one ZIP. Every image stays on your device." } },
               { "@type": "Question", "name": "Is my image uploaded while it is compressed?", "acceptedAnswer": { "@type": "Answer", "text": "The selected image is decoded, processed, previewed, and exported in the current browser tab without intentionally sending its bytes to an image-conversion service. Page requests, browser extensions, operating-system services, downloaded files, and destinations where you later share the result remain separate boundaries." } }
             ]
           }
@@ -91,8 +94,8 @@
         <div class="seo-hero-copy">
           <p class="eyebrow">Target a byte budget · Compare before and after · Local processing</p>
           <h1>Image Compressor for a Target File Size</h1>
-          <p class="hero-lead">Compress a static JPEG, PNG, or WebP toward a practical file-size ceiling. Keep the highest JPEG or WebP quality found under the target, then reduce dimensions proportionally only when the byte budget requires it.</p>
-          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Compress an image</a><span>20 KB to 1 MB targets · No sign-up</span></div>
+          <p class="hero-lead">Compress one static JPEG, PNG, or WebP or queue a local batch of up to 20 files. Keep the highest JPEG or WebP quality found under the target, then download individual results or one ZIP.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#image-tool">Compress images</a><span>20 KB to 1 MB targets · Up to 20 files · No sign-up</span></div>
         </div>
         <div class="hero-example" aria-label="Image compression target example">
           <div class="example-bar"><span></span><span></span><span></span><strong>measured result</strong></div>
@@ -184,6 +187,7 @@
           <details><summary>Does the quality control compress PNG files?</summary><p>No. The browser Canvas PNG encoder does not expose a lossy quality control. PNG output is re-encoded and may be resized proportionally when needed, but a JPEG-style quality search is not presented as PNG compression.</p></details>
           <details><summary>What happens when the original image is already below the target?</summary><p>When Original format is selected and the source is already at or below the target, the original file bytes are returned unchanged. Choosing another output format still requires decoding and re-encoding.</p></details>
           <details><summary>Which images can this compressor process?</summary><p>It accepts validated static JPEG, PNG, and WebP files up to 25 MiB and 40 megapixels. HEIC, AVIF, animated images, files with unsupported signatures, and images the browser cannot decode are rejected.</p></details>
+          <details><summary>Can I compress multiple images at once?</summary><p>Yes. Add up to 20 validated static images with a 100 MiB aggregate limit, remove individual files before processing, then download selected results or one ZIP. Every image stays on your device.</p></details>
           <details><summary>Is my image uploaded while it is compressed?</summary><p>The selected image is decoded, processed, previewed, and exported in the current browser tab without intentionally sending its bytes to an image-conversion service. Page requests, browser extensions, operating-system services, downloaded files, and destinations where you later share the result remain separate boundaries.</p></details>
         </div>
       </section>

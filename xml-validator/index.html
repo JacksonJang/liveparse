@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -41,7 +42,14 @@
             "description": "A local XML 1.0 well-formedness checker for documents without a DOCTYPE, with syntax diagnostics and structural statistics.",
             "isAccessibleForFree": true,
             "browserRequirements": "JavaScript and Web Worker support",
-            "dateModified": "2026-08-04"
+            "dateModified": "2026-09-16",
+            "featureList": [
+              "Check XML 1.0 well-formedness in a disposable local Web Worker",
+              "Report parser diagnostics with line and column when available",
+              "Load a valid shipment sample or a deliberately mismatched tag sample",
+              "Reject DOCTYPE grammar, custom entities, and external resource fetching",
+              "Return bounded element, attribute, namespace, and depth statistics"
+            ]
           },
           {
             "@type": "BreadcrumbList",
@@ -101,7 +109,7 @@
     <main>
       <section class="tool-intro" id="validator" aria-labelledby="validator-heading">
         <div><p class="section-kicker">Check one document locally</p><h2 id="validator-heading">Check XML 1.0 well-formedness without DTD processing</h2></div>
-        <p>The checker parses a document without a DOCTYPE in a disposable browser worker. A passing result confirms its supported XML 1.0 syntax baseline only; it is not evidence that a schema, signature, or business rule accepted the document.</p>
+        <p>The checker parses a document without a DOCTYPE in a disposable browser worker. Load the valid sample or the intentional mismatched-tag sample to see a local line-and-column diagnostic before pasting your own document. A passing result confirms its supported XML 1.0 syntax baseline only; it is not evidence that a schema, signature, or business rule accepted the document.</p>
       </section>
       <div id="xml-root">
         <section class="parser-fallback" aria-label="XML validator loading"><p><strong>Loading the private XML 1.0 syntax checker…</strong></p><p>Enable JavaScript to check a document without a DOCTYPE locally. The error guide and validation boundaries below remain readable.</p></section>
@@ -194,7 +202,7 @@
     <footer class="site-footer">
       <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
       <div class="footer-links"><a href="/xml-formatter/">XML Formatter</a><a href="/xml-validator/">XML Validator</a><a href="/xml-viewer/">XML Viewer</a><a href="/guides/xml-well-formed-vs-valid/">XML Guide</a><a href="/privacy/">Privacy</a></div>
-      <p class="footer-note">Last reviewed August 4, 2026 · Well-formedness only · External resources never fetched</p>
+      <p class="footer-note">Last reviewed September 16, 2026 · Well-formedness only · External resources never fetched</p>
     </footer>
     <noscript><p class="noscript-note">JavaScript is required for the interactive XML 1.0 syntax check. The well-formedness, DOCTYPE boundary, error, scope, and security guidance remains readable without it.</p></noscript>
     <script type="module" src="/src/xml.tsx"></script>

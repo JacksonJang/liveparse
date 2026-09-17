@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const distDirectory = resolve(projectRoot, 'dist');
+const distDirectory = resolve(process.argv[2] || process.env.DIST_DIR || resolve(projectRoot, 'dist'));
 const source = resolve(projectRoot, 'server/worker.js');
 const serverDirectory = resolve(distDirectory, 'server');
 const destination = resolve(serverDirectory, 'index.js');

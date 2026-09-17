@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-09-07T19:44:00+09:00</updated>
+  <updated>2026-09-15T22:16:28Z</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -12,6 +12,117 @@
     <uri>https://github.com/JacksonJang</uri>
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
+
+  <entry>
+    <id>https://liveparse.com/url-encoder/</id>
+    <title>URL Encoder</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/url-encoder/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-09-15T22:16:28Z</updated>
+    <category term="URL encoding" />
+    <summary>Percent-encode a component, stricter RFC 3986 component, complete URI, or form field locally with mobile-sized mode, sample, clear, and copy targets.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/url-decoder/</id>
+    <title>URL Decoder</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/url-decoder/" />
+    <published>2026-08-04T06:56:03+09:00</published>
+    <updated>2026-09-15T22:16:28Z</updated>
+    <category term="URL decoding" />
+    <summary>Strictly decode one intentional percent-encoding round with component, full-URI, or form rules and comfortable mobile action targets.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/base64-decoder/</id>
+    <title>Base64 Decoder and Base64URL Validator</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/base64-decoder/" />
+    <updated>2026-09-15T22:12:39Z</updated>
+    <category term="Base64" />
+    <summary>Decode standard Base64, Base64URL, and Data URLs locally with explicit validation controls, UTF-8 or hex output, safe raster previews, and mobile-sized copy and download targets.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/sql-formatter/</id>
+    <title>SQL Formatter and Beautifier</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/sql-formatter/" />
+    <updated>2026-09-15T22:10:27Z</updated>
+    <category term="SQL formatting" />
+    <summary>Format SQL across fifteen dialect profiles with keyword case, indentation, expression width, statement spacing, and mobile-sized controls in a local worker.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/xml-validator/</id>
+    <title>XML Validator and Syntax Checker</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/xml-validator/" />
+    <updated>2026-09-15T22:07:07Z</updated>
+    <category term="XML validation" />
+    <summary>Check XML 1.0 well-formedness locally with line-and-column diagnostics, valid and intentionally invalid samples, bounded statistics, and no external resource fetching.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/json-formatter/</id>
+    <title>JSON Formatter, Validator and Viewer</title>
+    <published>2026-09-06T14:06:57+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/json-formatter/" />
+    <updated>2026-09-15T22:05:58Z</updated>
+    <category term="JSON tools" />
+    <summary>Format, validate, minify, and explore JSON with exact number preservation and a balanced mobile layout that keeps options, search, navigation, copy controls, and tree space comfortable.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/yaml-validator/</id>
+    <title>YAML Validator and Syntax Checker</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/yaml-validator/" />
+    <updated>2026-09-15T21:58:06Z</updated>
+    <category term="YAML validation" />
+    <summary>Validate YAML syntax locally with line-and-column diagnostics, valid and intentionally invalid samples, YAML version selection, alias checks, and duplicate scalar-key checks.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/image-compressor/</id>
+    <title>Image Compressor to 20KB, 50KB, 100KB, 200KB, or 500KB</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/image-compressor/" />
+    <updated>2026-09-15T21:55:48Z</updated>
+    <category term="Image compression" />
+    <summary>Build a private browser batch of up to 20 images, choose a KB target, compare before-and-after previews, and download all results as a ZIP with mobile-sized controls.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/ascii-table/</id>
+    <title>ASCII Table</title>
+    <published>2026-08-04T07:59:09+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/ascii-table/" />
+    <updated>2026-09-15T21:53:05Z</updated>
+    <category term="ASCII" />
+    <summary>Search all 128 standard ASCII codes and read them as mobile-friendly cards with labeled values, full-width copy targets, and no horizontal table scrolling.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/discord-timestamp-generator/</id>
+    <title>Discord Timestamp Generator</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/discord-timestamp-generator/" />
+    <updated>2026-09-15T21:48:29Z</updated>
+    <category term="Discord timestamps" />
+    <summary>Generate all nine Discord timestamp formats with common timezone shortcuts, mobile-sized copy controls, locale previews, and explicit daylight-saving choices.</summary>
+  </entry>
+
+  <entry>
+    <id>https://liveparse.com/regex-tester/</id>
+    <title>Regex Tester and Debugger</title>
+    <published>2026-09-16T01:55:42+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/regex-tester/" />
+    <updated>2026-09-15T16:55:42Z</updated>
+    <category term="Regular expressions" />
+    <summary>Test JavaScript regular expressions locally with highlighted matches, capture groups, replacement previews, explicit flags, and a one-second worker timeout.</summary>
+  </entry>
+
 
   <entry>
     <id>https://liveparse.com/business-days-calculator/</id>
@@ -106,15 +217,6 @@
   </entry>
 
   <entry>
-    <id>https://liveparse.com/image-compressor/</id>
-    <title>Image Compressor to 20KB, 50KB, 100KB, 200KB, or 500KB</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/image-compressor/" />
-    <published>2026-08-04T10:32:00+09:00</published>
-    <updated>2026-08-04T10:32:00+09:00</updated>
-    <category term="Image compression" />
-    <summary>Compress JPEG, PNG, or WebP images toward a chosen KB limit in the browser, with honest target status, dimensions, and file-size comparisons.</summary>
-  </entry>
-  <entry>
     <id>https://liveparse.com/image-resizer/</id>
     <title>Image Resizer by Pixels or Percent</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/image-resizer/" />
@@ -168,43 +270,6 @@
     <updated>2026-08-04T09:39:03+09:00</updated>
     <category term="Morse code standards" />
     <summary>Compare International Morse letters, digits, punctuation, token separators, signal timing, prosigns, and decoding limits against the ITU recommendation.</summary>
-  </entry>
-
-  <entry xml:lang="es">
-    <id>https://liveparse.com/es/contador-de-palabras/</id>
-    <title>Contador de palabras</title>
-    <link rel="alternate" type="text/html" hreflang="es" href="https://liveparse.com/es/contador-de-palabras/" />
-    <published>2026-08-04T09:14:05+09:00</published>
-    <updated>2026-08-04T09:14:05+09:00</updated>
-    <category term="Medición de texto" />
-    <summary>Cuenta palabras, frases, párrafos y líneas con segmentación configurada para español y estimaciones ajustables de lectura y locución.</summary>
-  </entry>
-  <entry xml:lang="es">
-    <id>https://liveparse.com/es/contador-de-caracteres/</id>
-    <title>Contador de caracteres</title>
-    <link rel="alternate" type="text/html" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
-    <published>2026-08-04T09:14:05+09:00</published>
-    <updated>2026-08-04T09:14:05+09:00</updated>
-    <category term="Unicode y longitud de texto" />
-    <summary>Compara grafemas visibles, caracteres sin espacios, puntos de código, unidades UTF-16 y bytes UTF-8 sin normalizar el texto.</summary>
-  </entry>
-  <entry xml:lang="ja">
-    <id>https://liveparse.com/ja/character-counter/</id>
-    <title>文字数カウント</title>
-    <link rel="alternate" type="text/html" hreflang="ja" href="https://liveparse.com/ja/character-counter/" />
-    <published>2026-08-04T09:14:05+09:00</published>
-    <updated>2026-08-04T09:14:05+09:00</updated>
-    <category term="文字数とUnicode" />
-    <summary>空白を含む・含まない文字数と、書記素・コードポイント・UTF-16・UTF-8の違いをブラウザ内で確認します。</summary>
-  </entry>
-  <entry xml:lang="ko">
-    <id>https://liveparse.com/ko/character-counter/</id>
-    <title>글자수 세기</title>
-    <link rel="alternate" type="text/html" hreflang="ko" href="https://liveparse.com/ko/character-counter/" />
-    <published>2026-08-04T09:14:05+09:00</published>
-    <updated>2026-08-04T09:14:05+09:00</updated>
-    <category term="글자 수와 Unicode" />
-    <summary>공백 포함·제외 글자 수와 grapheme, 코드 포인트, UTF-16 코드 단위, UTF-8 바이트를 구분해 계산합니다.</summary>
   </entry>
 
   <entry>
@@ -272,15 +337,6 @@
     <summary>Translate Unicode text to complete 8-bit UTF-8 binary bytes and decode valid byte sequences without silent replacement.</summary>
   </entry>
   <entry>
-    <id>https://liveparse.com/ascii-table/</id>
-    <title>ASCII Table</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/ascii-table/" />
-    <published>2026-08-04T07:59:09+09:00</published>
-    <updated>2026-08-04T07:59:09+09:00</updated>
-    <category term="ASCII" />
-    <summary>Search all 128 standard ASCII codes by safe symbol label, control abbreviation, name, decimal, hexadecimal, octal, or binary value.</summary>
-  </entry>
-  <entry>
     <id>https://liveparse.com/guides/binary-decimal-hex-octal-conversion/</id>
     <title>Binary, Decimal, Hex, and Octal Conversion</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/guides/binary-decimal-hex-octal-conversion/" />
@@ -308,24 +364,6 @@
     <summary>Separate characters, Unicode code points, and UTF-8 bytes while preserving ASCII's exact 0 through 127 subset.</summary>
   </entry>
 
-  <entry>
-    <id>https://liveparse.com/url-encoder/</id>
-    <title>URL Encoder</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/url-encoder/" />
-    <published>2026-08-04T06:56:03+09:00</published>
-    <updated>2026-08-04T06:56:03+09:00</updated>
-    <category term="URL encoding" />
-    <summary>Percent-encode a component, stricter RFC 3986 component, complete URI, or form field locally.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/url-decoder/</id>
-    <title>URL Decoder</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/url-decoder/" />
-    <published>2026-08-04T06:56:03+09:00</published>
-    <updated>2026-08-04T06:56:03+09:00</updated>
-    <category term="URL decoding" />
-    <summary>Strictly decode one intentional percent-encoding round with component, full-URI, or form rules.</summary>
-  </entry>
   <entry>
     <id>https://liveparse.com/url-parser/</id>
     <title>URL Parser</title>
@@ -444,32 +482,5 @@
     <category term="Checksum guides" />
     <summary>Compare exact file bytes with a trusted publisher digest and understand what a checksum match does not prove.</summary>
   </entry>
-  <entry>
-    <id>https://liveparse.com/guides/hashing-utf8-newlines/</id>
-    <title>UTF-8 and Newline Hashing Pitfalls</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/hashing-utf8-newlines/" />
-    <published>2026-08-04T06:15:45+09:00</published>
-    <updated>2026-08-04T06:15:45+09:00</updated>
-    <category term="Hashing guides" />
-    <summary>Explain why Unicode normalization, text encoding, line endings, and trailing newlines change a digest.</summary>
-  </entry>
 
-  <entry>
-    <id>https://liveparse.com/uuid-v4-generator/</id>
-    <title>UUID v4 Generator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/uuid-v4-generator/" />
-    <published>2026-08-04T05:37:22+09:00</published>
-    <updated>2026-08-04T05:37:22+09:00</updated>
-    <category term="UUID" />
-    <summary>Generate RFC 9562 UUID v4 values with browser cryptography, bulk export, and explicit formatting options.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/uuid-decoder/</id>
-    <title>UUID Decoder</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/uuid-decoder/" />
-    <published>2026-08-04T05:37:22+09:00</published>
-    <updated>2026-08-04T05:37:22+09:00</updated>
-    <category term="UUID" />
-    <summary>Inspect UUID version, variant, bytes, and the standard timestamp fields defined for versions 1, 6, and 7.</summary>
-  </entry>
 </feed>

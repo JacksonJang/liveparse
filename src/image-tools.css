@@ -299,7 +299,7 @@
 .image-tools-field input:focus,
 .image-tools-field select:focus { border-color: rgba(8, 116, 135, .7); box-shadow: 0 0 0 3px rgba(8, 116, 135, .12); }
 .image-tools-field input[type="color"] { min-height: 45px; padding: 5px; }
-.image-tools-field input[type="range"] { min-height: 28px; padding: 0; accent-color: var(--it-blue); }
+.image-tools-field input[type="range"] { min-height: 36px; padding: 0; accent-color: var(--it-blue); }
 
 .image-tools-inline-input { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; }
 .image-tools-inline-input > span {
@@ -316,11 +316,11 @@
 }
 
 .image-tools-presets { display: flex; flex-wrap: wrap; gap: 6px; }
-.image-tools-preset { min-height: 31px; padding: 6px 9px; color: var(--it-blue-dark); background: var(--it-blue-pale); font-size: 12px; }
+.image-tools-preset { min-height: 38px; padding: 8px 11px; color: var(--it-blue-dark); background: var(--it-blue-pale); font-size: 12px; }
 .image-tools-preset.active { color: #fff; background: var(--it-blue-dark); box-shadow: 0 7px 15px rgba(7, 86, 104, .17); }
 
 .image-tools-segment { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--it-line); border-radius: 999px; background: #fff; }
-.image-tools-segment button { min-height: 34px; flex: 1; padding: 6px 9px; color: var(--it-muted); background: transparent; font-size: 12px; }
+.image-tools-segment button { min-height: 38px; flex: 1; padding: 8px 11px; color: var(--it-muted); background: transparent; font-size: 12px; }
 .image-tools-segment button.active { color: #fff; background: var(--it-blue-dark); }
 
 .image-tools-check {
@@ -515,6 +515,14 @@
   .image-tools-preview-frame,
   .image-tools-preview-frame img { min-height: 200px; height: 200px; }
   .image-tools-result-actions { justify-content: flex-start; }
+  .image-tools-clear,
+  .image-tools-remove,
+  .image-tools-primary,
+  .image-tools-secondary,
+  .image-tools-preset,
+  .image-tools-segment button,
+  .image-tools-download { min-height: 44px; padding: 10px 13px; }
+  .image-tools-field input[type="range"] { min-height: 44px; }
 }
 
 @media (max-width: 520px) {
@@ -529,6 +537,8 @@
   .image-tools-actions > button { width: 100%; }
   .image-tools-actions { flex-direction: column; }
   .image-tools-result-facts > div { min-width: calc(50% - 4px); }
+  .image-tools-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .image-tools-preset { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

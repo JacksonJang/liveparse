@@ -4,6 +4,7 @@ import { Buffer } from 'node:buffer';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseXml } from '@rgrove/parse-xml';
+import { validateEnglishBranding } from './seo-branding.mjs';
 
 export const DEFAULT_BASE_URL = 'https://liveparse.com';
 export const NORMAL_USER_AGENT =
@@ -651,7 +652,7 @@ function hasBlockingRobotsDirective(value) {
 }
 
 function validateHtml(body, headers, expectedCanonical, variantLabel) {
-  const failures = [];
+  const failures = validateEnglishBranding(body.toString('utf8'), variantLabel);
   const contentType = (headers.get('content-type') || '').split(';', 1)[0].trim().toLowerCase();
   if (contentType !== 'text/html' && contentType !== 'application/xhtml+xml') {
     failures.push(`${variantLabel}: expected an HTML Content-Type, received ${JSON.stringify(contentType || null)}`);

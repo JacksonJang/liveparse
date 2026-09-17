@@ -52,6 +52,9 @@ const YAML_SAMPLES: Record<YamlMode, string> = {
 }`,
 };
 
+// A deliberately invalid validator sample: the tab on line 3 cannot start YAML indentation.
+const YAML_VALIDATE_ERROR_SAMPLE = 'workflow:\n  name: private-check\n\tenabled: true\n';
+
 const MODE_COPY: Record<YamlMode, {
   action: string;
   busy: string;
@@ -464,6 +467,16 @@ function YamlToolApp(): React.JSX.Element {
           <div className="xml-actions">
             <button type="button" className="xml-button primary" disabled={busy} onClick={run}>{busy ? copy.busy : copy.action}</button>
             <button type="button" className="xml-button" disabled={busy} onClick={() => updateInput(YAML_SAMPLES[mode], 'Synthetic sample restored. Run the operation when ready.')}>Load sample</button>
+            {mode === 'validate' ? (
+              <button
+                type="button"
+                className="xml-button"
+                disabled={busy}
+                onClick={() => updateInput(YAML_VALIDATE_ERROR_SAMPLE, 'Invalid tab-indentation sample loaded. The next local run should report its source position.')}
+              >
+                Try tab error
+              </button>
+            ) : null}
             <button type="button" className="xml-button" disabled={busy} onClick={() => fileInputRef.current?.click()}>Open file</button>
             <input ref={fileInputRef} className="visually-hidden" type="file" aria-label="Open a local file" accept={mode === 'json-to-yaml' ? '.json,application/json,text/plain' : '.yaml,.yml,application/yaml,text/yaml,text/plain'} onChange={(event) => void loadFile(event.target.files?.[0])} />
             <button type="button" className="xml-button quiet" disabled={busy || !input} onClick={() => updateInput('', 'Input cleared. Nothing was uploaded or stored.')}>Clear</button>

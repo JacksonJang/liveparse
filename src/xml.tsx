@@ -53,6 +53,9 @@ const XML_SAMPLES: Record<XmlMode, string> = {
 </feed>`,
 };
 
+// A deliberately invalid validator sample: the closing tag does not match its opening element.
+const XML_VALIDATE_ERROR_SAMPLE = `<?xml version="1.0" encoding="UTF-8"?>\n<shipment id="ship-2026-0814">\n  <origin>Seoul</origin>\n  <destination>Portland</destination>\n</shipmnt>\n`;
+
 const MODE_COPY: Record<XmlMode, {
   action: string;
   busy: string;
@@ -434,7 +437,24 @@ function XmlToolApp(): React.JSX.Element {
           <header><div><p>Source document</p><h2 id="xml-input-heading">{copy.inputHeading}</h2></div><span>{lineCount(input).toLocaleString('en-US')} lines · {input.length.toLocaleString('en-US')} UTF-16 units</span></header>
           <label className="visually-hidden" htmlFor="xml-input">{copy.inputLabel}</label>
           <textarea id="xml-input" value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_XML_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={20} />
-          <div className="xml-actions"><button className="xml-button primary" type="submit" disabled={busy}>{busy ? copy.busy : copy.action}</button><button className="xml-button" type="button" disabled={busy} onClick={() => { setInput(XML_SAMPLES[mode]); invalidateResult('Loaded a synthetic XML sample. Run the local tool when ready.'); }}>Load sample</button><button className="xml-button quiet" type="button" disabled={busy} onClick={() => { setInput(''); invalidateResult('Input and result cleared from this page.'); }}>Clear</button></div>
+          <div className="xml-actions">
+            <button className="xml-button primary" type="submit" disabled={busy}>{busy ? copy.busy : copy.action}</button>
+            <button className="xml-button" type="button" disabled={busy} onClick={() => { setInput(XML_SAMPLES[mode]); invalidateResult('Loaded a synthetic XML sample. Run the local tool when ready.'); }}>Load sample</button>
+            {mode === 'validate' ? (
+              <button
+                className="xml-button"
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  setInput(XML_VALIDATE_ERROR_SAMPLE);
+                  invalidateResult('Invalid mismatched-tag sample loaded. The next local check should report its source position.');
+                }}
+              >
+                Try tag mismatch
+              </button>
+            ) : null}
+            <button className="xml-button quiet" type="button" disabled={busy} onClick={() => { setInput(''); invalidateResult('Input and result cleared from this page.'); }}>Clear</button>
+          </div>
         </section>
         <section className="xml-result-card" aria-labelledby="xml-result-heading">
           <header><div><p>{mode === 'validate' ? 'Syntax finding' : mode === 'view' ? 'Structured outline' : 'Serialized result'}</p><h2 id="xml-result-heading">{copy.resultHeading}</h2></div>{mode === 'format' && formattedOutput ? <span>{lineCount(formattedOutput).toLocaleString('en-US')} lines · {formattedOutput.length.toLocaleString('en-US')} UTF-16 units</span> : null}</header>

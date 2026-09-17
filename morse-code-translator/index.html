@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -65,7 +66,7 @@
             "url": "https://liveparse.com/morse-code-translator/",
             "name": "Morse Code Translator | English to Morse Decoder",
             "description": "Translate English text to International Morse code or decode separated dots and dashes back to text.",
-            "dateModified": "2026-09-06",
+            "dateModified": "2026-09-13",
             "inLanguage": "en",
             "mainEntity": { "@id": "https://liveparse.com/morse-code-translator/#application" }
           },
@@ -100,7 +101,7 @@
     <header class="site-header">
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
-        <div class="nav-links"><a href="#morse-tool">Translator</a><a href="#words">Words &amp; letters</a><a href="#letters">A–Z list</a><a href="/morse-code-alphabet/">Alphabet chart</a><a href="#alphabet">Morse chart</a><a href="#method">Method</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a></div>
+        <div class="nav-links"><a href="#morse-tool">Translator</a><a href="#how-to">How to translate</a><a href="#words">Examples</a><a href="#letters">A–Z list</a><a href="/morse-code-alphabet/">Alphabet chart</a><a href="#alphabet">Morse chart</a><a href="#method">Method</a><a href="#faq">FAQ</a><a href="/guides/">Guides</a></div>
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
@@ -125,6 +126,22 @@
         <p>Choose the direction, enter a message within the limit shown by the workspace, and copy or play the result. The decoder expects a space between letters and a spaced slash between words rather than trying to solve an unspaced signal stream.</p>
       </section>
       <div id="root"><section class="parser-fallback" aria-label="Morse code translator loading"><p><strong>Loading the Morse code translator…</strong></p><p>Enable JavaScript to translate and copy a message. The International Morse table, spacing rules, examples, and limitations remain readable below.</p></section></div>
+
+      <section class="content-section" id="how-to" aria-labelledby="how-to-heading">
+        <div class="section-heading"><p class="section-kicker">Two directions, one translator</p><h2 id="how-to-heading">How to translate English to Morse code and Morse code to text</h2></div>
+        <div class="prose-grid">
+          <div>
+            <h3>English to Morse code</h3>
+            <ol><li>Select <strong>Text → Morse</strong> in the translator.</li><li>Replace the sample with your message. For example, <code>HELLO</code> becomes <code>.... . .-.. .-.. ---</code>.</li><li>Copy the output, or play it as sound. Spaces separate letters and <code> / </code> separates words.</li></ol>
+          </div>
+          <div>
+            <h3>Morse code to text</h3>
+            <ol><li>Select <strong>Morse → Text</strong>.</li><li>Paste dots and dashes with a space between each letter. For example, <code>... --- ...</code> decodes to <code>SOS</code>.</li><li>Read the decoded text and any warnings. Check an unknown group against the <a href="/morse-code-alphabet/">Morse code alphabet chart</a>.</li></ol>
+          </div>
+        </div>
+        <p><strong>Why does spacing matter?</strong> <code>...</code> is S, but <code>. . .</code> is EEE. Keep letter boundaries when copying a message. This decoder reads written dots and dashes; it does not transcribe an audio recording or identify letters from an unspaced signal.</p>
+        <p><a href="#morse-tool">Use the Morse code translator ↑</a></p>
+      </section>
 
       <section class="content-section" id="words" aria-labelledby="words-heading">
         <div class="section-heading"><p class="section-kicker">Common lookups</p><h2 id="words-heading">Common words and letters in Morse code</h2><p>Looking for one word or letter “in Morse code”? These are the most requested translations, written the same way the translator writes them: a space between letters and a spaced slash between words.</p></div>

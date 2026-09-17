@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -41,7 +42,14 @@
             "description": "A local YAML syntax, alias-order, and duplicate-scalar-key validator using yaml 2.9.0, with YAML 1.2 Core Schema by default and optional YAML 1.1 parsing.",
             "isAccessibleForFree": true,
             "browserRequirements": "JavaScript and Web Worker support",
-            "dateModified": "2026-08-04"
+            "dateModified": "2026-09-16",
+            "featureList": [
+              "Validate YAML syntax in a disposable local Web Worker",
+              "Report parser diagnostics with line and column when available",
+              "Load a valid multi-step sample or a deliberately invalid tab-indentation sample",
+              "Choose YAML 1.2 Core or YAML 1.1 compatibility before parsing",
+              "Reject unresolved aliases and duplicate scalar mapping keys"
+            ]
           },
           {
             "@type": "BreadcrumbList",
@@ -102,7 +110,7 @@
     <main>
       <section class="tool-intro" id="validator" aria-labelledby="validator-heading">
         <div><p class="section-kicker">Check one stream locally</p><h2 id="validator-heading">Validate YAML syntax, aliases, and scalar mapping keys</h2></div>
-        <p>The checker uses <code>yaml</code> version <code>2.9.0</code> with YAML 1.2 Core Schema by default and optional YAML 1.1 compatibility. It accepts multi-document streams and standard document features, but deliberately does not claim application-schema validation.</p>
+        <p>The checker uses <code>yaml</code> version <code>2.9.0</code> with YAML 1.2 Core Schema by default and optional YAML 1.1 compatibility. Load the valid sample or the intentional tab-indentation error to see a local line-and-column diagnostic before pasting your own stream. The checker accepts multi-document streams and standard document features, but deliberately does not claim application-schema validation.</p>
       </section>
       <div id="yaml-root">
         <section class="parser-fallback" aria-label="YAML validator loading"><p><strong>Loading the private YAML syntax checker…</strong></p><p>Enable JavaScript to validate YAML locally. The error patterns, version boundary, and scope guidance below remain readable.</p></section>
@@ -194,7 +202,7 @@
     <footer class="site-footer">
       <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Private, browser-based tools for structured data, queries, tokens, identifiers, encoding, and timestamps.</p></div>
       <div class="footer-links"><a href="/yaml-formatter/">YAML Formatter</a><a href="/yaml-validator/">YAML Validator</a><a href="/yaml-viewer/">YAML Viewer</a><a href="/yaml-to-json/">YAML to JSON</a><a href="/json-to-yaml/">JSON to YAML</a><a href="/privacy/">Privacy</a></div>
-      <p class="footer-note">Last reviewed August 4, 2026 · Syntax, alias order, and scalar keys · No platform schema claim</p>
+      <p class="footer-note">Last reviewed September 16, 2026 · Syntax, alias order, and scalar keys · No platform schema claim</p>
     </footer>
     <noscript><p class="noscript-note">JavaScript is required for the interactive YAML syntax check. The error, schema-version, platform-boundary, and privacy guidance remains readable without it.</p></noscript>
     <script type="module" src="/src/yaml.tsx"></script>

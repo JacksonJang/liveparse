@@ -1,6 +1,5 @@
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const DIRECTORY_ROUTES = new Set([
-  '/ko/json-parser',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',
@@ -49,10 +48,6 @@ const DIRECTORY_ROUTES = new Set([
   '/birthday-countdown',
   '/word-counter',
   '/character-counter',
-  '/es/contador-de-palabras',
-  '/es/contador-de-caracteres',
-  '/ja/character-counter',
-  '/ko/character-counter',
   '/url-encoder',
   '/url-decoder',
   '/url-parser',
@@ -121,6 +116,16 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/double-url-encoding',
 ]);
 const ROUTE_REDIRECTS = new Map([
+  ['/ko/json-parser', '/json-formatter/'],
+  ['/ko/json-parser/', '/json-formatter/'],
+  ['/ko/character-counter', '/character-counter/'],
+  ['/ko/character-counter/', '/character-counter/'],
+  ['/ja/character-counter', '/character-counter/'],
+  ['/ja/character-counter/', '/character-counter/'],
+  ['/es/contador-de-palabras', '/word-counter/'],
+  ['/es/contador-de-palabras/', '/word-counter/'],
+  ['/es/contador-de-caracteres', '/character-counter/'],
+  ['/es/contador-de-caracteres/', '/character-counter/'],
   ['/json-parser', '/json-formatter/'],
   ['/json-parser/', '/json-formatter/'],
   ['/json-validator', '/json-formatter/'],
@@ -295,14 +300,14 @@ const ROUTE_REDIRECTS = new Map([
   ['/character-count/', '/character-counter/'],
   ['/letter-counter', '/character-counter/'],
   ['/letter-counter/', '/character-counter/'],
-  ['/es/contador-palabras', '/es/contador-de-palabras/'],
-  ['/es/contador-palabras/', '/es/contador-de-palabras/'],
-  ['/es/contar-palabras', '/es/contador-de-palabras/'],
-  ['/es/contar-palabras/', '/es/contador-de-palabras/'],
-  ['/es/contador-caracteres', '/es/contador-de-caracteres/'],
-  ['/es/contador-caracteres/', '/es/contador-de-caracteres/'],
-  ['/es/contar-caracteres', '/es/contador-de-caracteres/'],
-  ['/es/contar-caracteres/', '/es/contador-de-caracteres/'],
+  ['/es/contador-palabras', '/word-counter/'],
+  ['/es/contador-palabras/', '/word-counter/'],
+  ['/es/contar-palabras', '/word-counter/'],
+  ['/es/contar-palabras/', '/word-counter/'],
+  ['/es/contador-caracteres', '/character-counter/'],
+  ['/es/contador-caracteres/', '/character-counter/'],
+  ['/es/contar-caracteres', '/character-counter/'],
+  ['/es/contar-caracteres/', '/character-counter/'],
   ['/url-encode', '/url-encoder/'],
   ['/url-encode/', '/url-encoder/'],
   ['/encode-url', '/url-encoder/'],
@@ -504,6 +509,7 @@ const ROUTE_REDIRECTS = new Map([
 ]);
 
 function normalizeKnownRoutePath(pathname) {
+  if (pathname.endsWith('/index.html')) pathname = pathname.slice(0, -'index.html'.length);
   if (ROUTE_REDIRECTS.has(pathname)) return ROUTE_REDIRECTS.get(pathname);
   if (DIRECTORY_ROUTES.has(pathname)) return `${pathname}/`;
   if (pathname === '/index.html') return '/';
@@ -555,7 +561,7 @@ export default {
       return Response.redirect(url.toString(), 308);
     }
     if (url.pathname === '/index.html' || url.pathname.endsWith('/index.html')) {
-      url.pathname = url.pathname === '/index.html' ? '/' : url.pathname.slice(0, -'index.html'.length);
+      url.pathname = normalizeKnownRoutePath(url.pathname);
       return Response.redirect(url.toString(), 308);
     }
 

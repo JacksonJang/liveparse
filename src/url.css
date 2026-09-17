@@ -473,6 +473,10 @@
   .url-toolbar { align-items: start; flex-direction: column; }
   .url-tool-badge { align-self: stretch; justify-content: space-between; }
   .url-tool-body { padding: 16px; }
+  .url-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .url-actions > :only-child { grid-column: 1 / -1; }
+  .url-button,
+  .url-link-button { min-height: 44px; }
   .url-mode-picker,
   .url-mode-picker.count-3 { grid-template-columns: 1fr; }
   .url-mode-picker button { min-height: 58px; }

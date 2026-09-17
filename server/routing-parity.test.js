@@ -598,27 +598,25 @@ describe('production routing parity', () => {
     const canonicalTargets = new Set([
       '/word-counter/',
       '/character-counter/',
-      '/es/contador-de-palabras/',
-      '/es/contador-de-caracteres/',
     ]);
     const expectedAliases = new Map([
+      ['/es/contador-de-palabras', '/word-counter/'],
+      ['/es/contador-de-caracteres', '/character-counter/'],
+      ['/ja/character-counter', '/character-counter/'],
+      ['/ko/character-counter', '/character-counter/'],
       ['/word-count', '/word-counter/'],
       ['/word-count-checker', '/word-counter/'],
       ['/character-count', '/character-counter/'],
       ['/letter-counter', '/character-counter/'],
-      ['/es/contador-palabras', '/es/contador-de-palabras/'],
-      ['/es/contar-palabras', '/es/contador-de-palabras/'],
-      ['/es/contador-caracteres', '/es/contador-de-caracteres/'],
-      ['/es/contar-caracteres', '/es/contador-de-caracteres/'],
+      ['/es/contador-palabras', '/word-counter/'],
+      ['/es/contar-palabras', '/word-counter/'],
+      ['/es/contador-caracteres', '/character-counter/'],
+      ['/es/contar-caracteres', '/character-counter/'],
     ]);
 
     expect(directories).toEqual(expect.arrayContaining([
       '/word-counter',
       '/character-counter',
-      '/es/contador-de-palabras',
-      '/es/contador-de-caracteres',
-      '/ja/character-counter',
-      '/ko/character-counter',
       '/guides/how-word-counting-works',
       '/guides/grapheme-clusters-vs-code-points-and-bytes',
     ]));

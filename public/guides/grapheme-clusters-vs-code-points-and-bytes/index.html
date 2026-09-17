@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -27,7 +28,7 @@
     <meta name="twitter:title" content="Graphemes vs Code Points and Bytes" />
     <meta name="twitter:description" content="See why visible characters, Unicode values, JavaScript length, and encoded bytes disagree." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
-    <link rel="stylesheet" href="/article.css" />
+    <link rel="stylesheet" href="/article.css?v=20260917" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -139,7 +140,7 @@ Array.from("😀").length    // 1 code point
             <h3>Which unit should a character limit use?</h3><p>Use grapheme clusters for many user-facing visible-character limits, UTF-16 code units when matching a JavaScript API, code points when a Unicode-value contract says so, and UTF-8 bytes for encoded storage or transport ceilings. State the unit explicitly.</p>
           </section>
         </div>
-        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Use the tools</p><a href="/character-counter/">Character Counter</a><a href="/es/contador-de-caracteres/" lang="es" hreflang="es">Contador de caracteres</a><a href="/ja/character-counter/" lang="ja" hreflang="ja">文字数カウント</a><a href="/ko/character-counter/" lang="ko" hreflang="ko">글자수 세기</a><a href="/word-counter/">Word Counter</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/how-word-counting-works/">How word counting works</a><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></div><div class="sidebar-card"><p class="sidebar-label">Primary standards</p><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a><a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">ECMAScript String type</a><a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a></div></aside>
+        <aside class="article-sidebar" aria-label="Related resources"><div class="sidebar-card"><p class="sidebar-label">Use the tools</p><a href="/character-counter/">Character Counter</a><a href="/word-counter/">Word Counter</a></div><div class="sidebar-card"><p class="sidebar-label">Related guides</p><a href="/guides/how-word-counting-works/">How word counting works</a><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></div><div class="sidebar-card"><p class="sidebar-label">Primary standards</p><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a><a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">ECMAScript String type</a><a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a></div></aside>
         </div>
       </article>
     </main>

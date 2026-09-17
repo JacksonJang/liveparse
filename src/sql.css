@@ -85,12 +85,19 @@
   .sql-app { border-radius: 20px; }
   .sql-app-bar, .sql-controls-heading, .sql-editor-card > header, .sql-activity { align-items: flex-start; flex-direction: column; }
   .sql-app-bar > a { align-self: flex-start; }
-  .sql-control-grid { grid-template-columns: 1fr; }
+  .sql-control-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sql-control-grid label:first-child { grid-column: 1 / -1; }
+  .sql-control-grid select { min-height: 44px; }
   .sql-controls, .sql-editor-card { padding: 16px; }
   .sql-editor-card { grid-template-rows: auto minmax(290px, 1fr) auto; }
   .sql-editor-card textarea { min-height: 290px; font-size: 12px; }
   .sql-disclaimer { grid-template-columns: 1fr; }
   .sql-activity span { text-align: left; }
+  .sql-switches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sql-switches label { min-height: 44px; padding: 10px; border: 1px solid var(--sql-line); border-radius: 11px; background: #fff; }
+  .sql-switches input { width: 20px; height: 20px; }
+  .sql-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+  .sql-button { min-height: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

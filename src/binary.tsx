@@ -490,14 +490,14 @@ function AsciiTable({ onStatus }: { onStatus: (message: string) => void }): Reac
         <caption className="visually-hidden">ASCII codes 0 through 127 in decimal, hexadecimal, octal, and eight-bit binary display</caption>
         <thead><tr><th scope="col">Symbol / control</th><th scope="col">Abbreviation</th><th scope="col">Name</th><th scope="col">Decimal</th><th scope="col">Hex</th><th scope="col">Octal</th><th scope="col">8-bit binary</th><th scope="col">Copy row</th></tr></thead>
         <tbody>{rows.map((row) => <tr key={row.code}>
-          <td><button className="binary-value-copy binary-ascii-symbol" type="button" onClick={() => void copyValue(`ASCII ${row.dec} symbol label`, visibleSymbol(row))}>{visibleSymbol(row)}</button></td>
-          <td><code>{row.abbr || '—'}</code><span className="binary-ascii-sub">{row.control ? 'Control code' : row.code === 32 ? 'Space' : 'Printable'}</span></td>
-          <td><span className="binary-ascii-name">{row.name}</span></td>
-          <td><button className="binary-value-copy" type="button" onClick={() => void copyValue('Decimal value', row.dec)}>{row.dec}</button></td>
-          <td><button className="binary-value-copy" type="button" onClick={() => void copyValue('Hex value', row.hex)}>{row.hex}</button></td>
-          <td><button className="binary-value-copy" type="button" onClick={() => void copyValue('Octal value', row.octal)}>{row.octal}</button></td>
-          <td><button className="binary-value-copy" type="button" onClick={() => void copyValue('Binary value', row.binary)}>{row.binary}</button></td>
-          <td><button className="binary-copy-button" type="button" onClick={() => copyRow(row)}>Copy row</button></td>
+          <td data-label="Symbol / control"><button className="binary-value-copy binary-ascii-symbol" type="button" onClick={() => void copyValue(`ASCII ${row.dec} symbol label`, visibleSymbol(row))}>{visibleSymbol(row)}</button></td>
+          <td data-label="Abbreviation"><code>{row.abbr || '—'}</code><span className="binary-ascii-sub">{row.control ? 'Control code' : row.code === 32 ? 'Space' : 'Printable'}</span></td>
+          <td data-label="Name"><span className="binary-ascii-name">{row.name}</span></td>
+          <td data-label="Decimal"><button className="binary-value-copy" type="button" onClick={() => void copyValue('Decimal value', row.dec)}>{row.dec}</button></td>
+          <td data-label="Hex"><button className="binary-value-copy" type="button" onClick={() => void copyValue('Hex value', row.hex)}>{row.hex}</button></td>
+          <td data-label="Octal"><button className="binary-value-copy" type="button" onClick={() => void copyValue('Octal value', row.octal)}>{row.octal}</button></td>
+          <td data-label="8-bit binary"><button className="binary-value-copy" type="button" onClick={() => void copyValue('Binary value', row.binary)}>{row.binary}</button></td>
+          <td data-label="Complete row"><button className="binary-copy-button" type="button" onClick={() => copyRow(row)}>Copy row</button></td>
         </tr>)}</tbody>
       </table>
       {rows.length === 0 ? <p className="binary-table-empty">No ASCII row matches this search and range filter.</p> : null}

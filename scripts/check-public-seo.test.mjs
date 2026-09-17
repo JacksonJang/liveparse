@@ -24,7 +24,8 @@ async function startServer(handler) {
 }
 
 function htmlPage(canonical, body = '<h1>Useful public tool</h1>') {
-  return '<!doctype html><html><head>' +
+  return '<!doctype html><html lang="en"><head>' +
+    '<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">' +
     '<meta name="robots" content="index, follow">' +
     `<title>Public SEO test page</title><link href="${canonical}" rel="canonical">` +
     `</head><body>${body}</body></html>`;

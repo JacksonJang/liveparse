@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -80,7 +81,7 @@
             "url": "https://liveparse.com/json-repair/",
             "name": "JSON Repair – Fix Invalid and Truncated JSON Online",
             "description": "Repair common malformed JSON patterns locally and review every automatic edit before using the result.",
-            "dateModified": "2026-08-03",
+            "dateModified": "2026-09-12",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/json-repair/#application" }
@@ -96,7 +97,7 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="nav-links">
-          <a href="/json-formatter/">JSON Formatter</a>
+          <a href="/json-formatter/">JSON Formatter &amp; Validator</a>
           <a href="/json-compare/">JSON Compare</a>
           <a href="/json-repair/" aria-current="page">JSON Repair</a>
           <a href="/jsonl-parser/">JSONL Parser</a>
@@ -109,7 +110,7 @@
       <div class="repair-hero">
         <div class="hero-copy">
           <p class="eyebrow">Local JSON repair · Explicit assumptions · Lossless validation</p>
-          <h1>Repair JSON without hiding the edits</h1>
+          <h1>JSON Repair: fix invalid JSON and review every edit</h1>
           <p class="hero-lead">Fix common JSON mistakes from LLM responses, logs, Python output, and hand-edited configuration. LiveParse keeps the source in your browser, preserves large number tokens and duplicate keys, and shows exactly what changed before you copy the result.</p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#repair-tool">Repair JSON now</a>
@@ -222,7 +223,7 @@
     <footer class="site-footer">
       <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Browser-based JSON tools that keep raw data local and make risky values visible.</p></div>
       <div class="footer-links">
-        <a href="/json-formatter/">JSON Formatter</a>
+        <a href="/json-formatter/">JSON Formatter &amp; Validator</a>
         <a href="/json-compare/">JSON Compare</a>
         <a href="/json-to-csv/">JSON to CSV</a>
         <a href="/json-repair/" aria-current="page">JSON Repair</a>
@@ -231,7 +232,7 @@
         <a href="/privacy/">Privacy &amp; cookies</a>
         <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">GitHub source</a>
       </div>
-      <p class="footer-note">Last reviewed August 3, 2026 · Automatic repair can change meaning · Review assumptions and the complete diff</p>
+      <p class="footer-note">Last reviewed September 12, 2026 · Automatic repair can change meaning · Review assumptions and the complete diff</p>
     </footer>
 
     <noscript><p class="noscript-note">JavaScript is required to run JSON repair and generate the change audit. The explanation of supported repairs, safety boundaries, and confidence levels remains available without it.</p></noscript>

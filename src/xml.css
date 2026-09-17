@@ -142,6 +142,10 @@
   .xml-app-bar, .xml-controls, .xml-input-card > header, .xml-result-card > header, .xml-activity { align-items: flex-start; flex-direction: column; }
   .xml-app-bar > a { align-self: flex-start; }
   .xml-controls label { width: 100%; }
+  .xml-controls select,
+  .xml-button,
+  .xml-tree-tools input,
+  .xml-tree-tools button { min-height: 44px; }
   .xml-input-card, .xml-result-card { min-height: 460px; padding: 16px; grid-template-rows: auto minmax(310px, 1fr) auto; }
   .xml-input-card textarea, .xml-format-result textarea { min-height: 310px; font-size: 12px; }
   .xml-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -4,6 +4,7 @@ import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseXml } from '@rgrove/parse-xml';
+import { validateEnglishBranding, validatePngIcon } from './seo-branding.mjs';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
@@ -37,6 +38,7 @@ const FAQ_PARITY_PATHS = new Set([
   '/hex-converter/',
   '/binary-translator/',
   '/ascii-table/',
+  '/regex-tester/',
   '/morse-code-translator/',
   '/image-compressor/',
   '/image-resizer/',
@@ -54,10 +56,6 @@ const FAQ_PARITY_PATHS = new Set([
   '/guides/calendar-date-arithmetic-dst-leap-years/',
   '/word-counter/',
   '/character-counter/',
-  '/es/contador-de-palabras/',
-  '/es/contador-de-caracteres/',
-  '/ja/character-counter/',
-  '/ko/character-counter/',
   '/guides/how-word-counting-works/',
   '/guides/grapheme-clusters-vs-code-points-and-bytes/',
   '/guides/international-morse-code/',
@@ -95,7 +93,6 @@ const FAQ_PARITY_PATHS = new Set([
 ]);
 const requiredPages = [
   { relativePath: 'json-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/json-formatter/`, label: 'JSON Formatter tool' },
-  { relativePath: 'ko/json-parser/index.html', canonical: `${CANONICAL_ORIGIN}/ko/json-parser/`, label: 'Korean JSON parser' },
   { relativePath: 'json-repair/index.html', canonical: `${CANONICAL_ORIGIN}/json-repair/`, label: 'JSON Repair tool' },
   { relativePath: 'jsonl-parser/index.html', canonical: `${CANONICAL_ORIGIN}/jsonl-parser/`, label: 'JSONL Parser tool' },
   { relativePath: 'json-compare/index.html', canonical: `${CANONICAL_ORIGIN}/json-compare/`, label: 'JSON Compare tool' },
@@ -103,6 +100,7 @@ const requiredPages = [
   { relativePath: 'csv-to-json/index.html', canonical: `${CANONICAL_ORIGIN}/csv-to-json/`, label: 'CSV to JSON tool', requireParsing: false },
   { relativePath: 'unix-timestamp-converter/index.html', canonical: `${CANONICAL_ORIGIN}/unix-timestamp-converter/`, label: 'Unix Timestamp Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true },
   { relativePath: 'discord-timestamp-generator/index.html', canonical: `${CANONICAL_ORIGIN}/discord-timestamp-generator/`, label: 'Discord Timestamp Generator tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bdiscord\s+timestamps?\b/i, topicLabel: 'Discord timestamp' },
+  { relativePath: 'regex-tester/index.html', canonical: `${CANONICAL_ORIGIN}/regex-tester/`, label: 'Regex Tester tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bregex\b)(?=.*\btest(?:er|ing|s)?\b)/i, topicLabel: 'regex testing' },
   { relativePath: 'base64-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-decoder/`, label: 'Base64 Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:decode|decoder|decoding)\b/i, topicLabel: 'Base64 decoding' },
   { relativePath: 'base64-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/base64-encoder/`, label: 'Base64 Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bbase64(?:url)?\s+(?:encode|encoder|encoding)\b/i, topicLabel: 'Base64 encoding' },
   { relativePath: 'binary-converter/index.html', canonical: `${CANONICAL_ORIGIN}/binary-converter/`, label: 'Binary Converter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\bbinary\b)(?=.*\bconvert(?:er|ing|s|ed)?\b)/i, topicLabel: 'binary conversion' },
@@ -143,10 +141,6 @@ const requiredPages = [
   { relativePath: 'birthday-countdown/index.html', canonical: `${CANONICAL_ORIGIN}/birthday-countdown/`, label: 'Birthday Countdown tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_200, topicPattern: /(?=.*\bbirthday\b)(?=.*\b(?:countdown|count|next|days?\s+until)\b)/i, topicLabel: 'birthday countdown' },
   { relativePath: 'word-counter/index.html', canonical: `${CANONICAL_ORIGIN}/word-counter/`, label: 'Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bwords?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'word counting' },
   { relativePath: 'character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/character-counter/`, label: 'Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bcharacters?\b)(?=.*\b(?:counter|count(?:ing)?)\b)/i, topicLabel: 'character counting' },
-  { relativePath: 'es/contador-de-palabras/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-palabras/`, label: 'Spanish Word Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+palabras/i, topicLabel: 'contador de palabras' },
-  { relativePath: 'es/contador-de-caracteres/index.html', canonical: `${CANONICAL_ORIGIN}/es/contador-de-caracteres/`, label: 'Spanish Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /contador\s+de\s+caracteres/i, topicLabel: 'contador de caracteres' },
-  { relativePath: 'ja/character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/ja/character-counter/`, label: 'Japanese Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, minimumWords: 12, topicPattern: /文字数(?:を)?カウント|文字(?:を)?カウント/i, topicLabel: '文字数カウント' },
-  { relativePath: 'ko/character-counter/index.html', canonical: `${CANONICAL_ORIGIN}/ko/character-counter/`, label: 'Korean Character Counter tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /글자\s*수(?:를)?\s*세기|글자수\s*세기/i, topicLabel: '글자수 세기' },
   { relativePath: 'url-encoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-encoder/`, label: 'URL Encoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bencod(?:e|er|ing)\b)/i, topicLabel: 'URL encoding' },
   { relativePath: 'url-decoder/index.html', canonical: `${CANONICAL_ORIGIN}/url-decoder/`, label: 'URL Decoder tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bdecod(?:e|er|ing)\b)/i, topicLabel: 'URL decoding' },
   { relativePath: 'url-parser/index.html', canonical: `${CANONICAL_ORIGIN}/url-parser/`, label: 'URL Parser tool', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 800, topicPattern: /(?=.*\burls?\b)(?=.*\bpars(?:e|er|ing)\b)/i, topicLabel: 'URL parsing' },
@@ -179,33 +173,6 @@ const requiredPages = [
   { relativePath: 'about/index.html', canonical: `${CANONICAL_ORIGIN}/about/`, label: 'about page', requireJson: false, requireParsing: false, requireJsonLd: true, topicPattern: /\bliveparse\b/i, topicLabel: 'the LiveParse brand name' },
   { relativePath: 'guides/index.html', canonical: `${CANONICAL_ORIGIN}/guides/`, label: 'guides hub', requireJson: false, requireParsing: false, requireJsonLd: true, minimumCharacters: 1_000, topicPattern: /(?=.*\bdeveloper\b)(?=.*\bdata\b)(?=.*\bguides?\b)/i, topicLabel: 'developer data guides' },
 ];
-const WORD_COUNTER_HREFLANGS = new Map([
-  ['en', `${CANONICAL_ORIGIN}/word-counter/`],
-  ['es', `${CANONICAL_ORIGIN}/es/contador-de-palabras/`],
-  ['x-default', `${CANONICAL_ORIGIN}/word-counter/`],
-]);
-const CHARACTER_COUNTER_HREFLANGS = new Map([
-  ['en', `${CANONICAL_ORIGIN}/character-counter/`],
-  ['es', `${CANONICAL_ORIGIN}/es/contador-de-caracteres/`],
-  ['ja', `${CANONICAL_ORIGIN}/ja/character-counter/`],
-  ['ko', `${CANONICAL_ORIGIN}/ko/character-counter/`],
-  ['x-default', `${CANONICAL_ORIGIN}/character-counter/`],
-]);
-const JSON_FORMATTER_HREFLANGS = new Map([
-  ['en', `${CANONICAL_ORIGIN}/json-formatter/`],
-  ['ko', `${CANONICAL_ORIGIN}/ko/json-parser/`],
-  ['x-default', `${CANONICAL_ORIGIN}/json-formatter/`],
-]);
-const EXPECTED_HREFLANGS = new Map([
-  [`${CANONICAL_ORIGIN}/json-formatter/`, JSON_FORMATTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/ko/json-parser/`, JSON_FORMATTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/word-counter/`, WORD_COUNTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/es/contador-de-palabras/`, WORD_COUNTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/es/contador-de-caracteres/`, CHARACTER_COUNTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/ja/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
-  [`${CANONICAL_ORIGIN}/ko/character-counter/`, CHARACTER_COUNTER_HREFLANGS],
-]);
 
 function fail(message) {
   failures.push(message);
@@ -294,28 +261,6 @@ function canonicalValues(html) {
     .filter(Boolean);
 }
 
-function validateHreflangAlternates(html, label, expected) {
-  const actual = new Map();
-  for (const attributes of openingTags(html, 'link')) {
-    const rel = (attributes.get('rel') || '').toLowerCase().split(/\s+/);
-    const hreflang = (attributes.get('hreflang') || '').trim().toLowerCase();
-    if (!rel.includes('alternate') || !hreflang) continue;
-    const href = (attributes.get('href') || '').trim();
-    if (actual.has(hreflang)) {
-      fail(`${label}: duplicate hreflang ${JSON.stringify(hreflang)}`);
-      continue;
-    }
-    actual.set(hreflang, href);
-  }
-  for (const [language, href] of expected) {
-    if (actual.get(language) !== href) {
-      fail(`${label}: hreflang ${JSON.stringify(language)} must point to ${href}, found ${JSON.stringify(actual.get(language) ?? null)}`);
-    }
-  }
-  for (const language of actual.keys()) {
-    if (!expected.has(language)) fail(`${label}: unexpected hreflang ${JSON.stringify(language)}`);
-  }
-}
 
 function h1Values(html) {
   return elementContents(html, 'h1').map(plainText).filter(Boolean);
@@ -1166,6 +1111,13 @@ async function main() {
   const htmlByPath = new Map();
   for (const path of htmlFiles) htmlByPath.set(path, await readFile(path, 'utf8'));
   validateMetadataUniqueness(htmlByPath, distRoot);
+  for (const [path, html] of htmlByPath) {
+    failures.push(...validateEnglishBranding(html, relative(distRoot, path)));
+  }
+  for (const [icon, size] of [['icon-192.png', 192], ['icon-512.png', 512], ['apple-touch-icon.png', 180]]) {
+    try { failures.push(...validatePngIcon(await readFile(join(distRoot, icon)), size, icon)); }
+    catch (error) { fail(`${icon}: ${error.message}`); }
+  }
 
   const homepagePath = join(distRoot, 'index.html');
   const homepage = htmlByPath.get(homepagePath) ?? (await readRequired(homepagePath, 'homepage'));
@@ -1273,8 +1225,6 @@ async function main() {
       requireJson: requirement.requireJson ?? true,
       requireParsing: requirement.requireParsing ?? true,
     });
-    const expectedHreflangs = EXPECTED_HREFLANGS.get(requirement.canonical);
-    if (expectedHreflangs) validateHreflangAlternates(page, requirement.label, expectedHreflangs);
     validateJsonLd(page, requirement.label, requirement.requireJsonLd ?? (requirement.requireJson ?? true));
     if (requirement.relativePath === 'ascii-table/index.html') {
       validateAsciiTableRows(page, requirement.label);

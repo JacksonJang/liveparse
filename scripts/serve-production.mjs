@@ -11,13 +11,12 @@ import { SearchReferralCounter, searchReferralFromRequest } from '../server/sear
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const PROJECT_ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const DIST_ROOT = resolve(PROJECT_ROOT, 'dist');
+const DIST_ROOT = resolve(process.env.DIST_DIR || resolve(PROJECT_ROOT, 'dist'));
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parsePort(process.env.PORT || '4173');
 const SEARCH_REFERRAL_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_REFERRAL_DIR || '.runtime/search-referrals');
 const SEARCH_CRAWLER_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_CRAWLER_DIR || '.runtime/search-crawlers');
 const DIRECTORY_ROUTES = new Set([
-  '/ko/json-parser',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',
@@ -66,10 +65,6 @@ const DIRECTORY_ROUTES = new Set([
   '/birthday-countdown',
   '/word-counter',
   '/character-counter',
-  '/es/contador-de-palabras',
-  '/es/contador-de-caracteres',
-  '/ja/character-counter',
-  '/ko/character-counter',
   '/url-encoder',
   '/url-decoder',
   '/url-parser',
@@ -138,6 +133,16 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/double-url-encoding',
 ]);
 const ROUTE_REDIRECTS = new Map([
+  ['/ko/json-parser', '/json-formatter/'],
+  ['/ko/json-parser/', '/json-formatter/'],
+  ['/ko/character-counter', '/character-counter/'],
+  ['/ko/character-counter/', '/character-counter/'],
+  ['/ja/character-counter', '/character-counter/'],
+  ['/ja/character-counter/', '/character-counter/'],
+  ['/es/contador-de-palabras', '/word-counter/'],
+  ['/es/contador-de-palabras/', '/word-counter/'],
+  ['/es/contador-de-caracteres', '/character-counter/'],
+  ['/es/contador-de-caracteres/', '/character-counter/'],
   ['/json-parser', '/json-formatter/'],
   ['/json-parser/', '/json-formatter/'],
   ['/json-validator', '/json-formatter/'],
@@ -312,14 +317,14 @@ const ROUTE_REDIRECTS = new Map([
   ['/character-count/', '/character-counter/'],
   ['/letter-counter', '/character-counter/'],
   ['/letter-counter/', '/character-counter/'],
-  ['/es/contador-palabras', '/es/contador-de-palabras/'],
-  ['/es/contador-palabras/', '/es/contador-de-palabras/'],
-  ['/es/contar-palabras', '/es/contador-de-palabras/'],
-  ['/es/contar-palabras/', '/es/contador-de-palabras/'],
-  ['/es/contador-caracteres', '/es/contador-de-caracteres/'],
-  ['/es/contador-caracteres/', '/es/contador-de-caracteres/'],
-  ['/es/contar-caracteres', '/es/contador-de-caracteres/'],
-  ['/es/contar-caracteres/', '/es/contador-de-caracteres/'],
+  ['/es/contador-palabras', '/word-counter/'],
+  ['/es/contador-palabras/', '/word-counter/'],
+  ['/es/contar-palabras', '/word-counter/'],
+  ['/es/contar-palabras/', '/word-counter/'],
+  ['/es/contador-caracteres', '/character-counter/'],
+  ['/es/contador-caracteres/', '/character-counter/'],
+  ['/es/contar-caracteres', '/character-counter/'],
+  ['/es/contar-caracteres/', '/character-counter/'],
   ['/url-encode', '/url-encoder/'],
   ['/url-encode/', '/url-encoder/'],
   ['/encode-url', '/url-encoder/'],
@@ -604,6 +609,7 @@ function requestHostname(request) {
 }
 
 function normalizeKnownRoutePath(pathname) {
+  if (pathname.endsWith('/index.html')) pathname = pathname.slice(0, -'index.html'.length);
   if (ROUTE_REDIRECTS.has(pathname)) return ROUTE_REDIRECTS.get(pathname);
   if (DIRECTORY_ROUTES.has(pathname)) return `${pathname}/`;
   if (pathname === '/index.html') return '/';
@@ -655,7 +661,7 @@ function redirectToTrailingSlash(request, response, pathname) {
 
 function redirectFromIndexHtml(request, response, pathname) {
   const parsed = new URL(request.url || '/', 'http://request.invalid');
-  const canonicalPath = pathname === '/index.html' ? '/' : pathname.slice(0, -'index.html'.length);
+  const canonicalPath = normalizeKnownRoutePath(pathname);
   response.statusCode = 308;
   setSecurityHeaders(response);
   response.setHeader('Location', `${canonicalPath}${parsed.search}`);
