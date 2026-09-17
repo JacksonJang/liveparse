@@ -17,6 +17,7 @@
     <link rel="canonical" href="https://liveparse.com/" />
     <link rel="alternate" type="application/atom+xml" title="LiveParse Developer Tool Updates" href="https://liveparse.com/feed.xml" />
     <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/home-tool-search.ts"></script>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/" />
     <meta property="og:title" content="LiveParse – Free Private Developer Tools" />
@@ -74,7 +75,7 @@
             "url": "https://liveparse.com/",
             "name": "LiveParse: free private developer tools",
             "description": "Free developer tools that run in your browser: JSON, SQL, YAML, and regex formatters and testers, timestamp and business day calculators, Base64, hashes, UUIDs, JWTs, images, and Morse code. No uploads, no sign-up.",
-            "dateModified": "2026-09-16",
+            "dateModified": "2026-09-17",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "about": { "@id": "https://liveparse.com/#organization" },
@@ -152,7 +153,14 @@
         </div>
         <p>Start with the pages people reach most often, or jump to a category below. Each tool is an independent page with its own guide, limits, and standards references.</p>
       </section>
-      <section class="content-section" aria-label="Popular tools">
+      <form class="tool-search-form" role="search" action="#tools" hidden>
+        <div>
+          <label for="tool-search-input">Search tools</label>
+          <input id="tool-search-input" type="search" name="q" placeholder="Try JSON, timestamp, UUID, image, or Morse" autocomplete="off" enterkeyhint="search" />
+        </div>
+        <p id="tool-search-status" role="status" aria-live="polite">Loading the tool index…</p>
+      </form>
+      <section class="content-section" id="popular-tools" aria-label="Popular tools">
         <div class="use-case-grid">
           <article><h3><a href="/business-days-calculator/">Business Days Calculator</a></h3><p>Add working days from any date or count them between two dates, with your own weekend and holiday rules. Quick answers: <a href="/3-business-days-from-today/">3</a>, <a href="/5-business-days-from-today/">5</a>, <a href="/7-business-days-from-today/">7</a>, <a href="/10-business-days-from-today/">10</a>, or <a href="/30-business-days-from-today/">30 business days from today</a>.</p></article>
           <article><h3><a href="/morse-code-translator/">Morse Code Translator</a></h3><p>English to Morse code and Morse to text with sound or light playback. Look up any letter, number, or word on the <a href="/morse-code-alphabet/">Morse code alphabet chart</a>.</p></article>
@@ -309,7 +317,7 @@
         <a href="/feed.xml">Atom feed</a>
         <a href="https://github.com/JacksonJang/liveparse" target="_blank" rel="noreferrer">Source on GitHub</a>
       </div>
-      <p class="footer-note">Last reviewed September 16, 2026 · Tool input stays local · No advertising or analytics cookies</p>
+      <p class="footer-note">Last reviewed September 17, 2026 · Tool input stays local · No advertising or analytics cookies</p>
     </footer>
   </body>
 </html>
