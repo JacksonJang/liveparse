@@ -161,4 +161,6 @@ export interface JsonParseOptions {
 export interface JsonSerializeOptions {
   /** Zero minifies; 2 and 4 pretty-print. Default: 2. */
   indent?: JsonIndent;
+  /** Sort every object's members by decoded key while preserving duplicate members and exact tokens. */
+  sortKeys?: boolean;
 }

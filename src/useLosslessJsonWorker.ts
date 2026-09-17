@@ -9,7 +9,7 @@ export type LosslessWorkerState =
 
 const INPUT_DEBOUNCE_MS = 180;
 
-export function useLosslessJsonWorker(source: string): LosslessWorkerState {
+export function useLosslessJsonWorker(source: string, sortKeys = false): LosslessWorkerState {
   const requestIdRef = useRef(0);
   const [state, setState] = useState<LosslessWorkerState>(() => (
     source.trim() ? { status: 'pending', source } : { status: 'empty', source }
@@ -44,7 +44,7 @@ export function useLosslessJsonWorker(source: string): LosslessWorkerState {
           worker?.terminate();
           worker = null;
         };
-        worker.postMessage({ type: 'parse', requestId, source });
+        worker.postMessage({ type: 'parse', requestId, source, sortKeys });
       } catch (error) {
         if (requestIdRef.current === requestId) {
           setState({
@@ -62,7 +62,7 @@ export function useLosslessJsonWorker(source: string): LosslessWorkerState {
       window.clearTimeout(timer);
       worker?.terminate();
     };
-  }, [source]);
+  }, [sortKeys, source]);
 
   return state;
 }

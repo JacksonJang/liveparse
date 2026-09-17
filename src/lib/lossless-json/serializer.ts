@@ -1,6 +1,6 @@
 import type { JsonDocument, JsonIndent, JsonNode, JsonSerializeOptions } from './types';
 
-function serializeNode(node: JsonNode, indent: JsonIndent, depth: number): string {
+function serializeNode(node: JsonNode, indent: JsonIndent, depth: number, sortKeys: boolean): string {
   switch (node.type) {
     case 'string': return node.raw;
     case 'number': return node.raw;
@@ -9,29 +9,34 @@ function serializeNode(node: JsonNode, indent: JsonIndent, depth: number): strin
     case 'array': {
       if (node.elements.length === 0) return '[]';
       if (indent === 0) {
-        return `[${node.elements.map((element) => serializeNode(element, indent, depth + 1)).join(',')}]`;
+        return `[${node.elements.map((element) => serializeNode(element, indent, depth + 1, sortKeys)).join(',')}]`;
       }
       const currentPadding = ' '.repeat(indent * depth);
       const childPadding = ' '.repeat(indent * (depth + 1));
       const elements = node.elements
-        .map((element) => `${childPadding}${serializeNode(element, indent, depth + 1)}`)
+        .map((element) => `${childPadding}${serializeNode(element, indent, depth + 1, sortKeys)}`)
         .join(',\n');
       return `[\n${elements}\n${currentPadding}]`;
     }
     case 'object': {
       if (node.members.length === 0) return '{}';
+      const members = sortKeys
+        ? node.members.slice().sort((left, right) => (
+          left.key.value < right.key.value ? -1 : left.key.value > right.key.value ? 1 : 0
+        ))
+        : node.members;
       if (indent === 0) {
-        const members = node.members
-          .map((member) => `${member.key.raw}:${serializeNode(member.value, indent, depth + 1)}`)
-          .join(',');
-        return `{${members}}`;
+        const serialized = members
+          .map((member) => `${member.key.raw}:${serializeNode(member.value, indent, depth + 1, sortKeys)}`)
+        .join(',');
+        return `{${serialized}}`;
       }
       const currentPadding = ' '.repeat(indent * depth);
       const childPadding = ' '.repeat(indent * (depth + 1));
-      const members = node.members
-        .map((member) => `${childPadding}${member.key.raw}: ${serializeNode(member.value, indent, depth + 1)}`)
+      const serializedMembers = members
+        .map((member) => `${childPadding}${member.key.raw}: ${serializeNode(member.value, indent, depth + 1, sortKeys)}`)
         .join(',\n');
-      return `{\n${members}\n${currentPadding}}`;
+      return `{\n${serializedMembers}\n${currentPadding}}`;
     }
   }
 }
@@ -41,8 +46,9 @@ export function serializeLosslessJson(
   options: JsonSerializeOptions = {},
 ): string {
   const indent = options.indent ?? 2;
+  const sortKeys = options.sortKeys ?? false;
   const node = 'root' in documentOrNode ? documentOrNode.root : documentOrNode;
-  return serializeNode(node, indent, 0);
+  return serializeNode(node, indent, 0, sortKeys);
 }
 
 export function getJsonNodeSource(document: JsonDocument, node: JsonNode): string {

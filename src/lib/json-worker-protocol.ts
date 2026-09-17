@@ -4,6 +4,7 @@ export type JsonWorkerRequest = {
   type: 'parse';
   requestId: number;
   source: string;
+  sortKeys?: boolean;
 };
 
 export type JsonWorkerResponse = {

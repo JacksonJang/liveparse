@@ -41,9 +41,10 @@ workerScope.onmessage = (event) => {
       durationMs: performance.now() - startedAt,
     };
     if (result.ok) {
-      response.minified = serializeLosslessJson(result.document, { indent: 0 });
-      response.formatted2 = serializeLosslessJson(result.document, { indent: 2 });
-      response.formatted4 = serializeLosslessJson(result.document, { indent: 4 });
+      const serializationOptions = { sortKeys: request.sortKeys === true };
+      response.minified = serializeLosslessJson(result.document, { ...serializationOptions, indent: 0 });
+      response.formatted2 = serializeLosslessJson(result.document, { ...serializationOptions, indent: 2 });
+      response.formatted4 = serializeLosslessJson(result.document, { ...serializationOptions, indent: 4 });
     }
     response.durationMs = performance.now() - startedAt;
     workerScope.postMessage(response);

@@ -136,6 +136,7 @@ type UiText = {
   fourSpaces: string;
   minifiedOutput: string;
   color: string;
+  sortKeys: string;
   types: string;
   arrayIndexes: string;
   formattedOutputAria: string;
@@ -206,6 +207,7 @@ const t: UiText = {
   fourSpaces: '4 spaces',
   minifiedOutput: 'Minified output',
   color: 'Color',
+  sortKeys: 'Sort keys',
   types: 'Types',
   arrayIndexes: 'Array indexes',
   formattedOutputAria: 'Losslessly formatted JSON output',
@@ -250,13 +252,14 @@ function App() {
   const [indent, setIndent] = useState<2 | 4>(2);
   const [minify, setMinify] = useState(false);
   const [colorize, setColorize] = useState(true);
+  const [sortKeys, setSortKeys] = useState(false);
   const [showTypes, setShowTypes] = useState(false);
   const [showIndex, setShowIndex] = useState(true);
   const [copyLabel, setCopyLabel] = useState(t.copyOutput);
   const [dragActive, setDragActive] = useState(false);
   const [fileMessage, setFileMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const workerState = useLosslessJsonWorker(input);
+  const workerState = useLosslessJsonWorker(input, sortKeys);
 
   const inputEmpty = !input.trim();
   const stateMatchesInput = workerState.source === input;
@@ -451,6 +454,7 @@ function App() {
             </label>
             <Toggle checked={minify} onChange={() => setMinify((value) => !value)} label={t.minifiedOutput} />
             <Toggle checked={colorize} onChange={() => setColorize((value) => !value)} label={t.color} />
+            <Toggle checked={sortKeys} onChange={() => setSortKeys((value) => !value)} label={t.sortKeys} />
             <Toggle checked={showTypes} onChange={() => setShowTypes((value) => !value)} label={t.types} />
             <Toggle checked={showIndex} onChange={() => setShowIndex((value) => !value)} label={t.arrayIndexes} />
           </div>

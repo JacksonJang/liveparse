@@ -60,6 +60,13 @@ describe('lossless parsing and serialization', () => {
     );
   });
 
+  it('sorts object keys recursively without collapsing duplicates or changing tokens', () => {
+    const document = parse(String.raw`{"z":1,"a":{"y":1e400,"b":2},"a":3,"\u0061":4}`);
+    expect(serializeLosslessJson(document, { indent: 0, sortKeys: true })).toBe(
+      String.raw`{"a":{"b":2,"y":1e400},"a":3,"\u0061":4,"z":1}`,
+    );
+  });
+
   it('preserves all duplicate decoded keys and marks every ambiguous member', () => {
     const document = parse(String.raw`{"a":1,"\u0061":2,"a":3}`);
     expect(document.root.type).toBe('object');
