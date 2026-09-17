@@ -118,6 +118,9 @@ main { padding-block: 70px; }
 .input-pane { flex: 1; width: 100%; min-height: 0; resize: none; border: 0; outline: 0; padding: 18px; color: #17363e; background: rgba(255,255,255,.56); caret-color: var(--aqua-dark); }
 .input-pane:focus { background: #fff; box-shadow: inset 0 0 0 3px rgba(8,116,135,.16); }
 .input-pane::placeholder { color: #6c848a; }
+.input-card.drop-target { background: linear-gradient(180deg, #eaf9fc, #fffcf5); }
+.input-card.drop-target .input-pane { background: #fff; box-shadow: inset 0 0 0 4px rgba(8,116,135,.28); }
+.file-drop-note { flex: 0 0 auto; margin: 0; padding: 10px 17px; border-top: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.68); font-size: 12px; line-height: 1.45; }
 .mono { font-family: "SFMono-Regular", "Cascadia Code", "Fira Code", "DejaVu Sans Mono", Consolas, monospace; font-size: 13px; line-height: 1.65; }
 .status-strip { display: flex; align-items: center; gap: 10px; min-height: 47px; padding: 11px 17px; color: var(--muted); border-bottom: 1px solid var(--line); font-size: 12px; }
 .status-strip > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

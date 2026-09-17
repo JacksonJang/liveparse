@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import VirtualJsonTree from './components/VirtualJsonTree';
+import { selectJsonDropFile } from './lib/json-file';
 import type { JsonStats, JsonWarning } from './lib/lossless-json';
 import { useLosslessJsonWorker } from './useLosslessJsonWorker';
 import './styles.css';
@@ -105,6 +106,9 @@ type UiText = {
   format: string;
   minify: string;
   clear: string;
+  dropHint: string;
+  fileLoaded: (name: string) => string;
+  fileRejected: (message: string) => string;
   inputAria: string;
   inputPlaceholder: string;
   outputTitle: string;
@@ -172,6 +176,9 @@ const t: UiText = {
   format: 'Format',
   minify: 'Minify',
   clear: 'Clear',
+  dropHint: 'Drag and drop one .json, .jsonl, or text file here',
+  fileLoaded: (name) => `Loaded ${name} locally.`,
+  fileRejected: (message) => message,
   inputAria: 'Paste JSON input',
   inputPlaceholder: 'Paste JSON here. Number tokens and duplicate keys stay intact.',
   outputTitle: 'Lossless output',
@@ -246,6 +253,8 @@ function App() {
   const [showTypes, setShowTypes] = useState(false);
   const [showIndex, setShowIndex] = useState(true);
   const [copyLabel, setCopyLabel] = useState(t.copyOutput);
+  const [dragActive, setDragActive] = useState(false);
+  const [fileMessage, setFileMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const workerState = useLosslessJsonWorker(input);
 
@@ -296,11 +305,20 @@ function App() {
     window.setTimeout(() => setCopyLabel(t.copyOutput), 1300);
   };
 
-  const loadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    setInput(await file.text());
+  const loadFiles = async (files: readonly File[] | FileList | null) => {
+    const selected = selectJsonDropFile(files);
+    if (selected === null) return;
+    if (selected instanceof Error) {
+      setFileMessage(t.fileRejected(selected.message));
+      return;
+    }
+    setInput(await selected.text());
     setMinify(false);
+    setFileMessage(t.fileLoaded(selected.name));
+  };
+
+  const loadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    await loadFiles(event.target.files);
     event.target.value = '';
   };
 
@@ -344,6 +362,7 @@ function App() {
               onChange={(event) => {
                 setInput(samples[event.target.value as SampleName]);
                 setMinify(false);
+                setFileMessage(null);
               }}
               defaultValue={initialSample}
             >
@@ -355,7 +374,7 @@ function App() {
       </div>
 
       <div className={`workspace ${layout}`}>
-        <section className="panel input-card" aria-labelledby="input-title">
+        <section className={`panel input-card${dragActive ? ' drop-target' : ''}`} aria-labelledby="input-title">
           <PanelHeader
             id="input-title"
             title={t.inputTitle}
@@ -365,7 +384,7 @@ function App() {
               <button type="button" className="ghost-button" onClick={() => fileInputRef.current?.click()}>{t.openFile}</button>
               <button type="button" className="ghost-button" onClick={formatInput} disabled={!isValid}>{t.format}</button>
               <button type="button" className="ghost-button" onClick={minifyInput} disabled={!isValid}>{t.minify}</button>
-              <button type="button" className="ghost-button danger" onClick={() => { setInput(''); setMinify(false); }}>{t.clear}</button>
+              <button type="button" className="ghost-button danger" onClick={() => { setInput(''); setMinify(false); setFileMessage(null); }}>{t.clear}</button>
             </>}
           />
           <textarea
@@ -374,6 +393,19 @@ function App() {
             spellCheck={false}
             value={input}
             onChange={(event) => setInput(event.target.value)}
+            onDragOver={(event) => {
+              event.preventDefault();
+              event.dataTransfer.dropEffect = 'copy';
+              setDragActive(true);
+            }}
+            onDragLeave={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDragActive(false);
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              setDragActive(false);
+              void loadFiles(event.dataTransfer.files);
+            }}
             onKeyDown={(event) => {
               if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
                 event.preventDefault();
@@ -383,6 +415,9 @@ function App() {
             aria-label={t.inputAria}
             placeholder={t.inputPlaceholder}
           />
+          <p className="file-drop-note" role="status" aria-live="polite">
+            {fileMessage ?? t.dropHint}
+          </p>
         </section>
 
         <section className={`panel output-card ${statusClass} ${colorize ? 'color' : ''}`} aria-labelledby="output-title">
