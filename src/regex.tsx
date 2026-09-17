@@ -11,6 +11,7 @@ import {
   type RegexFlag,
   type RegexMatch,
 } from './lib/regex-tools';
+import { REGEX_PRESETS, type RegexPreset } from './lib/regex-presets';
 import type { RegexWorkerResponse } from './lib/regex-worker-protocol';
 import './styles.css';
 import './regex.css';
@@ -21,53 +22,10 @@ type WorkerState =
   | { status: 'ready'; matches: readonly RegexMatch[]; truncated: boolean; replacement: string | null }
   | { status: 'error'; message: string };
 
-interface RegexPreset {
-  readonly label: string;
-  readonly pattern: string;
-  readonly flags: readonly RegexFlag[];
-  readonly text: string;
-  readonly replacement: string | null;
-}
-
 const FLAG_ORDER: readonly RegexFlag[] = ['g', 'i', 'm', 's', 'u', 'y', 'd'];
 const MAX_VISIBLE_MATCHES = 50;
 const MAX_HIGHLIGHT_CHARACTERS = 20_000;
 const WORKER_TIMEOUT_MS = 1_000;
-
-const PRESETS: readonly RegexPreset[] = [
-  {
-    label: 'Log levels',
-    pattern: '^(?<timestamp>\\d{4}-\\d{2}-\\d{2}T[^ ]+Z) (?<level>INFO|WARN|ERROR) (?<message>.+)$',
-    flags: ['g', 'm'],
-    text: [
-      '2026-09-16T01:02:03Z INFO service started',
-      '2026-09-16T01:02:09Z WARN cache miss',
-      '2026-09-16T01:03:20Z ERROR database timeout',
-    ].join('\n'),
-    replacement: '$<level>: $<message>',
-  },
-  {
-    label: 'URLs',
-    pattern: 'https?://[^\\s<>"\')]+',
-    flags: ['g', 'i'],
-    text: 'Read https://example.com/docs and https://liveparse.com/json-formatter/ before filing the issue.',
-    replacement: '<a href="$&">$&</a>',
-  },
-  {
-    label: 'ISO dates',
-    pattern: '\\d{4}-\\d{2}-\\d{2}(?:[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:?\\d{2})?)?',
-    flags: ['g'],
-    text: 'Created 2026-09-16 and updated 2026-09-15T19:45:00+09:00.',
-    replacement: null,
-  },
-  {
-    label: 'Emoji',
-    pattern: '\\p{Extended_Pictographic}',
-    flags: ['g', 'u'],
-    text: 'Ship it 🚀 then review ✅ and relax 🍵.',
-    replacement: '[$&]',
-  },
-];
 
 function formatOffset(value: number): string {
   return value.toLocaleString('en-US');
@@ -127,11 +85,11 @@ function FlagToggle({
 }
 
 function App(): React.JSX.Element {
-  const [pattern, setPattern] = useState(PRESETS[0].pattern);
-  const [text, setText] = useState(PRESETS[0].text);
+  const [pattern, setPattern] = useState(REGEX_PRESETS[0].pattern);
+  const [text, setText] = useState(REGEX_PRESETS[0].text);
   const [replacementEnabled, setReplacementEnabled] = useState(false);
-  const [replacement, setReplacement] = useState(PRESETS[0].replacement ?? '');
-  const [selectedFlags, setSelectedFlags] = useState<ReadonlySet<RegexFlag>>(new Set(PRESETS[0].flags));
+  const [replacement, setReplacement] = useState(REGEX_PRESETS[0].replacement ?? '');
+  const [selectedFlags, setSelectedFlags] = useState<ReadonlySet<RegexFlag>>(new Set(REGEX_PRESETS[0].flags));
   const [state, setState] = useState<WorkerState>({ status: 'running' });
   const [selectedMatch, setSelectedMatch] = useState<number | null>(null);
   const [statusMessage, setStatusMessage] = useState('Testing the initial pattern in a local worker.');
@@ -339,7 +297,7 @@ function App(): React.JSX.Element {
 
           <div className="regex-presets" aria-label="Example patterns">
             <span>Examples</span>
-            {PRESETS.map((preset) => (
+            {REGEX_PRESETS.map((preset) => (
               <button key={preset.label} type="button" onClick={() => applyPreset(preset)}>
                 {preset.label}
               </button>
