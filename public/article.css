@@ -594,6 +594,17 @@ tr:last-child td {
     gap: 0.1rem;
   }
 
+  /* Expand prose/reference link text into comfortable touch targets without
+     changing their position in the reading order. */
+  .article-body a,
+  .references a,
+  .site-footer a,
+  nav[aria-label="Breadcrumb"] a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
   .site-footer {
     flex-direction: column;
   }
