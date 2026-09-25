@@ -66,6 +66,11 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 - [/image-resizer/](https://liveparse.com/image-resizer/): Resize images by pixels or percent
 - [/word-counter/](https://liveparse.com/word-counter/): Count words, sentences, paragraphs, and reading time
 - [/character-counter/](https://liveparse.com/character-counter/): Count graphemes, code points, UTF-16 units, and UTF-8 bytes
+- [/es/contador-de-palabras/](https://liveparse.com/es/contador-de-palabras/): Spanish word counter — palabras, oraciones, párrafos, and reading time (Español)
+- [/es/contador-de-caracteres/](https://liveparse.com/es/contador-de-caracteres/): Spanish character counter — graphemes, code points, UTF-16, UTF-8 (Español)
+- [/ko/json-parser/](https://liveparse.com/ko/json-parser/): Korean JSON parser, formatter, and validator that preserves 64-bit numbers and duplicate keys (한국어)
+- [/ko/character-counter/](https://liveparse.com/ko/character-counter/): Korean character counter — graphemes, code points, UTF-16, UTF-8 (한국어)
+- [/ja/character-counter/](https://liveparse.com/ja/character-counter/): Japanese character counter — graphemes, code points, UTF-16, UTF-8 (日本語)
 
 ## Background reading
 
