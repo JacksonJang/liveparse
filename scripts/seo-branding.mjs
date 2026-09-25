@@ -4,8 +4,10 @@ const LIVE_LOCALIZED_PAGES = new Map([
   ['/es/contador-de-palabras/', { language: 'es', ogLocale: 'es_ES' }],
   ['/es/contador-de-caracteres/', { language: 'es', ogLocale: 'es_ES' }],
   ['/ko/json-parser/', { language: 'ko', ogLocale: 'ko_KR' }],
+  ['/ko/character-counter/', { language: 'ko', ogLocale: 'ko_KR' }],
+  ['/ja/character-counter/', { language: 'ja', ogLocale: 'ja_JP' }],
 ]);
-const ALLOWED_HREFLANG_VALUES = new Set(['en', 'es', 'ko', 'x-default']);
+const ALLOWED_HREFLANG_VALUES = new Set(['en', 'es', 'ko', 'ja', 'x-default']);
 const RETIRED_LANGUAGE_PREFIX = /^(?:https:\/\/liveparse\.com)?\/(?:ko|ja|es)\//;
 
 export function isLiveLocalizedPath(pathname) {
@@ -125,6 +127,10 @@ export function validateSpanishBranding(html, label) {
 
 export function validateKoreanBranding(html, label) {
   return validateLocalizedBranding(html, label, { language: 'ko', ogLocale: 'ko_KR' });
+}
+
+export function validateJapaneseBranding(html, label) {
+  return validateLocalizedBranding(html, label, { language: 'ja', ogLocale: 'ja_JP' });
 }
 
 export function validatePngIcon(bytes, expectedSize, label) {

@@ -12,9 +12,9 @@ describe('English search branding', () => {
   });
   it('catches stale language pages, alternates, and search metadata', () => {
     const stale = page.replace('lang="en"', 'lang="ko"').replace('JSON Formatter | LiveParse', '한국어 JSON 파서')
-      .replace('</head>', '<link rel="alternate" hreflang="ko" href="/ko/character-counter/"></head>');
+      .replace('</head>', '<link rel="alternate" hreflang="es" href="/es/contador-palabras/"></head>');
     expect(validateEnglishBranding(stale, 'example').join('\n')).toMatch(/lang must be en/);
-    expect(validateEnglishBranding(stale, 'example').join('\n')).toMatch(/hreflang ko must point to a live localized page/);
+    expect(validateEnglishBranding(stale, 'example').join('\n')).toMatch(/hreflang es must point to a live localized page/);
     expect(validateEnglishBranding(stale, 'example').join('\n')).toMatch(/titles and descriptions must be English/);
   });
   it('permits hreflang alternates for the live Spanish pages and blocks retired ko/ja links', () => {
@@ -23,7 +23,7 @@ describe('English search branding', () => {
       '<link rel="alternate" hreflang="es" href="/es/contador-de-palabras/">' +
       '<link rel="alternate" hreflang="x-default" href="https://liveparse.com/word-counter/"></head>');
     expect(validateEnglishBranding(withAlternates, 'example')).toEqual([]);
-    const retired = page.replace('</body>', '<a href="/ko/character-counter/">old</a><a href="/ja/character-counter/">old</a></body>');
+    const retired = page.replace('</body>', '<a href="/es/contador-palabras/">old</a><a href="/es/contar-caracteres/">old</a></body>');
     expect(validateEnglishBranding(retired, 'example').join('\n')).toMatch(/retired language URL/);
     expect(validateEnglishBranding(retired, 'example').join('\n').match(/retired language URL/g)).toHaveLength(2);
   });

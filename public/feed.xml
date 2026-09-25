@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-09-25T23:40:00Z</updated>
+  <updated>2026-09-25T23:45:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -13,6 +13,24 @@
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
 
+  <entry>
+    <id>https://liveparse.com/ko/character-counter/</id>
+    <title>글자 수 세기</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/ko/character-counter/" />
+    <published>2026-09-26T08:45:00+09:00</published>
+    <updated>2026-09-26T08:45:00+09:00</updated>
+    <category term="Character counter (Korean)" />
+    <summary>그래핀 클러스터, 코드 포인트, UTF-16 유닛, UTF-8 바이트를 사용자 지정 제한과 함께 브라우저에서 계산합니다.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/ja/character-counter/</id>
+    <title>文字数カウンター</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/ja/character-counter/" />
+    <published>2026-09-26T08:45:00+09:00</published>
+    <updated>2026-09-26T08:45:00+09:00</updated>
+    <category term="Character counter (Japanese)" />
+    <summary>書記素クラスタ、コードポイント、UTF-16ユニット、UTF-8バイトをカスタム上限つきでブラウザー内で数えます。</summary>
+  </entry>
   <entry>
     <id>https://liveparse.com/ko/json-parser/</id>
     <title>JSON 파서</title>
@@ -420,15 +438,6 @@
   </entry>
 
   <entry>
-    <id>https://liveparse.com/hash-generator/</id>
-    <title>Hash Generator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/hash-generator/" />
-    <published>2026-08-04T06:15:45+09:00</published>
-    <updated>2026-08-04T06:15:45+09:00</updated>
-    <category term="Hashing" />
-    <summary>Calculate SHA-256, SHA-384, SHA-512, or legacy MD5 for UTF-8 text and local file bytes.</summary>
-  </entry>
-  <entry>
     <id>https://liveparse.com/sha256-generator/</id>
     <title>SHA-256 Generator</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/sha256-generator/" />
@@ -445,15 +454,6 @@
     <updated>2026-08-04T06:15:45+09:00</updated>
     <category term="Hashing" />
     <summary>Reproduce legacy MD5 checksums locally with clear collision-resistance and security warnings.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/file-checksum/</id>
-    <title>File Checksum Calculator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/file-checksum/" />
-    <published>2026-08-04T06:15:45+09:00</published>
-    <updated>2026-08-04T06:15:45+09:00</updated>
-    <category term="Checksums" />
-    <summary>Hash exact local file bytes and compare a declared hexadecimal or Base64 checksum without uploading the file.</summary>
   </entry>
   <entry>
     <id>https://liveparse.com/guides/sha256-vs-md5/</id>

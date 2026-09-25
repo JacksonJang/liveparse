@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>文字数カウンター – 書記素・コードポイント・UTF-16・UTF-8 | LiveParse</title>
+    <meta name="description" content="見える文字数とエンコード後の長さを分けて測定します。書記素クラスタ、コードポイント、UTF-16コードユニット、UTF-8バイトをカスタム上限つきでブラウザー内で数えます。" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ja/character-counter/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/character-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/character-counter/" />
+    <link rel="alternate" hreflang="ja" href="https://liveparse.com/ja/character-counter/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/character-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ja/character-counter/" />
+    <meta property="og:title" content="文字数カウンター – 書記素・コードポイント・UTF-16・UTF-8" />
+    <meta property="og:description" content="4種類のUnicode単位を比較し、書記素上限を設定できます。テキストはこのブラウザータブから出ません。" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse の4単位対応文字数カウンター" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Unicode単位別 文字数カウンター | LiveParse" />
+    <meta name="twitter:description" content="書記素、コードポイント、UTF-16ユニット、UTF-8バイトをカスタム上限つきでローカル計数します。" />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ja/character-counter/#application",
+            "name": "LiveParse 文字数カウンター",
+            "url": "https://liveparse.com/ja/character-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "書記素・コードポイント・UTF-16ユニット・UTF-8バイトの文字数カウンター",
+            "operatingSystem": "最新のウェブブラウザーが動くすべてのOS",
+            "browserRequirements": "JavaScript、Intl.Segmenter、TextEncoderが必要",
+            "isAccessibleForFree": true,
+            "inLanguage": "ja",
+            "description": "書記素クラスタ、コードポイント、UTF-16コードユニット、厳密なUTF-8バイト数を数え、カスタム書記素上限の残り・超過をブラウザー内で表示します。",
+            "featureList": [
+              "Intl.Segmenterによる書記素クラスタ計数",
+              "コードポイント反復によるコードポイント計数",
+              "JavaScript文字列のUTF-16コードユニット数",
+              "不正な入力を報告する厳密なUTF-8バイト長",
+              "残り・超過を表示するカスタム書記素上限",
+              "アップロードなしのブラウザーローカル処理"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ja/character-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "文字数カウンター", "item": "https://liveparse.com/ja/character-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ja/character-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "このツールでの文字数とは何を指しますか？", "acceptedAnswer": { "@type": "Answer", "text": "基本の文字数は、ユーザーが認識する文字を近似する書記素クラスタ数です。Unicodeコードポイント、JavaScriptのUTF-16コードユニット、UTF-8バイトも併せて表示し、プラットフォームが指定する正確な単位に合わせられます。" } },
+              { "@type": "Question", "name": "1つの絵文字が複数のコードポイントとして数えられるのはなぜですか？", "acceptedAnswer": { "@type": "Answer", "text": "1つの書記素に見える絵文字は、人・肌の色モディファイア・異体字セレクター・地域インジケーター・ゼロ幅接合子を含む列である場合があります。書記素分割はその列を1つに保ち、コードポイント計数は構成要素を明らかにします。" } },
+              { "@type": "Question", "name": "コードポイントとUTF-16コードユニットの違いは何ですか？", "acceptedAnswer": { "@type": "Answer", "text": "コードポイントはUnicodeが割り当てた値です。UTF-16コードユニットはECMAScript文字列の16ビット値1つであり、U+FFFFを超えるコードポイントはサロゲートペアで2ユニットを占有します。" } },
+              { "@type": "Question", "name": "ペアになっていないサロゲートはどう扱われますか？", "acceptedAnswer": { "@type": "Answer", "text": "ペアのないUTF-16サロゲートはUnicodeスカラー値ではありません。このツールは置換文字のバイトを黙って数える代わりに、厳密なUTF-8バイト結果を利用不可とし、不正な文字列を報告します。" } },
+              { "@type": "Question", "name": "Unicodeテキストを正規化しますか？", "acceptedAnswer": { "@type": "Answer", "text": "いいえ。テキストエリアの値にUnicode正規化は適用しません。事前合成されたアクセント付き文字と、基底文字+結合記号の列は区別されたままです。テキストエリアのHTML動作は解析前にCRLFとCRをLFに変換し、これはユニット数・バイト数の合計に影響することがあります。" } },
+              { "@type": "Question", "name": "カスタム上限はバイト基準ですか？", "acceptedAnswer": { "@type": "Answer", "text": "いいえ。カスタム上限は書記素クラスタを追跡し、残数または超過を表示します。サービスの上限がコードポイント、UTF-16ユニット、UTF-8バイトのいずれかで定義されている場合は、対応する指標と比較してください。" } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="character-counter" data-ui-locale="ja">
+    <a class="skip-link" href="#counter">文字数カウンターへ</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="メインナビゲーション">
+        <a class="brand" href="/" aria-label="LiveParse ホーム"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/word-counter/">ワードカウンター</a><a href="#units">長さの単位</a><a href="#faq">FAQ</a><a href="/guides/">ガイド</a><a href="/privacy/">プライバシー</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">書記素 · コードポイント · UTF-16 · UTF-8</p>
+          <h1>文字数カウンター</h1>
+          <p class="hero-lead">すべての「文字」を1つの数として扱うことなく、見える文字数とエンコード後の長さを測定します。書記素上限を設定し、4種類のUnicode単位を比較しながら、テキストはこのブラウザータブに保持されます。</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">文字数を数える</a><span>カスタム上限 · 残り · 超過</span></div>
+        </div>
+        <div class="hero-example" aria-label="絵文字の文字数例">
+          <div class="example-bar"><span></span><span></span><span></span><strong>emoji.txt</strong></div>
+          <pre><code><span class="property">書記素</span>      1
+<span class="string">コードポイント</span>     1
+<span class="boolean">UTF-16ユニット</span>    2
+UTF-8バイト      4</code></pre>
+          <p><strong>😀はどこでも長さ1ではない</strong><span>受け手が指定する単位を選ぶ</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">切り詰める前に確認</p><h2 id="counter-heading">見える長さとエンコード後の長さを比較</h2></div>
+        <p>対話型ワークスペースは、書記素クラスタ、コードポイント、UTF-16コードユニット、厳密なUTF-8バイトを数えます。カスタム書記素上限を追加すると、残り許容量や超過量を確認できます。</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="文字数カウンター読み込み中"><p><strong>文字数カウンターを読み込んでいます…</strong></p><p>テキストを解析するにはJavaScriptを有効にしてください。下のUnicode長さの定義、例、上限ガイダンスはそのまま利用できます。</p></section></div>
+
+      <section class="content-section" id="units" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">1つの文字列、4つの正しい長さ</p><h2 id="units-heading">書記素・コードポイント・コードユニット・バイトを意図的に選ぶ</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>人が「文字数制限」に期待するのは、見える単位に従うことです。アクセント付き文字や結合された絵文字がバラバラにされては困ります。Unicodeはここで使う実用的な境界を拡張書記素クラスタと呼びます。これはユーザーが知覚する文字の近似であり、すべてのフォント・言語・編集作業がすべての列を同じに扱う保証ではありません。</p>
+            <p>コードポイントはU+0065やU+1F600のように表記されるUnicode符号空間の値です。ECMAScript文字列は3つ目の層として16ビットコードユニットの列を露出します。U+FFFFを超えるコードポイントはサロゲートペアを占有するため、<code>"😀".length</code>は2になります。ファイルやネットワークペイロードは、文字列がUTF-8バイトにエンコードされると4つ目の層を加えます。</p>
+            <p>このカウンターが4層すべてを報告するのは、上限が契約だからです。バイト単位のデータベース列、UTF-16ユニット単位のJavaScript API、見える書記素単位の製品フィールドは、同じテキストを異なる量だけ受け入れます。単位と正規化ポリシーが名指しされるまで「500文字」という表示は不完全です。</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>書記素クラスタ</dt><dd>見える文字を近似するロケール対応の拡張境界。</dd></div>
+            <div><dt>コードポイント</dt><dd>コードポイント反復で得られるUnicode符号値。</dd></div>
+            <div><dt>UTF-16コードユニット</dt><dd>JavaScriptの文字列長が数える16ビット要素。</dd></div>
+            <div><dt>UTF-8バイト</dt><dd>すべてのスカラー値が有効な場合の厳密なエンコード長。</dd></div>
+            <div><dt>カスタム上限</dt><dd>残り・超過が表示される書記素の許容量。</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Unicode長さ単位の詳細ガイドを読む →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">小さな例が層を明かす</p><h2 id="examples-heading">同じ見た目の長さでも必要な格納域は異なります</h2></div>
+        <div class="error-table" role="table" aria-label="書記素・コードポイント・UTF-16・UTF-8の計数例">
+          <div class="error-row error-head" role="row"><span role="columnheader">テキストと表現</span><span role="columnheader">書記素 · ポイント · ユニット</span><span role="columnheader">UTF-8バイト</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+00E9</strong><code role="cell">1 · 1 · 1</code><span role="cell">2バイト: <code>C3 A9</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+0065 U+0301</strong><code role="cell">1 · 2 · 2</code><span role="cell">3バイト: <code>65 CC 81</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>😀</code> · U+1F600</strong><code role="cell">1 · 1 · 2</code><span role="cell">4バイト: <code>F0 9F 98 80</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>👨‍👩‍👧‍👦</code> · 結合された家族</strong><code role="cell">1 · 7 · 11</code><span role="cell">25 UTF-8バイト</span></div>
+        </div>
+        <p>最初の2行は通常同じアクセント付き文字として描画されます。このカウンターは意図的に正規化しないため、内部の長さは区別されたままです。家族の絵文字列は4つの絵文字と3つのゼロ幅接合子からなり、構成コードポイントを個別に削除できる「文字」と扱うと、見た目に壊れた結果が残ることがあります。</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="segmentation-heading">
+        <div class="section-heading"><p class="section-kicker">Unicode境界アルゴリズム</p><h2 id="segmentation-heading">書記素境界は現在の分割データに依存します</h2></div>
+        <div class="prose-grid"><div>
+          <p>書記素の合計は書記素単位の<code>Intl.Segmenter</code>を使用します。このAPIはロケールネゴシエーションと実装のUnicode境界データに従います。<a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a>は結合記号、絵文字モディファイア、地域インジケーター、ゼロ幅接合子列の挙動を含む既定の拡張書記素クラスタ規則を定義し、<a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402</a>はJavaScriptの分割インターフェースを定義します。</p>
+          <p>境界の挙動はブラウザーから独立して凍結されているわけではありません。新しいエンジンは更新されたUnicodeプロパティやロケール調整を反映でき、専門エディターは既定アルゴリズムにドメイン固有の規則を重ねる場合があります。上限の判断を正確に監査する必要があるなら、元のテキストを保存し実行環境を記録してください。</p>
+          <p>書記素数はカーソル移動とユーザー向け上限のためのものですが、視覚的な幅は測りません。1つのクラスタは狭くも広くも不可視にもなり得て、欠落グリフの箱として描画されたり、隣接文字と結合されたりします。レイアウト上限には文字列分割に加えてフォント・レンダリングの測定が必要です。</p>
+        </div><div class="callout-card"><strong>編集ボリュームを数えますか？</strong><p>書記素は見える文字の問いに答えます。単語と文にはロケール対応の単語・文境界規則と、別個の段落・行の定義が必要です。</p><a href="/word-counter/">ワードカウンターを開く →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limit-heading">
+        <div class="section-heading"><p class="section-kicker">受け手の契約に合わせる</p><h2 id="limit-heading">見える文字のポリシーにはカスタム書記素上限を</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>単位を名指す</h3><p>受け手が書記素、コードポイント、UTF-16コードユニット、エンコードバイトのどれを制限しているか確認します。「文字」という語から推測しないでください。</p></li>
+          <li><span>2</span><h3>許容量を設定する</h3><p>カスタム書記素上限を入力し、残りの見えるクラスタ数や現在のテキストの超過量を追跡します。</p></li>
+          <li><span>3</span><h3>安全に切り詰める</h3><p>契約が書記素なら書記素境界でのみ切ります。輸送や保存に別のバイト上限があれば、その後バイトを再確認してください。</p></li>
+        </ol>
+        <p>カスタム上限は、テキストエリアの値を受け取った後に書き換え・切り詰め・Unicode正規化を行いません。テキストエリアのHTML動作は解析前にCRLFとCRをLFに変換します。別の正規化を適用したり制御文字を除去したり異なるUnicodeバージョンを数えたりするサービスは異なる結果を出す可能性があるため、代表的な絵文字と結合列を実際の宛先でテストしてください。</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="encoding-heading">
+        <div class="section-heading"><p class="section-kicker">正確な入力、厳密なエンコード</p><h2 id="encoding-heading">正規化と単独サロゲートはバイトの問いを変えます</h2></div>
+        <div class="prose-grid"><div>
+          <p>テキストエリアの値にNFC、NFD、NFKC、NFKDの変換は適用されません。テキストエリアのHTML動作がすでにCRLFとCRをLFに変換しているため、ソースとバイト単位で比較する際はこの変換を織り込む必要があります。Unicode正規化は、受け手のプロトコルが名指しの形式を要求する場合にのみ行ってください。署名、ハッシュ、データベースキー、バイト契約はそれぞれの規則に従います。</p>
+          <p>通常通り入力されたほとんどのテキストはUnicodeスカラー値から成りますが、JavaScriptの文字列は単独の上位・下位サロゲートを含めます。ECMAScriptの<a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">String型</a>はwell-formed UTF-16ではない16ビット値の列を許します。単独サロゲートにはUTF-16コードユニット数はありますが、Unicodeスカラー値としての直接的なUTF-8エンコードはありません。</p>
+          <p>ウェブの<a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a>は<code>USVString</code>を受け入れ、UTF-8エンコードの前に単独サロゲートをU+FFFDに変換します。この置換は相互運用に有用ですが、その3バイトは元のコードユニットを保存するエンコードではありません。そのためこのカウンターはUTF-8バイト長を利用不可として扱い、置換ベースの合計を黙って使う代わりに不正な入力を報告します。</p>
+        </div><div class="callout-card"><strong>テキストをバイトまで追跡</strong><p>ASCII、Unicode、UTF-8、UTF-16、書記素、16進表記は関連しつつも別個の層です。</p><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8を読む →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">ローカル検査</p><h2 id="privacy-heading">カウントAPIへの要求なしでテキストを測定</h2></div>
+        <div class="prose-grid"><div><p>計数はこのブラウザータブで実行されます。LiveParseは入力された文字列を文字数カウントのサービスにアップロードしたり、サーバー側の履歴を保存したりしません。下書き文、識別子、サンプルペイロードの露出を減らします。</p><p>ローカル処理は隔離されたデバイスを意味しません。ブラウザー拡張、クリップボードツール、アクセシビリティソフト、スクリーンショット、クラッシュレポート、OSはこのページの管理外にあります。測定の必要がない秘密値は取り除き、デバイスに適用されるデータ取り扱い規則に従ってください。</p></div><div class="callout-card"><strong>単語数と読了時間が必要ですか？</strong><p>ロケール対応の単語・文分割、段落・行の計数、調整可能なペース推定に切り替えられます。</p><a href="/word-counter/">単語と文を数える →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">質問と回答</p><h2 id="faq-heading">文字数カウンターFAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>このツールでの文字数とは何を意味しますか？</summary><p>基本の文字数は、ユーザーが知覚する文字を近似する書記素クラスタ数です。Unicodeコードポイント、JavaScriptのUTF-16コードユニット、UTF-8バイトも併せて表示し、プラットフォームの正確な単位に合わせられます。</p></details>
+          <details><summary>1つの絵文字が複数のコードポイントになる理由は？</summary><p>1つの書記素に見える絵文字は、人・肌の色モディファイア・異体字セレクター・地域インジケーター・ゼロ幅接合子を含む列の場合があります。書記素分割はその列を1つに保ち、コードポイント計数は構成要素を明らかにします。</p></details>
+          <details><summary>コードポイントとUTF-16コードユニットの違いは？</summary><p>コードポイントはUnicodeの符号値です。UTF-16コードユニットはECMAScript文字列の16ビット値1つで、U+FFFFを超えるコードポイントはサロゲートペアで2ユニットを占有します。</p></details>
+          <details><summary>ペアのないサロゲートはどう扱われますか？</summary><p>ペアのないUTF-16サロゲートはUnicodeスカラー値ではありません。置換文字のバイトを黙って数える代わりに、厳密なUTF-8バイト結果を利用不可と表示し、不正な文字列を報告します。</p></details>
+          <details><summary>Unicodeテキストを正規化しますか？</summary><p>いいえ。テキストエリアの値にUnicode正規化は適用されません。事前合成のアクセント文字と基底文字+結合記号の列は区別されたままです。テキストエリアのHTML動作は解析前にCRLFとCRをLFに変換し、これはユニット数・バイト数に影響することがあります。</p></details>
+          <details><summary>カスタム上限はバイト基準ですか？</summary><p>いいえ。カスタム上限は書記素クラスタを追跡し、残数・超過を表示します。サービスの上限がコードポイント、UTF-16ユニット、UTF-8バイトで定義される場合は、対応する指標と比較してください。</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">テキスト探検を続ける</p><h2 id="related-heading">カウンター・標準・実用ガイド</h2></div><ul><li><a href="/word-counter/">ワードカウンター</a></li><li><a href="/ko/json-parser/">JSONパーサー（韓国語）</a></li><li><a href="/character-counter/" hreflang="en">Character Counter（英語）</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">書記素クラスタ・コードポイント・バイト</a></li><li><a href="/guides/how-word-counting-works/">単語数の仕組み</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>正確なデータ操作のためのプライベートなブラウザーツールです。</p></div><div class="footer-links"><a href="/word-counter/">単語</a><a href="/ja/character-counter/">文字</a><a href="/guides/">ガイド</a><a href="/privacy/">プライバシー</a></div><p class="footer-note">© 2026 Jackson Jang. 文字数制限は単位が名指されて初めて正確になります。</p></footer>
+    <noscript><p class="noscript-note">対話型の計数にはJavaScriptが必要です。Unicode長さの定義、例、上限ガイダンスはJavaScriptなしでも読めます。</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

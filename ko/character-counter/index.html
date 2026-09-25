@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>글자 수 세기 – 그래핀·코드 포인트·UTF-16·UTF-8 | LiveParse</title>
+    <meta name="description" content="눈에 보이는 글자 수와 인코딩 길이를 따로 재세요. 그래핀 클러스터, 코드 포인트, UTF-16 코드 유닛, UTF-8 바이트를 사용자 지정 제한과 함께 브라우저에서 계산합니다." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ko/character-counter/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/character-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/character-counter/" />
+    <link rel="alternate" hreflang="ja" href="https://liveparse.com/ja/character-counter/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/character-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ko/character-counter/" />
+    <meta property="og:title" content="글자 수 세기 – 그래핀·코드 포인트·UTF-16·UTF-8" />
+    <meta property="og:description" content="네 가지 유니코드 단위를 비교하고 그래핀 제한을 설정하세요. 텍스트는 이 브라우저 탭에 머뭅니다." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse 네 가지 유니코드 길이 단위 카운터" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="유니코드 단위별 글자 수 카운터 | LiveParse" />
+    <meta name="twitter:description" content="그래핀, 코드 포인트, UTF-16 유닛, UTF-8 바이트를 사용자 지정 제한과 함께 로컬에서 계산합니다." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ko/character-counter/#application",
+            "name": "LiveParse 글자 수 세기",
+            "url": "https://liveparse.com/ko/character-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "그래핀·코드 포인트·UTF-16 유닛·UTF-8 바이트 길이 카운터",
+            "operatingSystem": "최신 웹 브라우저가 있는 모든 운영체제",
+            "browserRequirements": "JavaScript, Intl.Segmenter, TextEncoder 필요",
+            "isAccessibleForFree": true,
+            "inLanguage": "ko",
+            "description": "그래핀 클러스터, 코드 포인트, UTF-16 코드 유닛, 엄격한 UTF-8 바이트를 계산하고 사용자 지정 그래핀 제한의 잔여·초과 상태를 브라우저에서 표시합니다.",
+            "featureList": [
+              "Intl.Segmenter 기반 그래핀 클러스터 계산",
+              "코드 포인트 반복을 통한 코드 포인트 계산",
+              "JavaScript 문자열의 UTF-16 코드 유닛 수",
+              "잘못된 입력을 보고하는 엄격한 UTF-8 바이트 길이",
+              "잔여·초과 상태가 있는 사용자 지정 그래핀 제한",
+              "업로드 없는 브라우저 로컬 처리"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ko/character-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "글자 수 세기", "item": "https://liveparse.com/ko/character-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ko/character-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "이 도구에서 글자 수란 무엇을 의미하나요?", "acceptedAnswer": { "@type": "Answer", "text": "기본 글자 수는 사용자가 인지하는 문자를 근사하는 그래핀 클러스터 개수입니다. 유니코드 코드 포인트, JavaScript UTF-16 코드 유닛, UTF-8 바이트도 함께 표시해 플랫폼이 요구하는 정확한 단위에 맞출 수 있습니다." } },
+              { "@type": "Question", "name": "하나의 이모지가 여러 코드 포인트로 계산되는 이유는 무엇인가요?", "acceptedAnswer": { "@type": "Answer", "text": "하나의 그래핀으로 보이는 이모지는 사람, 피부톤 수정자, 변형 선택자, 지역 표시기, ZWJ(폭 0 결합자)를 포함하는 시퀀스일 수 있습니다. 그래핀 분할은 이런 시퀀스를 하나로 유지하고, 코드 포인트 계산은 구성 요소를 드러냅니다." } },
+              { "@type": "Question", "name": "코드 포인트와 UTF-16 코드 유닛의 차이는 무엇인가요?", "acceptedAnswer": { "@type": "Answer", "text": "코드 포인트는 유니코드에서 부여한 값입니다. UTF-16 코드 유닛은 ECMAScript 문자열의 16비트 값 하나이며, U+FFFF를 넘는 코드 포인트는 서러게이트 페어를 사용해 두 코드 유닛을 차지합니다." } },
+              { "@type": "Question", "name": "짝이 없는 서러게이트는 어떻게 처리되나요?", "acceptedAnswer": { "@type": "Answer", "text": "짝이 없는 UTF-16 서러게이트는 유니코드 스칼라 값이 아닙니다. 이 도구는 치환 문자의 바이트를 조용히 세는 대신 엄격한 UTF-8 바이트 결과를 사용 불가능으로 표시하고 잘못된 문자열을 알립니다." } },
+              { "@type": "Question", "name": "유니코드 텍스트를 정규화하나요?", "acceptedAnswer": { "@type": "Answer", "text": "아니요. 텍스트 영역 값에 유니코드 정규화를 적용하지 않습니다. 미리 합쳐진 악센트 문자와 베이스 문자+결합 기호 시퀀스는 서로 다르게 유지됩니다. 텍스트 영역 HTML 동작은 분석 전에 CRLF와 CR을 LF로 바꾸며, 이는 코드 유닛·바이트 총계에 영향을 줄 수 있습니다." } },
+              { "@type": "Question", "name": "사용자 지정 제한은 바이트 기준인가요?", "acceptedAnswer": { "@type": "Answer", "text": "아니요. 사용자 지정 제한은 그래핀 클러스터를 추적하며 잔여 개수나 초과분을 표시합니다. 서비스의 제한이 코드 포인트, UTF-16 유닛, UTF-8 바이트 기준이라면 해당 지표와 비교하세요." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="character-counter" data-ui-locale="ko">
+    <a class="skip-link" href="#counter">글자 수 카운터로 이동</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="주요 내비게이션">
+        <a class="brand" href="/" aria-label="LiveParse 홈"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/word-counter/">단어 수 세기</a><a href="#units">길이 단위</a><a href="#faq">FAQ</a><a href="/guides/">가이드</a><a href="/privacy/">개인정보</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">그래핀 · 코드 포인트 · UTF-16 · UTF-8</p>
+          <h1>글자 수 세기</h1>
+          <p class="hero-lead">모든 "글자"를 한 숫자로 취급하지 않고 눈에 보이는 문자 수와 인코딩 길이를 측정하세요. 그래핀 제한을 정하고 네 가지 유니코드 단위를 비교하며, 텍스트는 이 브라우저 탭에 유지됩니다.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">글자 수 세기</a><span>사용자 지정 제한 · 잔여 · 초과</span></div>
+        </div>
+        <div class="hero-example" aria-label="이모지 글자 수 예시">
+          <div class="example-bar"><span></span><span></span><span></span><strong>emoji.txt</strong></div>
+          <pre><code><span class="property">그래핀</span>      1
+<span class="string">코드 포인트</span>     1
+<span class="boolean">UTF-16 유닛</span>    2
+UTF-8 바이트      4</code></pre>
+          <p><strong>😀는 어디서나 길이 1이 아닙니다</strong><span>받는 쪽이 지정한 단위를 선택하세요</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">자르기 전에 확인</p><h2 id="counter-heading">보이는 길이와 인코딩 길이를 비교</h2></div>
+        <p>대화형 작업 공간은 그래핀 클러스터, 코드 포인트, UTF-16 코드 유닛, 엄격한 UTF-8 바이트를 계산합니다. 사용자 지정 그래핀 제한을 추가해 잔여 허용량이나 초과분을 확인하세요.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="글자 수 카운터 불러오는 중"><p><strong>글자 수 카운터를 불러오는 중…</strong></p><p>텍스트를 분석하려면 JavaScript를 활성화하세요. 아래의 유니코드 길이 정의, 예시, 제한 안내는 그대로 제공됩니다.</p></section></div>
+
+      <section class="content-section" id="units" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">하나의 문자열, 네 가지 길이</p><h2 id="units-heading">그래핀·코드 포인트·코드 유닛·바이트를 의도적으로 선택</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>사람은 "글자 수 제한"이 보이는 단위를 따르기를 기대합니다. 악센트가 붙은 글자나 결합된 이모지가 조각나서는 안 됩니다. 유니코드는 여기서 사용하는 실용적인 경계를 확장 그래핀 클러스터라고 부릅니다. 이는 사용자가 인지하는 문자의 근사이며, 모든 글꼴·언어·편집 작업이 모든 시퀀스를 똑같이 다루겠다는 보장이 아닙니다.</p>
+            <p>코드 포인트는 U+0065, U+1F600처럼 표기되는 유니코드 부호 공간의 값입니다. ECMAScript 문자열은 세 번째 층인 16비트 코드 유닛의 나열을 노출합니다. U+FFFF를 넘는 코드 포인트는 서러게이트 페어를 차지하므로 <code>"😀".length</code>가 2입니다. 파일과 네트워크 페이로드는 문자열이 UTF-8 바이트로 인코딩될 때 네 번째 층을 추가합니다.</p>
+            <p>이 카운터가 네 층을 모두 표시하는 이유는 제한이 곧 계약이기 때문입니다. 바이트 단위 데이터베이스 컬럼, UTF-16 유닛 기준 JavaScript API, 보이는 그래핀 기준 제품 필드는 같은 텍스트를 서로 다른 양만큼 수용합니다. 단위와 정규화 정책이 명명되기 전까지 "500글자"라는 표기는 불완전합니다.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>그래핀 클러스터</dt><dd>보이는 문자를 근사하는 지역 인식 확장 경계.</dd></div>
+            <div><dt>코드 포인트</dt><dd>코드 포인트 반복으로 얻는 유니코드 부호 값.</dd></div>
+            <div><dt>UTF-16 코드 유닛</dt><dd>JavaScript 문자열 길이가 세는 16비트 요소.</dd></div>
+            <div><dt>UTF-8 바이트</dt><dd>모든 스칼라 값이 유효할 때의 엄격한 인코딩 길이.</dd></div>
+            <div><dt>사용자 지정 제한</dt><dd>잔여·초과 상태가 표시되는 그래핀 허용량.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">유니코드 길이 단위 심층 가이드 보기 →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">작은 예시가 층을 드러냅니다</p><h2 id="examples-heading">같은 보이는 길이도 저장 공간은 다를 수 있습니다</h2></div>
+        <div class="error-table" role="table" aria-label="그래핀·코드 포인트·UTF-16·UTF-8 계산 예시">
+          <div class="error-row error-head" role="row"><span role="columnheader">텍스트와 표현</span><span role="columnheader">그래핀 · 포인트 · 유닛</span><span role="columnheader">UTF-8 바이트</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+00E9</strong><code role="cell">1 · 1 · 1</code><span role="cell">2바이트: <code>C3 A9</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+0065 U+0301</strong><code role="cell">1 · 2 · 2</code><span role="cell">3바이트: <code>65 CC 81</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>😀</code> · U+1F600</strong><code role="cell">1 · 1 · 2</code><span role="cell">4바이트: <code>F0 9F 98 80</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>👨‍👩‍👧‍👦</code> · 결합된 가족</strong><code role="cell">1 · 7 · 11</code><span role="cell">25 UTF-8 바이트</span></div>
+        </div>
+        <p>첫 두 행은 보통 같은 악센트 글자로 렌더링됩니다. 이 카운터는 의도적으로 정규화하지 않으므로 두 입력의 내부 길이는 구분됩니다. 가족 이모지 시퀀스는 네 개의 이모지와 세 개의 ZWJ로 구성되며, 구성 코드 포인트를 각각 지울 수 있는 "글자"로 취급하면 눈으로 봐도 깨진 결과가 남을 수 있습니다.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="segmentation-heading">
+        <div class="section-heading"><p class="section-kicker">유니코드 경계 알고리즘</p><h2 id="segmentation-heading">그래핀 경계는 현재 분할 데이터에 따라 달라집니다</h2></div>
+        <div class="prose-grid"><div>
+          <p>그래핀 총계는 그래핀 단위의 <code>Intl.Segmenter</code>를 사용합니다. 이 API는 지역 협상과 구현체의 유니코드 경계 데이터를 따릅니다. <a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a>는 결합 기호, 이모지 수정자, 지역 표시기, ZWJ 시퀀스의 동작을 포함한 기본 확장 그래핀 클러스터 규칙을 정의하고, <a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402</a>는 JavaScript 분할 인터페이스를 정의합니다.</p>
+          <p>경계 동작은 브라우저와 무관하게 고정되지 않습니다. 더 새로운 엔진은 갱신된 유니코드 속성이나 지역 맞춤을 반영할 수 있고, 특수 편집기는 기본 알고리즘 위에 도메인별 규칙을 적용할 수 있습니다. 제한 판단을 정확히 감사해야 한다면 원본 텍스트를 보존하고 실행 환경을 기록하세요.</p>
+          <p>그래핀 개수는 커서 이동과 사용자 대상 제한을 위한 것이지만 시각적 폭은 측정하지 않습니다. 하나의 클러스터는 좁을 수도, 넓을 수도, 보이지 않을 수도 있고, 글리프 누락 상자로 그려지거나 이웃과 결합될 수 있습니다. 레이아웃 제한에는 문자열 분할 외에 글꼴·렌더링 측정이 필요합니다.</p>
+        </div><div class="callout-card"><strong>편집 분량을 세고 싶으신가요?</strong><p>그래핀은 보이는 문자의 질문에 답합니다. 단어와 문장에는 지역 인식 단어·문장 경계 규칙과 별도의 단락·줄 정의가 필요합니다.</p><a href="/word-counter/">단어 수 세기 열기 →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limit-heading">
+        <div class="section-heading"><p class="section-kicker">받는 쪽의 계약에 맞추기</p><h2 id="limit-heading">보이는 문자 정책에는 사용자 지정 그래핀 제한을</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>단위를 명명하세요</h3><p>받는 쪽이 그래핀, 코드 포인트, UTF-16 코드 유닛, 인코딩 바이트 중 무엇을 제한하는지 확인하세요. "글자"라는 단어에서 추측하지 마세요.</p></li>
+          <li><span>2</span><h3>허용량을 설정하세요</h3><p>사용자 지정 그래핀 제한을 입력해 남은 보이는 클러스터 수나 현재 텍스트의 초과분을 추적합니다.</p></li>
+          <li><span>3</span><h3>안전하게 자르세요</h3><p>계약이 그래핀이라면 그래핀 경계에서만 자르세요. 전송·저장에 별도의 바이트 상한이 있다면 이후 바이트를 다시 확인하세요.</p></li>
+        </ol>
+        <p>사용자 지정 제한은 텍스트 영역 값을 받은 뒤 다시 쓰거나 잘라내거나 유니코드 정규화를 적용하지 않습니다. 텍스트 영역 HTML 동작은 분석 전에 CRLF와 CR을 LF로 바꿉니다. 다른 정규화를 적용하거나 제어 문자를 제거하거나 다른 유니코드 버전을 세는 서비스는 다른 결과를 낼 수 있으니 실제 대상에서 대표적인 이모지와 결합 시퀀스를 테스트하세요.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="encoding-heading">
+        <div class="section-heading"><p class="section-kicker">정확한 입력, 엄격한 인코딩</p><h2 id="encoding-heading">정규화와 고아 서러게이트는 바이트 질문을 바꿉니다</h2></div>
+        <div class="prose-grid"><div>
+          <p>텍스트 영역 값에는 NFC, NFD, NFKC, NFKD 변환이 적용되지 않습니다. 텍스트 영역 HTML 동작이 이미 CRLF와 CR을 LF로 바꿨으므로 소스와 바이트 단위로 비교하려면 이 변환을 고려해야 합니다. 유니코드 정규화는 소비하는 프로토콜이 명시된 형식을 요구할 때만 수행하세요. 서명, 해시, 데이터베이스 키, 바이트 계약은 각자의 규칙을 따릅니다.</p>
+          <p>평범하게 입력한 대부분의 텍스트는 유니코드 스칼라 값으로 구성되지만, JavaScript 문자열은 홀로 남은 상위·하위 서러게이트를 포함할 수 있습니다. ECMAScript <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">String 타입</a>은 well-formed UTF-16이 아닌 16비트 값 나열을 허용합니다. 고아 서러게이트는 UTF-16 코드 유닛 수는 있지만 유니코드 스칼라 값으로서의 직접적인 UTF-8 인코딩은 없습니다.</p>
+          <p>웹의 <a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">WHATWG TextEncoder</a>는 <code>USVString</code>을 받아들여 UTF-8 인코딩 전에 고아 서러게이트를 U+FFFD로 바꿉니다. 이 치환은 상호운용에 유용하지만, 그 3바이트는 원본 코드 유닛을 보존한 인코딩이 아닙니다. 그래서 이 카운터는 UTF-8 바이트 길이를 사용 불가능으로 처리하고 치환 기반 총계를 조용히 쓰는 대신 잘못된 입력을 보고합니다.</p>
+        </div><div class="callout-card"><strong>텍스트를 바이트까지 추적</strong><p>ASCII, 유니코드, UTF-8, UTF-16, 그래핀, 16진수 표기는 관련되어 있지만 별개의 층입니다.</p><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8 읽기 →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">로컬 검사</p><h2 id="privacy-heading">카운팅 API 요청 없이 텍스트 측정</h2></div>
+        <div class="prose-grid"><div><p>계산은 이 브라우저 탭에서 실행됩니다. LiveParse는 입력한 문자열을 글자 수 세기 서비스에 올리거나 서버 측 이력을 저장하지 않습니다. 초안 문구, 식별자, 예시 페이로드의 노출을 줄입니다.</p><p>로컬 처리가 고립된 기기를 의미하지는 않습니다. 브라우저 확장, 클립보드 도구, 접근성 소프트웨어, 스크린샷, 오류 보고, 운영체제는 이 페이지의 통제 밖에 있습니다. 측정이 필요 없는 비밀 값은 제거하고 기기에 적용되는 데이터 처리 규정을 따르세요.</p></div><div class="callout-card"><strong>단어 수와 읽기 시간이 필요하신가요?</strong><p>지역 인식 단어·문장 분할, 단락·줄 계산, 조정 가능한 속도 추정으로 전환하세요.</p><a href="/word-counter/">단어·문장 세기 →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">질문과 답</p><h2 id="faq-heading">글자 수 세기 FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>이 도구에서 글자 수는 무엇을 의미하나요?</summary><p>기본 글자 수는 사용자가 인지하는 문자를 근사하는 그래핀 클러스터 개수입니다. 유니코드 코드 포인트, JavaScript UTF-16 코드 유닛, UTF-8 바이트도 함께 표시해 플랫폼의 정확한 단위에 맞출 수 있습니다.</p></details>
+          <details><summary>하나의 이모지가 여러 코드 포인트로 계산되는 이유는?</summary><p>하나의 그래핀으로 보이는 이모지는 사람, 피부톤 수정자, 변형 선택자, 지역 표시기, ZWJ를 포함하는 시퀀스일 수 있습니다. 그래핀 분할은 이런 시퀀스를 하나로 유지하고 코드 포인트 계산은 구성 요소를 드러냅니다.</p></details>
+          <details><summary>코드 포인트와 UTF-16 코드 유닛의 차이는?</summary><p>코드 포인트는 유니코드 부호 값입니다. UTF-16 코드 유닛은 ECMAScript 문자열의 16비트 값 하나이며, U+FFFF를 넘는 코드 포인트는 서러게이트 페어로 두 유닛을 차지합니다.</p></details>
+          <details><summary>짝이 없는 서러게이트는 어떻게 처리되나요?</summary><p>짝이 없는 UTF-16 서러게이트는 유니코드 스칼라 값이 아닙니다. 치환 문자의 바이트를 조용히 세는 대신 엄격한 UTF-8 바이트 결과를 사용 불가능으로 표시하고 잘못된 문자열을 알립니다.</p></details>
+          <details><summary>유니코드 텍스트를 정규화하나요?</summary><p>아니요. 텍스트 영역 값에는 유니코드 정규화를 적용하지 않습니다. 미리 합쳐진 악센트 문자와 베이스+결합 기호 시퀀스는 구별되게 유지됩니다. 텍스트 영역 HTML 동작은 분석 전에 CRLF와 CR을 LF로 바꾸며 이는 코드 유닛·바이트 총계를 바꿀 수 있습니다.</p></details>
+          <details><summary>사용자 지정 제한은 바이트 기준인가요?</summary><p>아니요. 사용자 지정 제한은 그래핀 클러스터를 추적하며 잔여·초과를 표시합니다. 서비스 제한이 코드 포인트, UTF-16 유닛, UTF-8 바이트 기준이라면 해당 지표와 비교하세요.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">텍스트 탐색 계속</p><h2 id="related-heading">카운터·표준·실용 가이드</h2></div><ul><li><a href="/word-counter/">단어 수 세기</a></li><li><a href="/ko/json-parser/">JSON 파서</a></li><li><a href="/character-counter/" hreflang="en">Character Counter (English)</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">그래핀 클러스터, 코드 포인트, 바이트</a></li><li><a href="/guides/how-word-counting-works/">단어 계수의 동작 원리</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>정확한 데이터 작업을 위한 비공개 브라우저 도구입니다.</p></div><div class="footer-links"><a href="/word-counter/">단어</a><a href="/ko/character-counter/">글자</a><a href="/guides/">가이드</a><a href="/privacy/">개인정보</a></div><p class="footer-note">© 2026 Jackson Jang. 글자 수 제한은 단위가 명명될 때만 정확합니다.</p></footer>
+    <noscript><p class="noscript-note">대화형 계산에는 JavaScript가 필요합니다. 유니코드 길이 정의, 예시, 제한 안내는 JavaScript 없이도 읽을 수 있습니다.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>
