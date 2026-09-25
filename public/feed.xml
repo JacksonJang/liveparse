@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-09-15T22:16:28Z</updated>
+  <updated>2026-09-25T15:40:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -13,6 +13,24 @@
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
 
+  <entry>
+    <id>https://liveparse.com/es/contador-de-palabras/</id>
+    <title>Contador de palabras</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/es/contador-de-palabras/" />
+    <published>2026-09-26T00:40:00+09:00</published>
+    <updated>2026-09-26T00:40:00+09:00</updated>
+    <category term="Word counter (Spanish)" />
+    <summary>Cuenta palabras, oraciones, párrafos y líneas con segmentación según la configuración regional y estima el tiempo de lectura y locución sin salir del navegador.</summary>
+  </entry>
+  <entry>
+    <id>https://liveparse.com/es/contador-de-caracteres/</id>
+    <title>Contador de caracteres</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <published>2026-09-26T00:40:00+09:00</published>
+    <updated>2026-09-26T00:40:00+09:00</updated>
+    <category term="Character counter (Spanish)" />
+    <summary>Mide grafemas, puntos de código, unidades UTF-16 y bytes UTF-8 con límite personalizado, contando localmente en el navegador.</summary>
+  </entry>
   <entry>
     <id>https://liveparse.com/url-encoder/</id>
     <title>URL Encoder</title>
@@ -151,24 +169,6 @@
     <updated>2026-08-04T11:30:12+09:00</updated>
     <category term="Calendar calculations" />
     <summary>Calculate exact calendar age from a birth date to today in years, months, and days with an explicit leap-day policy.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/age-calculator-on-specific-date/</id>
-    <title>Age Calculator on a Specific Date</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/age-calculator-on-specific-date/" />
-    <published>2026-08-04T11:30:12+09:00</published>
-    <updated>2026-08-04T11:30:12+09:00</updated>
-    <category term="Calendar calculations" />
-    <summary>Find an exact calendar age on a chosen past or future reference date without timezone-dependent timestamp subtraction.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/date-calculator/</id>
-    <title>Date Calculator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/date-calculator/" />
-    <published>2026-08-04T11:30:12+09:00</published>
-    <updated>2026-08-04T11:30:12+09:00</updated>
-    <category term="Calendar calculations" />
-    <summary>Add or subtract days, weeks, months, or years from a date with transparent end-of-month clamping.</summary>
   </entry>
   <entry>
     <id>https://liveparse.com/days-between-dates/</id>

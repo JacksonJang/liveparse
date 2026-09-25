@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Unix Timestamp Units: Seconds vs Milliseconds, Microseconds, Nanoseconds | LiveParse</title>
+    <title>Unix Timestamp Units: Seconds vs Milliseconds Explained | LiveParse</title>
     <meta name="description" content="Identify and convert Unix timestamps in seconds, milliseconds, microseconds, and nanoseconds without unit mistakes, precision loss, or timezone confusion." />
     <link rel="canonical" href="https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/" />
     <meta name="author" content="Jackson Jang" />
@@ -58,6 +58,52 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Units", "item": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/unix-timestamp-seconds-vs-milliseconds/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is a 13-digit timestamp always milliseconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A positive epoch value near the present is often 13-digit milliseconds, but a different epoch, a duration counter, a padded string, or a far-future seconds value can have the same length. Confirm the producing contract and validate the converted date against domain bounds."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should timestamps be stored as seconds or milliseconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Choose the coarsest unit that preserves required event ordering and the format best supported by every consumer. Seconds are widely interoperable; milliseconds fit browser and JavaScript conventions; higher resolutions may be needed for telemetry. The crucial requirement is explicit, exact, consistent documentation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I recover nanoseconds after converting to a JavaScript Date?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A JavaScript Date represents milliseconds. Keep the original nanosecond integer or a separate sub-millisecond remainder. A millisecond ISO string cannot reconstruct discarded digits."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why are two different nanosecond timestamps equal in my code?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They were probably converted to a floating-point number beyond the safe-integer limit. Parse them as decimal strings or arbitrary-size integers and compare them exactly before creating any millisecond display value."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does a Unix timestamp include a timezone?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. It names an instant relative to the UTC epoch. UTC and local time are renderings of that instant. A local date being converted in the other direction needs a timezone or offset before it identifies one instant."
+                }
+              }
             ]
           }
         ]

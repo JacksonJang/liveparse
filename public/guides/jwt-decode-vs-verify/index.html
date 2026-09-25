@@ -71,6 +71,84 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "JWT Decode vs Verify", "item": "https://liveparse.com/guides/jwt-decode-vs-verify/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/jwt-decode-vs-verify/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can a JWT be decoded without its secret?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. An ordinary signed JWT’s header and payload are Base64URL-encoded, so anyone holding the token can decode them. The secret or public key is needed to verify the signature or MAC, not to make the JSON readable."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between decode and verify?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Decode recovers the JSON data. Verify checks cryptographic integrity over the original compact signing input with an expected algorithm and trusted key. After verification, the application still validates issuer, audience, time, token type, replay, and authorization policy."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a JWT valid if its signature verifies?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Signature verification is necessary for a signed-token contract but not sufficient for acceptance. A correctly signed token can be expired, not active yet, issued by the wrong tenant, intended for another audience, the wrong token type, revoked, replayed, or insufficiently authorized."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a JWT valid if exp is in the future?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Anyone can create an unverified payload with a future expiration. The signature must be verified first, and the verified token must pass every required claim and application policy. A future exp answers only one time question."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should the server trust the alg header?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The server needs to read the label to select a verification path, but only within a preconfigured allowlist for that token type and key. The header must never enable none, switch key families, or broaden algorithms beyond policy."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I fetch the jku URL from a decoded JWT?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Do not fetch an arbitrary token-supplied URL. Remote key discovery must be tied to a configured trusted issuer with strict origin, TLS, redirect, network, caching, and key-selection controls. A diagnostic decoder should display the URL without requesting it."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why reject duplicate JWT claims?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Different JSON processors may choose different occurrences. One service might authorize using the first audience while another logs the last. Rejecting decoded duplicate names avoids inconsistent security decisions and follows the uniqueness requirement in RFC 7519."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does JWE mean the token is verified?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. JWE provides authenticated encryption when processed correctly, but the consumer still needs trusted algorithms and keys, expected nesting or content type, and claim and authorization policy. A five-part JWE also cannot be decoded like a three-part readable JWS without decryption."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is it safe to paste an access token into a decoder?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Prefer a synthetic or redacted token and a local-only tool on a trusted device. A bearer token may grant access, and screenshots, clipboard history, extensions, logs, or remote decoder services can expose it. Rotate or revoke a credential according to policy if it leaks."
+                }
+              }
+            ]
           }
         ]
       }

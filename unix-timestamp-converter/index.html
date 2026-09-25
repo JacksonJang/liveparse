@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Unix Timestamp Converter – Epoch to Date (Seconds, ms, µs, ns) | LiveParse</title>
+    <title>Unix Timestamp Converter – Epoch to Date, Seconds &amp; ms | LiveParse</title>
     <meta name="description" content="Convert Unix timestamps to dates and dates to epoch time in seconds, milliseconds, microseconds, or nanoseconds. Exact, private, and browser-based." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
@@ -81,6 +81,60 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Converter", "item": "https://liveparse.com/unix-timestamp-converter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/unix-timestamp-converter/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How can I tell whether a timestamp is in seconds or milliseconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For a positive date near the present, seconds usually have 10 digits and milliseconds 13. That is only a magnitude heuristic. Confirm the field definition, SDK, database schema, or producer code whenever possible, especially for historical dates and custom epochs."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does my converted date show 1970?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A millisecond value may have been interpreted as seconds after division, or a seconds value may have been passed to an API that expects milliseconds without multiplying by 1,000. Confirm both the input unit and the receiving function’s unit."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are Unix timestamps always UTC?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A Unix timestamp identifies an instant relative to a UTC epoch and does not carry a timezone. It can be formatted in UTC or any local zone. A date typed without an offset, however, needs an interpretation before it can be converted to an instant."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a Unix timestamp be negative?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Negative values represent instants before 1970-01-01T00:00:00Z. Some legacy systems or APIs reject them even though the representation is meaningful, so check the target system’s supported range."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which outputs preserve microseconds and nanoseconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "LiveParse’s exact ISO/UTC and epoch outputs preserve as many as nine fractional digits. Local-time, RFC-style, and native browser Date projections are millisecond-based, so use an exact output when sub-millisecond identity matters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is the converter private?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Conversion runs in the current browser tab; the timestamp values you enter are not sent to a conversion API. The site’s privacy page explains this processing model and remaining device-level considerations."
+                }
+              }
             ]
           }
         ]

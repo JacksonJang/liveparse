@@ -64,7 +64,7 @@
             "url": "https://liveparse.com/base64-decoder/",
             "name": "Base64 Decoder – Decode Base64 and Base64URL Online",
             "description": "Decode and validate Base64, Base64URL, files, and Data URLs locally in a browser.",
-            "dateModified": "2026-09-16",
+            "dateModified": "2026-09-20",
             "inLanguage": "en",
             "mainEntity": { "@id": "https://liveparse.com/base64-decoder/#application" },
             "breadcrumb": { "@id": "https://liveparse.com/base64-decoder/#breadcrumb" }
@@ -75,6 +75,76 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Base64 Decoder", "item": "https://liveparse.com/base64-decoder/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/base64-decoder/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How do I decode a Base64 string to text?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paste the string into the decoder and keep alphabet detection on Auto unless the source specifies a variant. If the recovered bytes form valid UTF-8, the text view shows the result. If not, use hex or download because the content may be binary or use another character encoding."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can this decoder handle Base64URL without padding?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Select Base64URL or use Auto, then choose “Allow omitted padding” for general unpadded input or “Forbid = padding” when the protocol requires the unpadded form. Set whitespace to Reject for JWT/JWS segments. Read the Base64URL guide for alphabet and protocol details."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does Base64 sometimes end with one or two equals signs?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "= marks an incomplete final 24-bit group. One source byte needs two padding symbols and two source bytes need one. Padding carries no new payload byte; it makes the final standard Base64 group explicit and a multiple of four characters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is strict canonical Base64 validation?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "It checks the allowed alphabet, length, padding placement, whitespace policy, and unused pad bits. Canonical validation matters when textual equality, signatures, cache keys, or deterministic output require exactly one encoded representation for a byte sequence."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can Base64 decoding damage Unicode characters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The Base64 step only recovers bytes. Damage occurs when those bytes are interpreted with the wrong character set or when an application replaces invalid sequences. LiveParse displays text only when the complete result is valid UTF-8, otherwise it preserves the bytes as hex or a file."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is it safe to preview a decoded image?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The tool previews only bytes recognized as PNG, JPEG, GIF, or WebP raster formats. It does not render decoded SVG or HTML because those can contain active content. A preview still does not prove the file is benign, so treat unknown data cautiously."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Base64 decoding decrypt the input?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Ordinary Base64 has no encryption key and provides no confidentiality. If decoded bytes are ciphertext, you still need the correct encryption algorithm, key, nonce, authentication tag, and protocol context. Encoding and encryption solve different problems."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my Base64 input uploaded?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The decode operation and selected file reading happen in the current browser tab; input is not sent to a conversion API. Normal page assets and device software are separate from the conversion itself. See the privacy page for the full processing explanation."
+                }
+              }
             ]
           }
         ]
@@ -276,6 +346,7 @@
         <div><p class="section-kicker">Create and understand</p><h2 id="references-heading">Related Base64 resources</h2></div>
         <ul>
           <li><a href="/base64-encoder/">Encode text or files to Base64</a></li>
+          <li><a href="/binary-converter/">Binary Converter for byte and bit values</a></li>
           <li><a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a></li>
           <li><a href="/jwt-decoder/">JWT Decoder</a></li>
           <li><a href="/guides/jwt-decode-vs-verify/">JWT Decode vs Verify</a></li>

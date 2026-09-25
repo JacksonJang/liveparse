@@ -84,6 +84,84 @@
               { "@type": "ListItem", "position": 2, "name": "UUID Generator", "item": "https://liveparse.com/uuid-generator/" },
               { "@type": "ListItem", "position": 3, "name": "UUID v7 Generator", "item": "https://liveparse.com/uuid-v7-generator/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/uuid-v7-generator/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is UUID v7 officially standardized?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The IETF published UUID v7 in RFC 9562 in May 2024. That RFC obsoletes RFC 4122, retains earlier UUID versions, and defines versions 6, 7, and 8 plus updated best practices."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is every UUID v7 generator monotonic?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A conforming implementation may use random data throughout the 74 available payload bits, which does not guarantee creation order within the same millisecond. Strict monotonic behavior requires one of the stateful approaches described in RFC 9562 Section 6.2 and correct overflow and clock handling."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What timestamp does UUID v7 store?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The most significant 48 bits contain unsigned Unix epoch milliseconds, excluding leap seconds. It is a generation-time field, not an authenticated business timestamp."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does UUID v7 sort correctly as a string?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "RFC 9562 designs v7 for byte and lexicographic ordering in the standard text representation. Compare consistently normalized forms. Extra wrappers, different case, or nonstandard database byte transformations can affect an application’s comparison behavior."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why is UUID v7 useful for databases?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leading time order places recent values near each other in an index instead of scattering inserts across random positions. Actual performance depends on the database, index, row shape, workload, concurrency, and configuration, so benchmark rather than assuming a fixed improvement."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I recover the exact record creation time from UUID v7?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can recover the 48-bit millisecond value, but it reflects the generator clock and not necessarily the database commit, validation, ingestion, or business-event time. Keep an explicit trusted timestamp for those meanings."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is UUID v7 more unique than UUID v4?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They use different layouts, and collision analysis depends on generation method, volume, nodes, and failure impact. Neither provides an absolute global guarantee. Use sound libraries, secure random sources, unique constraints, and conflict handling."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can UUID v7 be a secret API token?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Its timestamp is visible, and UUID structure does not define authentication, scope, expiration, rotation, revocation, or authorization. Use a purpose-built token mechanism and server-side access checks."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are UUID v7 values sent to LiveParse?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Generation and inspection run in the current browser tab. The page itself must load normally, but UUID input and output are not posted to a generator API or stored in a LiveParse database."
+                }
+              }
+            ]
           }
         ]
       }

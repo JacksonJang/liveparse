@@ -125,8 +125,8 @@ function NumericWorkbench({
   onStatus: (message: string) => void;
 }): React.JSX.Element {
   const binaryPage = page === 'binary-converter';
-  const [input, setInput] = useState(binaryPage ? '1101 0110 1011' : '7FFF_FFFF');
-  const [sourceRadix, setSourceRadix] = useState(binaryPage ? 2 : 16);
+  const [input, setInput] = useState(binaryPage ? '203' : '7FFF_FFFF');
+  const [sourceRadix, setSourceRadix] = useState(binaryPage ? 10 : 16);
   const [customRadix, setCustomRadix] = useState(36);
   const [allowSeparators, setAllowSeparators] = useState(true);
   const [letterCase, setLetterCase] = useState<LetterCase>('upper');

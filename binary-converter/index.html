@@ -45,6 +45,7 @@
             "browserRequirements": "Requires JavaScript and a modern web browser",
             "isAccessibleForFree": true,
             "inLanguage": "en",
+            "dateModified": "2026-09-20",
             "description": "Convert bounded whole-number input between binary, octal, decimal, and hexadecimal with explicit signed, unsigned, width, prefix, case, and grouping controls in the browser.",
             "featureList": [
               "Convert exact integer values among base 2, base 8, base 10, and base 16",
@@ -171,6 +172,49 @@
           <p>Local conversion does not remove every privacy risk. Clipboard managers, browser extensions, screenshots, crash reporting, and other software on the device remain outside this page's boundary. Remove secrets before sharing a converted key, token field, memory address, or production identifier.</p>
           <p>The implementation follows ECMAScript's arbitrary-precision integer model for exact whole-number work while applying explicit application limits. Review the <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-bigint-type" rel="external">ECMAScript BigInt definition</a> and its fixed-width signed and unsigned operations when reproducing results in JavaScript.</p>
         </div><div class="callout-card"><strong>Working from hexadecimal bytes?</strong><p>An integer and a byte sequence can share the same hex spelling but require different parsing, grouping, and text-decoding rules.</p><a href="/hex-converter/">Open the Hex Converter →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="reference-values-heading">
+        <div class="section-heading"><p class="section-kicker">Frequently compared values</p><h2 id="reference-values-heading">Common binary, decimal, hex, and octal values</h2></div>
+        <p>These reference rows cover the values that appear most often in bit fields, color codes, subnet masks, and file-size math. Grouping is decorative: <code>11 1110 1000</code> and <code>1111101000</code> are the same number.</p>
+        <div class="error-table" role="table" aria-label="Common values in four number bases">
+          <div class="error-row error-head" role="row"><span role="columnheader">Decimal</span><span role="columnheader">Binary</span><span role="columnheader">Hexadecimal</span><span role="columnheader">Octal</span></div>
+          <div class="error-row" role="row"><strong role="cell">0</strong><code role="cell">0</code><code role="cell">0</code><code role="cell">0</code></div>
+          <div class="error-row" role="row"><strong role="cell">1</strong><code role="cell">1</code><code role="cell">1</code><code role="cell">1</code></div>
+          <div class="error-row" role="row"><strong role="cell">2</strong><code role="cell">10</code><code role="cell">2</code><code role="cell">2</code></div>
+          <div class="error-row" role="row"><strong role="cell">5</strong><code role="cell">101</code><code role="cell">5</code><code role="cell">5</code></div>
+          <div class="error-row" role="row"><strong role="cell">8</strong><code role="cell">1000</code><code role="cell">8</code><code role="cell">10</code></div>
+          <div class="error-row" role="row"><strong role="cell">10</strong><code role="cell">1010</code><code role="cell">A</code><code role="cell">12</code></div>
+          <div class="error-row" role="row"><strong role="cell">15</strong><code role="cell">1111</code><code role="cell">F</code><code role="cell">17</code></div>
+          <div class="error-row" role="row"><strong role="cell">16</strong><code role="cell">1 0000</code><code role="cell">10</code><code role="cell">20</code></div>
+          <div class="error-row" role="row"><strong role="cell">32</strong><code role="cell">10 0000</code><code role="cell">20</code><code role="cell">40</code></div>
+          <div class="error-row" role="row"><strong role="cell">63</strong><code role="cell">11 1111</code><code role="cell">3F</code><code role="cell">77</code></div>
+          <div class="error-row" role="row"><strong role="cell">64</strong><code role="cell">100 0000</code><code role="cell">40</code><code role="cell">100</code></div>
+          <div class="error-row" role="row"><strong role="cell">100</strong><code role="cell">110 0100</code><code role="cell">64</code><code role="cell">144</code></div>
+          <div class="error-row" role="row"><strong role="cell">127</strong><code role="cell">111 1111</code><code role="cell">7F</code><code role="cell">177</code></div>
+          <div class="error-row" role="row"><strong role="cell">128</strong><code role="cell">1000 0000</code><code role="cell">80</code><code role="cell">200</code></div>
+          <div class="error-row" role="row"><strong role="cell">200</strong><code role="cell">1100 1000</code><code role="cell">C8</code><code role="cell">310</code></div>
+          <div class="error-row" role="row"><strong role="cell">255</strong><code role="cell">1111 1111</code><code role="cell">FF</code><code role="cell">377</code></div>
+          <div class="error-row" role="row"><strong role="cell">256</strong><code role="cell">1 0000 0000</code><code role="cell">100</code><code role="cell">400</code></div>
+          <div class="error-row" role="row"><strong role="cell">512</strong><code role="cell">10 0000 0000</code><code role="cell">200</code><code role="cell">1000</code></div>
+          <div class="error-row" role="row"><strong role="cell">1000</strong><code role="cell">11 1110 1000</code><code role="cell">3E8</code><code role="cell">1750</code></div>
+          <div class="error-row" role="row"><strong role="cell">1024</strong><code role="cell">100 0000 0000</code><code role="cell">400</code><code role="cell">2000</code></div>
+          <div class="error-row" role="row"><strong role="cell">2048</strong><code role="cell">1000 0000 0000</code><code role="cell">800</code><code role="cell">4000</code></div>
+          <div class="error-row" role="row"><strong role="cell">4095</strong><code role="cell">1111 1111 1111</code><code role="cell">FFF</code><code role="cell">7777</code></div>
+          <div class="error-row" role="row"><strong role="cell">4096</strong><code role="cell">1 0000 0000 0000</code><code role="cell">1000</code><code role="cell">10000</code></div>
+          <div class="error-row" role="row"><strong role="cell">65535</strong><code role="cell">1111 1111 1111 1111</code><code role="cell">FFFF</code><code role="cell">177777</code></div>
+          <div class="error-row" role="row"><strong role="cell">65536</strong><code role="cell">1 0000 0000 0000 0000</code><code role="cell">10000</code><code role="cell">200000</code></div>
+        </div>
+        <p>Powers of two anchor the same table. Each power's binary spelling is a single <code>1</code> followed by zeroes, and its hex spelling ends in round steps: <code>2<sup>8</sup></code> = 256 = <code>100</code>, <code>2<sup>12</sup></code> = 4096 = <code>1000</code>, <code>2<sup>16</sup></code> = 65536 = <code>10000</code>. Maxima such as <code>255</code>, <code>4095</code>, and <code>65535</code> are one power minus one, which is why every digit is <code>F</code> in hex and <code>1</code> in binary.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="manual-conversion-heading">
+        <div class="section-heading"><p class="section-kicker">Understand the arithmetic</p><h2 id="manual-conversion-heading">Convert decimal 203 by hand, then verify it here</h2></div>
+        <div class="prose-grid"><div>
+          <p>Repeated division by 2 produces binary digits from least to most significant. For 203: divide by 2 and keep the remainders — 203 ÷ 2 = 101 remainder <strong>1</strong>, 101 ÷ 2 = 50 remainder <strong>1</strong>, 50 ÷ 2 = 25 remainder <strong>0</strong>, 25 ÷ 2 = 12 remainder <strong>1</strong>, 12 ÷ 2 = 6 remainder <strong>0</strong>, 6 ÷ 2 = 3 remainder <strong>0</strong>, 3 ÷ 2 = 1 remainder <strong>1</strong>, 1 ÷ 2 = 0 remainder <strong>1</strong>. Reading the remainders bottom-up gives <code>11001011</code>.</p>
+          <p>Hexadecimal falls out of the same digits in one step. Split <code>11001011</code> into 4-bit nibbles — <code>1100</code> = 12 = <code>C</code> and <code>1011</code> = 11 = <code>B</code> — for <code>CB</code>. Octal groups 3 bits: <code>11 001 011</code> = <code>313</code>. All three spellings describe the same value as decimal 203, which is exactly the cross-check this converter automates.</p>
+          <p>The same nibble rule runs in reverse: expand each hex digit to 4 bits (<code>3E8</code> → <code>0011 1110 1000</code>) to read binary straight off a hex identifier. This is why memory dumps, color codes, and error codes mix hex and binary so freely.</p>
+        </div><div class="callout-card"><strong>Converting text instead of numbers?</strong><p>Characters have code points that map to bytes; the ASCII table lists them, and the translator spells them out in binary words.</p><a href="/ascii-table/">Open the ASCII Table →</a></div></div>
       </section>
 
       <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">

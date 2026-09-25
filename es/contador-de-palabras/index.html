@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Contador de palabras – palabras, oraciones y tiempo de lectura | LiveParse</title>
+    <meta name="description" content="Cuenta palabras, oraciones, párrafos y líneas con segmentación según la configuración regional, y estima el tiempo de lectura y de locución sin salir de tu navegador." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/es/contador-de-palabras/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/word-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-palabras/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/word-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/es/contador-de-palabras/" />
+    <meta property="og:title" content="Contador de palabras – palabras, oraciones y tiempo de lectura" />
+    <meta property="og:description" content="Mide palabras y estructura del texto con control explícito de la configuración regional. El procesamiento ocurre en esta pestaña del navegador." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Contador de palabras de LiveParse con segmentación según la configuración regional" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Contador de palabras con métricas regionales | LiveParse" />
+    <meta name="twitter:description" content="Cuenta palabras, oraciones, párrafos y líneas, y estima el tiempo de lectura o locución localmente." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/es/contador-de-palabras/#application",
+            "name": "Contador de palabras de LiveParse",
+            "url": "https://liveparse.com/es/contador-de-palabras/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Contador de palabras y estructura de texto según configuración regional",
+            "operatingSystem": "Cualquier sistema operativo con un navegador web moderno",
+            "browserRequirements": "Requiere JavaScript y compatibilidad con Intl.Segmenter",
+            "isAccessibleForFree": true,
+            "inLanguage": "es",
+            "description": "Cuenta palabras y oraciones según la configuración regional, párrafos y líneas no vacías, y estima tiempos de lectura y locución en el navegador.",
+            "featureList": [
+              "Segmentación de palabras y oraciones según la configuración regional",
+              "Opciones automáticas e idiomas inglés, español, coreano, japonés, chino y tailandés",
+              "Recuento de párrafos y líneas lógicas",
+              "Velocidad de lectura ajustable en palabras por minuto",
+              "Velocidad de locución ajustable en palabras por minuto",
+              "Procesamiento local del navegador sin normalización del texto"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/es/contador-de-palabras/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Contador de palabras", "item": "https://liveparse.com/es/contador-de-palabras/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/es/contador-de-palabras/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "¿Qué cuenta este contador de palabras?", "acceptedAnswer": { "@type": "Answer", "text": "Cuenta segmentos similares a palabras y oraciones según la configuración regional elegida y, por separado, párrafos y líneas lógicas no vacías. También estima el tiempo de lectura y de locución a partir del recuento de palabras y las velocidades elegidas." } },
+              { "@type": "Question", "name": "¿Por qué dos contadores de palabras dan resultados distintos?", "acceptedAnswer": { "@type": "Answer", "text": "Los límites entre palabras no son universales: cada contador puede tratar la puntuación, las contracciones, los guiones, los emojis o los idiomas sin espacios de forma diferente. Esta herramienta utiliza los datos de segmentación del navegador, de modo que la configuración regional elegida y el motor del navegador pueden afectar los casos límite." } },
+              { "@type": "Question", "name": "¿Puede contar texto en chino, japonés, coreano o tailandés?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Elige chino, japonés, coreano o tailandés, o deja la opción Automática para usar la preferencia del navegador. La segmentación según configuración regional es más adecuada que dividir solo por espacios, aunque los resultados pueden variar según los datos Unicode y de diccionario del navegador." } },
+              { "@type": "Question", "name": "¿Cómo se cuentan los párrafos y las líneas?", "acceptedAnswer": { "@type": "Answer", "text": "Un párrafo es un bloque de texto no vacío separado por una o más líneas en blanco. La regla de análisis reconoce CRLF como un solo salto y también reconoce CR, LF, NEL, el separador de líneas y el separador de párrafos. Un final de línea crea una última línea vacía." } },
+              { "@type": "Question", "name": "¿Cómo se calculan los tiempos de lectura y locución?", "acceptedAnswer": { "@type": "Answer", "text": "Cada estimación divide el recuento de palabras entre la velocidad elegida en palabras por minuto. Las velocidades son ajustables porque la audiencia, la dificultad, las pausas y el estilo cambian la duración real; el resultado es una estimación de planificación, no una duración medida." } },
+              { "@type": "Question", "name": "¿Mi texto se sube a un servidor o se normaliza?", "acceptedAnswer": { "@type": "Answer", "text": "No. El recuento se ejecuta en la pestaña actual del navegador y la herramienta no sube el texto a ningún servidor. Analiza el valor del área de texto sin normalización Unicode, por lo que grafías canónicamente equivalentes pueden dar recuentos distintos de puntos de código y bytes." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="word-counter" data-ui-locale="es" data-analysis-locale="es">
+    <a class="skip-link" href="#counter">Ir al contador de palabras</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="brand" href="/" aria-label="Inicio de LiveParse"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/es/contador-de-caracteres/">Contador de caracteres</a><a href="#metodo">Método</a><a href="#faq">Preguntas frecuentes</a><a href="/guides/">Guías</a><a href="/privacy/">Privacidad</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Segmentación regional · Velocidad ajustable · Procesamiento local</p>
+          <h1>Contador de palabras</h1>
+          <p class="hero-lead">Cuenta palabras, oraciones, párrafos y líneas lógicas sin reducir todos los idiomas a espacios. Elige una configuración regional, ajusta la velocidad de lectura y locución, y mantén el texto en esta pestaña del navegador.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">Contar palabras</a><span>Auto · Español · Inglés · Coreano · Japonés · Chino · Tailandés</span></div>
+        </div>
+        <div class="hero-example" aria-label="Ejemplo de métricas de recuento de palabras">
+          <div class="example-bar"><span></span><span></span><span></span><strong>borrador.txt</strong></div>
+          <pre><code><span class="property">Palabras</span>       428
+<span class="string">Oraciones</span>    24
+<span class="boolean">Párrafos</span>    7
+Líneas          31</code></pre>
+          <p><strong>≈ 2 min de lectura</strong><span>Ajusta la velocidad según la audiencia</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">Pega, escribe o revisa</p><h2 id="counter-heading">Mide la estructura y el ritmo de un texto</h2></div>
+        <p>El espacio de trabajo interactivo muestra varias unidades lado a lado. Elige Automática para usar la preferencia del navegador o selecciona español, inglés, coreano, japonés, chino o tailandés cuando necesites un supuesto de idioma reproducible.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Cargando el contador de palabras"><p><strong>Cargando el contador de palabras…</strong></p><p>Activa JavaScript para analizar texto. El método de segmentación, las definiciones de estructura y la guía de tiempos siguen disponibles abajo.</p></section></div>
+
+      <section class="content-section" id="metodo" aria-labelledby="method-heading">
+        <div class="section-heading"><p class="section-kicker">Límites, no espacios en blanco</p><h2 id="method-heading">Cómo funciona el recuento regional de palabras</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Una receta simple como <code>text.split(/\s+/)</code> trata cada tramo entre espacios como una palabra. Eso falla con sistemas de escritura que no separan cada palabra con espacios y da significado accidental a la puntuación y a los separadores repetidos. Este contador pide a <code>Intl.Segmenter</code> los segmentos de palabra y cuenta los que la implementación marca como similares a palabras.</p>
+            <p>La configuración regional elegida aporta un contexto de segmentación explícito. Automática se resuelve con la negociación de configuración regional del navegador; las opciones con nombre solicitan <code>es</code>, <code>en</code>, <code>ko</code>, <code>ja</code>, <code>zh</code> o <code>th</code>. La misma interfaz usa granularidad de oración para los límites entre oraciones. Consulta la <a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">definición de Intl.Segmenter en ECMA-402</a> y el <a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a> para conocer los estándares detrás de la API y de las reglas de límites.</p>
+            <p>Esos estándares no prometen un único total eterno para cada texto. Los datos Unicode, las adaptaciones regionales, la segmentación por diccionario y la clasificación <code>isWordLike</code> definida por la implementación pueden cambiar entre motores y versiones de navegador. Registra la configuración regional, el navegador y las reglas cuando el recuento forme parte de un flujo editorial o de facturación.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Palabras</dt><dd>Segmentos regionales clasificados por el navegador como similares a palabras.</dd></div>
+            <div><dt>Oraciones</dt><dd>Segmentos no vacíos devueltos por el análisis regional de límites de oración.</dd></div>
+            <div><dt>Párrafos</dt><dd>Bloques no vacíos separados por una o más líneas en blanco.</dd></div>
+            <div><dt>Líneas</dt><dd>Líneas lógicas separadas por caracteres de salto de línea Unicode reconocidos.</dd></div>
+            <div><dt>Tiempos</dt><dd>Recuento de palabras dividido por la velocidad de lectura o locución elegida.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/how-word-counting-works/">Lee la guía completa sobre las reglas de recuento de palabras →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="structure-heading">
+        <div class="section-heading"><p class="section-kicker">Cuatro medidas relacionadas</p><h2 id="structure-heading">Palabras, oraciones, párrafos y líneas responden a preguntas distintas</h2></div>
+        <div class="error-table" role="table" aria-label="Definiciones de las medidas de estructura del texto">
+          <div class="error-row error-head" role="row"><span role="columnheader">Métrica</span><span role="columnheader">Útil para</span><span role="columnheader">Regla de límite</span></div>
+          <div class="error-row" role="row"><strong role="cell">Recuento de palabras</strong><span role="cell">Extensión editorial, trabajos, planificación de contenidos</span><span role="cell">Segmentos regionales similares a palabras, no una división por espacios.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Recuento de oraciones</strong><span role="cell">Ritmo y revisión rápida de legibilidad</span><span role="cell">Segmentación regional de oraciones; un punto no resuelve todos los casos.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Recuento de párrafos</strong><span role="cell">Estructura del documento y lectura en diagonal</span><span role="cell">Bloques de texto no vacíos separados por al menos una línea en blanco.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Recuento de líneas</strong><span role="cell">Guiones, subtítulos, textos fuente, exportaciones</span><span role="cell">CRLF cuenta como un salto; CR, LF, NEL, U+2028 y U+2029 también crean líneas.</span></div>
+        </div>
+        <p>La entrada vacía tiene cero líneas. En cuanto existe texto, cada salto reconocido termina una línea y comienza otra, por lo que un salto final añade deliberadamente una última línea vacía. En esta interfaz, el comportamiento del área de texto HTML convierte CRLF y CR en LF antes del análisis; el total de líneas lógicas no cambia, pero las comparaciones de bytes y unidades de código deben tener en cuenta esa conversión.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="time-heading">
+        <div class="section-heading"><p class="section-kicker">Una heurística transparente</p><h2 id="time-heading">Estima el tiempo de lectura y locución con velocidad ajustable</h2></div>
+        <div class="prose-grid"><div>
+          <p>El tiempo de lectura y el de locución se calculan con el mismo total de palabras, pero usan ajustes independientes de palabras por minuto. La aritmética es deliberadamente simple: palabras divididas por palabras por minuto. Subir la velocidad acorta la estimación; bajarla la alarga.</p>
+          <p>Una velocidad no es una propiedad del documento. Un texto técnico denso, nombres desconocidos, ecuaciones, demostraciones en pantalla, preguntas de la audiencia, pausas dramáticas y el ritmo de quien aprende un idioma alejan la duración real de cualquier valor genérico. Usa los controles para modelar al lector o la presentación concretos y ensaya todo lo que tenga un tiempo asignado.</p>
+          <p>Con texto multilingüe, la segmentación de palabras y el ritmo de locución son decisiones separadas. Elegir japonés o tailandés cambia cómo se piden los límites; no implica que un único valor de palabras por minuto haga comparables todos los idiomas.</p>
+        </div><div class="callout-card"><strong>¿Necesitas un límite de plataforma?</strong><p>Los recuentos de palabras estiman la extensión editorial. Los nombres de usuario, los mensajes, los campos de base de datos y las API suelen especificar grafemas, unidades UTF-16, puntos de código o bytes.</p><a href="/es/contador-de-caracteres/">Abrir el contador de caracteres →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="reproduce-heading">
+        <div class="section-heading"><p class="section-kicker">Haz el contrato reproducible</p><h2 id="reproduce-heading">Por qué la configuración regional y la versión del motor acompañan a un recuento formal</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Conserva la fuente</h3><p>Cuenta el borrador exacto que se publicará. La herramienta no normaliza Unicode, no unifica mayúsculas ni reescribe puntuación; los navegadores exponen los finales CRLF y CR como LF.</p></li>
+          <li><span>2</span><h3>Registra la configuración regional</h3><p>Usa una configuración regional con nombre en lugar de Automática cuando otro revisor o un sistema de compilación deba reproducir el supuesto.</p></li>
+          <li><span>3</span><h3>Prueba los casos dudosos</h3><p>Guarda ejemplos con contracciones, guiones, abreviaturas, emojis e idiomas sin espacios como casos de regresión del entorno elegido.</p></li>
+        </ol>
+        <p>ECMA-402 deja deliberadamente algunos detalles de límites a la implementación y a sus datos de internacionalización. Una biblioteca de servidor, un editor de escritorio, un índice de búsqueda y un navegador pueden cumplir el estándar y aun así discrepar en un caso límite. Si el portal de envío externo es la autoridad, sus reglas publicadas y su total final prevalecen sobre esta herramienta de planificación.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">El texto del navegador se queda local</p><h2 id="privacy-heading">Cuenta localmente sin normalización Unicode</h2></div>
+        <div class="prose-grid"><div>
+          <p>El análisis se ejecuta en la pestaña actual del navegador. LiveParse no envía el texto a ningún servicio de recuento ni crea un historial de documentos en el servidor. Eso hace la página útil para borradores que no deberían pegarse en una API remota desconocida; las extensiones del navegador, los gestores del portapapeles, las copias de seguridad y las capturas de pantalla siguen siendo límites de privacidad independientes.</p>
+          <p>La herramienta no aplica normalización NFC, NFD, NFKC ni NFKD al valor del área de texto. Una letra acentuada precompuesta y una secuencia descompuesta de base más signo permanecen distintas. El comportamiento del área de texto HTML convierte CRLF y CR en LF antes del análisis; inspecciona puntos de código, unidades UTF-16 y bytes UTF-8 con el contador de caracteres.</p>
+          <p>Las cadenas de JavaScript también pueden contener un surrogate UTF-16 sin emparejar. La segmentación regional puede analizar la cadena tal como la guarda el motor, pero la codificación UTF-8 estricta no puede preservar esa unidad de código aislada como valor escalar Unicode. La herramienta de caracteres relacionada informa que los bytes UTF-8 no están disponibles para esa entrada en lugar de presentar silenciosamente un total basado en reemplazos.</p>
+        </div><div class="callout-card"><strong>Aprende las capas</strong><p>Los grafemas, los puntos de código, las unidades UTF-16 y los bytes UTF-8 son unidades distintas con comportamientos diferentes de límites y de corte.</p><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Comparar unidades de longitud Unicode →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Preguntas respondidas</p><h2 id="faq-heading">Preguntas frecuentes sobre el contador de palabras</h2></div>
+        <div class="faq-list">
+          <details open><summary>¿Qué cuenta este contador de palabras?</summary><p>Cuenta segmentos similares a palabras y oraciones según la configuración regional elegida y, por separado, párrafos y líneas lógicas no vacías. También estima el tiempo de lectura y de locución a partir del recuento de palabras y las velocidades elegidas.</p></details>
+          <details><summary>¿Por qué dos contadores de palabras dan resultados distintos?</summary><p>Los límites entre palabras no son universales. Cada contador puede tratar la puntuación, las contracciones, los guiones, los emojis o los idiomas sin espacios de forma diferente. Esta herramienta utiliza los datos de segmentación regional del navegador, de modo que la configuración regional elegida y el motor pueden afectar los casos límite.</p></details>
+          <details><summary>¿Puede contar texto en chino, japonés, coreano o tailandés?</summary><p>Sí. Elige chino, japonés, coreano o tailandés, o deja la opción Automática para usar la preferencia del navegador. La segmentación regional es más adecuada que dividir solo por espacios, aunque los resultados pueden variar según los datos Unicode y de diccionario del navegador.</p></details>
+          <details><summary>¿Cómo se cuentan los párrafos y las líneas?</summary><p>Un párrafo es un bloque no vacío separado por una o más líneas en blanco. La regla de análisis reconoce CRLF como un solo salto y también reconoce CR, LF, NEL, el separador de líneas y el separador de párrafos. El área de texto HTML expone CRLF y CR como LF antes del análisis; la entrada vacía tiene cero líneas y un salto final crea una última línea vacía.</p></details>
+          <details><summary>¿Cómo se calculan los tiempos de lectura y locución?</summary><p>Cada estimación divide el recuento de palabras entre la velocidad elegida en palabras por minuto. Las velocidades son ajustables porque la audiencia, el idioma, la dificultad, las pausas y el estilo de locución cambian la duración real; el resultado es una estimación de planificación, no una duración medida.</p></details>
+          <details><summary>¿Mi texto se sube a un servidor o se normaliza?</summary><p>No. El recuento se ejecuta en la pestaña actual del navegador y la herramienta no sube el texto a ningún servidor. Analiza el valor del área de texto sin normalización Unicode, por lo que grafías canónicamente equivalentes pueden conservar recuentos distintos de puntos de código y de bytes. El comportamiento del área de texto HTML convierte CRLF y CR en LF antes del análisis.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Sigue explorando el texto</p><h2 id="related-heading">Contadores, estándares y guías prácticas</h2></div><ul><li><a href="/es/contador-de-caracteres/">Contador de caracteres</a></li><li><a href="/word-counter/" hreflang="en">Word Counter (inglés)</a></li><li><a href="/guides/how-word-counting-works/">Cómo funciona el recuento de palabras</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Grafemas, puntos de código y bytes</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Herramientas privadas en el navegador para un trabajo exacto con datos.</p></div><div class="footer-links"><a href="/es/contador-de-palabras/">Palabras</a><a href="/es/contador-de-caracteres/">Caracteres</a><a href="/guides/">Guías</a><a href="/privacy/">Privacidad</a></div><p class="footer-note">© 2026 Jackson Jang. Indica la configuración regional y la unidad de recuento antes de comparar totales.</p></footer>
+    <noscript><p class="noscript-note">Se necesita JavaScript para el recuento interactivo. Las reglas de segmentación, las definiciones de estructura y la guía de tiempos siguen siendo legibles sin él.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

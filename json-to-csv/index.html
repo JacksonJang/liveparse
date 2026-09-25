@@ -83,6 +83,60 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "JSON to CSV Converter", "item": "https://liveparse.com/json-to-csv/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/json-to-csv/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this JSON to CSV converter free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. It is free to use without an account, quota, or paid tier."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can it convert nested JSON to CSV?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Nested objects can be flattened into dot-path columns. Nested arrays remain compact JSON in one cell so the converter does not invent extra rows."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will large JSON numbers be rounded?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. LiveParse keeps the original JSON number token when creating CSV, including integers beyond JavaScript's safe range and decimals with trailing zeros."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it support JSON with different keys in each record?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Headers are collected from all records, not only the first one. A record without a particular key gets an empty cell in that column."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use semicolon, tab, or pipe delimiters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Choose comma, semicolon, tab, or pipe before converting. Fields containing the chosen delimiter are quoted automatically."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I convert CSV back to JSON?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use the CSV to JSON converter. It supports headers, quoted fields, multiline values, optional type inference, and JSON downloads."
+                }
+              }
+            ]
           }
         ]
       }

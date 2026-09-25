@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Unix Timestamp Conversion Code Examples: JavaScript, Python, Java, Go, SQL | LiveParse</title>
+    <title>Unix Timestamp Code Examples: JavaScript, Python, Java, Go, SQL</title>
     <meta name="description" content="Convert Unix timestamps safely in JavaScript, TypeScript, Python, Java, Go, PostgreSQL, MySQL, and SQLite with UTC, precision, and unit guidance." />
     <link rel="canonical" href="https://liveparse.com/guides/unix-timestamp-code-examples/" />
     <meta name="author" content="Jackson Jang" />
@@ -58,6 +58,52 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Unix Timestamp Code Examples", "item": "https://liveparse.com/guides/unix-timestamp-code-examples/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/unix-timestamp-code-examples/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Why does JavaScript use milliseconds instead of seconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The ECMAScript Date time value is defined in milliseconds. Unix and many server interfaces traditionally use seconds, so a boundary conversion is required. Name the unit in variables— epochSeconds and epochMs —instead of relying on memory."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the safest JSON format for nanosecond timestamps?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A decimal string is widely interoperable because parsers cannot round it before application code sees it. Convert the string to an arbitrary-size integer in the consumer and validate its grammar and range. An exact nine-digit UTC string is another interoperable choice when calendar formatting is primary."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I use UTC everywhere?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use UTC instants for storage, logs, ordering, and exchange. Retain regional timezone and local calendar intent for future schedules and user-facing rules. “UTC everywhere” should not mean discarding the information needed to reproduce a civil-time schedule."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert nanoseconds with a JavaScript Date?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can create a millisecond projection after splitting an exact BigInt value, but Date cannot retain the final six fractional digits. Keep those digits separately or use a nanosecond-aware type and serializer."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does SQL show a different hour than my application?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The database session and application may format the same instant in different timezones. Inspect the stored type, session timezone, driver mapping, and output offset before changing the epoch arithmetic."
+                }
+              }
             ]
           }
         ]

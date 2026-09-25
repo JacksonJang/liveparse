@@ -82,6 +82,68 @@
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/jsonl-parser/#app" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/jsonl-parser/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Are JSONL and NDJSON the same thing?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For most tools, yes: both mean one complete JSON value per line. Naming and media-type conventions vary, but the line-oriented data model is the same. LiveParse accepts both JSONL and NDJSON files."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does each line need to be a JSON object?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A strict JSON string, array, number, boolean, or null can also be a record. Objects produce property columns; non-object records appear in a $value column."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can one record span several lines?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. JSONL uses the physical line ending as the record delimiter. If you paste one pretty-printed JSON document, LiveParse detects that case and directs you to the regular JSON Parser."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens to invalid lines during CSV export?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They are excluded. The error list keeps their physical line, column, parser code, and preview visible, while valid records remain filterable and exportable. LiveParse does not guess a repair during conversion."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are large integers converted to scientific notation?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Every JSON number remains an original text token. CSV cells use that exact token, including 64-bit IDs, decimal spelling, exponent notation, and negative zero."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How are nested objects and arrays converted to CSV?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They stay as compact JSON inside one CSV field. This avoids lossy flattening rules and preserves duplicate object members and exact number lexemes."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the tool upload my log or dataset?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. File reading, parsing, filtering, table paging, and export generation happen in your browser. Read the privacy and cookie notice for the site-wide policy and practical browser considerations."
+                }
+              }
+            ]
           }
         ]
       }
@@ -238,7 +300,7 @@
       <section class="jsonl-content" id="jsonl-faq" aria-labelledby="faq-heading">
         <div class="jsonl-section-heading"><p class="jsonl-kicker">Questions answered</p><h2 id="faq-heading">JSONL parser FAQ</h2></div>
         <div class="jsonl-faq">
-          <details open><summary>Are JSONL and NDJSON the same thing?</summary><p>For most tools, yes: both mean one complete JSON value per line. Naming and media-type conventions vary, but the line-oriented data model is the same. LiveParse accepts both <code>.jsonl</code> and <code>.ndjson</code> files.</p></details>
+          <details open><summary>Are JSONL and NDJSON the same thing?</summary><p>For most tools, yes: both mean one complete JSON value per line. Naming and media-type conventions vary, but the line-oriented data model is the same. LiveParse accepts both JSONL and NDJSON files.</p></details>
           <details><summary>Does each line need to be a JSON object?</summary><p>No. A strict JSON string, array, number, boolean, or null can also be a record. Objects produce property columns; non-object records appear in a <code>$value</code> column.</p></details>
           <details><summary>Can one record span several lines?</summary><p>No. JSONL uses the physical line ending as the record delimiter. If you paste one pretty-printed JSON document, LiveParse detects that case and directs you to the regular <a href="/json-formatter/">JSON Parser</a>.</p></details>
           <details><summary>What happens to invalid lines during CSV export?</summary><p>They are excluded. The error list keeps their physical line, column, parser code, and preview visible, while valid records remain filterable and exportable. LiveParse does not guess a repair during conversion.</p></details>

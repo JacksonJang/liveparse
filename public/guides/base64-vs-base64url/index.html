@@ -59,6 +59,68 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Base64 vs Base64URL", "item": "https://liveparse.com/guides/base64-vs-base64url/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/base64-vs-base64url/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can one decoder accept both Base64 and Base64URL?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Some libraries do, but a protocol validator usually should not. When a value contains +,/, -, or _, its alphabet may be obvious; an alphanumeric-only value is ambiguous. Accepting both can hide an integration error and create different canonical strings for the same bytes. Select a mode from the field’s contract."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Base64URL always remove padding?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. RFC 4648 defines = for Base64URL too. Its general rule is to include padding unless another specification explicitly permits omission. JWS is such a specification: it defines Base64URL with trailing padding omitted."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does btoa() fail on emoji or non-English text?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "btoa() expects each JavaScript string element it processes to represent a byte-sized value; it does not perform UTF-8 encoding. Convert the text with TextEncoder, encode those bytes, and reverse the sequence with byte decoding plus TextDecoder."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I safely put standard Base64 in a URL?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes when the API requires it and you encode it as a URL component, but raw +,/, and = can interact with URL syntax or form decoders. Base64URL was designed to reduce those conflicts. The endpoint contract remains authoritative."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How can I tell whether missing padding is valid?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Check the governing format first. For a permitted unpadded value, length modulo four may be zero, two, or three. A remainder of one cannot represent a whole-byte Base64 encoding and is malformed. Restore only the calculated padding before using an API that expects it."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why can two Base64 strings decode to the same bytes?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A permissive decoder may ignore whitespace, excess padding, a mixed alphabet, or nonzero unused pad bits. Canonical RFC 4648 encoding uses the correct alphabet, padding policy, and zero pad bits. Re-encode the bytes and compare when a unique textual representation matters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a decoded JWT trustworthy?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Base64URL decoding only reveals bytes. Trust requires signature or MAC verification with an expected algorithm and trusted key, followed by application-specific claim validation. A readable payload can be completely forged."
+                }
+              }
+            ]
           }
         ]
       }

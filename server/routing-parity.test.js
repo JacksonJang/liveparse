@@ -600,8 +600,6 @@ describe('production routing parity', () => {
       '/character-counter/',
     ]);
     const expectedAliases = new Map([
-      ['/es/contador-de-palabras', '/word-counter/'],
-      ['/es/contador-de-caracteres', '/character-counter/'],
       ['/ja/character-counter', '/character-counter/'],
       ['/ko/character-counter', '/character-counter/'],
       ['/word-count', '/word-counter/'],

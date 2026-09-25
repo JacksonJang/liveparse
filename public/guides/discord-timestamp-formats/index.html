@@ -58,6 +58,84 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Discord Timestamp Formats", "item": "https://liveparse.com/guides/discord-timestamp-formats/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/discord-timestamp-formats/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What are the nine Discord timestamp style letters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Discord currently documents t, T, d, D, f, F, s, S, and R. They select time-only, date-only, combined, compact combined, or relative presentations."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens if I omit the style?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The current Discord reference marks lowercase f as the default. Therefore <t:1754208000> uses the Long Date, Short Time presentation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between f and F?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Both show a date and short time. Uppercase F adds the weekday and uses the Full Date, Short Time style, while lowercase f is the more compact default."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between s and S?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Both are compact short-date combinations. Lowercase s uses Short Time, while uppercase S uses Medium Time and therefore includes seconds in the documented example structure."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which format creates a countdown?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use R for Relative Time. Pair it with F when readers also need an absolute weekday, date, and time."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does the timestamp look different to another person?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Discord says timestamps display in the user’s timezone and locale. Date order, clock style, language, and wall-clock time can differ while the Unix value still identifies the same instant."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I put milliseconds inside the tag?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No—convert them first. Discord documents the value as seconds. Divide known epoch milliseconds by 1,000 using an explicit policy for any sub-second remainder."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need a bot to use a generated timestamp?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The generator produces text in Discord’s documented inline timestamp syntax. Paste it into a normal supported message context and test the result; no bot calculation is required merely to create the text."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is this the same as a message’s creation timestamp?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. An inline tag is content chosen by the message author and can represent a past or future instant. The message creation time is metadata assigned when the message is sent."
+                }
+              }
+            ]
           }
         ]
       }

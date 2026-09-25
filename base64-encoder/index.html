@@ -64,7 +64,7 @@
             "url": "https://liveparse.com/base64-encoder/",
             "name": "Base64 Encoder – Encode Text and Files Online",
             "description": "Encode UTF-8 text and local file bytes as standard Base64, Base64URL, or Data URLs in a browser.",
-            "dateModified": "2026-09-16",
+            "dateModified": "2026-09-20",
             "inLanguage": "en",
             "mainEntity": { "@id": "https://liveparse.com/base64-encoder/#application" },
             "breadcrumb": { "@id": "https://liveparse.com/base64-encoder/#breadcrumb" }
@@ -75,6 +75,76 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Base64 Encoder", "item": "https://liveparse.com/base64-encoder/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/base64-encoder/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How do I encode text to Base64?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Enter the text in the encoder. LiveParse converts it to UTF-8 bytes and encodes those bytes with the alphabet, padding, and wrapping options you select. Copy the result or download it as a text file, then document UTF-8 for the receiving system."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I encode an image, PDF, ZIP, or other binary file?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Choose the local file and the encoder reads its raw bytes rather than treating it as text. Files are limited to 10 MB to protect browser responsiveness. For large files, prefer a streaming CLI or application library and transfer raw binary when possible."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I use Base64 or Base64URL?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use the format named by the destination. Standard Base64 uses + and/; Base64URL replaces them with - and _. Base64URL often omits padding in compact protocols. The comparison guide shows the exact differences."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should Base64 output include equals-sign padding?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Standard canonical Base64 normally includes the necessary = markers. Some protocols, including common Base64URL uses, explicitly omit them. Keep padding unless the receiver’s specification says otherwise; parser tolerance is not a substitute for a defined wire format."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why is the Base64 output larger than my file?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Each three source bytes become four encoded characters, so the payload expands by about 33 percent before line wrapping or a Data URL header. Padding adds at most two characters. Base64 improves text compatibility, not compression."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What media type should I use in a Data URL?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use the verified type of the source bytes, such as image/png for a real PNG or text/plain;charset=utf-8 for UTF-8 plain text. A label does not inspect or convert content, so do not trust a filename extension alone for untrusted files."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Base64 protect passwords or secrets?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Anyone can reverse ordinary Base64 without a key, and it does not detect modification. Use authenticated encryption, secret storage, access controls, and secure transport appropriate to the threat model. Base64 may carry ciphertext, but it does not create it."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are my text and files uploaded?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The encoding operation reads input in the current browser tab and does not send it to a conversion API. Clipboard managers, downloads, extensions, and other device software remain outside that boundary. Review the LiveParse privacy page for details."
+                }
+              }
             ]
           }
         ]
@@ -278,6 +348,7 @@
         <div><p class="section-kicker">Verify and implement</p><h2 id="references-heading">Related Base64 resources</h2></div>
         <ul>
           <li><a href="/base64-decoder/">Decode and validate Base64</a></li>
+          <li><a href="/binary-converter/">Binary Converter for byte and bit values</a></li>
           <li><a href="/guides/base64-vs-base64url/">Base64 vs Base64URL</a></li>
           <li><a href="/jwt-decoder/">JWT Decoder</a></li>
           <li><a href="https://www.rfc-editor.org/rfc/rfc4648" target="_blank" rel="noreferrer">RFC 4648 canonical encoding</a></li>

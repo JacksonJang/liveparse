@@ -77,6 +77,60 @@
                 "item": "https://liveparse.com/guides/compare-api-responses/"
               }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/compare-api-responses/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the best way to compare two API responses?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Reproduce the same request against a known-good baseline and the current system, preserve raw responses, prepare redacted and consistently normalized copies, then use a semantic JSON diff. Review HTTP metadata and run schema and behavior assertions alongside the body comparison."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I ignore timestamps when comparing JSON?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ignore only the exact timestamp value when the instant is expected to vary. Continue checking that the property exists, is a string, follows the required format, and meets any freshness or ordering rule. A stable placeholder in a working copy preserves more contract evidence than deleting the property."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does a text diff report changes when the JSON is equivalent?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A text diff sees indentation, line endings, escape spelling, and object member movement. A semantic JSON diff parses both documents and compares values under JSON-aware rules. Use text comparison when exact serialization matters; use semantic comparison when the parsed data is the subject."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I ignore one JSON path in LiveParse?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not currently. LiveParse offers number-token and whole-array ordering options, but no per-path ignore list. Normalize reviewed paths in copies before comparison, or implement explicit preprocessing in your automated test suite and validate those excluded fields separately."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are 64-bit JSON integers safe in JavaScript?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not always as native Number values. Integers above 9007199254740991 may lose precision. Use a lossless parser, preserve the source token, or define opaque identifiers as strings in a contract designed for broad interoperability."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does matching JSON mean the API has not changed?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. It means the two supplied bodies matched under selected rules. Status codes, headers, latency, authorization, side effects, undocumented scenarios, and values absent from both examples may still differ. A diff complements contract and integration tests; it does not replace them."
+                }
+              }
+            ]
           }
         ]
       }

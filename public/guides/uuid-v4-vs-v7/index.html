@@ -83,6 +83,84 @@
                 "item": "https://liveparse.com/guides/uuid-v4-vs-v7/"
               }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/uuid-v4-vs-v7/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is UUID v7 better than UUID v4?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not universally. Version 7 is usually better when chronological ordering and index locality matter. Version 4 is simpler, more widely available in older runtimes, and does not reveal a timestamp. Both fit in the same 128-bit UUID type and both can be generated without a central allocator."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is UUID v7 guaranteed to be unique?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No UUID version can guarantee global uniqueness without shared knowledge of every generated value. A compliant generator makes collisions practically unlikely through its timestamp and remaining bits, but applications that require an absolute uniqueness invariant must still enforce it, typically with a unique constraint and a defined retry policy."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is UUID v7 always monotonic?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Values with different increasing millisecond timestamps have chronological order in RFC byte order. Values produced within the same millisecond by a generator that fills all 74 remaining bits randomly are not guaranteed to preserve call order. Clock rollback can also disturb order. A stronger claim requires a specific generator’s documented counter and clock policy."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many random bits are in UUID v4 and v7?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "UUID v4 has 122 random bits because six of the 128 bits encode the version and variant. UUID v7 has 74 bits remaining after its 48-bit timestamp, four-bit version, and two-bit variant. A v7 implementation may use all 74 randomly or allocate part of that space to optional sub-millisecond or counter logic."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can UUID v4 and UUID v7 share one database column?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. They are both 128-bit UUIDs and can coexist in a native UUID column. Check application validators that may have been hard-coded for the v4 nibble, and remember that old random rows will not become time-sortable. A separate creation-time column remains useful."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I extract the creation time from UUID v7?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can extract its 48-bit Unix-millisecond field, but describe it as the timestamp embedded by the generator. It may come from a client clock, may be shifted by a particular API, and may not equal database commit or business-event time. It should not replace an authoritative audit timestamp."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does GUID mean UUID v4?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. GUID is a common platform term for a 128-bit identifier, not a version. Many “new GUID” APIs historically produced v4, while modern.NET can also return an RFC 9562 v7 value in a Guid. Inspect or require the version when the distinction matters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use a UUID as an API key or reset token?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Do not rely on a UUID as a security capability. UUIDs provide identification, not authorization, integrity, expiry, or revocation. Use a purpose-built token system and enforce access control even if resource identifiers are difficult to guess."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should UUIDs be stored as text or binary?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Prefer the database’s native UUID type or a 128-bit binary representation when practical. Text is convenient for logs and interchange but includes formatting overhead and may invite inconsistent casing or punctuation. Define byte order whenever raw binary crosses a system boundary."
+                }
+              }
+            ]
           }
         ]
       }

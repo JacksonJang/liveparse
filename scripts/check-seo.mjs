@@ -4,13 +4,14 @@ import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseXml } from '@rgrove/parse-xml';
-import { validateEnglishBranding, validatePngIcon } from './seo-branding.mjs';
+import { validateEnglishBranding, validatePngIcon, validateSpanishBranding } from './seo-branding.mjs';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
 const ATOM_FEED_URL = `${CANONICAL_ORIGIN}/feed.xml`;
 const ATOM_FEED_TITLE = 'LiveParse Developer Tool Updates';
 const ATOM_HUB_URL = 'https://pubsubhubbub.appspot.com/';
+const LIVE_SPANISH_PREFIX = `${CANONICAL_ORIGIN}/es/`;
 const XML_SITEMAP_URL = `${CANONICAL_ORIGIN}/sitemap.xml`;
 const EXPECTED_ROBOTS_SITEMAPS = new Set([XML_SITEMAP_URL, ATOM_FEED_URL]);
 const RFC3339_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
@@ -90,6 +91,27 @@ const FAQ_PARITY_PATHS = new Set([
   '/compress-image-to-200kb/',
   '/compress-image-to-500kb/',
   '/compress-image-to-1mb/',
+  '/json-formatter/',
+  '/json-compare/',
+  '/json-repair/',
+  '/jsonl-parser/',
+  '/json-to-csv/',
+  '/csv-to-json/',
+  '/base64-decoder/',
+  '/base64-encoder/',
+  '/uuid-generator/',
+  '/uuid-v7-generator/',
+  '/uuid-validator/',
+  '/discord-timestamp-generator/',
+  '/unix-timestamp-converter/',
+  '/guides/base64-vs-base64url/',
+  '/guides/compare-api-responses/',
+  '/guides/discord-timestamp-formats/',
+  '/guides/jwt-decode-vs-verify/',
+  '/guides/sql-dialect-formatting/',
+  '/guides/unix-timestamp-code-examples/',
+  '/guides/unix-timestamp-seconds-vs-milliseconds/',
+  '/guides/uuid-v4-vs-v7/',
 ]);
 const requiredPages = [
   { relativePath: 'json-formatter/index.html', canonical: `${CANONICAL_ORIGIN}/json-formatter/`, label: 'JSON Formatter tool' },
@@ -385,7 +407,13 @@ function visibleFaqPairs(html) {
   let sectionMatch;
   while ((sectionMatch = sectionPattern.exec(html))) {
     const attributes = parseAttributes(sectionMatch[1]);
-    if (attributes.get('id') === 'faq' || attributes.get('aria-labelledby') === 'faq-title') sections.push(sectionMatch[2]);
+    if (
+      attributes.get('id') === 'faq' ||
+      attributes.get('id') === 'jsonl-faq' ||
+      attributes.get('aria-labelledby') === 'faq-title'
+    ) {
+      sections.push(sectionMatch[2]);
+    }
   }
   const pairs = [];
   for (const section of sections) {
@@ -1112,7 +1140,11 @@ async function main() {
   for (const path of htmlFiles) htmlByPath.set(path, await readFile(path, 'utf8'));
   validateMetadataUniqueness(htmlByPath, distRoot);
   for (const [path, html] of htmlByPath) {
-    failures.push(...validateEnglishBranding(html, relative(distRoot, path)));
+    const entryLabel = relative(distRoot, path);
+    const pageCanonical = canonicalValues(html)[0] || '';
+    failures.push(...(pageCanonical.startsWith(LIVE_SPANISH_PREFIX)
+      ? validateSpanishBranding(html, entryLabel)
+      : validateEnglishBranding(html, entryLabel)));
   }
   for (const [icon, size] of [['icon-192.png', 192], ['icon-512.png', 512], ['apple-touch-icon.png', 180]]) {
     try { failures.push(...validatePngIcon(await readFile(join(distRoot, icon)), size, icon)); }

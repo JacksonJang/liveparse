@@ -281,7 +281,10 @@ function CharacterResults({ analysis, input, limit, messages, numberLocale, uiLo
 
 function TextCounterApp(): React.JSX.Element {
   const mode = useMemo(pageMode, []);
-  const uiLocale = useMemo(() => resolveTextCounterUiLocale('en'), []);
+  const uiLocale = useMemo(
+    () => resolveTextCounterUiLocale(document.body.dataset.uiLocale),
+    [],
+  );
   const messages = useMemo(() => getTextCounterMessages(uiLocale), [uiLocale]);
   const numberLocale = useMemo(() => getTextCounterNumberLocale(uiLocale), [uiLocale]);
   const initialAnalysisLocale = useMemo(

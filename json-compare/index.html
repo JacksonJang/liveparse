@@ -103,6 +103,76 @@
                 "item": "https://liveparse.com/json-compare/"
               }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/json-compare/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is a JSON diff?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A JSON diff describes differences between two JSON documents. A semantic diff reports changes to parsed values and paths, while a text diff reports changes to the written source. The results can differ because whitespace and object member placement do not necessarily change the data."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is JSON object key order important?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not to the JSON data model: an object is an unordered collection of name/value pairs. Object order may still matter to a source-text review, a human-readable convention, or a nonstandard downstream system, so use text diff when placement itself is under review."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is JSON array order important?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. JSON arrays are ordered, and an item’s index is part of its position in the document. Treat an array as unordered only when your application explicitly defines it as a set-like collection and you understand how repeated values should be handled."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why can two equal-looking JSON numbers compare differently?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The tokens 1, 1.0, and 1e0 can represent the same mathematical value but have different source spellings. Large integers and long decimals can also be rounded by parsers. Use exact token comparison when spelling or precision is part of the contract."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens when a JSON object has duplicate keys?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Behavior varies by implementation: a parser may keep the first value, keep the last value, preserve every occurrence, or reject the document. RFC 8259 says object member names should be unique for interoperability. Treat a duplicate-key finding as an ambiguity to fix, not as a harmless formatting detail."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a JSON diff the same as JSON Patch?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A diff is a description of observed differences. JSON Patch, standardized in RFC 6902, is a specific array of operations such as add, remove, and replace that a compatible system can apply to a document. Not every visual diff is a safe or complete patch."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I compare invalid JSON?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A semantic comparison requires both sides to parse as JSON. Text comparison can still show source differences, but it cannot establish JSON-level equivalence. If an input has comments, trailing commas, single quotes, or truncation, inspect it with JSON Repair before comparing the repaired result."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the JSON comparison upload my documents?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The interactive comparison runs in the current browser tab. Your pasted documents are not required to be sent to a comparison API. You should still remove passwords, tokens, private keys, and personal data before placing any sensitive diagnostic payload in a browser tool."
+                }
+              }
+            ]
           }
         ]
       }

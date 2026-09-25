@@ -1,19 +1,22 @@
 #!/usr/bin/env node
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validateEnglishBranding, validatePngIcon } from './seo-branding.mjs';
+import { validateEnglishBranding, validatePngIcon, validateSpanishBranding } from './seo-branding.mjs';
 
 export const RETIRED_LANGUAGE_ROUTES = new Map([
   ['/ko/json-parser', '/json-formatter/'],
   ['/ko/character-counter', '/character-counter/'],
   ['/ja/character-counter', '/character-counter/'],
-  ['/es/contador-de-palabras', '/word-counter/'],
-  ['/es/contador-de-caracteres', '/character-counter/'],
   ['/es/contador-palabras', '/word-counter/'],
   ['/es/contar-palabras', '/word-counter/'],
   ['/es/contador-caracteres', '/character-counter/'],
   ['/es/contar-caracteres', '/character-counter/'],
 ]);
+
+export const LIVE_SPANISH_ROUTES = [
+  '/es/contador-de-palabras/',
+  '/es/contador-de-caracteres/',
+];
 
 export async function runSearchBrandingCheck({ baseUrl = 'https://liveparse.com', fetchImpl = fetch } = {}) {
   const failures = [];
@@ -29,6 +32,12 @@ export async function runSearchBrandingCheck({ baseUrl = 'https://liveparse.com'
       if (response.status !== 200) failures.push(`${path}: expected 200, got ${response.status}`);
       if (!response.headers.get('content-type')?.includes('text/html')) failures.push(`${path}: expected HTML`);
       failures.push(...validateEnglishBranding(await response.text(), `${path} [${userAgent}]`));
+    }
+    for (const path of LIVE_SPANISH_ROUTES) {
+      const response = await request(path, userAgent);
+      if (response.status !== 200) failures.push(`${path}: expected 200, got ${response.status}`);
+      if (!response.headers.get('content-type')?.includes('text/html')) failures.push(`${path}: expected HTML`);
+      failures.push(...validateSpanishBranding(await response.text(), `${path} [${userAgent}]`));
     }
     for (const [oldPath, target] of RETIRED_LANGUAGE_ROUTES) {
       for (const suffix of ['', '/', '/index.html']) {
@@ -60,8 +69,9 @@ export async function runSearchBrandingCheck({ baseUrl = 'https://liveparse.com'
       failures.push(`/favicon.ico [${userAgent}]: expected a valid, accessible ICO`);
     }
   }
+  const redirectVariants = RETIRED_LANGUAGE_ROUTES.size * 3;
   if (failures.length) throw new Error(failures.join('\n'));
-  return 'English pages, 54 permanent redirect variants, and search icons passed.';
+  return `English and Spanish pages, ${redirectVariants} permanent redirect variants, and search icons passed.`;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

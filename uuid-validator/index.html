@@ -70,7 +70,7 @@
             "url": "https://liveparse.com/uuid-validator/",
             "name": "UUID Validator & Checker – Version, Variant, v7 Time",
             "description": "Validate, normalize, and inspect UUID and GUID text under RFC 9562.",
-            "dateModified": "2026-08-04",
+            "dateModified": "2026-09-20",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/uuid-validator/#application" },
@@ -82,6 +82,84 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "UUID Validator", "item": "https://liveparse.com/uuid-validator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/uuid-validator/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What makes a UUID valid?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "That depends on the field’s contract. Generic RFC inspection requires a 128-bit value in an accepted presentation, then reports variant, version, or special Nil/Max status. A field that specifically requires UUID v4 or v7 must additionally require that version and usually the RFC variant."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are uppercase UUIDs valid?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. RFC 9562 permits upper, lower, or mixed hexadecimal case. LiveParse reports a lowercase standard form for consistent comparison, but case normalization does not change the underlying bytes."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a UUID without hyphens valid?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "It can be a presentation accepted by a particular application, but it is not the ordinary RFC hex-and-dash text form. Strict mode rejects it. Normalize mode accepts exactly 32 hexadecimal digits and reports the standard hyphenated form."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can the validator check GUID values in braces?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes in Normalize mode. A matching brace pair around a standard 8-4-4-4-12 value is unwrapped and normalized. Strict mode rejects braces so you can enforce a protocol that does not permit them."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I tell UUID v4 from v7?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "After parsing the full value and confirming the RFC variant, read the high four bits of octet 6. In standard text that is the first hex character of group three: 4 means v4 and 7 means v7."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does a UUID start group four with 8, 9, a, or b?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "All four digits begin with binary 10, the variant used by RFC 9562 layouts. C or D belongs to Microsoft-reserved variant space, while E or F is reserved for future definition."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are the Nil and Max UUIDs valid?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "RFC 9562 defines both as special UUID values. A generic checker should recognize them. They are not generated UUID v4 or v7 values, so an application field requiring one of those versions should reject them."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does a valid UUID prove the record exists?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. It proves only the checked structure and fields. Existence, uniqueness, ownership, authenticity, and authorization require checks against trusted application state."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are pasted UUIDs uploaded?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Parsing, normalization, batch results, and v7 time conversion happen in the current browser tab. Clipboard history, extensions, downloaded output, and other device software remain separate privacy boundaries."
+                }
+              }
             ]
           }
         ]
@@ -253,6 +331,7 @@
           <li><a href="https://www.rfc-editor.org/rfc/rfc9562#section-5.10" target="_blank" rel="noreferrer">RFC 9562 Section 5.10: Max UUID</a></li>
           <li><a href="/uuid-generator/">UUID and GUID Generator</a></li>
           <li><a href="/uuid-v7-generator/">UUID v7 Generator</a></li>
+          <li><a href="/binary-converter/">Binary Converter for hex fields</a></li>
           <li><a href="/guides/uuid-v4-vs-v7/">UUID v4 vs v7 guide</a></li>
         </ul>
       </aside>

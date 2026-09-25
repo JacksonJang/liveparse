@@ -70,7 +70,7 @@
             "url": "https://liveparse.com/uuid-generator/",
             "name": "UUID Generator (GUID) – UUID v4 & v7",
             "description": "Generate and inspect RFC 9562 UUID v4, UUID v7, and GUID values locally.",
-            "dateModified": "2026-08-04",
+            "dateModified": "2026-09-20",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/uuid-generator/#application" },
@@ -82,6 +82,84 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "UUID Generator", "item": "https://liveparse.com/uuid-generator/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/uuid-generator/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is a GUID the same as a UUID?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Usually, yes. RFC 9562 says UUIDs are also known as GUIDs. GUID is common in Microsoft ecosystems, while UUID is the standard term. Formatting conventions such as braces or uppercase do not change the underlying 128-bit value."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which should I generate: UUID v4 or UUID v7?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Choose v4 for a random, opaque general-purpose identifier and for systems already standardized on v4. Choose v7 when time order is useful for database or event IDs and exposing millisecond creation time is acceptable. Read the detailed comparison before changing a production key strategy."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are generated UUIDs guaranteed to be unique?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No decentralized generator can give an absolute global guarantee. Correct UUID generation makes collision probability extremely low for ordinary use. A system where duplication has serious consequences should also use a unique constraint, conflict handling, and any domain-specific coordination required."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many random bits are in UUID v4?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "UUID v4 has 122 random or pseudorandom bits. Six of the 128 total bits carry the four-bit version and two-bit RFC variant. The generator fills bytes from the browser cryptography source before applying those required bits."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I generate multiple UUIDs at once?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Choose a whole count from 1 through 10,000, then export one-per-line, comma-separated, JSON array, or SQL VALUES output. Large production batches are usually better generated inside the application or database transaction that consumes them."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does the fourth UUID group start with 8, 9, a, or b?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Those hexadecimal digits all begin with binary bits 10, the variant defined by RFC 9562. The first hex digit of the third group identifies the version. Both fields must appear at their exact positions."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a UUID be used as a secure token?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Do not assume so. UUID structure defines an identifier, not authentication, confidentiality, expiration, scope, or authorization. Use a purpose-built token system and enforce access on the server even when resource URLs contain unpredictable identifiers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are generated values uploaded or stored?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No UUID generation or inspection request is sent to a LiveParse conversion API. Values remain in page memory until replaced, reloaded, or the tab closes. Copying, downloading, extensions, and device software have their own privacy boundaries."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How can I check an existing UUID?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Paste it into the inspector above or open the dedicated UUID Validator. Strict mode requires the standard hyphenated form; normalized mode also accepts compact text, braces, and a UUID URN while reporting a normalized lowercase standard value."
+                }
+              }
             ]
           }
         ]
@@ -241,6 +319,7 @@
           <li><a href="https://www.w3.org/TR/webcrypto-2/#Crypto-method-randomUUID" target="_blank" rel="noreferrer">Web Cryptography: crypto.randomUUID()</a></li>
           <li><a href="/uuid-v7-generator/">UUID v7 Generator and timestamp inspector</a></li>
           <li><a href="/uuid-validator/">UUID Validator and normalizer</a></li>
+          <li><a href="/binary-converter/">Binary Converter for hex fields</a></li>
           <li><a href="/guides/uuid-v4-vs-v7/">UUID v4 vs v7 guide</a></li>
         </ul>
       </aside>

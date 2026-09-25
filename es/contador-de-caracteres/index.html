@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Contador de caracteres – grafemas, puntos de código y bytes | LiveParse</title>
+    <meta name="description" content="Mide caracteres visibles y longitud codificada: grafemas, puntos de código, unidades UTF-16 y bytes UTF-8, con límite personalizado, en tu navegador." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/character-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-caracteres/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/character-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/es/contador-de-caracteres/" />
+    <meta property="og:title" content="Contador de caracteres – grafemas, puntos de código y bytes" />
+    <meta property="og:description" content="Compara cuatro unidades Unicode y fija un límite de grafemas con control de exceso. El texto se queda en esta pestaña del navegador." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Contador de caracteres de LiveParse con cuatro unidades Unicode" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Contador de caracteres con unidades Unicode | LiveParse" />
+    <meta name="twitter:description" content="Grafemas, puntos de código, unidades UTF-16 y bytes UTF-8 con límite personalizado, contados localmente." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/es/contador-de-caracteres/#application",
+            "name": "Contador de caracteres de LiveParse",
+            "url": "https://liveparse.com/es/contador-de-caracteres/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Contador de longitud Unicode con grafemas, puntos de código, unidades UTF-16 y bytes UTF-8",
+            "operatingSystem": "Cualquier sistema operativo con un navegador web moderno",
+            "browserRequirements": "Requiere JavaScript, Intl.Segmenter y TextEncoder",
+            "isAccessibleForFree": true,
+            "inLanguage": "es",
+            "description": "Cuenta grafemas, puntos de código, unidades UTF-16 y bytes UTF-8 estrictos, con límite personalizado de grafemas y estado restante o excedido, en el navegador.",
+            "featureList": [
+              "Recuento de clústeres de grafemas con Intl.Segmenter",
+              "Recuento de puntos de código e iteración por punto de código",
+              "Unidades UTF-16 de la cadena de JavaScript",
+              "Bytes UTF-8 estrictos con informe de entrada malformada",
+              "Límite personalizado de grafemas con restante y exceso",
+              "Procesamiento local del navegador sin subidas"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/es/contador-de-caracteres/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Contador de caracteres", "item": "https://liveparse.com/es/contador-de-caracteres/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/es/contador-de-caracteres/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "¿Qué significa el recuento de caracteres en esta herramienta?", "acceptedAnswer": { "@type": "Answer", "text": "El total principal de caracteres es un recuento de clústeres de grafemas, que aproxima los caracteres que percibe el usuario. La herramienta también informa puntos de código Unicode, unidades UTF-16 de JavaScript y bytes UTF-8 para adaptarse a la unidad exacta de cada plataforma." } },
+              { "@type": "Question", "name": "¿Por qué un emoji puede contar como varios puntos de código?", "acceptedAnswer": { "@type": "Answer", "text": "Un emoji que se muestra como un grafema puede ser una secuencia con personas, modificadores de tono de piel, selectores de variante, indicadores regionales o uniones de ancho cero. La segmentación en grafemas mantiene unidas muchas de esas secuencias mientras el recuento de puntos de código expone sus componentes." } },
+              { "@type": "Question", "name": "¿Qué diferencia hay entre un punto de código y una unidad UTF-16?", "acceptedAnswer": { "@type": "Answer", "text": "Un punto de código es un valor codificado Unicode. Una unidad UTF-16 es un valor de 16 bits en una cadena ECMAScript; los puntos de código por encima de U+FFFF usan un par sustituto y por tanto ocupan dos unidades UTF-16." } },
+              { "@type": "Question", "name": "¿Cómo trata la herramienta un sustituto sin emparejar?", "acceptedAnswer": { "@type": "Answer", "text": "Un sustituto UTF-16 sin emparejar no es un valor escalar Unicode. En lugar de contar silenciosamente los bytes del carácter de reemplazo, la herramienta marca el resultado de bytes UTF-8 estrictos como no disponible y muestra un error hasta reparar la cadena malformada." } },
+              { "@type": "Question", "name": "¿El contador normaliza el texto Unicode?", "acceptedAnswer": { "@type": "Answer", "text": "No se aplica normalización Unicode al valor del área de texto. Una letra acentuada precompuesta y una letra base con signo diacrítico permanecen distintas. El área de texto HTML convierte CRLF y CR en LF antes del análisis, lo que puede cambiar los totales de unidades y de bytes." } },
+              { "@type": "Question", "name": "¿El límite personalizado se basa en bytes?", "acceptedAnswer": { "@type": "Answer", "text": "No. El límite personalizado rastrea clústeres de grafemas e informa cuántos quedan o cuánto se excede. Si un servicio define su límite en puntos de código, unidades UTF-16 o bytes UTF-8, compara la métrica correspondiente." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="character-counter" data-ui-locale="es">
+    <a class="skip-link" href="#counter">Ir al contador de caracteres</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="brand" href="/" aria-label="Inicio de LiveParse"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/es/contador-de-palabras/">Contador de palabras</a><a href="#unidades">Unidades</a><a href="#faq">Preguntas frecuentes</a><a href="/guides/">Guías</a><a href="/privacy/">Privacidad</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Grafemas · Puntos de código · UTF-16 · UTF-8</p>
+          <h1>Contador de caracteres</h1>
+          <p class="hero-lead">Mide los caracteres visibles y la longitud codificada sin fingir que cada «carácter» es un solo número. Fija un límite de grafemas, compara cuatro unidades Unicode y mantén el texto en esta pestaña del navegador.</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">Contar caracteres</a><span>Límite personalizado · Restante · Exceso</span></div>
+        </div>
+        <div class="hero-example" aria-label="Ejemplo de métricas de caracteres para un emoji">
+          <div class="example-bar"><span></span><span></span><span></span><strong>emoji.txt</strong></div>
+          <pre><code><span class="property">Grafemas</span>      1
+<span class="string">Puntos de código</span>     1
+<span class="boolean">Unidades UTF-16</span>    2
+Bytes UTF-8      4</code></pre>
+          <p><strong>😀 no mide 1 en todas partes</strong><span>Elige la unidad que especifica el receptor</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">Inspecciona antes de truncar</p><h2 id="counter-heading">Compara la longitud visible y la codificada</h2></div>
+        <p>El espacio de trabajo interactivo cuenta clústeres de grafemas, puntos de código, unidades UTF-16 y bytes UTF-8 estrictos. Añade un límite personalizado de grafemas para ver cuánto queda o cuánto se excede.</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="Cargando el contador de caracteres"><p><strong>Cargando el contador de caracteres…</strong></p><p>Activa JavaScript para inspeccionar texto. Las definiciones de longitud Unicode, los ejemplos y la guía de límites siguen disponibles abajo.</p></section></div>
+
+      <section class="content-section" id="unidades" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">Una cadena, cuatro longitudes válidas</p><h2 id="units-heading">Elige grafemas, puntos de código, unidades o bytes de forma deliberada</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Una persona espera que un «límite de caracteres» siga las unidades visibles: una letra acentuada o un emoji unido no debería destrozarse. Unicode llama clúster de grafemas extendido al límite práctico usado aquí. Es una aproximación del carácter percibido por el usuario, no una promesa de que cada fuente, idioma o tarea de edición trate cada secuencia igual.</p>
+            <p>Un punto de código es un valor en el espacio de códigos Unicode, escrito como U+0065 o U+1F600. Las cadenas ECMAScript exponen una tercera capa: secuencias de unidades de código de 16 bits. Un punto de código por encima de U+FFFF ocupa un par sustituto, por eso <code>"😀".length</code> es 2. Los archivos y las cargas de red añaden una cuarta capa cuando la cadena se codifica como bytes UTF-8.</p>
+            <p>El contador informa las cuatro capas porque los límites son contratos. Una columna de base de datos medida en bytes, una API de JavaScript medida en unidades UTF-16 y un campo de producto medido en grafemas visibles aceptan cantidades distintas del mismo texto. La etiqueta «500 caracteres» está incompleta hasta que se nombren la unidad y la política de normalización.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Clústeres de grafemas</dt><dd>Límites extendidos regionales que aproximan los caracteres visibles.</dd></div>
+            <div><dt>Puntos de código</dt><dd>Valores codificados Unicode obtenidos por iteración de puntos de código.</dd></div>
+            <div><dt>Unidades UTF-16</dt><dd>Los elementos de 16 bits que cuenta la longitud de las cadenas de JavaScript.</dd></div>
+            <div><dt>Bytes UTF-8</dt><dd>La longitud codificada estricta cuando todos los valores escalares son válidos.</dd></div>
+            <div><dt>Límite personalizado</dt><dd>Una allowance de grafemas con estado restante y de exceso.</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Lee la guía detallada sobre las unidades de longitud Unicode →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="examples-heading">
+        <div class="section-heading"><p class="section-kicker">Ejemplos pequeños revelan las capas</p><h2 id="examples-heading">La misma longitud visible puede requerir distinto almacenamiento</h2></div>
+        <div class="error-table" role="table" aria-label="Ejemplo de recuentos de grafemas, puntos de código, UTF-16 y UTF-8">
+          <div class="error-row error-head" role="row"><span role="columnheader">Texto y representación</span><span role="columnheader">Grafemas · puntos · unidades</span><span role="columnheader">Bytes UTF-8</span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+00E9</strong><code role="cell">1 · 1 · 1</code><span role="cell">2 bytes: <code>C3 A9</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>é</code> · U+0065 U+0301</strong><code role="cell">1 · 2 · 2</code><span role="cell">3 bytes: <code>65 CC 81</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>😀</code> · U+1F600</strong><code role="cell">1 · 1 · 2</code><span role="cell">4 bytes: <code>F0 9F 98 80</code></span></div>
+          <div class="error-row" role="row"><strong role="cell"><code>👨‍👩‍👧‍👦</code> · familia unida</strong><code role="cell">1 · 7 · 11</code><span role="cell">25 bytes UTF-8</span></div>
+        </div>
+        <p>Las dos primeras filas suelen verse como la misma letra acentuada. El contador no las normaliza deliberadamente, de modo que sus longitudes subyacentes siguen siendo distinguibles. La secuencia de la familia combina cuatro emoji con tres uniones de ancho cero; tratar sus puntos de código como «caracteres» independientes eliminables puede dejar un resultado visiblemente roto.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="segmentation-heading">
+        <div class="section-heading"><p class="section-kicker">Un algoritmo de límites Unicode</p><h2 id="segmentation-heading">Los límites de grafemas dependen de los datos de segmentación actuales</h2></div>
+        <div class="prose-grid"><div>
+          <p>El total de grafemas usa <code>Intl.Segmenter</code> con granularidad de grafema. La API sigue la negociación de configuración regional y los datos de límites Unicode de la implementación. El <a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a> define las reglas predeterminadas de clústeres de grafemas extendidos, incluido el comportamiento de los signos diacríticos, los modificadores de emoji, los indicadores regionales y las secuencias con unión de ancho cero. <a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402</a> define la interfaz de segmentación de JavaScript.</p>
+          <p>El comportamiento de los límites no está congelado con respecto al navegador. Un motor más nuevo puede incluir propiedades o adaptaciones Unicode actualizadas, y los editores especializados pueden aplicar reglas específicas del dominio más allá del algoritmo predeterminado. Conserva el texto original y registra el entorno de ejecución cuando una decisión de límite deba auditarse con exactitud.</p>
+          <p>Un recuento de grafemas está pensado para el movimiento del cursor y para límites visibles, pero no mide el ancho visual. Un clúster puede ser estrecho, ancho, invisible, representarse como un glifo ausente o unirse a sus vecinos. Los límites de maquetación necesitan medición de fuente y renderizado además de la segmentación de cadenas.</p>
+        </div><div class="callout-card"><strong>¿Cuentas la extensión editorial?</strong><p>Los grafemas responden a una pregunta de caracteres visibles. Las palabras y las oraciones necesitan reglas regionales de límites de palabra y oración más definiciones separadas de párrafo y línea.</p><a href="/es/contador-de-palabras/">Abrir el contador de palabras →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="limit-heading">
+        <div class="section-heading"><p class="section-kicker">Igualate al contrato del receptor</p><h2 id="limit-heading">Usa el límite personalizado de grafemas para políticas de caracteres visibles</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Nombra la unidad</h3><p>Confirma si el receptor limita grafemas, puntos de código, unidades UTF-16 o bytes codificados. No lo infieras de la palabra «carácter».</p></li>
+          <li><span>2</span><h3>Fija el límite</h3><p>Introduce un límite personalizado de grafemas para saber cuántos clústeres visibles quedan o cuánto excede el texto actual ese límite.</p></li>
+          <li><span>3</span><h3>Trunca con seguridad</h3><p>Si el contrato son los grafemas, corta solo en un límite de grafema. Vuelve a comprobar los bytes si el transporte o el almacenamiento tienen un techo adicional en bytes.</p></li>
+        </ol>
+        <p>El límite personalizado no reescribe, recorta ni aplica normalización Unicode después de recibir el valor del área de texto. El comportamiento del área de texto HTML convierte CRLF y CR en LF antes del análisis. Un servicio que aplique otra normalización, elimine caracteres de control o use otra versión de Unicode puede dar un resultado distinto, así que prueba emojis y secuencias combinantes representativos contra el destino real.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="encoding-heading">
+        <div class="section-heading"><p class="section-kicker">Entrada exacta, codificación estricta</p><h2 id="encoding-heading">La normalización y los sustitutos aislados cambian la pregunta de los bytes</h2></div>
+        <div class="prose-grid"><div>
+          <p>No se aplica ninguna transformación NFC, NFD, NFKC ni NFKD al valor del área de texto. El área de texto HTML ya convirtió CRLF y CR en LF, así que las comparaciones byte a byte con la fuente deben tener en cuenta esa conversión. Normaliza Unicode solo cuando el protocolo consumidor exija una forma concreta; las firmas, los hashes, las claves de base de datos y los contratos en bytes siguen sus propias reglas.</p>
+          <p>La mayoría del texto escrito con normalidad consta de valores escalares Unicode, pero una cadena de JavaScript puede contener un sustituto alto o bajo aislado. El <a href="https://tc39.es/ecma262/#sec-ecmascript-language-types-string-type" rel="external">tipo String</a> de ECMAScript permite secuencias de valores de 16 bits que no son UTF-16 bien formado. Un sustituto aislado tiene recuento de unidades UTF-16 pero no codificación UTF-8 directa como valor escalar Unicode.</p>
+          <p>El <a href="https://encoding.spec.whatwg.org/#interface-textencoder" rel="external">TextEncoder de WHATWG</a> acepta una <code>USVString</code>, que convierte los sustitutos aislados en U+FFFD antes de codificar en UTF-8. Ese reemplazo es un comportamiento útil de interoperabilidad, pero sus tres bytes no son una codificación que preserve el byte de la unidad de código original. Por eso este contador considera no disponible la longitud en bytes UTF-8 e informa la entrada malformada en lugar de usar silenciosamente el total del reemplazo.</p>
+        </div><div class="callout-card"><strong>Rastrea el texto hasta los bytes</strong><p>ASCII, Unicode, UTF-8, UTF-16, los grafemas y la notación hexadecimal describen capas relacionadas pero separadas.</p><a href="/guides/ascii-vs-unicode-utf8/">Leer ASCII vs Unicode vs UTF-8 →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">Inspección local</p><h2 id="privacy-heading">Mide el texto sin peticiones a una API de recuento</h2></div>
+        <div class="prose-grid"><div><p>El recuento se ejecuta en esta pestaña del navegador. LiveParse no sube deliberadamente la cadena a ningún servicio de recuento ni guarda un historial en el servidor. Eso reduce la exposición de borradores, identificadores y cargas de ejemplo.</p><p>El procesamiento local no es lo mismo que un dispositivo aislado. Las extensiones del navegador, los gestores del portapapeles, el software de accesibilidad, las capturas de pantalla, los informes de fallos y el sistema operativo quedan fuera del control de esta página. Elimina los secretos que no necesiten medirse y sigue la política de manejo de datos aplicable al dispositivo.</p></div><div class="callout-card"><strong>¿Necesitas palabras y tiempo de lectura?</strong><p>Cambia a la segmentación regional de palabras y oraciones, los recuentos de párrafos y líneas, y las estimaciones de ritmo ajustable.</p><a href="/es/contador-de-palabras/">Contar palabras y oraciones →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Preguntas respondidas</p><h2 id="faq-heading">Preguntas frecuentes sobre el contador de caracteres</h2></div>
+        <div class="faq-list">
+          <details open><summary>¿Qué significa el recuento de caracteres en esta herramienta?</summary><p>El total principal de caracteres es un recuento de clústeres de grafemas, que aproxima los caracteres que percibe el usuario. La herramienta también informa puntos de código Unicode, unidades UTF-16 de JavaScript y bytes UTF-8 para adaptarse a la unidad exacta de cada plataforma.</p></details>
+          <details><summary>¿Por qué un emoji puede contar como varios puntos de código?</summary><p>Un emoji que se muestra como un grafema puede ser una secuencia con personas, modificadores de tono de piel, selectores de variante, indicadores regionales o uniones de ancho cero. La segmentación en grafemas mantiene unidas muchas de esas secuencias mientras el recuento de puntos de código expone sus componentes.</p></details>
+          <details><summary>¿Qué diferencia hay entre un punto de código y una unidad UTF-16?</summary><p>Un punto de código es un valor codificado Unicode. Una unidad UTF-16 es un valor de 16 bits en una cadena ECMAScript; los puntos de código por encima de U+FFFF usan un par sustituto y por tanto ocupan dos unidades UTF-16.</p></details>
+          <details><summary>¿Cómo trata la herramienta un sustituto sin emparejar?</summary><p>Un sustituto UTF-16 sin emparejar no es un valor escalar Unicode. En lugar de contar silenciosamente los bytes del carácter de reemplazo, la herramienta marca el resultado de bytes UTF-8 estrictos como no disponible y muestra un error hasta reparar la cadena malformada.</p></details>
+          <details><summary>¿El contador normaliza el texto Unicode?</summary><p>No se aplica normalización Unicode al valor del área de texto. Una letra acentuada precompuesta y una letra base con signo diacrítico permanecen distintas. El área de texto HTML convierte CRLF y CR en LF antes del análisis, lo que puede cambiar los totales de unidades y de bytes.</p></details>
+          <details><summary>¿El límite personalizado se basa en bytes?</summary><p>No. El límite personalizado rastrea clústeres de grafemas e informa cuántos quedan o cuánto se excede. Si un servicio define su límite en puntos de código, unidades UTF-16 o bytes UTF-8, compara la métrica correspondiente.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">Sigue explorando el texto</p><h2 id="related-heading">Contadores, estándares y guías prácticas</h2></div><ul><li><a href="/es/contador-de-palabras/">Contador de palabras</a></li><li><a href="/character-counter/" hreflang="en">Character Counter (inglés)</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Grafemas, puntos de código y bytes</a></li><li><a href="/guides/how-word-counting-works/">Cómo funciona el recuento de palabras</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Herramientas privadas en el navegador para un trabajo exacto con datos.</p></div><div class="footer-links"><a href="/es/contador-de-palabras/">Palabras</a><a href="/es/contador-de-caracteres/">Caracteres</a><a href="/guides/">Guías</a><a href="/privacy/">Privacidad</a></div><p class="footer-note">© 2026 Jackson Jang. Un límite de caracteres solo es preciso cuando se nombra su unidad.</p></footer>
+    <noscript><p class="noscript-note">Se necesita JavaScript para el recuento interactivo. Las definiciones de longitud Unicode, los ejemplos y la guía de límites siguen siendo legibles sin él.</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>

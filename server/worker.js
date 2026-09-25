@@ -1,5 +1,7 @@
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const DIRECTORY_ROUTES = new Set([
+  '/es/contador-de-palabras',
+  '/es/contador-de-caracteres',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',
@@ -122,10 +124,6 @@ const ROUTE_REDIRECTS = new Map([
   ['/ko/character-counter/', '/character-counter/'],
   ['/ja/character-counter', '/character-counter/'],
   ['/ja/character-counter/', '/character-counter/'],
-  ['/es/contador-de-palabras', '/word-counter/'],
-  ['/es/contador-de-palabras/', '/word-counter/'],
-  ['/es/contador-de-caracteres', '/character-counter/'],
-  ['/es/contador-de-caracteres/', '/character-counter/'],
   ['/json-parser', '/json-formatter/'],
   ['/json-parser/', '/json-formatter/'],
   ['/json-validator', '/json-formatter/'],

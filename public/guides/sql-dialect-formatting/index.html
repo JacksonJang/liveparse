@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, and SQL Server | LiveParse</title>
+    <title>SQL Dialect Formatting: MySQL, PostgreSQL, BigQuery, SQL Server</title>
     <meta name="description" content="A SQL dialect formatting guide for MySQL, PostgreSQL, BigQuery, and SQL Server: preserve syntax and keep formatting separate from validation." />
     <link rel="canonical" href="https://liveparse.com/guides/sql-dialect-formatting/" />
     <meta name="author" content="Jackson Jang" />
@@ -84,6 +84,84 @@
               "name": "LiveParse",
               "url": "https://liveparse.com/"
             }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/guides/sql-dialect-formatting/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can one SQL formatter handle every database?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "One interface can support several dialects, but it still needs separate lexical and grammar rules behind each mode. A lowest-common-denominator formatter may handle simple queries, yet it cannot safely infer every vendor extension. Select the target explicitly and verify that the formatter version supports the constructs in the input."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does formatting SQL change how it runs?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Whitespace and keyword case changes outside quoted content normally preserve meaning, but a faulty or mismatched formatter can alter tokens, comments, hints, template expressions, or statement boundaries. Always inspect the diff. Any tool that rewrites expressions, converts functions, changes pagination, or replaces identifier quotes is performing translation or refactoring, not merely formatting."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does a SQL formatter validate syntax?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not necessarily. Some formatters use parsers and can report certain syntax errors; others deliberately tolerate incomplete SQL. Neither behavior proves acceptance by the target database. Exact syntax depends on engine version and settings, while name resolution, types, privileges, and runtime behavior require more context than a formatter has."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can formatting prove that a query is safe?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A cleanly formatted statement can contain SQL injection, excessive access, a destructive operation, an unbounded scan, a Cartesian join, or a subtle authorization failure. Use parameter binding, least privilege, code review, query planning, resource controls, and application tests. Formatting only makes the text easier to inspect."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should SQL keywords be uppercase?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Uppercase keywords are a common convention, not a universal semantic requirement. Lowercase keywords can be equally readable when applied consistently. Configure the team's preferred style, but never apply case changes to string contents or quoted identifiers and avoid guessing whether an ambiguous word is a keyword without dialect context."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should commas be leading or trailing?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Both styles can be readable. Trailing commas resemble many programming languages; leading commas can make selected-column diffs visually obvious. Choose one policy when your formatter exposes that option. LiveParse currently follows its formatting engine's comma layout and does not offer a leading-versus-trailing comma control. Dialect validity still takes precedence, particularly in contexts where a trailing comma is or is not accepted."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can LiveParse format stored procedures or custom-delimiter scripts?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. LiveParse's SQL formatters do not support stored procedures or custom-delimiter scripts, including MySQL DELIMITER directives. Use engine- and client-aware tooling for routines, procedural bodies, deployment scripts, and batch commands."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How should templated SQL be formatted?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use a formatter that understands both the template language and the SQL dialect, or format the compiled SQL for diagnostics. A generic SQL tokenizer may interpret template braces, control blocks, or macros as operators and identifiers. Do not overwrite the template from compiled output because comments, macros, source mappings, and abstractions may be lost."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which dialect should I select for Amazon-compatible or cloud databases?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Select the documented language of the actual service rather than the vendor it resembles. Cloud warehouses and compatible databases often start from PostgreSQL, MySQL, or another grammar and then add or remove syntax. Use a dedicated dialect when available; otherwise document the closest supported mode and review unsupported extensions carefully."
+                }
+              }
+            ]
           }
         ]
       }

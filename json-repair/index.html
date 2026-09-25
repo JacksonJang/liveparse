@@ -85,6 +85,52 @@
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/json-repair/#application" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/json-repair/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Does LiveParse upload the JSON I paste?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Repair, lossless validation, warnings, and diff generation run in the current browser tab. The tool does not submit the JSON input to a LiveParse server. See the privacy page for information about loading the website itself and any third-party services."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will a 64-bit integer change during repair?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The repair pipeline keeps numeric tokens as text and validates them in a lossless AST. It does not use JSON.parse() followed by JSON.stringify(). Unsafe integers, exponent overflow, and number spellings that JavaScript would rewrite are warned about while the original numeric lexeme remains intact."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens to duplicate object keys?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Both members remain in their original order, and the lossless validator reports a duplicate-key warning. Different JSON consumers handle duplicate names differently, so resolve the duplication deliberately before sending the data to another system."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I repair JSONL or NDJSON here?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "This page repairs one JSON value. Use the dedicated JSONL Parser for newline-delimited records, line-specific errors, filtering, table inspection, and CSV export."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should repaired LLM JSON be trusted automatically?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. A model response may be syntactically repairable while still containing invented fields, omitted records, or incorrect values. Use the change list to understand syntax edits, then verify the actual data against the prompt, source material, and expected schema."
+                }
+              }
+            ]
           }
         ]
       }

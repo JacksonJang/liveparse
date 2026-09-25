@@ -84,6 +84,100 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "Discord Timestamp Generator", "item": "https://liveparse.com/discord-timestamp-generator/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/discord-timestamp-generator/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the Discord timestamp syntax?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use <t:UNIX_SECONDS> for default display or <t:UNIX_SECONDS:STYLE> for an explicit, case-sensitive style."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Discord use Unix seconds or milliseconds?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The current reference says timestamps are expressed in seconds. JavaScript Date.now() returns milliseconds and must be deliberately converted."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are there seven or nine timestamp formats?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The current official table lists nine: t, T, d, D, f, F, s, S, and R. Older guides often omit s and S."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which style is the default?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Discord marks f —Long Date, Short Time—as default. Omitting the final style requests that form."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I make a relative countdown?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use uppercase R. Pair it with F when the message should also retain an exact full date and time."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does another person see a different clock time?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why did my timestamp show an implausible date?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert an existing tag back to a date?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Paste the complete tag into the decoder to extract its seconds and style, view the date, and regenerate every format."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need a bot?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why is raw <t:…> text not rendering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Check the angle brackets, t: prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is LiveParse affiliated with Discord?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. LiveParse is an independent developer tool and is not affiliated with or endorsed by Discord."
+                }
+              }
+            ]
           }
         ]
       }

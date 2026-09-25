@@ -80,7 +80,7 @@
             "url": "https://liveparse.com/json-formatter/",
             "name": "JSON Formatter, Validator, and Viewer Online",
             "description": "Format, beautify, validate, minify, and view JSON without altering large numbers or duplicate keys.",
-            "dateModified": "2026-09-17",
+            "dateModified": "2026-09-19",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "mainEntity": { "@id": "https://liveparse.com/json-formatter/#application" },
@@ -92,6 +92,68 @@
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "JSON Formatter", "item": "https://liveparse.com/json-formatter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/json-formatter/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this JSON formatter and validator free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. LiveParse is free to use, with no account, usage meter, or paid tier."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does LiveParse upload or store my JSON?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Parsing, formatting, minification, and tree rendering happen locally in your browser. Your input is held in the page's memory for the current tab and is not submitted to LiveParse."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the difference between a JSON parser, validator, and formatter?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A parser turns JSON text into structured values. A validator checks whether the syntax is legal. A formatter rewrites valid JSON with consistent whitespace. LiveParse combines all three in one tool. For a detailed comparison, read JSON parser vs. formatter vs. validator."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why are comments and trailing commas rejected?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They are valid in some JavaScript contexts but not in standard JSON. LiveParse intentionally uses strict parsing so the result behaves like JSON consumed by browsers, APIs, and most programming languages."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens when an object contains duplicate keys?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "LiveParse preserves every repeated member in its lossless tree and formatted output, and shows a warning with the duplicate location. Standard JSON Pointer and JSONPath expressions cannot uniquely address repeated names, so copied paths are marked as ambiguous."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can LiveParse preserve 64-bit IDs and very large numbers?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Number tokens such as 9007199254740993 and 1e400 are stored and copied as text, never converted for output. LiveParse also warns when a value exceeds JavaScript's safe integer range, overflows a JavaScript number, or would change spelling during native reserialization."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I parse sensitive API data?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Local processing reduces exposure, but you should still remove secrets when possible and follow your organization's data-handling rules. The page itself must load from the internet, but the JSON you paste is not transmitted by the tool."
+                }
+              }
             ]
           }
         ]

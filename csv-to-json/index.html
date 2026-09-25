@@ -83,6 +83,60 @@
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
               { "@type": "ListItem", "position": 2, "name": "CSV to JSON Converter", "item": "https://liveparse.com/csv-to-json/" }
             ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/csv-to-json/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this CSV to JSON converter free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. It is free to use without an account, upload limit, or paid tier."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it support commas inside a CSV value?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. A comma inside a double-quoted field stays in that field. Two consecutive quotes inside a quoted field become one literal quote."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a CSV field contain a line break?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Physical line breaks inside a properly quoted field are preserved as newline characters in the JSON string."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why are numbers quoted in the default JSON output?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "CSV has no reliable type information. Keeping values as strings prevents leading zeros, IDs, postal codes, and long numbers from changing. Enable type inference when numeric JSON values are required."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert tab-separated or semicolon-separated data?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Choose tab, semicolon, or pipe in the delimiter setting before converting."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I turn the JSON back into CSV?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use the JSON to CSV converter to flatten nested objects, collect headers across records, and download spreadsheet-safe CSV."
+                }
+              }
+            ]
           }
         ]
       }
