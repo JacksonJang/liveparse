@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>JSON 파서 · 포매터 · 검증기 – 무손실 온라인 도구 | LiveParse</title>
+    <meta name="description" content="JSON을 온라인에서 포맷팅, 검증, 압축하고 트리로 확인하세요. 64비트 ID, 지수 표기, 중복 키가 흐트러지지 않으며 입력한 데이터는 브라우저 밖으로 나가지 않습니다." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ko/json-parser/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/json-formatter/" />
+    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/json-parser/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/json-formatter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ko/json-parser/" />
+    <meta property="og:title" content="JSON 파서 · 포매터 · 검증기 – 무손실 온라인 도구" />
+    <meta property="og:description" content="큰 숫자와 중복 키를 바꾸지 않고 JSON을 포맷팅하고 검증합니다. 처리는 브라우저 안에서만 이루어집니다." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse 무손실 JSON 파서" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON 파서 · 포매터 · 검증기 | LiveParse" />
+    <meta name="twitter:description" content="64비트 ID와 중복 키를 보존하며 JSON을 포맷팅, 검증, 압축하는 브라우저 전용 도구." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ko/json-parser/#application",
+            "name": "LiveParse JSON 파서 · 포매터 · 검증기",
+            "alternateName": ["JSON 포매터", "JSON 검증기", "JSON 뷰어"],
+            "url": "https://liveparse.com/ko/json-parser/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "JSON 포매터, 검증기, 파서, 트리 뷰어",
+            "operatingSystem": "최신 웹 브라우저가 있는 모든 운영체제",
+            "browserRequirements": "JavaScript와 최신 웹 브라우저 필요",
+            "isAccessibleForFree": true,
+            "inLanguage": "ko",
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "description": "입력을 브라우저 안에서 처리하는 무료 무손실 JSON 포매터·검증기·압축기·파서·트리 뷰어입니다.",
+            "featureList": [
+              "무손실 엄격 JSON 파싱과 검증",
+              "64비트 정수 및 숫자 토큰 표기 보존",
+              "중복 객체 키 감지 및 보존",
+              "안전하지 않은 정수와 지수 오버플로 경고",
+              "정확한 구문 오류 위치 표시",
+              "2칸 또는 4칸 들여쓰기 포맷팅",
+              "JSON 압축",
+              "대화형 JSON 트리 보기",
+              "구문 강조",
+              "브라우저 로컬 처리"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/ko/json-parser/#webpage",
+            "url": "https://liveparse.com/ko/json-parser/",
+            "name": "JSON 파서 · 포매터 · 검증기 온라인",
+            "description": "큰 숫자나 중복 키를 바꾸지 않고 JSON을 포맷팅, 검증, 압축하고 확인합니다.",
+            "dateModified": "2026-09-26",
+            "inLanguage": "ko",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/ko/json-parser/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/ko/json-parser/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ko/json-parser/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "JSON 파서", "item": "https://liveparse.com/ko/json-parser/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ko/json-parser/#faq-schema",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "이 JSON 포매터와 검증기는 무료인가요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "네. LiveParse는 계정, 사용량 제한, 유료 등급 없이 무료로 사용할 수 있습니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "입력한 JSON이 업로드되거나 저장되나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "아니요. 파싱, 포맷팅, 압축, 트리 렌더링은 모두 브라우저 안에서 실행됩니다. 입력한 JSON은 현재 탭의 메모리에만 있으며 LiveParse 서버로 전송되지 않습니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "JSON 파서, 검증기, 포매터의 차이는 무엇인가요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "파서는 JSON 텍스트를 구조화된 값으로 바꾸고, 검증기는 구문이 올바른지 확인하며, 포매터는 유효한 JSON에 일관된 공백을 적용해 다시 씁니다. LiveParse는 이 세 기능을 하나의 도구로 제공합니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "주석과 trailing comma가 거부되는 이유는 무엇인가요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "일부 JavaScript 문맥에서는 허용되지만 표준 JSON에서는 유효하지 않습니다. LiveParse는 의도적으로 엄격한 파싱을 사용해 결과가 브라우저, API, 대부분의 프로그래밍 언어가 소비하는 JSON과 동일하게 동작하도록 합니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "객체에 중복 키가 있으면 어떻게 되나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "LiveParse는 무손실 트리와 포맷팅 출력에 반복된 멤버를 모두 보존하고 중복 위치와 함께 경고를 표시합니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "64비트 ID와 아주 큰 숫자도 보존되나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "네. 9007199254740993이나 1e400 같은 숫자 토큰은 텍스트로 저장·복사되며 출력을 위해 변환되지 않습니다. 값이 JavaScript의 안전한 정수 범위를 벗어나거나 재직렬화 시 표기가 바뀌면 경고를 표시합니다."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "민감한 API 데이터도 파싱해도 되나요?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "로컬 처리가 노출을 줄이지만 가능하면 비밀 값을 제거하고 조직의 데이터 처리 규정을 따르는 것이 좋습니다. 페이지 자체는 인터넷에서 불러오지만 붙여넣은 JSON은 도구가 전송하지 않습니다."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="home-page" data-ui-locale="ko">
+    <a class="skip-link" href="#json-input">JSON 포매터로 이동</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="주요 내비게이션">
+        <a class="brand" href="/" aria-label="LiveParse 홈"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">모든 도구</a>
+          <a href="#parser">포매터</a>
+          <a href="/json-compare/">JSON 비교</a>
+          <a href="/sql-formatter/">SQL</a>
+          <a href="/xml-formatter/">XML</a>
+          <a href="/yaml-formatter/">YAML</a>
+          <a href="/unix-timestamp-converter/">타임스탬프</a>
+          <a href="/base64-decoder/">Base64</a>
+          <a href="/uuid-generator/">UUID</a>
+          <a href="/jwt-decoder/">JWT</a>
+          <a href="/guides/">가이드</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">무손실 · 비공개 · 가입 불필요</p>
+          <h1>JSON 파서, 포매터 &amp; 뷰어</h1>
+          <p class="hero-lead">64비트 ID, 오버플로 지수, 중복 키를 몰래 바꾸지 않고 JSON을 온라인에서 포맷팅하고 검증하고 압축하며 트리로 확인하세요. LiveParse는 모든 숫자 토큰을 그대로 유지하고 데이터를 이 탭 안에 보관합니다.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#parser">지금 JSON 포맷팅하기</a>
+            <span>브라우저에서 로컬 실행</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="JSON 포매터·검증기 예시">
+          <div class="example-bar"><span></span><span></span><span></span><strong>response.json</strong></div>
+          <pre><code><span class="property">"status"</span>: <span class="string">"ok"</span>,
+<span class="property">"private"</span>: <span class="boolean">true</span>,
+<span class="property">"items"</span>: [<span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>]</code></pre>
+          <p><strong>유효 · 무손실</strong><span>위험한 값은 경고로 표시</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="parser" aria-labelledby="parser-heading">
+        <div>
+          <p class="section-kicker">온라인 JSON 도구</p>
+          <h2 id="parser-heading">JSON을 붙여넣어 포맷팅하고 검증하세요</h2>
+        </div>
+        <p>LiveParse는 브라우저 워커 안에서 무손실 토큰 파서를 실행합니다. 숫자와 중복 객체 멤버가 손실 있는 JavaScript 값으로 변환되지 않으며, 붙여넣은 내용은 아무 곳에도 업로드되지 않습니다.</p>
+      </section>
+
+      <div id="root">
+        <section class="parser-fallback" aria-label="JSON 포매터 불러오는 중">
+          <p><strong>대화형 JSON 포매터를 불러오는 중…</strong></p>
+          <p>포맷팅, 검증, 압축, 트리 뷰어를 사용하려면 JavaScript를 활성화하세요.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-format-json" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">빠른 시작</p><h2 id="how-heading">온라인에서 JSON을 포맷팅하고 검증하는 방법</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>붙여넣거나 열기</h3><p>JSON 문서를 붙여넣거나 <strong>파일 열기</strong>를 사용하세요. 검증이 자동으로 실행되며 첫 구문 오류와 위치를 표시합니다.</p></li>
+          <li><span>2</span><h3>포맷 또는 압축</h3><p>공백 2칸 또는 4칸을 선택한 뒤 읽기 좋은 JSON은 <strong>포맷</strong>, 컴팩트한 출력은 <strong>압축</strong>을 누르세요.</p></li>
+          <li><span>3</span><h3>탐색 또는 내보내기</h3><p><strong>트리</strong> 보기로 중첩 값을 탐색하거나 포맷팅된 텍스트를 복사하고 다운로드하세요.</p></li>
+        </ol>
+        <p>예를 들어 <code>{&quot;id&quot;:9007199254740993,&quot;amount&quot;:1.2300}</code>을 포맷팅하면 들여쓰기가 추가되지만 <code>9007199254740993</code>과 <code>1.2300</code>은 작성된 그대로 유지됩니다. 중복 키도 보존되고 경고로 표시됩니다. 포맷팅은 JSON 구문을 검사할 뿐 애플리케이션 스키마를 검증하지는 않습니다.</p>
+        <p>모든 파싱과 포맷팅은 브라우저 워커에서 실행됩니다. 붙여넣은 텍스트와 연 파일은 이 탭에 머뭅니다.</p>
+      </section>
+
+      <section class="content-section" id="what-is-a-json-formatter" aria-labelledby="what-heading">
+        <div class="section-heading">
+          <p class="section-kicker">핵심 정리</p>
+          <h2 id="what-heading">JSON 포매터란?</h2>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p><strong>JSON 포매터</strong>(JSON 뷰티파이어, pretty printer라고도 함)는 압축된 JSON에 일관된 들여쓰기와 줄바꿈을 추가해 사람이 구조를 읽기 쉽게 만듭니다. 포맷팅은 공백만 바꿀 뿐 의도된 객체, 배열, 키, 값은 바꾸지 않습니다.</p>
+            <p>믿을 수 있는 포매터는 다시 쓰기 전에 입력을 파싱하고 검증해야 합니다. LiveParse는 엄격한 검증, 무손실 포맷팅, 압축, 구문 강조, 검색 가능한 트리 뷰어를 결합했습니다. 네이티브 JavaScript 왕복과 달리 큰 숫자 토큰과 반복 객체 멤버를 작성된 그대로 유지합니다.</p>
+            <a class="text-link" href="/guides/json-parser-vs-formatter-validator/">JSON 포매터·파서·검증기 비교 <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="definition-list">
+            <div><dt>뷰티파이</dt><dd>읽기 쉽도록 들여쓰기와 줄바꿈을 추가합니다.</dd></div>
+            <div><dt>검증</dt><dd>잘못된 구문과 그 위치를 찾아냅니다.</dd></div>
+            <div><dt>보기</dt><dd>접을 수 있는 트리에서 중첩 값을 탐색합니다.</dd></div>
+            <div><dt>압축</dt><dd>전송을 위해 불필요한 공백을 제거합니다.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="common-json-errors" aria-labelledby="errors-heading">
+        <div class="section-heading split-heading">
+          <div><p class="section-kicker">더 빠른 디버깅</p><h2 id="errors-heading">자주 발생하는 JSON 구문 오류</h2></div>
+          <a class="text-link" href="/guides/common-json-errors/">예시와 해결법 보기 <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="error-table" role="table" aria-label="자주 발생하는 JSON 오류와 해결법">
+          <div class="error-row error-head" role="row"><span role="columnheader">문제</span><span role="columnheader">잘못된 예</span><span role="columnheader">해결</span></div>
+          <div class="error-row" role="row"><strong role="cell">trailing comma</strong><code role="cell">{"ok": true,}</code><span role="cell"><code>}</code>나 <code>]</code> 앞의 쉼표를 제거하세요.</span></div>
+          <div class="error-row" role="row"><strong role="cell">작은따옴표</strong><code role="cell">{'name': 'Ada'}</code><span role="cell">키와 문자열은 큰따옴표로 감싸세요.</span></div>
+          <div class="error-row" role="row"><strong role="cell">따옴표 없는 키</strong><code role="cell">{status: "ok"}</code><span role="cell">키를 <code>"status"</code>처럼 쓰세요.</span></div>
+          <div class="error-row" role="row"><strong role="cell">잘못된 이스케이프</strong><code role="cell">{"path": "C:\users"}</code><span role="cell">역슬래시는 <code>\\</code>로 이스케이프하세요.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="why-heading">
+        <div class="section-heading"><p class="section-kicker">실제 페이로드를 위한 설계</p><h2 id="why-heading">왜 LiveParse인가요?</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>설계부터 비공개</h3><p>입력은 현재 브라우저 탭에 머뭅니다. 파서는 붙여넣은 JSON을 전송, 저장, 기록하지 않습니다.</p></article>
+          <article><span aria-hidden="true">02</span><h3>무손실·예측 가능</h3><p>LiveParse는 모든 숫자 토큰과 반복 객체 멤버를 보존하면서 엄격한 JSON을 검증합니다. JavaScript가 정수를 반올림하거나 오버플로 지수를 <code>null</code>로 바꾸기 전에 경고합니다.</p></article>
+          <article><span aria-hidden="true">03</span><h3>빠른 텍스트·트리 보기</h3><p>컴팩트한 페이로드를 강조된 텍스트로 읽거나 가상화된 트리를 검색하세요. 문서가 커져도 렌더링 크기가 작게 유지됩니다.</p></article>
+          <article><span aria-hidden="true">04</span><h3>유용한 오류 맥락</h3><p>오류 위치를 알 수 있을 때 줄과 칸으로 변환해 첫 구문 문제를 빠르게 찾을 수 있습니다.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="use-cases-heading">
+        <div class="section-heading"><p class="section-kicker">실전 워크플로</p><h2 id="use-cases-heading">JSON 파서가 필요한 순간</h2></div>
+        <div class="use-case-grid">
+          <article><h3>API 응답 디버깅</h3><p>응답이 유효한지 확인하고, 최상위 키를 훑고, 애플리케이션 코드를 바꾸기 전에 중첩 데이터를 따라가 보세요.</p></article>
+          <article><h3>웹훅 검사</h3><p>이벤트 타입, ID, 중첩 객체를 살펴보면서 고객·연동 데이터를 내 기기 안에 두세요.</p></article>
+          <article><h3>설정 검토</h3><p>압축된 설정 파일을 포맷팅하고 빠진 구분자를 찾고 배포 전 최종 구조를 확인하세요.</p></article>
+          <article><h3>컴팩트한 JSON 준비</h3><p>요청, 픽스처, 환경 변수를 위한 더 작은 페이로드가 필요할 때 들여쓰기와 줄바꿈을 제거하세요.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="tools-heading">
+        <div class="section-heading"><p class="section-kicker">JSON 작업 계속하기</p><h2 id="tools-heading">수리, 비교, 변환</h2><p>문서에 맞는 다음 도구를 고르세요. 모든 도구가 브라우저에서 입력을 처리합니다.</p></div>
+        <div class="use-case-grid">
+          <article><h3><a href="/json-repair/">JSON Repair</a></h3><p>trailing comma, 작은따옴표, 잘린 JSON을 고치고 각 수정안을 검토한 뒤 돌아와서 포맷팅·검증하세요.</p></article>
+          <article><h3><a href="/json-compare/">JSON Compare</a></h3><p>두 API 응답을 파싱된 값 기준으로 비교하고 변경된 경로를 살펴보며 포맷팅 변화와 데이터 변화를 구분합니다.</p></article>
+          <article><h3><a href="/jsonl-parser/">JSONL Parser</a></h3><p>줄바꿈으로 구분된 JSON 로그를 레코드 단위로 검증하고 잘못된 줄을 찾으며 큰 숫자 ID를 잃지 않습니다.</p></article>
+          <article><h3><a href="/json-to-csv/">JSON to CSV</a></h3><p>JSON 레코드 배열을 명시적 열 선택과 중첩 값 처리로 CSV로 변환합니다.</p></article>
+          <article><h3><a href="/guides/common-json-errors/">흔한 JSON 오류 고치기</a></h3><p>빠진 쉼표, 잘못된 따옴표, trailing comma, 불완전한 값의 예시와 바로 써볼 수 있는 수정 JSON을 확인하세요.</p></article>
+          <article><h3><a href="/guides/json-parser-vs-formatter-validator/">파서·포매터·검증기 비교</a></h3><p>파싱, 구문 검증, 포맷팅이 각각 무엇을 확인하는지, 애플리케이션에 스키마 검증이 언제 필요한지 이해하세요.</p></article>
+        </div>
+        <p><a href="/#tools">LiveParse 개발자 도구 전체 보기</a></p>
+      </section>
+
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">질문과 답</p><h2 id="faq-heading">JSON 포매터·검증기 FAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>이 JSON 포매터·검증기는 무료인가요?</summary><p>네. LiveParse는 계정, 사용량 계측, 유료 등급 없이 무료로 사용할 수 있습니다.</p></details>
+          <details><summary>입력한 JSON이 업로드되거나 저장되나요?</summary><p>아니요. 파싱, 포맷팅, 압축, 트리 렌더링은 브라우저 안에서 실행됩니다. 입력은 현재 탭의 페이지 메모리에만 있으며 LiveParse로 전송되지 않습니다.</p></details>
+          <details><summary>JSON 파서·검증기·포매터의 차이는 무엇인가요?</summary><p>파서는 JSON 텍스트를 구조화된 값으로 바꾸고, 검증기는 구문이 유효한지 확인하고, 포매터는 유효한 JSON에 일관된 공백으로 다시 씁니다. LiveParse는 세 기능을 하나의 도구로 결합했습니다. 자세한 비교는 <a href="/guides/json-parser-vs-formatter-validator/">JSON parser vs. formatter vs. validator</a> 가이드를 읽어보세요.</p></details>
+          <details><summary>주석과 trailing comma가 거부되는 이유는?</summary><p>일부 JavaScript 문맥에서는 유효하지만 표준 JSON에서는 그렇지 않습니다. LiveParse는 의도적으로 엄격한 파싱을 사용해 결과가 브라우저, API, 대부분의 프로그래밍 언어가 소비하는 JSON처럼 동작하게 합니다.</p></details>
+          <details><summary>객체에 중복 키가 있으면 어떻게 되나요?</summary><p>LiveParse는 무손실 트리와 포맷팅 출력에 반복된 멤버를 모두 보존하고 중복 위치가 포함된 경고를 표시합니다.</p></details>
+          <details><summary>64비트 ID와 아주 큰 숫자도 보존되나요?</summary><p>네. <code>9007199254740993</code>, <code>1e400</code> 같은 숫자 토큰은 텍스트로 저장·복사되며 출력을 위해 변환되지 않습니다. 값이 안전 정수 범위를 벗어나거나 JavaScript 숫자에서 오버플로되거나 재직렬화 시 표기가 바뀌면 LiveParse가 경고합니다.</p></details>
+          <details><summary>민감한 API 데이터도 파싱해도 되나요?</summary><p>로컬 처리가 노출을 줄이지만 가능하면 비밀 값을 제거하고 조직의 데이터 처리 규정을 따르는 것이 좋습니다. 페이지 자체는 인터넷에서 불러오지만 붙여넣은 JSON은 도구가 전송하지 않습니다.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">표준과 참고 자료</p><h2 id="references-heading">1차 자료로 배우기</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: The JSON Data Interchange Format</a></li>
+          <li><a href="https://www.json.org/json-ko.html" target="_blank" rel="noreferrer">JSON 소개 (한국어)</a></li>
+          <li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noreferrer">MDN: JSON.parse()</a></li>
+          <li><a href="/json-formatter/" hreflang="en">JSON Formatter (English)</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>개발자 데이터를 포맷팅·검증·비교·수리·변환하는 비공개 브라우저 도구입니다.</p></div>
+      <div class="footer-links">
+        <a href="#parser">JSON 포매터</a>
+        <a href="/json-compare/">JSON 비교</a>
+        <a href="/json-repair/">JSON Repair</a>
+        <a href="/jsonl-parser/">JSONL Parser</a>
+        <a href="/sql-formatter/">SQL Formatter</a>
+        <a href="/xml-formatter/">XML Formatter</a>
+        <a href="/yaml-formatter/">YAML Formatter</a>
+        <a href="/unix-timestamp-converter/">Unix Timestamp</a>
+        <a href="/discord-timestamp-generator/">Discord Timestamp</a>
+        <a href="/base64-decoder/">Base64 Decoder</a>
+        <a href="/hash-generator/">Hash Generator</a>
+        <a href="/uuid-generator/">UUID Generator</a>
+        <a href="/jwt-decoder/">JWT Decoder</a>
+        <a href="/word-counter/">Word Counter</a>
+        <a href="/es/contador-de-palabras/">Contador de palabras</a>
+        <a href="/guides/">가이드</a>
+        <a href="/privacy/">개인정보 처리방침</a>
+      </div>
+      <p class="footer-note">2026년 9월 26일 검토 · 도구 입력은 로컬에만 유지 · 광고·분석 쿠키 없음</p>
+    </footer>
+
+    <noscript><p class="noscript-note">대화형 파서를 실행하려면 JavaScript가 필요합니다. JSON 참고 자료와 가이드는 JavaScript 없이도 읽을 수 있습니다.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

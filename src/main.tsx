@@ -154,7 +154,7 @@ type UiText = {
   kindNames: Record<string, string>;
 };
 
-const t: UiText = {
+const en: UiText = {
   sampleLabels: {
     'SEO metadata': 'SEO metadata',
     'Lossless safety checks': '64-bit & duplicate key checks',
@@ -226,6 +226,85 @@ const t: UiText = {
   largeTextPlain: 'Syntax color is disabled above 100 KB to keep the page responsive.',
   kindNames: {},
 };
+const ko: UiText = {
+  sampleLabels: {
+    'SEO metadata': 'SEO 메타데이터',
+    'Lossless safety checks': '64비트·중복 키 검사',
+    'Developer profile': '개발자 프로필',
+    'API response': 'Snowflake ID가 포함된 API 응답',
+    'Nested product data': '중첩된 상품 데이터',
+    'Invalid JSON example': '잘못된 JSON 예시',
+  },
+  appAria: '대화형 JSON 포매터·검사기',
+  localProcessing: '로컬 워커',
+  localPrivacy: '입력한 JSON은 이 탭을 떠나지 않습니다',
+  parserSettings: '파서 설정',
+  example: '예시',
+  editorLayout: '편집기 배치',
+  sideBySide: '나란히',
+  stacked: '위아래로',
+  inputTitle: 'JSON 입력',
+  inputMeta: (lines, characters) => `${lines}줄 · ${characters}자`,
+  openFile: '파일 열기',
+  format: '포맷',
+  minify: '압축',
+  clear: '지우기',
+  dropHint: '.json, .jsonl 또는 텍스트 파일 하나를 여기에 끌어다 놓으세요',
+  fileLoaded: (name) => `${name} 파일을 로컬에서 불러왔습니다.`,
+  fileRejected: (message) => message,
+  inputAria: 'JSON 입력 붙여넣기',
+  inputPlaceholder: '여기에 JSON을 붙여넣으세요. 숫자 토큰과 중복 키는 그대로 보존됩니다.',
+  outputTitle: '무손실 출력',
+  outputLocalMeta: '파싱과 포맷팅은 브라우저 안에서만 실행됩니다',
+  outputView: '출력 보기',
+  textView: '텍스트',
+  treeView: '트리',
+  download: '다운로드',
+  copyOutput: '출력 복사',
+  copied: '복사됨',
+  copyFailed: '복사 실패',
+  validStatus: (kind, warnings) => warnings > 0 ? `유효한 ${kind} · 경고 ${warnings}개` : `유효한 ${kind} · 무손실`,
+  jsonError: 'JSON 오류',
+  parsing: '검사 중…',
+  workerError: '파서를 사용할 수 없음',
+  waitingForInput: '입력 대기 중',
+  statsSummary: (stats, durationMs) => `객체 ${stats.objects}개 · 배열 ${stats.arrays}개 · 속성 ${stats.properties}개 · 문자 ${stats.characters.toLocaleString()}개 · 워커 ${Math.max(1, Math.round(durationMs))}ms`,
+  valueStats: (stats) => `문자열 ${stats.strings}개 · 숫자 ${stats.numbers}개 · 불리언 ${stats.booleans}개 · null ${stats.nulls}개`,
+  warningSummary: (count) => `데이터 무결성 경고 ${count}개 — 출력은 원본 토큰을 그대로 보존합니다`,
+  viewOptions: '보기 옵션',
+  losslessStrictJson: '무손실 엄격 JSON',
+  indent: '들여쓰기',
+  formattingIndentation: '포맷팅 들여쓰기',
+  twoSpaces: '공백 2칸',
+  fourSpaces: '공백 4칸',
+  minifiedOutput: '압축 출력',
+  color: '색상',
+  sortKeys: '키 정렬',
+  types: '타입',
+  arrayIndexes: '배열 인덱스',
+  formattedOutputAria: '무손실 포맷팅된 JSON 출력',
+  treeOutputAria: '가상화된 JSON 트리 출력',
+  emptyInput: '입력이 비어 있습니다. JSON을 붙여넣거나 입력하여 시작하세요.',
+  errorLocation: (line, column, position) => `${line}줄 ${column}칸 (위치 ${position})`,
+  warningsHeading: (count) => `데이터 무결성 경고 (${count})`,
+  moreWarnings: (count) => `나머지 경고 ${count}개는 표시되지 않습니다. 전체 문서를 보려면 다운로드하거나 트리에서 검색하세요.`,
+  warningAt: (line, column, path) => `${line}줄 ${column}칸 · ${path}`,
+  warningUnsafe: (raw) => `${raw}은(는) JavaScript의 안전한 정수 범위를 벗어납니다. LiveParse는 이 값을 그대로 보존했습니다.`,
+  warningOverflow: (raw) => `${raw}은(는) JavaScript Number에서 오버플로되어 null로 직렬화될 수 있습니다. LiveParse는 이 토큰을 보존했습니다.`,
+  warningRepresentation: (raw, representation, changed) => changed
+    ? `${raw}은(는) JavaScript Number로 왕복한 뒤 ${representation}이(가) 됩니다.`
+    : `${raw}은(는) ${representation}으로 다시 쓰일 수 있습니다. 수 값은 같지만 표기가 바뀝니다.`,
+  warningDuplicate: (key, occurrence) => `중복 키 ${JSON.stringify(key)}(${occurrence}번째)는 이전 값을 덮어쓰지 않고 보존되었습니다.`,
+  largeTextPlain: '페이지 응답성을 위해 100KB를 넘으면 구문 강조가 꺼집니다.',
+  kindNames: { object: '객체', array: '배열' },
+};
+function resolveJsonFormatterUiText(locale: string | undefined): UiText {
+  const primaryLanguage = locale?.trim().toLowerCase().replace('_', '-').split('-')[0];
+  return primaryLanguage === 'ko' ? ko : en;
+}
+const t: UiText = resolveJsonFormatterUiText(
+  typeof document === 'undefined' ? undefined : document.body.dataset.uiLocale,
+);
 const sampleNames = Object.keys(samples) as SampleName[];
 const initialSample: SampleName = 'SEO metadata';
 const initialJson = samples[initialSample];

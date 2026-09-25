@@ -4,14 +4,13 @@ import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseXml } from '@rgrove/parse-xml';
-import { validateEnglishBranding, validatePngIcon, validateSpanishBranding } from './seo-branding.mjs';
+import { liveLocalizedConfig, validateEnglishBranding, validateLocalizedBranding, validatePngIcon } from './seo-branding.mjs';
 
 const CANONICAL_ORIGIN = 'https://liveparse.com';
 const ATOM_NAMESPACE = 'http://www.w3.org/2005/Atom';
 const ATOM_FEED_URL = `${CANONICAL_ORIGIN}/feed.xml`;
 const ATOM_FEED_TITLE = 'LiveParse Developer Tool Updates';
 const ATOM_HUB_URL = 'https://pubsubhubbub.appspot.com/';
-const LIVE_SPANISH_PREFIX = `${CANONICAL_ORIGIN}/es/`;
 const XML_SITEMAP_URL = `${CANONICAL_ORIGIN}/sitemap.xml`;
 const EXPECTED_ROBOTS_SITEMAPS = new Set([XML_SITEMAP_URL, ATOM_FEED_URL]);
 const RFC3339_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
@@ -1142,8 +1141,11 @@ async function main() {
   for (const [path, html] of htmlByPath) {
     const entryLabel = relative(distRoot, path);
     const pageCanonical = canonicalValues(html)[0] || '';
-    failures.push(...(pageCanonical.startsWith(LIVE_SPANISH_PREFIX)
-      ? validateSpanishBranding(html, entryLabel)
+    const localizedConfig = pageCanonical
+      ? liveLocalizedConfig(pageCanonical.replace(`${CANONICAL_ORIGIN}/`, '/'))
+      : undefined;
+    failures.push(...(localizedConfig
+      ? validateLocalizedBranding(html, entryLabel, localizedConfig)
       : validateEnglishBranding(html, entryLabel)));
   }
   for (const [icon, size] of [['icon-192.png', 192], ['icon-512.png', 512], ['apple-touch-icon.png', 180]]) {

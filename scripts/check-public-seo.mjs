@@ -4,7 +4,7 @@ import { Buffer } from 'node:buffer';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseXml } from '@rgrove/parse-xml';
-import { validateEnglishBranding, validateSpanishBranding } from './seo-branding.mjs';
+import { liveLocalizedConfig, validateEnglishBranding, validateLocalizedBranding } from './seo-branding.mjs';
 
 export const DEFAULT_BASE_URL = 'https://liveparse.com';
 export const NORMAL_USER_AGENT =
@@ -652,9 +652,9 @@ function hasBlockingRobotsDirective(value) {
 }
 
 function validateHtml(body, headers, expectedCanonical, variantLabel) {
-  const isSpanishPage = expectedCanonical.pathname.startsWith('/es/');
-  const failures = (isSpanishPage ? validateSpanishBranding : validateEnglishBranding)(
-    body.toString('utf8'), variantLabel);
+  const localizedConfig = liveLocalizedConfig(expectedCanonical.pathname);
+  const failures = (localizedConfig ? validateLocalizedBranding : validateEnglishBranding)(
+    body.toString('utf8'), variantLabel, localizedConfig);
   const contentType = (headers.get('content-type') || '').split(';', 1)[0].trim().toLowerCase();
   if (contentType !== 'text/html' && contentType !== 'application/xhtml+xml') {
     failures.push(`${variantLabel}: expected an HTML Content-Type, received ${JSON.stringify(contentType || null)}`);

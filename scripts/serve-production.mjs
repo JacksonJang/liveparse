@@ -19,6 +19,7 @@ const SEARCH_CRAWLER_DIR = resolve(PROJECT_ROOT, process.env.SEARCH_CRAWLER_DIR 
 const DIRECTORY_ROUTES = new Set([
   '/es/contador-de-palabras',
   '/es/contador-de-caracteres',
+  '/ko/json-parser',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',
@@ -135,8 +136,6 @@ const DIRECTORY_ROUTES = new Set([
   '/guides/double-url-encoding',
 ]);
 const ROUTE_REDIRECTS = new Map([
-  ['/ko/json-parser', '/json-formatter/'],
-  ['/ko/json-parser/', '/json-formatter/'],
   ['/ko/character-counter', '/character-counter/'],
   ['/ko/character-counter/', '/character-counter/'],
   ['/ja/character-counter', '/character-counter/'],
