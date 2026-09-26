@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Discord timestamps en español: los 9 formatos | LiveParse</title>
-    <meta name="description" content="Consulta los 9 formatos de Discord timestamps con sintaxis, zonas horarias, conversión en lote de hasta 500 líneas y ejemplos listos para pegar." />
+    <meta name="description" content="Consulta los 9 formatos de Discord timestamp (timestamps o marcas de tiempo de Discord) con sintaxis, zonas horarias, plantillas, conversión en lote de hasta 500 líneas y solución de errores." />
     <link rel="canonical" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="en" href="https://liveparse.com/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="es" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
@@ -103,6 +103,22 @@
                   "@type": "Answer",
                   "text": "Sí. LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora, y devuelve etiquetas en los nueve estilos."
                 }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Debo usar @time o una etiqueta?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Usa @time si está disponible en el cliente de escritorio y solo necesitas crear el valor ahí. Usa una etiqueta si quieres conservarla en una plantilla, generarla desde otra herramienta o pegarla en el contexto final."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿LiveParse está afiliada a Discord?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. LiveParse es independiente y no está afiliada ni respaldada por Discord."
+                }
               }
             ]
           }
@@ -153,6 +169,23 @@
               </div>
               <p>Las descripciones son estables, pero Discord controla el diseño exacto y la expresión local. No copies una cadena renderizada como “02/08/2026”; copia la etiqueta para conservar el instante absoluto.</p>
             </section>
+            <section aria-labelledby="eleccion-title">
+              <h2 id="eleccion-title">Cómo elegir el formato adecuado</h2>
+              <p>Usa <code>t</code> o <code>T</code> solo cuando el texto ya indique el día. En un mensaje efímero, “hoy a las <code>&lt;t:…:t&gt;</code>” puede ser suficiente; en un anuncio que se consultará después, la fecha evita confusiones.</p>
+              <p>Usa <code>d</code> o <code>D</code> cuando la hora no importe. La forma numérica <code>d</code> es compacta, pero su orden depende de la configuración regional del lector. La forma escrita <code>D</code> suele ser más clara en anuncios y documentos.</p>
+              <p>Para reuniones y eventos, las formas combinadas son las más útiles. <code>f</code> muestra una fecha y una hora corta; <code>F</code> añade el día de la semana. <code>s</code> y <code>S</code> conservan fecha y hora en menos espacio, y <code>S</code> incluye segundos.</p>
+              <p>El código <code>R</code> comunica urgencia relativa, como “en 2 horas” o “hace 3 días”. Si el mensaje podrá releerse más adelante, combínalo con <code>F</code> para conservar también la fecha absoluta.</p>
+            </section>
+            <section aria-labelledby="plantillas-title">
+              <h2 id="plantillas-title">Plantillas listas para pegar</h2>
+              <p>Sustituye el número por el valor generado en tu zona horaria de origen y conserva el texto explicativo alrededor de la etiqueta:</p>
+              <pre><code>Evento comunitario: &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
+Las entregas cierran &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
+La publicación abre &lt;t:1754208000:f&gt;.
+El mantenimiento empieza &lt;t:1754208000:F&gt; y durará unos 30 minutos.
+El incidente comenzó &lt;t:1754208000:R&gt; a las &lt;t:1754208000:T&gt;.</code></pre>
+              <p>No conviertas una duración como “30 minutos” en un timestamp: la etiqueta identifica un instante, no un intervalo. Añade “empieza”, “cierra” o “comenzó” para que el mensaje sea claro incluso si el lector usa un lector de pantalla.</p>
+            </section>
             <section aria-labelledby="units-title">
               <h2 id="units-title">Segundos, no milisegundos</h2>
               <p>El error más común es pegar un valor de JavaScript <code>Date.now()</code> tal cual. Ese valor está en milisegundos; divídelo entre 1.000 y decide de forma explícita si trunca el resto hasta un segundo. Por ejemplo, <code>1754208000000</code> se convierte en <code>1754208000</code>.</p>
@@ -187,6 +220,12 @@
               </ol>
               <p>Para validar la forma en un programa, una expresión como <code>^&lt;t:(\d+)(?::([tTdDfFsSR]))?&gt;$</code> es un buen primer filtro. Después aplica límites de fecha propios: que la cadena sea sintácticamente válida no garantiza que Discord acepte valores extremos.</p>
             </section>
+            <section aria-labelledby="flujo-title">
+              <h2 id="flujo-title">¿Etiqueta, <code>@time</code>, evento programado o bot?</h2>
+              <p>La etiqueta en línea es ideal para anuncios, listas de tareas, informes de incidentes y mensajes generados: permanece junto a la explicación y Discord la muestra en la zona horaria de cada lector.</p>
+              <p>El comando nativo <code>@time</code> descrito por Discord para escritorio puede ser más rápido mientras redactas ahí, pero conviene comprobar su disponibilidad actual en cada cliente antes de depender de él.</p>
+              <p>Un evento programado de Discord añade descubrimiento y participación. Puede convivir con etiquetas en línea: usa el evento para la asistencia y repite <code>F</code> y <code>R</code> en los anuncios del canal. Un bot es útil para automatización repetida, pero también debe interpretar la zona horaria de origen y generar segundos Unix enteros.</p>
+            </section>
             <section aria-labelledby="troubleshooting-title">
               <h2 id="troubleshooting-title">Si la etiqueta se ve como texto</h2>
               <ul>
@@ -210,6 +249,10 @@
               <p>Ven el mismo instante, pero Discord lo presenta según la zona horaria y la configuración regional de cada cliente.</p>
               <h3>¿Puedo convertir varias fechas a timestamps de Discord a la vez?</h3>
               <p>Sí. LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora, y devuelve etiquetas en los nueve estilos.</p>
+              <h3>¿Debo usar <code>@time</code> o una etiqueta?</h3>
+              <p>Usa <code>@time</code> si está disponible en el cliente de escritorio y solo necesitas crear el valor ahí. Usa una etiqueta si quieres conservarla en una plantilla, generarla desde otra herramienta o pegarla en el contexto final.</p>
+              <h3>¿LiveParse está afiliada a Discord?</h3>
+              <p>No. LiveParse es independiente y no está afiliada ni respaldada por Discord.</p>
             </section>
             <div class="tool-callout">
               <p><strong>¿Listo para crear una etiqueta?</strong> Elige una fecha y zona horaria, compara los nueve formatos y copia el resultado sin cáculos manuales.</p>
@@ -230,10 +273,13 @@
             <ol>
               <li><a href="#syntax-title">Sintaxis básica</a></li>
               <li><a href="#codes-title">Tabla de los 9 formatos</a></li>
+              <li><a href="#eleccion-title">Cómo elegir el formato</a></li>
+              <li><a href="#plantillas-title">Plantillas</a></li>
               <li><a href="#units-title">Segundos, no milisegundos</a></li>
               <li><a href="#timezone-title">Zona horaria y tiempo relativo</a></li>
               <li><a href="#lote-title">Conversión en lote</a></li>
               <li><a href="#decode-title">Cómo decodificar una etiqueta</a></li>
+              <li><a href="#flujo-title">Etiqueta, @time, evento o bot</a></li>
               <li><a href="#troubleshooting-title">Solución de problemas</a></li>
               <li><a href="#faq-title">Preguntas frecuentes</a></li>
             </ol>
