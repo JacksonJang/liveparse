@@ -446,7 +446,9 @@ function App() {
               <div><dt>{pick('Worker / process / increment', 'Worker / proceso / increment')}</dt><dd><code>{decodedSnowflake.workerId} / {decodedSnowflake.processId} / {decodedSnowflake.increment}</code></dd></div>
             </dl>
           )}
-          {!decodedSnowflake.ok && decodedSnowflake.error && <p className="discord-notice error" role="alert">{decodedSnowflake.error}</p>}
+          {!decodedSnowflake.ok && snowflakeInput.trim() && decodedSnowflake.error && (
+            <p className="discord-notice error" role="alert">{decodedSnowflake.error}</p>
+          )}
           <div className="discord-action-row">
             <button
               type="button"
