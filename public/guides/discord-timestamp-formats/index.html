@@ -145,6 +145,14 @@
                   "@type": "Answer",
                   "text": "No. An inline tag is content chosen by the message author and can represent a past or future instant. The message creation time is metadata assigned when the message is sent."
                 }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert a Discord message ID to a timestamp?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Shift the snowflake ID right by 22 bits and add Discord’s epoch, 1420070400000 milliseconds. The result is the object’s creation time in Unix milliseconds; divide by 1,000 for an inline tag."
+                }
               }
             ]
           }
@@ -278,6 +286,20 @@ Wrong unit: &lt;t:1800000000000:F&gt;</code></pre>
             </ol>
             <p>Developers parsing user input can start from a strict shape such as <code>^&lt;t:(\d+)(?::([tTdDfFsSR]))?&gt;$</code>, then separately enforce the application’s allowed date range. A matching shape does not prove that a client will accept an extreme timestamp.</p>
 
+            <h2 id="snowflake">Convert a Discord snowflake ID to a timestamp</h2>
+            <p>A snowflake is a Discord object ID—for example, the ID of a message, channel, or user—not an inline timestamp tag. Its top 42 bits store milliseconds since Discord’s epoch, <code>2015-01-01T00:00:00Z</code>; the lower bits identify the worker, process, and increment. Shift the ID right by 22 bits and add Discord’s epoch, <code>1420070400000</code> milliseconds.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Extract a creation time and reuse it in an inline tag</figcaption>
+              <pre><code>const snowflake = 1199835124667021433n;
+const createdAtMs = (snowflake &gt;&gt; 22n) + 1420070400000n;
+const createdAt = new Date(Number(createdAtMs));
+const unixSeconds = Math.floor(Number(createdAtMs) / 1_000);
+
+console.log(createdAt.toISOString()); // 2024-01-24T21:56:25.579Z
+console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></pre>
+            </figure>
+            <p>Use <code>BigInt</code> for the shift, then convert only the resulting millisecond value. A snowflake’s creation time is metadata assigned by Discord; it is not interchangeable with an author-chosen inline tag. Validate that the ID is a decimal integer and that the decoded date falls after 2015 in the expected range for your data set.</p>
+
             <h2 id="event-choice">Inline timestamp or Discord Scheduled Event?</h2>
             <p>An inline timestamp is useful inside an announcement, checklist, incident update, or generated message. It is lightweight and keeps the time beside the surrounding explanation. A Discord Scheduled Event is a separate server feature with event details and an Interested workflow that can notify participating members when the event goes live. Discord documents the setup and permission model in its <a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" rel="external">Scheduled Events support guide</a>.</p>
             <p>Use the feature that matches the job. A short deadline may need only <code>F</code> plus <code>R</code>. A community session that benefits from discovery and participation tracking may warrant a Scheduled Event, with inline timestamps repeated in channel announcements. The two approaches can complement each other.</p>
@@ -329,6 +351,9 @@ Wrong unit: &lt;t:1800000000000:F&gt;</code></pre>
 
               <h3>Is this the same as a message’s creation timestamp?</h3>
               <p>No. An inline tag is content chosen by the message author and can represent a past or future instant. The message creation time is metadata assigned when the message is sent.</p>
+
+              <h3>Can I convert a Discord message ID to a timestamp?</h3>
+              <p>Yes. Shift the snowflake ID right by 22 bits and add Discord’s epoch, 1420070400000 milliseconds. The result is the object’s creation time in Unix milliseconds; divide by 1,000 for an inline tag.</p>
             </section>
 
             <section class="references" aria-labelledby="references-title">
@@ -367,6 +392,7 @@ Wrong unit: &lt;t:1800000000000:F&gt;</code></pre>
               <li><a href="#locale-timezone">Locale and timezone</a></li>
               <li><a href="#seconds-milliseconds">Seconds vs milliseconds</a></li>
               <li><a href="#decode">Decode a tag</a></li>
+              <li><a href="#snowflake">Snowflake ID conversion</a></li>
               <li><a href="#event-choice">Timestamp or event</a></li>
               <li><a href="#troubleshooting">Troubleshooting</a></li>
               <li><a href="#faq-title">FAQ</a></li>

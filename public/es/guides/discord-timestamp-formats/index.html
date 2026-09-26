@@ -119,6 +119,14 @@
                   "@type": "Answer",
                   "text": "No. LiveParse es independiente y no está afiliada ni respaldada por Discord."
                 }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo convertir un ID de mensaje de Discord en un timestamp?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. Desplaza el ID snowflake 22 bits a la derecha y suma la época de Discord, 1420070400000 milisegundos. El resultado es la hora de creación del objeto en milisegundos Unix; divídelo entre 1.000 para una etiqueta en línea."
+                }
               }
             ]
           }
@@ -222,6 +230,18 @@ El incidente empieza &lt;t:1800000000:R&gt; a las &lt;t:1800000000:T&gt;.</code>
               </ol>
               <p>Para validar la forma en un programa, una expresión como <code>^&lt;t:(\d+)(?::([tTdDfFsSR]))?&gt;$</code> es un buen primer filtro. Después aplica límites de fecha propios: que la cadena sea sintácticamente válida no garantiza que Discord acepte valores extremos.</p>
             </section>
+            <section aria-labelledby="snowflake-title">
+              <h2 id="snowflake-title">Convierte un ID snowflake de Discord</h2>
+              <p>Un snowflake es el ID de un objeto de Discord—por ejemplo, un mensaje, un canal o un usuario—no una etiqueta de timestamp en línea. Sus 42 bits superiores guardan milisegundos desde la época de Discord, <code>2015-01-01T00:00:00Z</code>; los bits inferiores identifican el worker, el proceso y el increment. Desplaza el ID 22 bits a la derecha y suma la época de Discord, <code>1420070400000</code> milisegundos.</p>
+              <pre><code>const snowflake = 1199835124667021433n;
+const createdAtMs = (snowflake &gt;&gt; 22n) + 1420070400000n;
+const createdAt = new Date(Number(createdAtMs));
+const unixSeconds = Math.floor(Number(createdAtMs) / 1_000);
+
+console.log(createdAt.toISOString()); // 2024-01-24T21:56:25.579Z
+console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></pre>
+              <p>Usa <code>BigInt</code> para el desplazamiento y convierte solo el resultado en milisegundos. La fecha de creación de un snowflake es un metadato asignado por Discord y no es intercambiable con una etiqueta en línea elegida por el autor. Valida que el ID sea un número decimal y que la fecha resultante sea posterior a 2015 y esté en el rango esperado.</p>
+            </section>
             <section aria-labelledby="flujo-title">
               <h2 id="flujo-title">¿Etiqueta, <code>@time</code>, evento programado o bot?</h2>
               <p>La etiqueta en línea es ideal para anuncios, listas de tareas, informes de incidentes y mensajes generados: permanece junto a la explicación y Discord la muestra en la zona horaria de cada lector.</p>
@@ -255,6 +275,9 @@ El incidente empieza &lt;t:1800000000:R&gt; a las &lt;t:1800000000:T&gt;.</code>
               <p>Usa <code>@time</code> si está disponible en el cliente de escritorio y solo necesitas crear el valor ahí. Usa una etiqueta si quieres conservarla en una plantilla, generarla desde otra herramienta o pegarla en el contexto final.</p>
               <h3>¿LiveParse está afiliada a Discord?</h3>
               <p>No. LiveParse es independiente y no está afiliada ni respaldada por Discord.</p>
+
+              <h3>¿Puedo convertir un ID de mensaje de Discord en un timestamp?</h3>
+              <p>Sí. Desplaza el ID snowflake 22 bits a la derecha y suma la época de Discord, 1420070400000 milisegundos. El resultado es la hora de creación del objeto en milisegundos Unix; divídelo entre 1.000 para una etiqueta en línea.</p>
             </section>
             <div class="tool-callout">
               <p><strong>¿Listo para crear una etiqueta?</strong> Elige una fecha y zona horaria, compara los nueve formatos y copia el resultado sin cáculos manuales.</p>
@@ -281,6 +304,7 @@ El incidente empieza &lt;t:1800000000:R&gt; a las &lt;t:1800000000:T&gt;.</code>
               <li><a href="#timezone-title">Zona horaria y tiempo relativo</a></li>
               <li><a href="#lote-title">Conversión en lote</a></li>
               <li><a href="#decode-title">Cómo decodificar una etiqueta</a></li>
+              <li><a href="#snowflake-title">Conversión de ID snowflake</a></li>
               <li><a href="#flujo-title">Etiqueta, @time, evento o bot</a></li>
               <li><a href="#troubleshooting-title">Solución de problemas</a></li>
               <li><a href="#faq-title">Preguntas frecuentes</a></li>
