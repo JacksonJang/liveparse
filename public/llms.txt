@@ -71,6 +71,8 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 - [/ko/json-parser/](https://liveparse.com/ko/json-parser/): Korean JSON parser, formatter, and validator that preserves 64-bit numbers and duplicate keys (한국어)
 - [/ko/character-counter/](https://liveparse.com/ko/character-counter/): Korean character counter — graphemes, code points, UTF-16, UTF-8 (한국어)
 - [/ja/character-counter/](https://liveparse.com/ja/character-counter/): Japanese character counter — graphemes, code points, UTF-16, UTF-8 (日本語)
+- [/ko/word-counter/](https://liveparse.com/ko/word-counter/): Korean word counter — 단어, 문장, 단락, reading time (한국어)
+- [/ja/word-counter/](https://liveparse.com/ja/word-counter/): Japanese word counter — 単語, 文, 段落, reading time (日本語)
 
 ## Background reading
 
