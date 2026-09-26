@@ -72,7 +72,7 @@
             "isAccessibleForFree": true,
             "inLanguage": "es",
             "datePublished": "2026-09-26",
-            "dateModified": "2026-09-26T05:45:00Z",
+            "dateModified": "2026-09-26T06:40:00Z",
             "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, crear cuenta regresiva, decodificar etiquetas y Snowflakes, y crear los nueve estilos actuales de Discord.",
             "featureList": [
               "Convierte hasta 500 segundos Unix, etiquetas de Discord o fechas en un lote",
@@ -113,8 +113,8 @@
             "name": "Generador y convertidor de timestamps de Discord",
             "description": "Usa el generador de timestamps de Discord para 500 fechas en lote, cuenta regresiva, etiquetas existentes y conversión de IDs Snowflake.",
             "datePublished": "2026-09-26",
-            "dateModified": "2026-09-26T04:52:00Z",
-            "lastReviewed": "2026-09-26",
+            "dateModified": "2026-09-26T06:40:00Z",
+            "lastReviewed": "2026-09-26T06:40:00Z",
             "inLanguage": "es",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "primaryImageOfPage": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#primary-image" },
@@ -141,6 +141,7 @@
               { "@type": "Question", "name": "¿Cómo obtengo el timestamp actual de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa el botón Ahora. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo." } },
               { "@type": "Question", "name": "¿Puedo convertir una etiqueta existente?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos." } },
               { "@type": "Question", "name": "¿Puedo convertir un ID de mensaje de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Pega un ID snowflake decimal en el decodificador para leer su hora de creación en UTC y cargar ese instante en el generador." } },
+              { "@type": "Question", "name": "¿Cómo obtengo un ID de mensaje de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Activa el modo desarrollador en Discord y usa la acción de copiado del menú contextual del mensaje. Si tu app ofrece Copiar enlace del mensaje, el último segmento numérico es el ID." } },
               { "@type": "Question", "name": "¿La etiqueta se muestra como texto?", "acceptedAnswer": { "@type": "Answer", "text": "Revisa los signos < y >, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código." } },
               { "@type": "Question", "name": "¿Necesito un bot?", "acceptedAnswer": { "@type": "Answer", "text": "No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino." } },
               { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es independiente y no está respaldada por Discord." } }
@@ -158,6 +159,7 @@
         <div class="nav-links">
           <a href="/">Todas las herramientas</a>
           <a href="#generator">Generador</a>
+          <a href="#snowflake">Snowflake</a>
           <a href="/es/guides/discord-timestamp-formats/">Guía de formatos</a>
           <a href="/unix-timestamp-converter/">Unix</a>
           <a href="/guides/">Guides</a>
@@ -169,7 +171,7 @@
           <p class="eyebrow">Local · Gratis · Sin registro</p>
           <h1>Generador y convertidor de timestamps de Discord</h1>
           <p class="hero-lead">Este <strong>Discord timestamp generator</strong> en español crea etiquetas de Discord en los nueve formatos documentados, acepta lotes de hasta 500 fechas y decodifica etiquetas existentes o IDs Snowflake. Las fechas se procesan en tu navegador.</p>
-          <p class="hero-byline"><span>Por <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Actualizado <time datetime="2026-09-26T05:45:00Z">26 de septiembre de 2026</time></span></p>
+          <p class="hero-byline"><span>Por <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Actualizado <time datetime="2026-09-26T06:40:00Z">26 de septiembre de 2026</time></span></p>
           <div class="hero-cta-row">
             <a class="button" href="#generator">Abrir el generador</a>
             <a class="button ghost" href="/es/guides/discord-timestamp-formats/">Ver la guía en español</a>
@@ -275,6 +277,27 @@
         </div>
       </section>
 
+      <section class="content-section" id="snowflake" aria-labelledby="snowflake-heading">
+        <div class="section-heading">
+          <p class="section-kicker">ID de mensaje → hora de creación</p>
+          <h2 id="snowflake-heading">Convertidor de IDs Snowflake de Discord</h2>
+          <p>Los IDs de mensaje, canal y usuario de Discord son Snowflake. Sus primeros 42 bits contienen el instante de creación, así que un ID decimal puede revelar esa hora sin acceder a la cuenta.</p>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>Para obtener un ID, activa el modo desarrollador en Discord y usa la acción de copiado del menú contextual del mensaje. Si tu app ofrece <strong>Copiar enlace del mensaje</strong>, el último segmento numérico del enlace es el ID. Pega ese ID decimal en el decodificador.</p>
+            <p>LiveParse desplaza el ID 22 bits a la derecha y suma la época de Discord, <code>1420070400000</code> milisegundos. El ID <code>1199835124667021433</code> corresponde a <code>2024-01-24 21:56:25.579 UTC</code>. Con <strong>Usar hora de creación</strong> cargas el segundo entero equivalente en el generador.</p>
+            <p>El resultado también separa worker, proceso e incremento. La <a href="https://docs.discord.com/developers/reference#snowflakes" target="_blank" rel="noreferrer">referencia Snowflakes de Discord</a> documenta los mismos 42 bits y la época usados aquí.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Entrada</dt><dd>ID decimal de mensaje, canal o usuario.</dd></div>
+            <div><dt>Creación</dt><dd><code>((ID &gt;&gt; 22) + 1420070400000)</code> milisegundos.</dd></div>
+            <div><dt>Timestamp</dt><dd>Convierte los milisegundos a segundos enteros.</dd></div>
+            <div><dt>Salida</dt><dd>Los nueve estilos y plantillas de mensaje.</dd></div>
+          </dl>
+        </div>
+      </section>
+
       <section class="content-section alt" id="soluciones" aria-labelledby="soluciones-heading">
         <div class="section-heading">
           <p class="section-kicker">Diagnóstico rápido</p>
@@ -305,6 +328,7 @@
           <details><summary>¿Cómo obtengo el timestamp actual de Discord?</summary><p>Usa el botón <strong>Ahora</strong>. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo.</p></details>
           <details><summary>¿Puedo convertir una etiqueta existente?</summary><p>Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
           <details><summary>¿Puedo convertir un ID de mensaje de Discord?</summary><p>Sí. Pega un ID snowflake decimal en el decodificador para leer su hora de creación en UTC y cargar ese instante en el generador.</p></details>
+          <details><summary>¿Cómo obtengo un ID de mensaje de Discord?</summary><p>Activa el modo desarrollador en Discord y usa la acción de copiado del menú contextual del mensaje. Si tu app ofrece <strong>Copiar enlace del mensaje</strong>, el último segmento numérico es el ID.</p></details>
           <details><summary>¿La etiqueta se muestra como texto?</summary><p>Revisa los signos <code>&lt;</code> y <code>&gt;</code>, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código.</p></details>
           <details><summary>¿Necesito un bot?</summary><p>No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino.</p></details>
           <details><summary>¿LiveParse está afiliada a Discord?</summary><p>No. LiveParse es independiente y no está respaldada por Discord.</p></details>
@@ -315,6 +339,7 @@
         <div><p class="section-kicker">Referencias</p><h2 id="references-heading">Comprueba el comportamiento actual</h2></div>
         <ul>
           <li><a href="https://docs.discord.com/developers/reference#message-formatting" target="_blank" rel="noreferrer">Referencia de Discord: formato de mensajes</a></li>
+          <li><a href="https://docs.discord.com/developers/reference#snowflakes" target="_blank" rel="noreferrer">Referencia de Discord: Snowflakes</a></li>
           <li><a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" target="_blank" rel="noreferrer">Eventos programados de Discord</a></li>
           <li><a href="/es/guides/discord-timestamp-formats/">Guía española de timestamps de Discord</a></li>
         </ul>
