@@ -34,6 +34,16 @@
   </entry>
 
   <entry>
+    <id>https://liveparse.com/guides/discord-timestamp-formats/</id>
+    <title>Discord Timestamp Formats: All 9 Codes Explained</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/discord-timestamp-formats/" />
+    <published>2026-08-03T00:00:00+09:00</published>
+    <updated>2026-09-26T04:04:00Z</updated>
+    <category term="Discord timestamp formats" />
+    <summary>Learn the complete Discord timestamp syntax, compare all nine documented styles, convert in bulk, handle timezone and DST edge cases, decode existing tags, and troubleshoot timestamps that do not render.</summary>
+  </entry>
+
+  <entry>
     <id>https://liveparse.com/es/guides/discord-timestamp-formats/</id>
     <title>Discord timestamps en español</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
@@ -473,16 +483,6 @@
     <updated>2026-08-04T06:56:03+09:00</updated>
     <category term="URL guides" />
     <summary>Recognize repeated percent-encoding and avoid unsafe decode-until-stable behavior across protocol boundaries.</summary>
-  </entry>
-
-  <entry>
-    <id>https://liveparse.com/sha256-generator/</id>
-    <title>SHA-256 Generator</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/sha256-generator/" />
-    <published>2026-08-04T06:15:45+09:00</published>
-    <updated>2026-08-04T06:15:45+09:00</updated>
-    <category term="Hashing" />
-    <summary>Create SHA-256 digests in hexadecimal or Base64 and inspect exact UTF-8 input diagnostics.</summary>
   </entry>
 
 </feed>

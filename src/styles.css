@@ -50,6 +50,9 @@ code, pre { font-family: "SFMono-Regular", "Cascadia Code", "Fira Code", "DejaVu
 h1 { max-width: 800px; margin: 0; color: var(--ink-deep); font-size: clamp(56px, 9vw, 112px); line-height: .87; letter-spacing: -.075em; }
 .home-page h1 { max-width: 980px; font-size: clamp(48px, 7.2vw, 92px); }
 .hero-lead { max-width: 720px; margin: 25px 0 0; color: #385b64; font-size: clamp(17px, 2vw, 21px); line-height: 1.62; }
+.hero-byline { display: flex; align-items: center; flex-wrap: wrap; gap: 7px 14px; margin: 13px 0 0; color: var(--muted); font-size: 13px; font-weight: 700; }
+.hero-byline strong { color: var(--ink-deep); }
+.hero-byline time { font-variant-numeric: tabular-nums; }
 .hero-cta-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 28px; color: var(--muted); font-size: 13px; font-weight: 750; }
 .hero-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 20px; border-radius: 999px; color: #fff; background: var(--aqua-dark); font-weight: 900; box-shadow: 0 12px 26px rgba(7, 86, 104, .24); }
 .hero-cta:hover { background: var(--ink-deep); transform: translateY(-1px); }
