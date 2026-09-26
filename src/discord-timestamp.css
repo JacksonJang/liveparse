@@ -137,6 +137,12 @@
 
 .discord-composer { border-top: 1px solid var(--discord-line); background: #fffdf9; }
 .discord-composer .discord-panel-heading { align-items: center; }
+.discord-snowflake { border-top: 1px solid var(--discord-line); background: linear-gradient(180deg, #fffaf2, #fff); }
+.discord-snowflake-details { margin: 0; display: grid; gap: 11px; }
+.discord-snowflake-details div { display: grid; gap: 5px; }
+.discord-snowflake-details dt { color: var(--discord-muted); font-size: 12px; font-weight: 900; }
+.discord-snowflake-details dd { margin: 0; min-width: 0; }
+.discord-snowflake-details code { display: block; overflow-wrap: anywhere; padding: 9px 10px; border: 1px solid var(--discord-line); border-radius: 10px; color: var(--discord-purple-dark); background: #fff; font-size: 12px; font-weight: 800; line-height: 1.4; }
 .discord-template-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px; background: var(--discord-line); }
 .discord-template-grid article { min-width: 0; display: grid; grid-template-columns: 80px minmax(0,1fr) auto; align-items: center; gap: 10px; padding: 13px 14px; background: #fff; }
 .discord-template-grid span { color: var(--discord-purple-dark); font-size: 12px; font-weight: 900; text-transform: uppercase; }
@@ -170,6 +176,7 @@
   .discord-format-actions { display: grid; grid-template-columns: 1fr; }
   .discord-seconds-output { grid-template-columns: 1fr auto; }
   .discord-seconds-output span { grid-column: 1 / -1; }
+  .discord-snowflake .discord-action-row { align-items: stretch; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

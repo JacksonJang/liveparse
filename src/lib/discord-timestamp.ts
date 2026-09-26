@@ -27,8 +27,11 @@ const MIN_DATE_MILLISECONDS = -8_640_000_000_000_000;
 const MAX_DATE_MILLISECONDS = 8_640_000_000_000_000;
 const MIN_DISCORD_SECONDS = 0n;
 const MAX_DISCORD_SECONDS = BigInt(MAX_DATE_MILLISECONDS / 1_000);
+const DISCORD_EPOCH_MILLISECONDS = 1_420_070_400_000n;
+const MAX_UNSIGNED_64_BIT = (1n << 64n) - 1n;
 const TAG_PATTERN = /^<t:(\d+)(?::([tTdDfFsSR]))?>$/;
 const INTEGER_PATTERN = /^\d+$/;
+const SNOWFLAKE_PATTERN = /^\d+$/;
 
 export interface ParsedDiscordTimestamp {
   ok: true;
@@ -50,6 +53,24 @@ export interface DiscordTimestampError {
 }
 
 export type DiscordTimestampParseResult = ParsedDiscordTimestamp | DiscordTimestampError;
+
+export interface DecodedDiscordSnowflake {
+  ok: true;
+  snowflake: string;
+  milliseconds: number;
+  seconds: string;
+  iso: string;
+  workerId: string;
+  processId: string;
+  increment: string;
+}
+
+export interface DiscordSnowflakeError {
+  ok: false;
+  error: string;
+}
+
+export type DiscordSnowflakeResult = DecodedDiscordSnowflake | DiscordSnowflakeError;
 
 export interface WallClockParts {
   year: number;
@@ -180,6 +201,43 @@ export function parseDiscordTimestampInput(rawInput: string): DiscordTimestampPa
     warning,
     suggestedSeconds: suggestion?.seconds ?? null,
     suggestedUnit: suggestion?.unit ?? null,
+  };
+}
+
+export function decodeDiscordSnowflake(rawInput: string): DiscordSnowflakeResult {
+  const input = rawInput.trim();
+  if (!input || !SNOWFLAKE_PATTERN.test(input)) {
+    return { ok: false, error: 'Enter a decimal Discord snowflake ID.' };
+  }
+  if (input.length > 20) {
+    return { ok: false, error: 'That snowflake is outside Discord’s 64-bit ID range.' };
+  }
+
+  let snowflake: bigint;
+  try {
+    snowflake = BigInt(input);
+  } catch {
+    return { ok: false, error: 'Enter a decimal Discord snowflake ID.' };
+  }
+  if (snowflake > MAX_UNSIGNED_64_BIT) {
+    return { ok: false, error: 'That snowflake is outside Discord’s 64-bit ID range.' };
+  }
+
+  const millisecondsValue = (snowflake >> 22n) + DISCORD_EPOCH_MILLISECONDS;
+  if (millisecondsValue > BigInt(MAX_DATE_MILLISECONDS)) {
+    return { ok: false, error: 'That snowflake resolves outside the date range this browser can preview safely.' };
+  }
+
+  const milliseconds = Number(millisecondsValue);
+  return {
+    ok: true,
+    snowflake: snowflake.toString(),
+    milliseconds,
+    seconds: (millisecondsValue / 1_000n).toString(),
+    iso: new Date(milliseconds).toISOString(),
+    workerId: ((snowflake >> 17n) & 0x1fn).toString(),
+    processId: ((snowflake >> 12n) & 0x1fn).toString(),
+    increment: (snowflake & 0xfffn).toString(),
   };
 }
 

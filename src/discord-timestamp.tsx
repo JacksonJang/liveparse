@@ -4,6 +4,7 @@ import {
   MAX_BULK_DISCORD_LINES,
   allDiscordTimestampCodes,
   dateTimeInputForZone,
+  decodeDiscordSnowflake,
   DISCORD_STYLE_DEFINITIONS,
   discordTimestampCode,
   discordTimestampPreview,
@@ -132,6 +133,7 @@ function App() {
   const [dateOrigin, setDateOrigin] = useState<'instant' | 'wall'>('instant');
   const [dateIsValid, setDateIsValid] = useState(true);
   const [decodeInput, setDecodeInput] = useState(() => discordTimestampCode(String(initialSeconds.current), 'F'));
+  const [snowflakeInput, setSnowflakeInput] = useState('');
   const [activeStyle, setActiveStyle] = useState<DiscordTimestampStyle>('F');
   const [ambiguousCandidates, setAmbiguousCandidates] = useState<number[]>([]);
   const [dateError, setDateError] = useState<string | null>(null);
@@ -159,6 +161,10 @@ function App() {
       ? { ...result, warning: localizeDiscordDiagnostic(result.warning, uiLocale) }
       : { ...result, error: localizeDiscordDiagnostic(result.error, uiLocale) };
   }, [decodeInput, uiLocale]);
+  const decodedSnowflake = useMemo(() => {
+    const result = decodeDiscordSnowflake(snowflakeInput);
+    return result.ok ? result : { ...result, error: localizeDiscordDiagnostic(result.error, uiLocale) };
+  }, [snowflakeInput, uiLocale]);
   const codes = useMemo(() => allDiscordTimestampCodes(String(seconds)), [seconds]);
   const bulk = useMemo(() => parseBulkDiscordTimestamps(bulkInput, sourceZone), [bulkInput, sourceZone]);
   const bulkEntries = bulk.ok
@@ -406,6 +412,64 @@ function App() {
           </div>
         </section>
       </div>
+
+      <section className="discord-snowflake" aria-labelledby="discord-snowflake-heading">
+        <div className="discord-panel-heading">
+          <div>
+            <p>{pick('Message and channel IDs', 'IDs de mensajes y canales')}</p>
+            <h2 id="discord-snowflake-heading">{pick('Decode a Discord snowflake', 'Decodifica un snowflake de Discord')}</h2>
+            <small>{pick('Read a creation time, worker, process, and increment without uploading the ID.', 'Lee una hora de creación, worker, proceso e increment sin subir el ID.')}</small>
+          </div>
+        </div>
+        <div className="discord-panel-body">
+          <label className="discord-field">
+            <span>{pick('Discord snowflake or message ID', 'Snowflake o ID de mensaje de Discord')}</span>
+            <input
+              className="discord-mono"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={20}
+              value={snowflakeInput}
+              onChange={(event) => setSnowflakeInput(event.target.value)}
+              placeholder="1199835124667021433"
+              aria-describedby="discord-snowflake-help"
+            />
+            <small id="discord-snowflake-help">{pick('Enter a decimal ID. Discord exposes IDs as strings to preserve every 64-bit digit.', 'Introduce un ID decimal. Discord expone los IDs como cadenas para conservar cada dígito de 64 bits.')}</small>
+          </label>
+          {decodedSnowflake.ok && (
+            <dl className="discord-snowflake-details">
+              <div><dt>{pick('Created (UTC)', 'Creación (UTC)')}</dt><dd><code>{decodedSnowflake.iso}</code></dd></div>
+              <div><dt>{pick('Selected Discord tag', 'Etiqueta de Discord seleccionada')}</dt><dd><code>{discordTimestampCode(decodedSnowflake.seconds, activeStyle)}</code></dd></div>
+              <div><dt>{pick('Worker / process / increment', 'Worker / proceso / increment')}</dt><dd><code>{decodedSnowflake.workerId} / {decodedSnowflake.processId} / {decodedSnowflake.increment}</code></dd></div>
+            </dl>
+          )}
+          {!decodedSnowflake.ok && decodedSnowflake.error && <p className="discord-notice error" role="alert">{decodedSnowflake.error}</p>}
+          <div className="discord-action-row">
+            <button
+              type="button"
+              className="discord-button primary"
+              disabled={!decodedSnowflake.ok}
+              onClick={() => {
+                if (!decodedSnowflake.ok) return;
+                setInstant(Number(decodedSnowflake.seconds), activeStyle, pick('Loaded the snowflake creation time.', 'Se cargó la hora de creación del snowflake.'));
+              }}
+            >
+              {pick('Use creation time', 'Usar hora de creación')}
+            </button>
+            <button
+              type="button"
+              className="discord-button"
+              disabled={!decodedSnowflake.ok}
+              onClick={() => decodedSnowflake.ok && copyValue(decodedSnowflake.iso, 'snowflake-iso', pick('snowflake creation time', 'hora de creación del snowflake'))}
+            >
+              {copiedKey === 'snowflake-iso' ? pick('ISO time copied', 'Hora ISO copiada') : pick('Copy ISO time', 'Copiar hora ISO')}
+            </button>
+          </div>
+        </div>
+      </section>
 
       <section className="discord-formats" aria-labelledby="discord-formats-heading">
         <div className="discord-formats-heading">

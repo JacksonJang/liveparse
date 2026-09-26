@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   allDiscordTimestampCodes,
   dateTimeInputForZone,
+  decodeDiscordSnowflake,
   DISCORD_TIMESTAMP_STYLES,
   discordTimestampCode,
   discordTimestampPreview,
@@ -91,6 +92,31 @@ describe('Discord timestamp parsing', () => {
   it('rejects values beyond the browser preview range and caps input length', () => {
     expect(parseDiscordTimestampInput('8640000000001')).toMatchObject({ ok: false });
     expect(parseDiscordTimestampInput('1'.repeat(81))).toMatchObject({ ok: false });
+  });
+});
+
+describe('Discord snowflake decoding', () => {
+  it('extracts the creation time and bit fields from a decimal snowflake', () => {
+    expect(decodeDiscordSnowflake(' 1199835124667021433 ')).toEqual({
+      ok: true,
+      snowflake: '1199835124667021433',
+      milliseconds: 1_706_133_385_579,
+      seconds: '1706133385',
+      iso: '2024-01-24T21:56:25.579Z',
+      workerId: '8',
+      processId: '7',
+      increment: '2169',
+    });
+  });
+
+  it('requires a decimal ID inside the 64-bit range', () => {
+    expect(decodeDiscordSnowflake('')).toMatchObject({ ok: false });
+    expect(decodeDiscordSnowflake('1199835124667021433n')).toMatchObject({ ok: false });
+    expect(decodeDiscordSnowflake('-1199835124667021433')).toMatchObject({ ok: false });
+    expect(decodeDiscordSnowflake('18446744073709551616')).toMatchObject({
+      ok: false,
+      error: expect.stringContaining('64-bit'),
+    });
   });
 });
 

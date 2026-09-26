@@ -28,6 +28,10 @@ describe('Discord timestamp UI localization', () => {
       'Bulk generation is limited to 500 non-empty lines.',
       'es',
     )).toContain('500 líneas no vacías');
+    expect(localizeDiscordDiagnostic(
+      'Enter a decimal Discord snowflake ID.',
+      'es',
+    )).toContain('ID snowflake de Discord');
     expect(localizedDiscordUnitLabel('milliseconds', 'es')).toBe('milisegundos');
     expect(localizedDiscordUnitLabel('milliseconds', 'en')).toBe('milliseconds');
   });

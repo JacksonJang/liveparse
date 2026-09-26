@@ -44,6 +44,9 @@ export function localizeDiscordDiagnostic(message: string | null | undefined, lo
   const spanishMessages: Array<[RegExp, (match: RegExpMatchArray) => string]> = [
     [/^Input is limited to (\d+) characters\.$/, ([limit]) => `La entrada está limitada a ${limit} caracteres.`],
     [/^Enter Unix seconds or a Discord timestamp tag\.$/, () => 'Introduce segundos Unix o una etiqueta de timestamp de Discord.'],
+    [/^Enter a decimal Discord snowflake ID\.$/, () => 'Introduce un ID snowflake de Discord en formato decimal.'],
+    [/^That snowflake is outside Discord’s 64-bit ID range\.$/, () => 'Ese snowflake está fuera del rango de IDs de 64 bits de Discord.'],
+    [/^That snowflake resolves outside the date range this browser can preview safely\.$/, () => 'Ese snowflake se resuelve fuera del rango de fechas que este navegador puede previsualizar de forma segura.'],
     [/^Use <t:UNIX_SECONDS> or <t:UNIX_SECONDS:STYLE> with a documented style letter\.$/, () => 'Usa <t:SEGUNDOS_UNIX> o <t:SEGUNDOS_UNIX:ESTILO> con una letra documentada.'],
     [/^Enter non-negative whole Unix seconds, not a signed, decimal, or formatted time\.$/, () => 'Introduce segundos Unix enteros no negativos, no un valor con signo, decimal ni hora formateada.'],
     [/^The Unix seconds value is not a valid integer\.$/, () => 'El valor de segundos Unix no es un entero válido.'],

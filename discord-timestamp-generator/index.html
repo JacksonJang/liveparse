@@ -54,7 +54,7 @@
             "browserRequirements": "Requires JavaScript and a modern web browser",
             "isAccessibleForFree": true,
             "inLanguage": "en",
-            "description": "A free browser-based Discord timestamp generator and tag converter for up to 500 dates in bulk and all nine documented styles, with IANA timezone conversion, DST ambiguity checks, existing-tag decoding, and ready-to-copy message templates.",
+            "description": "A free browser-based Discord timestamp generator and converter for up to 500 dates in bulk and all nine documented styles, with IANA timezone conversion, DST checks, tag and snowflake decoding, and message templates.",
             "featureList": [
               "Convert up to 500 Unix timestamps, Discord tags, or dates in one batch",
               "Generate all nine currently documented Discord timestamp styles",
@@ -62,6 +62,7 @@
               "Choose common timezone shortcuts before browsing the full IANA list",
               "Warn about daylight-saving gaps and overlaps",
               "Decode existing Discord timestamp tags",
+              "Decode Discord snowflake IDs to creation timestamps",
               "Detect likely milliseconds, microseconds, and nanoseconds",
               "Copy full-date and relative-time message templates",
               "Process dates and messages in the current browser tab"
@@ -171,6 +172,14 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert a Discord message ID?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Paste a decimal snowflake ID into the decoder to read its creation time in UTC and load that instant into the generator."
                 }
               },
               {
@@ -381,7 +390,7 @@
           <div>
             <p>Paste a tag such as <code>&lt;t:1800000000:S&gt;</code>. The built-in Discord timestamp converter extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
             <p>Decoding helps when updating an old event message, reviewing a bot template, or checking a unit mistake. The parser accepts the timestamp structure rather than arbitrary message text. It rejects decimal seconds and undocumented style letters instead of guessing.</p>
-            <p>This is different from a Discord snowflake ID. Snowflakes encode creation time plus other bits and use a separate calculation. Inline timestamp tags take ordinary Unix seconds directly.</p>
+            <p>This is different from a Discord snowflake ID. Snowflakes encode creation time plus worker, process, and increment bits; paste a decimal message, channel, or user ID into the snowflake decoder below to convert its creation metadata.</p>
           </div>
           <dl class="definition-list">
             <div><dt>Input</dt><dd><code>&lt;t:1800000000:S&gt;</code></dd></div>
@@ -415,6 +424,7 @@
           <details><summary>Why does another person see a different clock time?</summary><p>The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently.</p></details>
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
           <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format.</p></details>
+          <details><summary>Can I convert a Discord message ID?</summary><p>Yes. Paste a decimal snowflake ID into the decoder to read its creation time in UTC and load that instant into the generator.</p></details>
           <details><summary>Do I need a bot?</summary><p>Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination.</p></details>
           <details><summary>Why is raw &lt;t:…&gt; text not rendering?</summary><p>Check the angle brackets, <code>t:</code> prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context.</p></details>
           <details><summary>Is LiveParse affiliated with Discord?</summary><p>No. LiveParse is an independent developer tool and is not affiliated with or endorsed by Discord.</p></details>

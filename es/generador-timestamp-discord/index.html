@@ -54,13 +54,14 @@
             "browserRequirements": "Requiere JavaScript y un navegador moderno",
             "isAccessibleForFree": true,
             "inLanguage": "es",
-            "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, decodificar etiquetas existentes y crear los nueve estilos actuales de timestamps de Discord con zonas horarias IANA y comprobaciones de horario de verano.",
+            "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, decodificar etiquetas y snowflakes, y crear los nueve estilos actuales de timestamps de Discord con zonas horarias IANA.",
             "featureList": [
               "Convierte hasta 500 segundos Unix, etiquetas de Discord o fechas en un lote",
               "Genera los nueve estilos documentados de Discord",
               "Interpreta la fecha y hora en una zona horaria IANA",
               "Avisa de huecos y solapamientos de horario de verano",
               "Decodifica etiquetas existentes de Discord",
+              "Decodifica IDs snowflake de Discord hasta su hora de creación",
               "Detecta posibles milisegundos, microsegundos y nanosegundos",
               "Procesa las fechas en la pestaña actual del navegador"
             ],
@@ -98,6 +99,7 @@
               { "@type": "Question", "name": "¿Cómo hago una cuenta regresiva?", "acceptedAnswer": { "@type": "Answer", "text": "Usa R. Combínala con F para que el mensaje conserve una fecha absoluta." } },
               { "@type": "Question", "name": "¿Cómo obtengo el timestamp actual de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa el botón Ahora. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo." } },
               { "@type": "Question", "name": "¿Puedo convertir una etiqueta existente?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos." } },
+              { "@type": "Question", "name": "¿Puedo convertir un ID de mensaje de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Pega un ID snowflake decimal en el decodificador para leer su hora de creación en UTC y cargar ese instante en el generador." } },
               { "@type": "Question", "name": "¿La etiqueta se muestra como texto?", "acceptedAnswer": { "@type": "Answer", "text": "Revisa los signos < y >, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código." } },
               { "@type": "Question", "name": "¿Necesito un bot?", "acceptedAnswer": { "@type": "Answer", "text": "No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino." } },
               { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es independiente y no está respaldada por Discord." } }
@@ -240,6 +242,7 @@
           <details><summary>¿Cómo hago una cuenta regresiva?</summary><p>Usa <code>R</code>. Combínala con <code>F</code> para que el mensaje conserve una fecha absoluta.</p></details>
           <details><summary>¿Cómo obtengo el timestamp actual de Discord?</summary><p>Usa el botón <strong>Ahora</strong>. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo.</p></details>
           <details><summary>¿Puedo convertir una etiqueta existente?</summary><p>Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
+          <details><summary>¿Puedo convertir un ID de mensaje de Discord?</summary><p>Sí. Pega un ID snowflake decimal en el decodificador para leer su hora de creación en UTC y cargar ese instante en el generador.</p></details>
           <details><summary>¿La etiqueta se muestra como texto?</summary><p>Revisa los signos <code>&lt;</code> y <code>&gt;</code>, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código.</p></details>
           <details><summary>¿Necesito un bot?</summary><p>No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino.</p></details>
           <details><summary>¿LiveParse está afiliada a Discord?</summary><p>No. LiveParse es independiente y no está respaldada por Discord.</p></details>
