@@ -483,8 +483,8 @@ function validatePageBasics(html, label, expectedCanonical, { minimumCharacters 
   if (descriptions.length !== 1) fail(`${label}: expected exactly one meta description, found ${descriptions.length}`);
   else {
     if (requireJson && !/json/i.test(descriptions[0])) fail(`${label}: meta description must mention JSON`);
-    if (descriptions[0].length < 50 || descriptions[0].length > 200) {
-      fail(`${label}: meta description should be 50-200 characters`);
+    if (descriptions[0].length < 50 || descriptions[0].length > 165) {
+      fail(`${label}: meta description should be 50-165 characters`);
     }
   }
 
