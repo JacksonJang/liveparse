@@ -44,6 +44,22 @@
             "inLanguage": "en"
           },
           {
+            "@type": "Organization",
+            "@id": "https://liveparse.com/#organization",
+            "name": "LiveParse",
+            "url": "https://liveparse.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://liveparse.com/#logo",
+              "url": "https://liveparse.com/icon-512.png",
+              "contentUrl": "https://liveparse.com/icon-512.png",
+              "width": 512,
+              "height": 512,
+              "caption": "LiveParse"
+            },
+            "sameAs": ["https://github.com/JacksonJang/liveparse", "https://github.com/JacksonJang"]
+          },
+          {
             "@type": "WebApplication",
             "@id": "https://liveparse.com/discord-timestamp-generator/#application",
             "name": "LiveParse Discord Timestamp Generator & Snowflake Converter",
@@ -57,6 +73,7 @@
             "inLanguage": "en",
             "datePublished": "2026-08-04",
             "dateModified": "2026-09-26",
+            "screenshot": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
             "description": "A free browser-based Discord timestamp generator and converter for up to 500 dates in bulk, all nine documented styles, countdown messages, IANA timezone conversion, DST checks, tag and Snowflake decoding.",
             "featureList": [
               "Convert up to 500 Unix timestamps, Discord tags, or dates in one batch",
@@ -71,7 +88,18 @@
               "Process dates and messages in the current browser tab"
             ],
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@id": "https://liveparse.com/#organization" }
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image",
+            "url": "https://liveparse.com/og-discord-timestamp.png",
+            "contentUrl": "https://liveparse.com/og-discord-timestamp.png",
+            "width": 1200,
+            "height": 630,
+            "caption": "LiveParse Discord Timestamp Generator with timestamp syntax and Snowflake message-ID decoding",
+            "representativeOfPage": true
           },
           {
             "@type": "WebPage",
@@ -84,6 +112,7 @@
             "lastReviewed": "2026-09-26",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "primaryImageOfPage": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
             "mainEntity": { "@id": "https://liveparse.com/discord-timestamp-generator/#application" },
             "breadcrumb": { "@id": "https://liveparse.com/discord-timestamp-generator/#breadcrumb" }
           },
