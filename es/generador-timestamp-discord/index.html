@@ -8,8 +8,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Generador de timestamps de Discord: lote y 9 formatos | LiveParse</title>
-    <meta name="description" content="Genera hasta 500 timestamps de Discord desde fechas o segundos Unix, o crea uno con zona horaria IANA. Copia los nueve formatos actuales, incluido el tiempo relativo." />
+    <title>Generador y convertidor de timestamps de Discord | LiveParse</title>
+    <meta name="description" content="Usa el generador y convertidor de timestamps de Discord para hasta 500 fechas, decodifica etiquetas y copia los nueve formatos con zona horaria IANA." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/es/generador-timestamp-discord/" />
@@ -18,7 +18,7 @@
     <link rel="alternate" hreflang="x-default" href="https://liveparse.com/discord-timestamp-generator/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/es/generador-timestamp-discord/" />
-    <meta property="og:title" content="Generador de timestamps de Discord: lote y 9 formatos" />
+    <meta property="og:title" content="Generador y convertidor de timestamps de Discord" />
     <meta property="og:description" content="Convierte hasta 500 fechas o segundos Unix a la vez, decodifica etiquetas y copia los nueve formatos documentados de Discord." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="es_ES" />
@@ -27,8 +27,8 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Generador español de timestamps de Discord de LiveParse" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Generador de timestamps de Discord: lote y 9 formatos" />
-    <meta name="twitter:description" content="Crea hasta 500 etiquetas de Discord con zona horaria, tiempo relativo y decodificación precisa." />
+    <meta name="twitter:title" content="Generador y convertidor de timestamps de Discord" />
+    <meta name="twitter:description" content="Crea o convierte hasta 500 etiquetas de Discord con zona horaria, tiempo relativo y decodificación precisa." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
@@ -46,15 +46,15 @@
           {
             "@type": "WebApplication",
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#application",
-            "name": "Generador de timestamps de Discord de LiveParse",
+            "name": "Generador y convertidor de timestamps de Discord de LiveParse",
             "url": "https://liveparse.com/es/generador-timestamp-discord/",
             "applicationCategory": "UtilitiesApplication",
-            "applicationSubCategory": "Generador de timestamps y convertidor de zona horaria",
+            "applicationSubCategory": "Generador, convertidor de etiquetas y convertidor de zona horaria",
             "operatingSystem": "Cualquier sistema operativo con un navegador moderno",
             "browserRequirements": "Requiere JavaScript y un navegador moderno",
             "isAccessibleForFree": true,
             "inLanguage": "es",
-            "description": "Generador gratuito en el navegador para convertir hasta 500 fechas en lote y crear los nueve estilos actuales de timestamps de Discord, con zonas horarias IANA, comprobaciones de horario de verano, decodificación y plantillas listas para copiar.",
+            "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, decodificar etiquetas existentes y crear los nueve estilos actuales de timestamps de Discord con zonas horarias IANA y comprobaciones de horario de verano.",
             "featureList": [
               "Convierte hasta 500 segundos Unix, etiquetas de Discord o fechas en un lote",
               "Genera los nueve estilos documentados de Discord",
@@ -71,8 +71,8 @@
             "@type": "WebPage",
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#webpage",
             "url": "https://liveparse.com/es/generador-timestamp-discord/",
-            "name": "Generador de timestamps de Discord: lote y 9 formatos",
-            "description": "Genera hasta 500 etiquetas de Discord en lote y decodifica códigos con zona horaria en los nueve estilos documentados.",
+            "name": "Generador y convertidor de timestamps de Discord",
+            "description": "Usa el generador y convertidor de timestamps de Discord para hasta 500 fechas y decodifica códigos con zona horaria en los nueve estilos documentados.",
             "dateModified": "2026-09-26",
             "inLanguage": "es",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
@@ -97,6 +97,7 @@
               { "@type": "Question", "name": "¿Cuántos formatos de timestamp tiene Discord?", "acceptedAnswer": { "@type": "Answer", "text": "La tabla actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
               { "@type": "Question", "name": "¿Qué estilo es el predeterminado?", "acceptedAnswer": { "@type": "Answer", "text": "El estilo f—fecha larga y hora corta—es el predeterminado. Si omites el último campo, Discord aplica f." } },
               { "@type": "Question", "name": "¿Por qué cada persona ve una hora distinta?", "acceptedAnswer": { "@type": "Answer", "text": "El instante es el mismo, pero Discord lo muestra con la zona horaria y configuración regional de cada lector." } },
+              { "@type": "Question", "name": "¿Puedo convertir una etiqueta existente?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos." } },
               { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es una herramienta independiente y no está afiliada ni respaldada por Discord." } }
             ]
           }
@@ -139,7 +140,7 @@
       <section class="content-section" id="generator" aria-labelledby="generator-heading">
         <div class="section-heading">
           <p class="section-kicker">Herramienta</p>
-          <h2 id="generator-heading">Crea y decodifica timestamps de Discord</h2>
+          <h2 id="generator-heading">Crea, convierte y decodifica timestamps de Discord</h2>
           <p>Elige un instante, convierte un lote de fechas o segundos, revisa la vista previa por zona horaria y copia la etiqueta exacta. El procesamiento local mantiene la fecha y el texto del mensaje en esta pestaña.</p>
         </div>
         <div id="root"></div>
@@ -234,7 +235,7 @@
           <details><summary>¿Segundos o milisegundos?</summary><p>Segundos. Convierte <code>Date.now()</code> dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta.</p></details>
           <details><summary>¿Hay siete o nueve formatos?</summary><p>La referencia actual documenta nueve: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code> y <code>R</code>.</p></details>
           <details><summary>¿Cómo hago una cuenta regresiva?</summary><p>Usa <code>R</code>. Combínala con <code>F</code> para que el mensaje conserve una fecha absoluta.</p></details>
-          <details><summary>¿Puedo decodificar una etiqueta?</summary><p>Sí. Pega la etiqueta completa en el decodificador para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
+          <details><summary>¿Puedo convertir una etiqueta existente?</summary><p>Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
           <details><summary>¿La etiqueta se muestra como texto?</summary><p>Revisa los signos <code>&lt;</code> y <code>&gt;</code>, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código.</p></details>
           <details><summary>¿Necesito un bot?</summary><p>No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino.</p></details>
           <details><summary>¿LiveParse está afiliada a Discord?</summary><p>No. LiveParse es independiente y no está respaldada por Discord.</p></details>
