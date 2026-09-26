@@ -169,6 +169,7 @@
             <h2 id="wrong-unit-symptoms">What a wrong unit looks like</h2>
             <p>The classic JavaScript bug is passing Unix seconds directly to <code>new Date()</code>. The constructor expects milliseconds, so <code>1754208000</code> becomes only about twenty days after the epoch and appears in January 1970. Multiplying by 1,000 produces the intended 2025 instant. The opposite mistake—treating milliseconds as seconds—creates a date tens of thousands of years beyond ordinary date ranges.</p>
             <p>Wrong-unit results are not always spectacular. A relative duration, custom epoch, or truncated value can produce a believable but incorrect date. The safest validation uses facts external to the number: the event happened after the system launched, before it was exported, and in the same interval as nearby records. Add minimum and maximum accepted instants at ingestion boundaries.</p>
+            <p>Some platforms also enforce a specific unit. Discord, for example, requires whole Unix seconds in its inline timestamp tags and rejects millisecond values. The <a href="/discord-timestamp-generator/">Discord Timestamp Generator</a> detects likely milliseconds or nanoseconds and warns before creating a broken tag.</p>
             <div class="table-wrap">
               <table>
                 <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">First check</th></tr></thead>
