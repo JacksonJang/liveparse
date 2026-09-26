@@ -218,6 +218,14 @@
               },
               {
                 "@type": "Question",
+                "name": "Does Discord have an @time command?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Discord’s February 4, 2026 patch notes describe an @time command on Desktop that helps generate a Linux timestamp and clarify the referenced time. Availability can vary by platform, so test the client where you plan to post."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Do I need a bot?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -458,7 +466,7 @@
         <div class="section-heading"><p class="section-kicker">Choose the fitting workflow</p><h2 id="workflow-heading">Web generator, @time, Scheduled Event, or bot?</h2></div>
         <div class="use-case-grid">
           <article><h3>Generator for explicit control</h3><p>Use this page for IANA timezone input, DST diagnostics, all nine codes, existing-tag decoding, unit warnings, and ready-made <code>F + R</code> messages.</p></article>
-          <article><h3>@time for an in-app desktop flow</h3><p>Discord’s February 4, 2026 patch notes describe a native <code>@time</code> command on Desktop. It can be faster while composing there; check current client availability rather than assuming every platform behaves identically.</p></article>
+          <article><h3>Discord @time command for quick desktop drafting</h3><p>Discord’s February 4, 2026 patch notes describe a native <code>@time</code> command on Desktop that helps generate a Linux timestamp and clarify the referenced time. It is useful for one-off messages while composing, but it does not replace explicit IANA timezone control, DST diagnostics, bulk output, tag decoding, or all-nine-style comparison. Availability can vary by platform, so test the client where you plan to post.</p></article>
           <article><h3>Scheduled Event for event features</h3><p>An inline tag places localized time in ordinary text. A Discord Scheduled Event is a separate event object with event-specific discovery and notification behavior. A community can use one or both.</p></article>
           <article><h3>Bot for repeated automation</h3><p>A bot or webhook can generate tags from a trusted schedule. It must still interpret the source timezone correctly and emit whole Unix seconds. Test automated templates around DST transitions.</p></article>
         </div>
@@ -517,6 +525,7 @@
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
           <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format.</p></details>
           <details><summary>How do I convert a Discord message ID to a timestamp?</summary><p>Paste the decimal Snowflake ID into the decoder. LiveParse shifts it right by 22 bits, adds Discord’s epoch, <code>1420070400000</code> ms, shows the UTC creation time, and loads its Unix seconds into the generator.</p></details>
+          <details><summary>Does Discord have an @time command?</summary><p>Yes. Discord’s February 4, 2026 patch notes describe an <code>@time</code> command on Desktop that helps generate a Linux timestamp and clarify the referenced time. Availability can vary by platform, so test the client where you plan to post.</p></details>
           <details><summary>Do I need a bot?</summary><p>Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination.</p></details>
           <details><summary>Why is raw &lt;t:…&gt; text not rendering?</summary><p>Check the angle brackets, <code>t:</code> prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context.</p></details>
           <details><summary>Is LiveParse affiliated with Discord?</summary><p>No. LiveParse is an independent developer tool and is not affiliated with or endorsed by Discord.</p></details>
