@@ -1,5 +1,8 @@
 .discord-page h1 { max-width: 980px; font-size: clamp(48px, 7.2vw, 92px); }
 .discord-page .seo-hero { grid-template-columns: minmax(0, 1fr) minmax(320px, .7fr); }
+.discord-page .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 14px; color: #526d75; font-size: 14px; }
+.discord-page .breadcrumb a { color: #087487; font-weight: 750; }
+.discord-page .breadcrumb span[aria-current="page"] { color: #526d75; }
 .discord-page .hero-example { transform: rotate(-1deg); }
 .discord-page .hero-example pre { min-height: 240px; }
 
