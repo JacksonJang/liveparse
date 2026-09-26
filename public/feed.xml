@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-09-26T00:34:00Z</updated>
+  <updated>2026-09-26T01:10:00Z</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -14,13 +14,23 @@
   <rights>Copyright 2026 Jackson Jang</rights>
 
   <entry>
+    <id>https://liveparse.com/discord-timestamp-generator/</id>
+    <title>Discord Timestamp Generator</title>
+    <published>2026-08-04T10:32:00+09:00</published>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/discord-timestamp-generator/" />
+    <updated>2026-09-26T01:10:00Z</updated>
+    <category term="Discord timestamps" />
+    <summary>Convert up to 500 dates in bulk, generate all nine Discord timestamp formats, preview locale and timezone output, and decode existing tags with explicit daylight-saving choices.</summary>
+  </entry>
+
+  <entry>
     <id>https://liveparse.com/es/generador-timestamp-discord/</id>
     <title>Generador de timestamps de Discord</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/es/generador-timestamp-discord/" />
     <published>2026-09-26T09:34:00+09:00</published>
-    <updated>2026-09-26T09:34:00+09:00</updated>
+    <updated>2026-09-26T10:05:00+09:00</updated>
     <category term="Discord timestamp generator (Spanish)" />
-    <summary>Genera y decodifica etiquetas de Discord con zonas horarias IANA, advertencias de horario de verano y los nueve formatos documentados en español.</summary>
+    <summary>Genera hasta 500 fechas en lote, decodifica etiquetas y crea los nueve formatos documentados de Discord con zonas horarias IANA y advertencias de horario de verano en español.</summary>
   </entry>
 
   <entry>
@@ -28,9 +38,9 @@
     <title>Discord timestamps en español</title>
     <link rel="alternate" type="text/html" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
     <published>2026-09-26T09:18:00+09:00</published>
-    <updated>2026-09-26T09:18:00+09:00</updated>
+    <updated>2026-09-26T10:00:00+09:00</updated>
     <category term="Discord timestamp guide (Spanish)" />
-    <summary>Explica la sintaxis completa de los Discord timestamps, los nueve códigos de estilo, el tiempo relativo y los errores de conversión entre segundos y milisegundos.</summary>
+    <summary>Explica la sintaxis de los Discord timestamps, los nueve códigos de estilo, las zonas horarias, la conversión en lote de hasta 500 líneas y los errores entre segundos y milisegundos.</summary>
   </entry>
 
   <entry>
@@ -202,16 +212,6 @@
     <updated>2026-09-15T21:53:05Z</updated>
     <category term="ASCII" />
     <summary>Search all 128 standard ASCII codes and read them as mobile-friendly cards with labeled values, full-width copy targets, and no horizontal table scrolling.</summary>
-  </entry>
-
-  <entry>
-    <id>https://liveparse.com/discord-timestamp-generator/</id>
-    <title>Discord Timestamp Generator</title>
-    <published>2026-08-04T10:32:00+09:00</published>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/discord-timestamp-generator/" />
-    <updated>2026-09-15T21:48:29Z</updated>
-    <category term="Discord timestamps" />
-    <summary>Generate all nine Discord timestamp formats with common timezone shortcuts, mobile-sized copy controls, locale previews, and explicit daylight-saving choices.</summary>
   </entry>
 
   <entry>
