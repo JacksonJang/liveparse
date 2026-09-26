@@ -300,6 +300,7 @@
           <article><h3><a href="/jwt-expiration-checker/">Inspect JWT claims</a></h3><p>Read NumericDate claims such as <code>iat</code>, <code>nbf</code>, and <code>exp</code> as seconds since the epoch. The focused checker applies exact boundaries and explicit leeway; neither conversion nor decoding verifies the token’s signature.</p></article>
           <article><h3>Review database exports</h3><p>Check whether a column is stored in seconds, milliseconds, microseconds, or nanoseconds before importing, rescaling, or building a date index.</p></article>
           <article><h3>Investigate API payloads</h3><p>Confirm that timestamps from different endpoints refer to the expected instants and that a frontend has not mistaken seconds for the milliseconds expected by JavaScript.</p></article>
+          <article><h3><a href="/discord-timestamp-generator/#snowflake">Decode Discord Snowflake IDs</a></h3><p>Discord message IDs use a custom 2015 epoch plus worker, process, and increment bits. Convert a decimal message ID to its creation time, then reuse that instant in all nine Discord timestamp styles.</p></article>
         </div>
       </section>
 
@@ -321,6 +322,7 @@
           <li><a href="/guides/unix-timestamp-seconds-vs-milliseconds/">Seconds vs ms, µs, and ns</a></li>
           <li><a href="/guides/unix-timestamp-code-examples/">Code examples by language</a></li>
           <li><a href="/discord-timestamp-generator/">Generate Discord timestamp codes</a></li>
+          <li><a href="/discord-timestamp-generator/#snowflake">Convert a Discord message ID to a timestamp</a></li>
           <li><a href="https://www.rfc-editor.org/rfc/rfc3339" target="_blank" rel="noreferrer">RFC 3339 date-time format</a></li>
         </ul>
       </aside>
