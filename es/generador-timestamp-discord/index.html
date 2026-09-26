@@ -22,14 +22,14 @@
     <meta property="og:description" content="Convierte 500 fechas, crea cuenta regresiva, decodifica IDs Snowflake y copia los nueve formatos de Discord." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="es_ES" />
-    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image" content="https://liveparse.com/og-discord-timestamp.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Generador español de timestamps de Discord de LiveParse" />
+    <meta property="og:image:alt" content="Generador español de timestamps de Discord con sintaxis y decodificación de Snowflake" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Generador y convertidor de timestamps de Discord" />
     <meta name="twitter:description" content="Crea 500 etiquetas o mensajes de cuenta regresiva y decodifica etiquetas o IDs Snowflake de Discord." />
-    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="twitter:image" content="https://liveparse.com/og-discord-timestamp.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
       {
@@ -44,9 +44,26 @@
             "inLanguage": "es"
           },
           {
+            "@type": "Organization",
+            "@id": "https://liveparse.com/#organization",
+            "name": "LiveParse",
+            "url": "https://liveparse.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://liveparse.com/#logo",
+              "url": "https://liveparse.com/icon-512.png",
+              "contentUrl": "https://liveparse.com/icon-512.png",
+              "width": 512,
+              "height": 512,
+              "caption": "LiveParse"
+            },
+            "sameAs": ["https://github.com/JacksonJang/liveparse", "https://github.com/JacksonJang"]
+          },
+          {
             "@type": "WebApplication",
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#application",
             "name": "Generador y convertidor de timestamps de Discord de LiveParse",
+            "alternateName": "Convertidor de timestamps y Snowflakes de Discord",
             "url": "https://liveparse.com/es/generador-timestamp-discord/",
             "applicationCategory": "UtilitiesApplication",
             "applicationSubCategory": "Generador de timestamps y cuenta regresiva, convertidor de etiquetas y decodificador Snowflake",
@@ -69,7 +86,19 @@
               "Procesa las fechas en la pestaña actual del navegador"
             ],
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" },
+            "publisher": { "@id": "https://liveparse.com/#organization" },
+            "screenshot": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#primary-image" }
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://liveparse.com/es/generador-timestamp-discord/#primary-image",
+            "url": "https://liveparse.com/og-discord-timestamp.png",
+            "contentUrl": "https://liveparse.com/og-discord-timestamp.png",
+            "width": 1200,
+            "height": 630,
+            "caption": "Generador español de timestamps de Discord con sintaxis y decodificación de Snowflake",
+            "representativeOfPage": true
           },
           {
             "@type": "WebPage",
@@ -82,6 +111,7 @@
             "lastReviewed": "2026-09-26",
             "inLanguage": "es",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "primaryImageOfPage": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#primary-image" },
             "mainEntity": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#application" },
             "breadcrumb": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#breadcrumb" }
           },
@@ -236,6 +266,25 @@
             <div><dt>UTC</dt><dd>Elección estable para un instante global.</dd></div>
           </dl>
         </div>
+      </section>
+
+      <section class="content-section alt" id="soluciones" aria-labelledby="soluciones-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Diagnóstico rápido</p>
+          <h2 id="soluciones-heading">El timestamp de Discord no funciona: soluciones comunes</h2>
+          <p>Si la etiqueta se queda como texto, revisa la estructura exacta, la unidad, el caso del estilo y la superficie de Discord.</p>
+        </div>
+        <div class="error-table" role="table" aria-label="Problemas comunes de timestamps de Discord y soluciones">
+          <div class="error-row error-head" role="row"><span role="columnheader">Síntoma</span><span role="columnheader">Causa probable</span><span role="columnheader">Solución</span></div>
+          <div class="error-row" role="row"><span role="cell">Se muestra el texto <code>&lt;t:…&gt;</code></span><span role="cell">Falta un símbolo, dos puntos o cierre.</span><span role="cell">Copia la forma exacta <code>&lt;t:1800000000:F&gt;</code> y pruébala en un mensaje normal.</span></div>
+          <div class="error-row" role="row"><span role="cell">La fecha queda muy lejos</span><span role="cell">Se pegaron milisegundos donde Discord espera segundos.</span><span role="cell">Divide los milisegundos entre 1.000 y usa el resultado entero.</span></div>
+          <div class="error-row" role="row"><span role="cell">El estilo se ignora</span><span role="cell">El estilo no está documentado o usa minúscula, como <code>r</code> en lugar de <code>R</code>.</span><span role="cell">Usa una de las nueve letras exactas y vuelve a copiar la etiqueta.</span></div>
+          <div class="error-row" role="row"><span role="cell">La etiqueta sigue literal</span><span role="cell">Está dentro de un bloque de código o un campo que escapa el texto.</span><span role="cell">Quita las comillas invertidas y envíala como texto normal.</span></div>
+          <div class="error-row" role="row"><span role="cell">Cada persona ve una fecha distinta</span><span role="cell">Discord localiza el mismo instante según la zona y el idioma.</span><span role="cell">Verifica el instante y combina <code>F</code> con <code>R</code>.</span></div>
+          <div class="error-row" role="row"><span role="cell">El resultado es improbable o se rechaza</span><span role="cell">Hay decimales, un valor negativo o una fecha fuera de rango.</span><span role="cell">Usa segundos enteros no negativos y revisa la fecha antes de publicar.</span></div>
+          <div class="error-row" role="row"><span role="cell">Funciona en una superficie y no en otra</span><span role="cell">Mensajes, campos, formularios y clientes pueden tener soporte distinto.</span><span role="cell">Prueba en el canal, hilo o destino real donde se verá.</span></div>
+        </div>
+        <p class="text-link"><a href="/es/guides/discord-timestamp-formats/#troubleshooting-title">Ver la guía completa para solucionar timestamps de Discord →</a></p>
       </section>
 
       <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
