@@ -40,7 +40,7 @@ export function validateEnglishBranding(html, label) {
     const href = link.href || '';
     const isAnchor = link.tag === 'a';
     const isHreflangAlternate = Boolean(link.hreflang) && (link.rel || '').toLowerCase() === 'alternate';
-    const normalizedHref = href.replace(/^https:\/\/liveparse\.com/, '');
+    const normalizedHref = href.replace(/^https:\/\/liveparse\.com/, '').replace(/#.*$/, '');
     if (!isHreflangAlternate && RETIRED_LANGUAGE_PREFIX.test(href) && !LIVE_LOCALIZED_PAGES.has(normalizedHref)) {
       failures.push(`${label}: retired language URL ${href}`);
     }
@@ -84,7 +84,7 @@ export function validateLocalizedBranding(html, label, { language = 'es', ogLoca
   const links = [...html.matchAll(/<(?:a|link)\b[^>]*>/gi)].map((match) => parseAttributes(match[0]));
   for (const link of links) {
     const href = link.get('href') || '';
-    if (RETIRED_LANGUAGE_PREFIX.test(href) && !LIVE_LOCALIZED_PAGES.has(href.replace(/^https:\/\/liveparse\.com/, ''))) {
+    if (RETIRED_LANGUAGE_PREFIX.test(href) && !LIVE_LOCALIZED_PAGES.has(href.replace(/^https:\/\/liveparse\.com/, '').replace(/#.*$/, ''))) {
       failures.push(`${label}: retired language URL ${href}`);
     }
   }

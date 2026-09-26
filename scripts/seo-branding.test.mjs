@@ -27,6 +27,12 @@ describe('English search branding', () => {
     expect(validateEnglishBranding(retired, 'example').join('\n')).toMatch(/retired language URL/);
     expect(validateEnglishBranding(retired, 'example').join('\n').match(/retired language URL/g)).toHaveLength(2);
   });
+  it('allows section links to live localized pages', () => {
+    const withAnchors = page.replace('</body>',
+      '<a href="/es/generador-timestamp-discord/#lote">bulk</a>' +
+      '<a href="https://liveparse.com/es/guides/discord-timestamp-formats/#lote-title">guide</a></body>');
+    expect(validateEnglishBranding(withAnchors, 'example')).toEqual([]);
+  });
   it('validates the Spanish branding contract and its hreflang cluster', () => {
     const spanishPage = '<html lang="es"><head><title>Contador de palabras | LiveParse</title>' +
       '<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">' +

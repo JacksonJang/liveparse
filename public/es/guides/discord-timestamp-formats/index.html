@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Discord timestamps en español: los 9 formatos | LiveParse</title>
-    <meta name="description" content="Consulta los 9 formatos de Discord timestamps—t, T, d, D, f, F, s, S y R—con sintaxis, zonas horarias, casos de uso y ejemplos listos para pegar." />
+    <meta name="description" content="Consulta los 9 formatos de Discord timestamps con sintaxis, zonas horarias, conversión en lote de hasta 500 líneas y ejemplos listos para pegar." />
     <link rel="canonical" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="en" href="https://liveparse.com/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="es" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
@@ -21,7 +21,7 @@
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:title" content="Discord timestamps en español: los 9 formatos" />
-    <meta property="og:description" content="Sintaxis actual de los Discord timestamps, los nueve estilos, el renderizado local del lector y soluciones a errores comunes." />
+    <meta property="og:description" content="Sintaxis actual de los Discord timestamps, los nueve estilos, renderizado local, conversión en lote y soluciones a errores comunes." />
     <meta property="og:url" content="https://liveparse.com/es/guides/discord-timestamp-formats/" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
     <meta property="og:image:width" content="1200" />
@@ -29,7 +29,7 @@
     <meta property="og:image:alt" content="Herramientas LiveParse para marcas de tiempo y datos estructurados" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Discord timestamps en español: los 9 formatos" />
-    <meta name="twitter:description" content="Tabla clara de t, T, d, D, f, F, s, S y R con sintaxis y ejemplos listos para pegar." />
+    <meta name="twitter:description" content="Tabla clara de t, T, d, D, f, F, s, S y R con zonas horarias y conversión en lote." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <link rel="stylesheet" href="/article.css?v=20260917-touchlinks" />
     <script type="application/ld+json">
@@ -40,7 +40,7 @@
             "@type": "Article",
             "@id": "https://liveparse.com/es/guides/discord-timestamp-formats/#article",
             "headline": "Discord timestamps en español: los 9 formatos",
-            "description": "Referencia en español de los nueve formatos de Discord timestamps con sintaxis, zonas horarias, casos de uso y solución de problemas.",
+            "description": "Referencia en español de los nueve formatos de Discord timestamps con sintaxis, zonas horarias, conversión en lote, casos de uso y solución de problemas.",
             "mainEntityOfPage": "https://liveparse.com/es/guides/discord-timestamp-formats/",
             "url": "https://liveparse.com/es/guides/discord-timestamp-formats/",
             "image": "https://liveparse.com/og-tools.png",
@@ -94,6 +94,14 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "No. Discord envía el valor absoluto en segundos y cada cliente aplica su zona horaria, su configuración regional y su formato preferido."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo convertir varias fechas a timestamps de Discord a la vez?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora, y devuelve etiquetas en los nueve estilos."
                 }
               }
             ]
@@ -157,6 +165,17 @@
               <pre><code>Empieza &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).</code></pre>
               <p>El formato absoluto evita ambigüedad y el relativo comunica urgencia. Si el evento cambia, regenera ambas etiquetas desde el mismo valor; si solo cambias una, la fecha y la cuenta regresiva se contradicen.</p>
             </section>
+            <section aria-labelledby="lote-title">
+              <h2 id="lote-title">Convierte muchas fechas en lote</h2>
+              <p>Para una lista de lanzamientos, un calendario editorial o una migración, pega un valor por línea en lugar de generar cada etiqueta a mano. El generador en lote de LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas completas, fechas o fecha y hora. Devuelve el estilo seleccionado para cada línea válida y también puede copiar los nueve estilos de cada entrada.</p>
+              <pre><code>1754208000
+&lt;t:1754208000:F&gt;
+2026-08-03
+2026-08-03 21:00
+2026-08-03T21:00:00+09:00</code></pre>
+              <p>Mantén una sola zona horaria de origen antes de pegar fechas: una fecha sin hora se interpreta a medianoche en esa zona y una fecha con hora sigue sus reglas de horario de verano. Si una línea no es válida, la herramienta indica el número de línea en lugar de omitirla en silencio.</p>
+              <p><a href="/es/generador-timestamp-discord/#lote">Abrir el generador de timestamps de Discord en lote</a>.</p>
+            </section>
             <section aria-labelledby="decode-title">
               <h2 id="decode-title">Cómo decodificar una etiqueta</h2>
               <ol class="steps">
@@ -189,6 +208,8 @@
               <p>Segundos Unix enteros. Convierte los milisegundos antes de crear la etiqueta.</p>
               <h3>¿Todos ven la misma hora?</h3>
               <p>Ven el mismo instante, pero Discord lo presenta según la zona horaria y la configuración regional de cada cliente.</p>
+              <h3>¿Puedo convertir varias fechas a timestamps de Discord a la vez?</h3>
+              <p>Sí. LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora, y devuelve etiquetas en los nueve estilos.</p>
             </section>
             <div class="tool-callout">
               <p><strong>¿Listo para crear una etiqueta?</strong> Elige una fecha y zona horaria, compara los nueve formatos y copia el resultado sin cáculos manuales.</p>
@@ -211,6 +232,7 @@
               <li><a href="#codes-title">Tabla de los 9 formatos</a></li>
               <li><a href="#units-title">Segundos, no milisegundos</a></li>
               <li><a href="#timezone-title">Zona horaria y tiempo relativo</a></li>
+              <li><a href="#lote-title">Conversión en lote</a></li>
               <li><a href="#decode-title">Cómo decodificar una etiqueta</a></li>
               <li><a href="#troubleshooting-title">Solución de problemas</a></li>
               <li><a href="#faq-title">Preguntas frecuentes</a></li>

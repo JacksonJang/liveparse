@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Discord Timestamp Formats: All 9 Codes Explained | LiveParse</title>
-    <meta name="description" content="Learn all 9 Discord timestamp formats—t, T, d, D, f, F, s, S, and R—with syntax, timezone behavior, use cases, and copy-ready examples." />
+    <meta name="description" content="Learn all 9 Discord timestamp formats with syntax, timezone behavior, bulk conversion up to 500 lines, use cases, and copy-ready examples." />
     <link rel="canonical" href="https://liveparse.com/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="en" href="https://liveparse.com/guides/discord-timestamp-formats/" />
     <link rel="alternate" hreflang="es" href="https://liveparse.com/es/guides/discord-timestamp-formats/" />
@@ -22,7 +22,7 @@
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Discord Timestamp Formats: All 9 Codes Explained" />
-    <meta property="og:description" content="A current reference for Discord timestamp syntax, all nine style letters, viewer-local rendering, countdowns, and unit troubleshooting." />
+    <meta property="og:description" content="A current reference for Discord timestamp syntax, all nine styles, viewer-local rendering, bulk conversion, countdowns, and unit troubleshooting." />
     <meta property="og:url" content="https://liveparse.com/guides/discord-timestamp-formats/" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
     <meta property="og:image:width" content="1200" />
@@ -31,7 +31,7 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Discord Timestamp Formats: All 9 Codes" />
-    <meta name="twitter:description" content="Understand t, T, d, D, f, F, s, S, and R with copy-ready syntax and careful timezone guidance." />
+    <meta name="twitter:description" content="Understand all nine Discord timestamp styles, timezone rules, and bulk conversion up to 500 lines." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
 
     <link rel="stylesheet" href="/article.css?v=20260917-touchlinks" />
@@ -43,7 +43,7 @@
             "@type": "Article",
             "@id": "https://liveparse.com/guides/discord-timestamp-formats/#article",
             "headline": "Discord Timestamp Formats: All 9 Codes Explained",
-            "description": "Learn all nine Discord timestamp formats with syntax, timezone behavior, use cases, existing-tag decoding, and unit troubleshooting.",
+            "description": "Learn all nine Discord timestamp formats with syntax, timezone behavior, bulk conversion, use cases, existing-tag decoding, and unit troubleshooting.",
             "mainEntityOfPage": "https://liveparse.com/guides/discord-timestamp-formats/",
             "url": "https://liveparse.com/guides/discord-timestamp-formats/",
             "image": "https://liveparse.com/og-tools.png",
@@ -128,6 +128,14 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "The generator produces text in Discord’s documented inline timestamp syntax. Paste it into a normal supported message context and test the result; no bot calculation is required merely to create the text."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I convert multiple dates to Discord timestamps at once?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. LiveParse accepts up to 500 non-empty lines of Unix seconds, existing tags, dates, or dates with times and returns tags for all nine styles."
                 }
               },
               {
@@ -228,6 +236,19 @@ Incident began &lt;t:1754208000:R&gt; at &lt;t:1754208000:T&gt;.</code></pre>
             </figure>
             <p>Keep durations separate from instants. The timestamp identifies when maintenance begins; “30 minutes” describes an interval. Do not convert a duration such as 1,800 seconds into a date relative to 1970. For accessibility and resilience, give the timestamp a plain-language label such as “starts,” “closes,” or “began” instead of posting an unexplained tag by itself.</p>
 
+            <h2 id="bulk">Convert many dates in bulk</h2>
+            <p>For a release list, recurring meeting plan, content calendar, or migration spreadsheet, paste one value per line rather than generating each tag by hand. LiveParse’s bulk Discord timestamp generator accepts up to 500 non-empty lines of Unix seconds, complete tags, dates, or dates with times. It returns the selected style for every valid line and can also copy all nine style letters for every input.</p>
+            <figure class="code-example">
+              <figcaption class="code-label">Accepted bulk input shapes</figcaption>
+              <pre><code>1754208000
+&lt;t:1754208000:F&gt;
+2026-08-03
+2026-08-03 21:00
+2026-08-03T21:00:00+09:00</code></pre>
+            </figure>
+            <p>Keep the source timezone consistent before pasting date-only or clock-time lines: a date without a time resolves to midnight in that source zone, and a wall-clock time follows that zone’s daylight-saving rules. Leave an invalid line in place while correcting it—the tool reports the line number rather than silently omitting input.</p>
+            <p><a href="/discord-timestamp-generator/#bulk">Open the bulk Discord timestamp generator</a>.</p>
+
             <h2 id="locale-timezone">Understand source time, viewer timezone, and locale</h2>
             <p>Creating the Unix value and displaying it are two separate operations. First, the generator interprets the date and time in a <strong>source timezone</strong> and resolves it to one instant. Then Discord displays that instant using each viewer’s timezone and locale. The tag itself contains only Unix seconds and the style letter; it does not preserve the source timezone name.</p>
             <p>This distinction matters for daylight saving time. A regional zone such as <code>America/New_York</code> has historical and seasonal rules, while a fixed offset such as <code>UTC-05:00</code> does not adjust itself. During a spring transition, some local clock times do not occur. During a fall transition, one local time can occur twice. When scheduling near either boundary, use an IANA regional timezone, review the resolved UTC instant, and make an explicit choice if the local input is ambiguous.</p>
@@ -302,6 +323,9 @@ Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
               <h3>Do I need a bot to use a generated timestamp?</h3>
               <p>The generator produces text in Discord’s documented inline timestamp syntax. Paste it into a normal supported message context and test the result; no bot calculation is required merely to create the text.</p>
 
+              <h3>Can I convert multiple dates to Discord timestamps at once?</h3>
+              <p>Yes. LiveParse accepts up to 500 non-empty lines of Unix seconds, existing tags, dates, or dates with times and returns tags for all nine styles.</p>
+
               <h3>Is this the same as a message’s creation timestamp?</h3>
               <p>No. An inline tag is content chosen by the message author and can represent a past or future instant. The message creation time is metadata assigned when the message is sent.</p>
             </section>
@@ -318,12 +342,12 @@ Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
             <section class="related-guides" aria-labelledby="related-title">
               <h2 id="related-title">Related tools and guides</h2>
               <div class="related-grid">
-                <a class="related-card" href="/discord-timestamp-generator/"><strong>Discord Timestamp Generator</strong><span>Create and decode tags in all nine documented styles.</span></a>
+                <a class="related-card" href="/discord-timestamp-generator/"><strong>Discord Timestamp Generator</strong><span>Create bulk tags, decode existing tags, and copy all nine documented styles.</span></a>
                 <a class="related-card" href="/unix-timestamp-converter/"><strong>Unix Timestamp Converter</strong><span>Convert epoch values to exact UTC, local, ISO, and RFC-style dates.</span></a>
                 <a class="related-card" href="/guides/unix-timestamp-seconds-vs-milliseconds/"><strong>Timestamp units explained</strong><span>Distinguish seconds, milliseconds, microseconds, and nanoseconds safely.</span></a>
                 <a class="related-card" href="/guides/unix-timestamp-code-examples/"><strong>Timestamp code examples</strong><span>Implement epoch conversion in JavaScript, Python, Java, Go, and SQL.</span></a>
-                <a class="related-card" href="/es/generador-timestamp-discord/" hreflang="es"><strong>Generador de timestamps de Discord</strong><span>Spanish generator with IANA timezones and all nine style codes.</span></a>
-                <a class="related-card" href="/es/guides/discord-timestamp-formats/" hreflang="es"><strong>Formatos de timestamp en Discord</strong><span>Spanish reference for all nine style codes and timezone behavior.</span></a>
+                <a class="related-card" href="/es/generador-timestamp-discord/" hreflang="es"><strong>Generador de timestamps de Discord</strong><span>Spanish generator with bulk conversion, IANA timezones, and all nine styles.</span></a>
+                <a class="related-card" href="/es/guides/discord-timestamp-formats/" hreflang="es"><strong>Formatos de timestamp en Discord</strong><span>Spanish reference for all nine styles, timezones, and bulk conversion.</span></a>
               </div>
             </section>
 
@@ -338,6 +362,7 @@ Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
               <li><a href="#time-date-styles">Choose a style</a></li>
               <li><a href="#relative">Relative time</a></li>
               <li><a href="#templates">Message templates</a></li>
+              <li><a href="#bulk">Bulk conversion</a></li>
               <li><a href="#locale-timezone">Locale and timezone</a></li>
               <li><a href="#seconds-milliseconds">Seconds vs milliseconds</a></li>
               <li><a href="#decode">Decode a tag</a></li>

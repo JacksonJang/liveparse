@@ -37,8 +37,8 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 - [/5-business-days-from-today/](https://liveparse.com/5-business-days-from-today/): The exact date five business days from today
 - [/10-business-days-from-today/](https://liveparse.com/10-business-days-from-today/): The exact date ten business days from today
 - [/unix-timestamp-converter/](https://liveparse.com/unix-timestamp-converter/): Convert epoch seconds, milliseconds, microseconds, and nanoseconds without losing precision
-- [/discord-timestamp-generator/](https://liveparse.com/discord-timestamp-generator/): Generate all nine Discord timestamp formats for any timezone
-- [/es/generador-timestamp-discord/](https://liveparse.com/es/generador-timestamp-discord/): Spanish Discord timestamp generator with IANA timezones and tag decoding (Español)
+- [/discord-timestamp-generator/](https://liveparse.com/discord-timestamp-generator/): Convert up to 500 dates to Discord timestamps and copy all nine formats
+- [/es/generador-timestamp-discord/](https://liveparse.com/es/generador-timestamp-discord/): Spanish Discord timestamp generator with bulk conversion, IANA timezones, and tag decoding (Español)
 - [/age-calculator/](https://liveparse.com/age-calculator/): Exact calendar age with a stated February 29 policy
 - [/week-number-calculator/](https://liveparse.com/week-number-calculator/): ISO 8601 week-year, week number, and week boundaries
 
@@ -80,7 +80,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 ## Background reading
 
 - [/guides/](https://liveparse.com/guides/): Standards-based guides explaining the formats behind each tool
-- [/es/guides/discord-timestamp-formats/](https://liveparse.com/es/guides/discord-timestamp-formats/): Spanish Discord timestamp guide — all nine style codes and timezone behavior (Español)
+- [/es/guides/discord-timestamp-formats/](https://liveparse.com/es/guides/discord-timestamp-formats/): Spanish Discord timestamp guide — nine style codes, timezone behavior, and bulk conversion (Español)
 - [/about/](https://liveparse.com/about/): What LiveParse is, who builds it, and its principles
 - [/privacy/](https://liveparse.com/privacy/): How data is handled: tool input never leaves the browser
 
