@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { cp, copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { cp, copyFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,18 +25,5 @@ for (const entry of await readdir(distDirectory, { withFileTypes: true })) {
   if (entry.name === 'client' || entry.name === 'server' || entry.name === '.openai') continue;
   await cp(resolve(distDirectory, entry.name), resolve(clientDirectory, entry.name), { recursive: true });
 }
-
-// Cloudflare Pages reads this static-routing layer before deploying an updated
-// Worker runtime, so canonical aliases remain live during rolling deployments.
-const workerSource = await readFile(source, 'utf8');
-const redirectEntries = [...workerSource.matchAll(/\['([^']+)',\s*'([^']+)'\]/g)]
-  .map((match) => [match[1], match[2]]);
-if (redirectEntries.length === 0) throw new Error('No canonical redirects parsed from the Worker entry.');
-const redirectSources = new Set(redirectEntries.map(([source]) => source));
-if (redirectSources.size !== redirectEntries.length) throw new Error('Duplicate canonical redirect source.');
-await writeFile(
-  resolve(clientDirectory, '_redirects'),
-  `${redirectEntries.map(([aliasPath, target]) => `${aliasPath} ${target} 308`).join('\n')}\n`,
-);
 
 console.log('Prepared Cloudflare Worker entry for Sites hosting.');
