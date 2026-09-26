@@ -298,7 +298,7 @@ const unixSeconds = Math.floor(Number(createdAtMs) / 1_000);
 console.log(createdAt.toISOString()); // 2024-01-24T21:56:25.579Z
 console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></pre>
             </figure>
-            <p>Use <code>BigInt</code> for the shift, then convert only the resulting millisecond value. A snowflake’s creation time is metadata assigned by Discord; it is not interchangeable with an author-chosen inline tag. Validate that the ID is a decimal integer and that the decoded date falls after 2015 in the expected range for your data set.</p>
+            <p>Use <code>BigInt</code> for the shift, then convert only the resulting millisecond value. A snowflake’s creation time is metadata assigned by Discord; it is not interchangeable with an author-chosen inline tag. Validate that the ID is a decimal integer and that the decoded date falls after 2015 in the expected range for your data set. <a href="/discord-timestamp-generator/#snowflake">Open the Discord Snowflake converter</a> to turn a message ID into a timestamp without doing the bit arithmetic by hand.</p>
 
             <h2 id="event-choice">Inline timestamp or Discord Scheduled Event?</h2>
             <p>An inline timestamp is useful inside an announcement, checklist, incident update, or generated message. It is lightweight and keeps the time beside the surrounding explanation. A Discord Scheduled Event is a separate server feature with event details and an Interested workflow that can notify participating members when the event goes live. Discord documents the setup and permission model in its <a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" rel="external">Scheduled Events support guide</a>.</p>
@@ -368,7 +368,7 @@ console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></p
             <section class="related-guides" aria-labelledby="related-title">
               <h2 id="related-title">Related tools and guides</h2>
               <div class="related-grid">
-                <a class="related-card" href="/discord-timestamp-generator/"><strong>Discord Timestamp Generator</strong><span>Create bulk tags, decode existing tags and Snowflake IDs, and copy all nine styles.</span></a>
+                <a class="related-card" href="/discord-timestamp-generator/#snowflake"><strong>Discord Snowflake Converter</strong><span>Convert a Discord message ID to its creation timestamp, then generate all nine styles.</span></a>
                 <a class="related-card" href="/unix-timestamp-converter/"><strong>Unix Timestamp Converter</strong><span>Convert epoch values to exact UTC, local, ISO, and RFC-style dates.</span></a>
                 <a class="related-card" href="/guides/unix-timestamp-seconds-vs-milliseconds/"><strong>Timestamp units explained</strong><span>Distinguish seconds, milliseconds, microseconds, and nanoseconds safely.</span></a>
                 <a class="related-card" href="/guides/unix-timestamp-code-examples/"><strong>Timestamp code examples</strong><span>Implement epoch conversion in JavaScript, Python, Java, Go, and SQL.</span></a>
