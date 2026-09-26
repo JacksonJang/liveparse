@@ -467,6 +467,25 @@
         </div>
       </section>
 
+      <section class="content-section alt" id="troubleshooting" aria-labelledby="troubleshooting-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Fast diagnosis</p>
+          <h2 id="troubleshooting-heading">Discord timestamp not working: common fixes</h2>
+          <p>When a timestamp remains as text, the cause is almost always its exact structure, unit, style case, or the Discord surface receiving the message.</p>
+        </div>
+        <div class="error-table" role="table" aria-label="Common Discord timestamp problems and fixes">
+          <div class="error-row error-head" role="row"><span role="columnheader">Symptom</span><span role="columnheader">Likely cause</span><span role="columnheader">Fix</span></div>
+          <div class="error-row" role="row"><span role="cell">Raw <code>&lt;t:…&gt;</code> text is displayed</span><span role="cell">A bracket, colon, prefix, or closing symbol is missing.</span><span role="cell">Copy the exact shape <code>&lt;t:1800000000:F&gt;</code>, then test it in an ordinary Discord message.</span></div>
+          <div class="error-row" role="row"><span role="cell">The date is many years too far away</span><span role="cell">Millisecond values were pasted where Discord expects seconds.</span><span role="cell">Divide JavaScript/API milliseconds by 1,000 and use the whole-second result.</span></div>
+          <div class="error-row" role="row"><span role="cell">The style letter is ignored</span><span role="cell">The style is undocumented or the wrong case, such as <code>r</code> instead of <code>R</code>.</span><span role="cell">Use one of the nine documented, case-sensitive letters and re-copy the generated tag.</span></div>
+          <div class="error-row" role="row"><span role="cell">The tag stays literal after pasting</span><span role="cell">The text was placed in a code block or escaped/quoted field that presents characters literally.</span><span role="cell">Remove surrounding backticks and send the tag as normal message text.</span></div>
+          <div class="error-row" role="row"><span role="cell">The date changes for another member</span><span role="cell">Discord localizes the same instant for each reader’s timezone and locale.</span><span role="cell">Check the source instant and pair <code>F</code> with <code>R</code> when both date and countdown matter.</span></div>
+          <div class="error-row" role="row"><span role="cell">The result is implausible or rejected</span><span role="cell">The value contains fractional seconds, is negative, or falls outside the intended range.</span><span role="cell">Use a whole, non-negative Unix-second value and review the date before publishing.</span></div>
+          <div class="error-row" role="row"><span role="cell">It works in one surface but not another</span><span role="cell">Message fields, embeds, forms, and client surfaces can have different formatting support.</span><span role="cell">Test in the actual channel, thread, or destination where members will see it.</span></div>
+        </div>
+        <p class="text-link"><a href="/guides/discord-timestamp-formats/#troubleshooting">See the complete Discord timestamp troubleshooting guide →</a></p>
+      </section>
+
       <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
         <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Discord Timestamp Generator FAQ</h2></div>
         <div class="faq-list">
