@@ -178,6 +178,8 @@ DIST_DIR=/tmp/liveparse-release PORT=4182 SEARCH_REFERRAL_DIR=/tmp/liveparse-qa-
 
 Check that server with `node scripts/check-public-seo.mjs http://127.0.0.1:4182` and `node scripts/check-search-branding.mjs http://127.0.0.1:4182`. The checkers send the canonical forwarded host and scheme. Promote the verified build and restart the existing Node process before checking the public site; do not create another Cloudflare tunnel.
 
+After changing `server/worker.js` or another production-server route, restart `npm run preview`. Static files can often be picked up without a restart, but Node server routing is loaded at startup. `npm run check:public-seo` includes browser and Googlebot checks for permanent redirects from legacy Discord aliases to `/discord-timestamp-generator/`.
+
 After release, use the verified `liveparse.com` property in Google Search Console:
 
 1. Submit `https://liveparse.com/sitemap.xml` in Sitemaps.
