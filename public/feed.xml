@@ -22,7 +22,15 @@
     <category term="Discord timestamps" />
     <summary>Convert up to 500 dates in bulk, generate countdown messages and all nine Discord timestamp formats, and decode tags or Snowflake message IDs with timezone-aware output.</summary>
   </entry>
-
+  <entry>
+    <id>https://liveparse.com/guides/discord-timestamp-formats/</id>
+    <title>Discord Timestamp Formats: All 9 Codes Explained</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/discord-timestamp-formats/" />
+    <published>2026-08-03T00:00:00+09:00</published>
+    <updated>2026-09-26T07:07:00Z</updated>
+    <category term="Discord timestamp formats" />
+    <summary>Learn the complete Discord timestamp syntax, compare all nine documented styles, convert in bulk, handle timezone and DST edge cases, decode existing tags, and troubleshoot timestamps that do not render.</summary>
+  </entry>
   <entry>
     <id>https://liveparse.com/es/generador-timestamp-discord/</id>
     <title>Generador y convertidor de timestamps de Discord</title>
@@ -32,7 +40,6 @@
     <category term="Discord timestamp generator and converter (Spanish)" />
     <summary>Genera hasta 500 fechas en lote, crea mensajes de cuenta regresiva, convierte etiquetas y decodifica IDs Snowflake en los nueve formatos documentados de Discord.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/authors/jackson-jang/</id>
     <title>Jackson Jang — LiveParse Author &amp; Maintainer</title>
@@ -42,17 +49,6 @@
     <category term="Author profile" />
     <summary>Author profile for Jackson Jang, the South Korea-based software engineer who designs, writes, operates, and maintains the local-first LiveParse browser tools.</summary>
   </entry>
-
-  <entry>
-    <id>https://liveparse.com/guides/discord-timestamp-formats/</id>
-    <title>Discord Timestamp Formats: All 9 Codes Explained</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/discord-timestamp-formats/" />
-    <published>2026-08-03T00:00:00+09:00</published>
-    <updated>2026-09-26T05:01:00Z</updated>
-    <category term="Discord timestamp formats" />
-    <summary>Learn the complete Discord timestamp syntax, compare all nine documented styles, convert in bulk, handle timezone and DST edge cases, decode existing tags, and troubleshoot timestamps that do not render.</summary>
-  </entry>
-
   <entry>
     <id>https://liveparse.com/es/guides/discord-timestamp-formats/</id>
     <title>Discord timestamps en español</title>
@@ -62,7 +58,6 @@
     <category term="Discord timestamp guide (Spanish)" />
     <summary>Explica la sintaxis, los nueve estilos, plantillas, zonas horarias, conversión en lote, errores de unidades, alternativas como @time y la conversión de IDs snowflake.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/ja/json-formatter/</id>
     <title>JSON整形ツール</title>
@@ -153,7 +148,6 @@
     <category term="URL encoding" />
     <summary>Percent-encode a component, stricter RFC 3986 component, complete URI, or form field locally with mobile-sized mode, sample, clear, and copy targets.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/url-decoder/</id>
     <title>URL Decoder</title>
@@ -163,7 +157,6 @@
     <category term="URL decoding" />
     <summary>Strictly decode one intentional percent-encoding round with component, full-URI, or form rules and comfortable mobile action targets.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/base64-decoder/</id>
     <title>Base64 Decoder and Base64URL Validator</title>
@@ -173,7 +166,6 @@
     <category term="Base64" />
     <summary>Decode standard Base64, Base64URL, and Data URLs locally with explicit validation controls, UTF-8 or hex output, safe raster previews, and mobile-sized copy and download targets.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/sql-formatter/</id>
     <title>SQL Formatter and Beautifier</title>
@@ -183,7 +175,6 @@
     <category term="SQL formatting" />
     <summary>Format SQL across fifteen dialect profiles with keyword case, indentation, expression width, statement spacing, and mobile-sized controls in a local worker.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/xml-validator/</id>
     <title>XML Validator and Syntax Checker</title>
@@ -193,7 +184,6 @@
     <category term="XML validation" />
     <summary>Check XML 1.0 well-formedness locally with line-and-column diagnostics, valid and intentionally invalid samples, bounded statistics, and no external resource fetching.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/json-formatter/</id>
     <title>JSON Formatter, Validator and Viewer</title>
@@ -203,7 +193,6 @@
     <category term="JSON tools" />
     <summary>Format, validate, minify, and explore JSON with exact number preservation and a balanced mobile layout that keeps options, search, navigation, copy controls, and tree space comfortable.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/yaml-validator/</id>
     <title>YAML Validator and Syntax Checker</title>
@@ -213,7 +202,6 @@
     <category term="YAML validation" />
     <summary>Validate YAML syntax locally with line-and-column diagnostics, valid and intentionally invalid samples, YAML version selection, alias checks, and duplicate scalar-key checks.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/image-compressor/</id>
     <title>Image Compressor to 20KB, 50KB, 100KB, 200KB, or 500KB</title>
@@ -223,7 +211,6 @@
     <category term="Image compression" />
     <summary>Build a private browser batch of up to 20 images, choose a KB target, compare before-and-after previews, and download all results as a ZIP with mobile-sized controls.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/ascii-table/</id>
     <title>ASCII Table</title>
@@ -233,7 +220,6 @@
     <category term="ASCII" />
     <summary>Search all 128 standard ASCII codes and read them as mobile-friendly cards with labeled values, full-width copy targets, and no horizontal table scrolling.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/regex-tester/</id>
     <title>Regex Tester and Debugger</title>
@@ -243,8 +229,6 @@
     <category term="Regular expressions" />
     <summary>Test JavaScript regular expressions locally with highlighted matches, capture groups, replacement previews, explicit flags, and a one-second worker timeout.</summary>
   </entry>
-
-
   <entry>
     <id>https://liveparse.com/business-days-calculator/</id>
     <title>Business Days Calculator</title>
@@ -263,7 +247,6 @@
     <category term="Morse code and text translation" />
     <summary>Translate English text to International Morse code or decode spaced dots and dashes back to text, then copy or play the result.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/days-between-dates/</id>
     <title>Days Between Dates Calculator</title>
@@ -300,7 +283,6 @@
     <category term="Calendar guides" />
     <summary>Understand elapsed days, calendar age, month-end clamping, leap-day birthdays, workdays, ISO weeks, and DST boundaries.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/image-resizer/</id>
     <title>Image Resizer by Pixels or Percent</title>
@@ -346,7 +328,6 @@
     <category term="Image format guides" />
     <summary>Understand how dimensions, codec, quality, transparency, animation, and metadata affect image file size before compressing or converting.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/guides/international-morse-code/</id>
     <title>International Morse Code Reference</title>
@@ -356,7 +337,6 @@
     <category term="Morse code standards" />
     <summary>Compare International Morse letters, digits, punctuation, token separators, signal timing, prosigns, and decoding limits against the ITU recommendation.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/word-counter/</id>
     <title>Word Counter</title>
@@ -393,7 +373,6 @@
     <category term="Unicode guides" />
     <summary>Separate user-perceived grapheme clusters from Unicode code points, UTF-16 code units, and encoded UTF-8 bytes.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/binary-converter/</id>
     <title>Binary Converter</title>
@@ -439,7 +418,6 @@
     <category term="Character encoding guides" />
     <summary>Separate characters, Unicode code points, and UTF-8 bytes while preserving ASCII's exact 0 through 127 subset.</summary>
   </entry>
-
   <entry>
     <id>https://liveparse.com/query-string-parser/</id>
     <title>Query String Parser</title>
@@ -485,5 +463,4 @@
     <category term="URL guides" />
     <summary>Recognize repeated percent-encoding and avoid unsafe decode-until-stable behavior across protocol boundaries.</summary>
   </entry>
-
 </feed>
