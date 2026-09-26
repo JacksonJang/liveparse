@@ -8,8 +8,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Generador de timestamps de Discord: 9 formatos | LiveParse</title>
-    <meta name="description" content="Genera y decodifica timestamps de Discord con zona horaria IANA. Copia los nueve formatos actuales, incluye tiempo relativo y evita errores entre segundos y milisegundos." />
+    <title>Generador de timestamps de Discord: lote y 9 formatos | LiveParse</title>
+    <meta name="description" content="Genera hasta 500 timestamps de Discord desde fechas o segundos Unix, o crea uno con zona horaria IANA. Copia los nueve formatos actuales, incluido el tiempo relativo." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/es/generador-timestamp-discord/" />
@@ -18,8 +18,8 @@
     <link rel="alternate" hreflang="x-default" href="https://liveparse.com/discord-timestamp-generator/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/es/generador-timestamp-discord/" />
-    <meta property="og:title" content="Generador de timestamps de Discord: 9 formatos" />
-    <meta property="og:description" content="Elige fecha y zona horaria IANA, decodifica etiquetas existentes y copia los nueve formatos documentados de Discord." />
+    <meta property="og:title" content="Generador de timestamps de Discord: lote y 9 formatos" />
+    <meta property="og:description" content="Convierte hasta 500 fechas o segundos Unix a la vez, decodifica etiquetas y copia los nueve formatos documentados de Discord." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -27,8 +27,8 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Generador español de timestamps de Discord de LiveParse" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Generador de timestamps de Discord: 9 formatos" />
-    <meta name="twitter:description" content="Crea etiquetas de Discord con zona horaria, tiempo relativo y decodificación precisa." />
+    <meta name="twitter:title" content="Generador de timestamps de Discord: lote y 9 formatos" />
+    <meta name="twitter:description" content="Crea hasta 500 etiquetas de Discord con zona horaria, tiempo relativo y decodificación precisa." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
@@ -56,6 +56,7 @@
             "inLanguage": "es",
             "description": "Generador gratuito en el navegador para los nueve estilos actuales de timestamps de Discord, con conversión IANA, comprobaciones de horario de verano, decodificación y plantillas listas para copiar.",
             "featureList": [
+              "Convierte hasta 500 segundos Unix, etiquetas de Discord o fechas en un lote",
               "Genera los nueve estilos documentados de Discord",
               "Interpreta la fecha y hora en una zona horaria IANA",
               "Avisa de huecos y solapamientos de horario de verano",
@@ -90,6 +91,7 @@
             "@type": "FAQPage",
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#faq-schema",
             "mainEntity": [
+              { "@type": "Question", "name": "¿Puedo crear varios timestamps de Discord a la vez?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Pega hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora. El generador en lote devuelve los nueve estilos y marca las líneas no válidas." } },
               { "@type": "Question", "name": "¿Qué sintaxis usa Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa <t:SEGUNDOS_UNIX> para el formato predeterminado o <t:SEGUNDOS_UNIX:ESTILO> para un estilo explícito y sensible a mayúsculas." } },
               { "@type": "Question", "name": "¿Discord usa segundos o milisegundos?", "acceptedAnswer": { "@type": "Answer", "text": "Discord usa segundos Unix. Date.now() en JavaScript devuelve milisegundos y debe convertirse dividiéndolo entre 1.000." } },
               { "@type": "Question", "name": "¿Cuántos formatos de timestamp tiene Discord?", "acceptedAnswer": { "@type": "Answer", "text": "La tabla actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
@@ -119,7 +121,7 @@
         <div class="seo-hero-copy">
           <p class="eyebrow">Local · Gratis · Sin registro</p>
           <h1>Generador de timestamps de Discord</h1>
-          <p class="hero-lead">Este <strong>Discord timestamp generator</strong> en español crea etiquetas de Discord en los nueve formatos documentados, con zona horaria IANA, advertencias de horario de verano y decodificación de etiquetas existentes. Las fechas se procesan en tu navegador.</p>
+          <p class="hero-lead">Este <strong>Discord timestamp generator</strong> en español crea etiquetas de Discord en los nueve formatos documentados, acepta lotes de hasta 500 fechas y ofrece zona horaria IANA, advertencias de horario de verano y decodificación de etiquetas existentes. Las fechas se procesan en tu navegador.</p>
           <div class="hero-cta-row">
             <a class="button" href="#generator">Abrir el generador</a>
             <a class="button ghost" href="/es/guides/discord-timestamp-formats/">Ver la guía en español</a>
@@ -138,9 +140,25 @@
         <div class="section-heading">
           <p class="section-kicker">Herramienta</p>
           <h2 id="generator-heading">Crea y decodifica timestamps de Discord</h2>
-          <p>Elige un instante, revisa la vista previa por zona horaria y copia la etiqueta exacta. El procesamiento local mantiene la fecha y el texto del mensaje en esta pestaña.</p>
+          <p>Elige un instante, convierte un lote de fechas o segundos, revisa la vista previa por zona horaria y copia la etiqueta exacta. El procesamiento local mantiene la fecha y el texto del mensaje en esta pestaña.</p>
         </div>
         <div id="root"></div>
+      </section>
+
+      <section class="content-section alt" id="lote" aria-labelledby="lote-heading">
+        <div class="section-heading"><p class="section-kicker">Flujo de 500 líneas</p><h2 id="lote-heading">Timestamps de Discord en lote: hasta 500 líneas</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Pega un valor por línea: segundos Unix, una etiqueta completa <code>&lt;t:…&gt;</code>, <code>2026-08-03</code> o <code>2026-08-03 21:00</code>. Las fechas sin hora usan la medianoche de la zona horaria de origen y las fechas con hora respetan sus reglas de horario de verano.</p>
+            <p>La vista por lotes muestra cuántas líneas son válidas, presenta los primeros errores sin ocultar la lista y permite copiar el estilo seleccionado o los nueve formatos de cada línea válida. Nada del lote se sube a un servidor.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Límite</dt><dd>500 líneas no vacías.</dd></div>
+            <div><dt>Formatos</dt><dd>Segundos Unix, etiquetas de Discord, fechas y fecha/hora.</dd></div>
+            <div><dt>Horario de verano</dt><dd>Las horas ambiguas usan la aparición anterior y avisan.</dd></div>
+            <div><dt>Salida</dt><dd>Un estilo seleccionado o los nueve estilos documentados.</dd></div>
+          </dl>
+        </div>
       </section>
 
       <section class="content-section alt" aria-labelledby="steps-heading">

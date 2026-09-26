@@ -21,6 +21,8 @@ export const DISCORD_STYLE_DEFINITIONS: readonly DiscordStyleDefinition[] = [
 ] as const;
 
 export const MAX_DISCORD_INPUT_CHARACTERS = 80;
+export const MAX_BULK_DISCORD_LINES = 500;
+export const MAX_BULK_DISCORD_LINE_CHARACTERS = 40;
 const MIN_DATE_MILLISECONDS = -8_640_000_000_000_000;
 const MAX_DATE_MILLISECONDS = 8_640_000_000_000_000;
 const MIN_DISCORD_SECONDS = 0n;
@@ -70,6 +72,25 @@ export interface WallClockResolutionError {
 }
 
 export type ResolveWallClockResult = WallClockResolution | WallClockResolutionError;
+
+export type BulkDiscordTimestampEntry = {
+  input: string;
+  line: number;
+} & (
+  | {
+    ok: true;
+    seconds: string;
+    source: 'tag' | 'seconds' | 'date';
+    warning: string | null;
+  }
+  | { ok: false; error: string }
+);
+
+export type BulkDiscordTimestampResult = {
+  ok: boolean;
+  error: string | null;
+  entries: BulkDiscordTimestampEntry[];
+};
 
 function isDiscordStyle(value: string): value is DiscordTimestampStyle {
   return (DISCORD_TIMESTAMP_STYLES as readonly string[]).includes(value);
@@ -173,6 +194,108 @@ export function allDiscordTimestampCodes(seconds: string | bigint): Record<Disco
   return Object.fromEntries(
     DISCORD_TIMESTAMP_STYLES.map((style) => [style, discordTimestampCode(seconds, style)]),
   ) as Record<DiscordTimestampStyle, string>;
+}
+
+const BULK_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?(Z|[+-]\d{2}(?::?\d{2})?)?$/;
+
+function fixedOffsetMinutes(value: string): number {
+  if (value === 'Z') return 0;
+  const sign = value.startsWith('-') ? -1 : 1;
+  const digits = value.slice(1).replace(':', '');
+  const hours = Number(digits.slice(0, 2));
+  const minutes = Number(digits.slice(2, 4) || '0');
+  if (hours > 23 || minutes > 59) return Number.NaN;
+  return sign * (hours * 60 + minutes);
+}
+
+export function parseBulkDiscordTimestampInput(
+  rawInput: string,
+  timeZone: string,
+  lineNumber = 1,
+): BulkDiscordTimestampEntry {
+  const input = rawInput.trim();
+  const base = { input, line: lineNumber };
+  if (!input) return { ...base, ok: false, error: 'Enter one timestamp or date per line.' };
+  if (input.length > MAX_BULK_DISCORD_LINE_CHARACTERS) {
+    return { ...base, ok: false, error: `Each bulk line is limited to ${MAX_BULK_DISCORD_LINE_CHARACTERS} characters.` };
+  }
+
+  const direct = parseDiscordTimestampInput(input);
+  if (direct.ok) {
+    return {
+      ...base,
+      ok: true,
+      seconds: direct.seconds,
+      source: direct.source,
+      warning: direct.warning,
+    };
+  }
+
+  const match = BULK_DATE_PATTERN.exec(input);
+  if (!match) {
+    return {
+      ...base,
+      ok: false,
+      error: 'Enter one Unix timestamp, Discord tag, or YYYY-MM-DD [HH:mm[:ss]] value per line.',
+    };
+  }
+
+  const [, year, month, day, hour = '00', minute = '00', second = '00', zone] = match;
+  const wallClockValue = `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+  if (!parseWallClockInput(wallClockValue)) {
+    return { ...base, ok: false, error: 'Enter a real calendar date and time.' };
+  }
+
+  if (zone) {
+    const offsetMinutes = fixedOffsetMinutes(zone);
+    if (!Number.isFinite(offsetMinutes)) return { ...base, ok: false, error: 'Enter a valid UTC offset.' };
+    const utcMilliseconds = Date.UTC(
+      Number(year), Number(month) - 1, Number(day),
+      Number(hour), Number(minute), Number(second),
+    ) - offsetMinutes * 60_000;
+    if (!Number.isSafeInteger(utcMilliseconds) || utcMilliseconds < 0) {
+      return { ...base, ok: false, error: 'This generator creates timestamps from 1970 onward only.' };
+    }
+    return { ...base, ok: true, seconds: String(Math.floor(utcMilliseconds / 1_000)), source: 'date', warning: null };
+  }
+
+  const resolution = resolveWallClock(wallClockValue, timeZone);
+  if (!resolution.ok) return { ...base, ok: false, error: resolution.error };
+  const milliseconds = resolution.candidates[0];
+  return {
+    ...base,
+    ok: true,
+    seconds: String(Math.floor(milliseconds / 1_000)),
+    source: 'date',
+    warning: resolution.warning,
+  };
+}
+
+export function parseBulkDiscordTimestamps(
+  rawInput: string,
+  timeZone: string,
+): BulkDiscordTimestampResult {
+  const nonEmptyLines = rawInput
+    .split(/\r?\n|\r/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (nonEmptyLines.length === 0) {
+    return { ok: false, error: 'Enter one timestamp or date per line.', entries: [] };
+  }
+  if (nonEmptyLines.length > MAX_BULK_DISCORD_LINES) {
+    return {
+      ok: false,
+      error: `Bulk generation is limited to ${MAX_BULK_DISCORD_LINES} non-empty lines.`,
+      entries: [],
+    };
+  }
+
+  return {
+    ok: true,
+    error: null,
+    entries: nonEmptyLines.map((line, index) => parseBulkDiscordTimestampInput(line, timeZone, index + 1)),
+  };
 }
 
 export function parseWallClockInput(value: string): WallClockParts | null {

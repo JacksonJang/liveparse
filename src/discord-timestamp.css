@@ -175,3 +175,15 @@
 @media (prefers-reduced-motion: reduce) {
   .discord-app *, .discord-app *::before, .discord-app *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+.discord-bulk { margin-top: 14px; padding: 18px; border: 1px solid var(--discord-line); border-radius: 20px; background: #fff; }
+.discord-bulk-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 12px; }
+.discord-bulk textarea { width: 100%; min-height: 145px; resize: vertical; }
+.discord-bulk-output { display: grid; gap: 10px; }
+.discord-bulk-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 8px; font-size: 12px; font-weight: 800; }
+.discord-bulk-errors, .discord-bulk-warnings { margin: 12px 0 0; padding-left: 1.25rem; color: var(--discord-muted); font-size: 12px; line-height: 1.5; }
+
+@media (min-width: 901px) {
+  .discord-bulk-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .discord-bulk-meta { justify-content: flex-end; }
+}

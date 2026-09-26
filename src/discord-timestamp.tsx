@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
+  MAX_BULK_DISCORD_LINES,
   allDiscordTimestampCodes,
   dateTimeInputForZone,
   DISCORD_STYLE_DEFINITIONS,
   discordTimestampCode,
   discordTimestampPreview,
   isValidTimeZone,
+  parseBulkDiscordTimestamps,
   MAX_DISCORD_INPUT_CHARACTERS,
   parseDiscordTimestampInput,
   parseWallClockInput,
@@ -133,6 +135,7 @@ function App() {
   const [activeStyle, setActiveStyle] = useState<DiscordTimestampStyle>('F');
   const [ambiguousCandidates, setAmbiguousCandidates] = useState<number[]>([]);
   const [dateError, setDateError] = useState<string | null>(null);
+  const [bulkInput, setBulkInput] = useState('');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [activity, setActivity] = useState(() => pick(
     'Ready. Date and timestamp processing stays in this browser tab.',
@@ -157,6 +160,20 @@ function App() {
       : { ...result, error: localizeDiscordDiagnostic(result.error, uiLocale) };
   }, [decodeInput, uiLocale]);
   const codes = useMemo(() => allDiscordTimestampCodes(String(seconds)), [seconds]);
+  const bulk = useMemo(() => parseBulkDiscordTimestamps(bulkInput, sourceZone), [bulkInput, sourceZone]);
+  const bulkEntries = bulk.ok
+    ? bulk.entries.map((entry) => entry.ok
+      ? { ...entry, warning: localizeDiscordDiagnostic(entry.warning, uiLocale) }
+      : { ...entry, error: localizeDiscordDiagnostic(entry.error, uiLocale) })
+    : [];
+  const validBulkEntries = bulkEntries.filter((entry) => entry.ok);
+  const bulkHasErrors = !bulk.ok || bulkEntries.some((entry) => !entry.ok);
+  const bulkSelectedText = validBulkEntries.map((entry) => discordTimestampCode(entry.seconds, activeStyle)).join('\n');
+  const bulkAllText = validBulkEntries.map((entry) => [
+    `${entry.line}. ${entry.input}`,
+    ...localizedStyles.map(({ style, name }) => `${style} — ${name}: ${discordTimestampCode(entry.seconds, style)}`),
+  ].join('\n')).join('\n\n');
+  const bulkLineNoun = bulkEntries.length === 1 ? pick('line', 'línea') : pick('lines', 'líneas');
   const selectedCode = codes[activeStyle];
   const sourceOffset = useMemo(() => {
     try {
@@ -431,6 +448,85 @@ function App() {
             <article key={template.key}><span>{template.label}</span><code>{template.text}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(template.text, `template-${template.key}`, pick(`${template.label} message`, `mensaje de ${template.label.toLowerCase()}`))}>{copiedKey === `template-${template.key}` ? pick('Copied', 'Copiado') : pick('Copy message', 'Copiar mensaje')}</button></article>
           ))}
         </div>
+      </section>
+
+      <section className="discord-bulk" aria-labelledby="discord-bulk-heading">
+        <div className="discord-panel-heading">
+          <div>
+            <p>{pick('Many dates at once', 'Muchas fechas a la vez')}</p>
+            <h2 id="discord-bulk-heading">{pick('Bulk Discord timestamp generator', 'Generador de timestamps de Discord en lote')}</h2>
+            <small>{pick(`Paste up to ${MAX_BULK_DISCORD_LINES} lines: Unix seconds, <t:…> tags, dates, or date and time.`, `Pega hasta ${MAX_BULK_DISCORD_LINES} líneas: segundos Unix, etiquetas <t:…>, fechas o fecha y hora.`)}</small>
+          </div>
+        </div>
+        <div className="discord-bulk-grid">
+          <label className="discord-field">
+            <span>{pick('One input per line', 'Una entrada por línea')}</span>
+            <textarea
+              className="discord-mono"
+              rows={7}
+              value={bulkInput}
+              onChange={(event) => setBulkInput(event.target.value)}
+              placeholder={'1754208000\n<t:1754208000:F>\n2026-08-03\n2026-08-03 21:00'}
+              aria-describedby="discord-bulk-help"
+              spellCheck={false}
+              autoComplete="off"
+            />
+            <small id="discord-bulk-help">
+              {pick(
+                'Dates without a time use 00:00 in the source timezone. Offset forms such as 2026-08-03T21:00+09:00 are also accepted.',
+                'Las fechas sin hora usan 00:00 en la zona horaria de origen. También se aceptan formas como 2026-08-03T21:00+09:00.',
+              )}
+            </small>
+          </label>
+          <div className="discord-bulk-output">
+            <label className="discord-field">
+              <span>{pick(`Selected :${activeStyle} output`, `Salida :${activeStyle} seleccionada`)}</span>
+              <textarea
+                className="discord-mono"
+                rows={7}
+                readOnly
+                value={bulkSelectedText}
+                placeholder={pick('Generated tags appear here.', 'Aquí aparecen las etiquetas generadas.')}
+                aria-label={pick(`Generated :${activeStyle} Discord tags`, `Etiquetas de Discord :${activeStyle} generadas`)}
+              />
+            </label>
+            <div className="discord-bulk-meta">
+              <span>{pick(`${validBulkEntries.length} valid / ${bulkEntries.length}`, `${validBulkEntries.length} válidas / ${bulkEntries.length}`)} {bulkLineNoun}</span>
+              <button
+                type="button"
+                className="discord-button primary"
+                disabled={bulkHasErrors || validBulkEntries.length === 0}
+                onClick={() => copyValue(bulkSelectedText, 'bulk-selected', pick(`all selected :${activeStyle} lines`, `todas las líneas :${activeStyle} seleccionadas`))}
+              >
+                {copiedKey === 'bulk-selected' ? pick('Selected lines copied', 'Líneas seleccionadas copiadas') : pick(`Copy selected :${activeStyle}`, `Copiar :${activeStyle} seleccionado`)}
+              </button>
+              <button
+                type="button"
+                className="discord-button"
+                disabled={bulkHasErrors || validBulkEntries.length === 0}
+                onClick={() => copyValue(bulkAllText, 'bulk-all', pick('all formats for every valid line', 'todos los formatos de cada línea válida'))}
+              >
+                {copiedKey === 'bulk-all' ? pick('All formats copied', 'Todos los formatos copiados') : pick('Copy all 9 formats', 'Copiar los 9 formatos')}
+              </button>
+            </div>
+          </div>
+        </div>
+        {!bulk.ok && bulk.error && <p className="discord-notice error" role="alert">{localizeDiscordDiagnostic(bulk.error, uiLocale)}</p>}
+        {bulk.ok && bulkEntries.some((entry) => !entry.ok) && (
+          <ul className="discord-bulk-errors">
+            {bulkEntries.filter((entry) => !entry.ok).slice(0, 8).map((entry) => (
+              <li key={entry.line}><strong>{pick(`Line ${entry.line}`, `Línea ${entry.line}`)}:</strong> {entry.ok ? '' : entry.error}</li>
+            ))}
+            {bulkEntries.filter((entry) => !entry.ok).length > 8 && <li>{pick('Fix these lines first; more errors may follow.', 'Corrige estas líneas primero; pueden aparecer más errores.')}</li>}
+          </ul>
+        )}
+        {bulk.ok && bulkEntries.some((entry) => entry.ok && entry.warning) && (
+          <ul className="discord-bulk-warnings">
+            {bulkEntries.filter((entry) => entry.ok && entry.warning).slice(0, 4).map((entry) => (
+              <li key={entry.line}><strong>{pick(`Line ${entry.line}`, `Línea ${entry.line}`)}:</strong> {entry.ok ? entry.warning : ''}</li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <p className="discord-activity" aria-live="polite"><strong>{pick('Generator status:', 'Estado del generador:')}</strong><span>{activity}</span></p>

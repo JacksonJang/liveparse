@@ -8,8 +8,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Discord Timestamp Generator – All 9 Formats | LiveParse</title>
-    <meta name="description" content="Generate Discord timestamp codes for a date and browser-supported IANA timezone. Copy all 9 current formats, including relative, compact, and full date/time." />
+    <title>Discord Timestamp Generator – Bulk & All 9 Formats | LiveParse</title>
+    <meta name="description" content="Generate up to 500 Discord timestamp codes from dates or Unix seconds, or create one code in an IANA timezone. Copy all 9 current formats, including relative time." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/discord-timestamp-generator/" />
@@ -18,8 +18,8 @@
     <link rel="alternate" hreflang="x-default" href="https://liveparse.com/discord-timestamp-generator/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/discord-timestamp-generator/" />
-    <meta property="og:title" content="Discord Timestamp Generator – All 9 Formats" />
-    <meta property="og:description" content="Choose a date and IANA timezone, decode existing tags, and copy all nine currently documented Discord timestamp styles." />
+    <meta property="og:title" content="Discord Timestamp Generator – Bulk & All 9 Formats" />
+    <meta property="og:description" content="Convert up to 500 dates or Unix seconds at once, decode existing tags, and copy all nine currently documented Discord timestamp styles." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -27,8 +27,8 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="LiveParse developer tools for timestamps, conversion, and structured data" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Discord Timestamp Generator – All 9 Formats" />
-    <meta name="twitter:description" content="Generate timezone-aware Discord timestamp codes, including s, S, and relative R formats." />
+    <meta name="twitter:title" content="Discord Timestamp Generator – Bulk & All 9 Formats" />
+    <meta name="twitter:description" content="Generate up to 500 timezone-aware Discord timestamp codes, including s, S, and relative R formats." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
@@ -56,6 +56,7 @@
             "inLanguage": "en",
             "description": "A free browser-based generator for all nine currently documented Discord timestamp styles, with IANA timezone conversion, DST ambiguity checks, existing-tag decoding, and ready-to-copy message templates.",
             "featureList": [
+              "Convert up to 500 Unix timestamps, Discord tags, or dates in one batch",
               "Generate all nine currently documented Discord timestamp styles",
               "Interpret date and time input in an IANA timezone",
               "Choose common timezone shortcuts before browsing the full IANA list",
@@ -92,6 +93,14 @@
             "@type": "FAQPage",
             "@id": "https://liveparse.com/discord-timestamp-generator/#faq-schema",
             "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can I make multiple Discord timestamps at once?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Paste up to 500 non-empty lines with Unix seconds, existing tags, dates, or dates and times. The bulk generator returns tags for all nine styles and flags invalid lines."
+                }
+              },
               {
                 "@type": "Question",
                 "name": "What is the Discord timestamp syntax?",
@@ -221,7 +230,7 @@
     <main>
       <section class="tool-intro" id="generator" aria-labelledby="generator-heading">
         <div><p class="section-kicker">Date → Discord code</p><h2 id="generator-heading">Generate, convert, or decode a Discord timestamp</h2></div>
-        <p>Pick a common or full IANA timezone, use a quick future preset, or paste an existing <code>&lt;t:…&gt;</code> tag. Touch-sized controls keep copying comfortable on phones, and the generator validates whole Unix seconds while keeping every date and message in this tab.</p>
+        <p>Pick a common or full IANA timezone, use a quick future preset, paste an existing <code>&lt;t:…&gt;</code> tag, or paste up to 500 dates and timestamps in bulk. Touch-sized controls keep copying comfortable on phones, and the generator validates whole Unix seconds while keeping every date and message in this tab.</p>
       </section>
       <div id="root">
         <section class="parser-fallback" aria-label="Discord timestamp generator loading">
@@ -229,6 +238,22 @@
           <p>Enable JavaScript to select a timezone, preview formats, and copy timestamp codes.</p>
         </section>
       </div>
+
+      <section class="content-section alt" id="bulk" aria-labelledby="bulk-heading">
+        <div class="section-heading"><p class="section-kicker">500-line workflow</p><h2 id="bulk-heading">Bulk Discord timestamps: up to 500 lines</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Paste one value per line—Unix seconds, a complete <code>&lt;t:…&gt;</code> tag, <code>2026-08-03</code>, or <code>2026-08-03 21:00</code>. Date-only lines use midnight in the selected source timezone, while date-and-time lines honor that timezone and its daylight-saving rules.</p>
+            <p>The batch view reports the number of valid lines, shows the first errors without hiding the rest of the list, and can copy either the selected style or all nine formats for every valid line. Nothing in the batch is uploaded.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Limit</dt><dd>500 non-empty lines.</dd></div>
+            <div><dt>Line formats</dt><dd>Unix seconds, Discord tags, dates, and date/time values.</dd></div>
+            <div><dt>DST safety</dt><dd>Ambiguous local times use the earlier occurrence and warn you.</dd></div>
+            <div><dt>Output</dt><dd>One selected style or all nine documented styles per line.</dd></div>
+          </dl>
+        </div>
+      </section>
 
       <section class="content-section" id="how-to" aria-labelledby="how-heading">
         <div class="section-heading">
@@ -372,6 +397,7 @@
       <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
         <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Discord Timestamp Generator FAQ</h2></div>
         <div class="faq-list">
+          <details open><summary>Can I make multiple Discord timestamps at once?</summary><p>Yes. Paste up to 500 non-empty lines with Unix seconds, existing tags, dates, or dates and times. The bulk generator returns tags for all nine styles and flags invalid lines.</p></details>
           <details open><summary>What is the Discord timestamp syntax?</summary><p>Use <code>&lt;t:UNIX_SECONDS&gt;</code> for default display or <code>&lt;t:UNIX_SECONDS:STYLE&gt;</code> for an explicit, case-sensitive style.</p></details>
           <details><summary>Does Discord use Unix seconds or milliseconds?</summary><p>The current reference says timestamps are expressed in seconds. JavaScript <code>Date.now()</code> returns milliseconds and must be deliberately converted.</p></details>
           <details><summary>Are there seven or nine timestamp formats?</summary><p>The current official table lists nine: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. Older guides often omit <code>s</code> and <code>S</code>.</p></details>

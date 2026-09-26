@@ -24,6 +24,10 @@ describe('Discord timestamp UI localization', () => {
       'That wall-clock time occurs more than once in the selected timezone. Choose the earlier or later occurrence.',
       'es',
     )).toContain('más de una vez');
+    expect(localizeDiscordDiagnostic(
+      'Bulk generation is limited to 500 non-empty lines.',
+      'es',
+    )).toContain('500 líneas no vacías');
     expect(localizedDiscordUnitLabel('milliseconds', 'es')).toBe('milisegundos');
     expect(localizedDiscordUnitLabel('milliseconds', 'en')).toBe('milliseconds');
   });
