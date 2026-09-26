@@ -72,7 +72,7 @@
             "isAccessibleForFree": true,
             "inLanguage": "en",
             "datePublished": "2026-08-04",
-            "dateModified": "2026-09-26T05:45:00Z",
+            "dateModified": "2026-09-26T06:35:00Z",
             "screenshot": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
             "description": "A free browser-based Discord timestamp generator and converter for up to 500 dates in bulk, all nine documented styles, countdown messages, IANA timezone conversion, DST checks, tag and Snowflake decoding.",
             "featureList": [
@@ -114,8 +114,8 @@
             "name": "Discord Timestamp Generator – All 9 Formats & Snowflake",
             "description": "Turn dates into all 9 Discord timestamp formats, build countdowns, and decode tags or Snowflake message IDs in your browser.",
             "datePublished": "2026-08-04",
-            "dateModified": "2026-09-26T05:45:00Z",
-            "lastReviewed": "2026-09-26T05:45:00Z",
+            "dateModified": "2026-09-26T06:35:00Z",
+            "lastReviewed": "2026-09-26T06:35:00Z",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "primaryImageOfPage": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
@@ -279,7 +279,7 @@
           <p class="eyebrow">Free · 9 formats · Message IDs · IANA timezones</p>
           <h1>Discord Timestamp Generator &amp; Snowflake Converter</h1>
           <p class="hero-lead">Turn a date, time, or Discord message ID into all nine timestamp formats. Copy one tag or the whole set in one click—each reader sees the time in their own timezone, including the often-missed <code>:s</code> and <code>:S</code> styles.</p>
-          <p class="hero-byline"><span>By <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Updated <time datetime="2026-09-26T05:45:00Z">September 26, 2026</time></span></p>
+          <p class="hero-byline"><span>By <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Updated <time datetime="2026-09-26T06:35:00Z">September 26, 2026</time></span></p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#generator">Generate a timestamp</a>
             <span>No sign-up · Runs in your browser</span>
@@ -487,8 +487,9 @@
         </div>
         <div class="prose-grid">
           <div>
+            <p>To get a message ID, enable Developer Mode in Discord’s settings, then use the message context menu’s copy-ID action. If your Discord app instead offers <strong>Copy Message Link</strong>, the final numeric segment of that message link is the message ID. Paste the decimal ID into the decoder.</p>
             <p>Paste a decimal ID such as <code>1199835124667021433</code> into the decoder. LiveParse shifts the ID right by 22 bits, adds Discord’s epoch of <code>1420070400000</code> milliseconds, and shows <code>2024-01-24 21:56:25.579 UTC</code>. Use <strong>Use creation time</strong> to load the equivalent whole second, <code>1706133385</code>, into the timestamp generator.</p>
-            <p>The result also separates worker, process, and increment fields. This helps when correlating logs, reviewing bot output, or checking whether a supposedly old ID was really created at the stated time. The decoder runs in your browser and accepts only decimal IDs within Discord’s unsigned 64-bit range.</p>
+            <p>The result also separates worker, process, and increment fields. This helps when correlating logs, reviewing bot output, or checking whether a supposedly old ID was really created at the stated time. The decoder runs in your browser and accepts only decimal IDs within Discord’s unsigned 64-bit range. Discord’s <a href="https://docs.discord.com/developers/reference#snowflakes" target="_blank" rel="noreferrer">Snowflakes reference</a> documents the same 42-bit timestamp and epoch used here.</p>
           </div>
           <dl class="definition-list">
             <div><dt>Input</dt><dd>A decimal Discord message, channel, or user ID.</dd></div>
@@ -543,6 +544,7 @@
         <div><p class="section-kicker">Primary references</p><h2 id="references-heading">Verify current behavior</h2></div>
         <ul>
           <li><a href="https://docs.discord.com/developers/reference#message-formatting" target="_blank" rel="noreferrer">Discord API Reference: Message Formatting</a></li>
+          <li><a href="https://docs.discord.com/developers/reference#snowflakes" target="_blank" rel="noreferrer">Discord API Reference: Snowflakes</a></li>
           <li><a href="https://discord.com/blog/discord-patch-notes-february-4-2026" target="_blank" rel="noreferrer">Discord patch notes: February 4, 2026</a></li>
           <li><a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" target="_blank" rel="noreferrer">Discord Scheduled Events</a></li>
         </ul>
