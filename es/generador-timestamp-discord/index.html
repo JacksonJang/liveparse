@@ -96,6 +96,7 @@
               { "@type": "Question", "name": "¿Segundos o milisegundos?", "acceptedAnswer": { "@type": "Answer", "text": "Segundos. Convierte Date.now() dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta." } },
               { "@type": "Question", "name": "¿Hay siete o nueve formatos?", "acceptedAnswer": { "@type": "Answer", "text": "La referencia actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
               { "@type": "Question", "name": "¿Cómo hago una cuenta regresiva?", "acceptedAnswer": { "@type": "Answer", "text": "Usa R. Combínala con F para que el mensaje conserve una fecha absoluta." } },
+              { "@type": "Question", "name": "¿Cómo obtengo el timestamp actual de Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa el botón Ahora. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo." } },
               { "@type": "Question", "name": "¿Puedo convertir una etiqueta existente?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos." } },
               { "@type": "Question", "name": "¿La etiqueta se muestra como texto?", "acceptedAnswer": { "@type": "Answer", "text": "Revisa los signos < y >, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código." } },
               { "@type": "Question", "name": "¿Necesito un bot?", "acceptedAnswer": { "@type": "Answer", "text": "No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino." } },
@@ -166,7 +167,7 @@
       <section class="content-section alt" aria-labelledby="steps-heading">
         <div class="section-heading"><p class="section-kicker">Flujo rápido</p><h2 id="steps-heading">Cómo generar una etiqueta</h2></div>
         <div class="use-case-grid">
-          <article><h3>1. Elige la fecha</h3><p>Selecciona la fecha y hora local en la zona horaria donde ocurre el evento. Los accesos rápidos cargan ahora, +5, +30, +60 minutos o el próximo lunes.</p></article>
+          <article><h3>1. Elige la fecha</h3><p>Selecciona la fecha y hora local en la zona horaria donde ocurre el evento. Usa <strong>Ahora</strong> para comenzar desde el momento actual; los accesos rápidos también cargan +5, +30 y +60 minutos.</p></article>
           <article><h3>2. Comprueba la zona</h3><p>Usa nombres IANA como <code>America/Bogota</code> o <code>Europe/Madrid</code>. Si el instante ya es global, usa UTC.</p></article>
           <article><h3>3. Selecciona el estilo</h3><p>Usa <code>F</code> para fecha completa y <code>R</code> para “en 3 horas”. Combinar ambas etiquetas es ideal para eventos.</p></article>
           <article><h3>4. Copia la etiqueta</h3><p>Copia el código generado, no una hora renderizada. La etiqueta conserva el instante absoluto en cualquier cliente de Discord.</p></article>
@@ -237,6 +238,7 @@
           <details><summary>¿Segundos o milisegundos?</summary><p>Segundos. Convierte <code>Date.now()</code> dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta.</p></details>
           <details><summary>¿Hay siete o nueve formatos?</summary><p>La referencia actual documenta nueve: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code> y <code>R</code>.</p></details>
           <details><summary>¿Cómo hago una cuenta regresiva?</summary><p>Usa <code>R</code>. Combínala con <code>F</code> para que el mensaje conserve una fecha absoluta.</p></details>
+          <details><summary>¿Cómo obtengo el timestamp actual de Discord?</summary><p>Usa el botón <strong>Ahora</strong>. Carga los segundos Unix actuales de tu navegador y crea la etiqueta seleccionada; el indicador Unix ahora se actualiza cada segundo.</p></details>
           <details><summary>¿Puedo convertir una etiqueta existente?</summary><p>Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
           <details><summary>¿La etiqueta se muestra como texto?</summary><p>Revisa los signos <code>&lt;</code> y <code>&gt;</code>, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código.</p></details>
           <details><summary>¿Necesito un bot?</summary><p>No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino.</p></details>

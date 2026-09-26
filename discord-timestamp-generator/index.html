@@ -143,6 +143,14 @@
               },
               {
                 "@type": "Question",
+                "name": "How do I get the current Discord timestamp?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use the Now button. It loads your browser’s current Unix seconds and creates the selected tag; the Unix now readout updates every second."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Why does another person see a different clock time?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -262,7 +270,7 @@
           <p>A Discord time code represents one instant. The generator first converts the wall-clock time you enter into Unix seconds; Discord then localizes that instant for whoever reads the message.</p>
         </div>
         <ol class="steps-grid">
-          <li><span>1</span><h3>Choose the source time</h3><p>Enter the date and clock time, then choose the timezone in which that wall clock should be understood. “9:00” in Seoul and “9:00” in New York are different instants, so the source zone is part of the input.</p></li>
+          <li><span>1</span><h3>Choose the source time</h3><p>Enter the date and clock time, then choose the timezone in which that wall clock should be understood. Use <strong>Now</strong> to start from the current moment. “9:00” in Seoul and “9:00” in New York are different instants, so the source zone is part of the input.</p></li>
           <li><span>2</span><h3>Pick a display style</h3><p>Select one of the nine current style letters. Use <code>F</code> for a complete event date, <code>R</code> for relative wording, or pair both when readers need a calendar anchor and countdown context.</p></li>
           <li><span>3</span><h3>Copy and paste the tag</h3><p>Copy the generated code, such as <code>&lt;t:1800000000:F&gt;</code>, into the message you are composing. Test it in the intended Discord context before publishing an important announcement.</p></li>
         </ol>
@@ -403,6 +411,7 @@
           <details><summary>Are there seven or nine timestamp formats?</summary><p>The current official table lists nine: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. Older guides often omit <code>s</code> and <code>S</code>.</p></details>
           <details><summary>Which style is the default?</summary><p>Discord marks <code>f</code>—Long Date, Short Time—as default. Omitting the final style requests that form.</p></details>
           <details><summary>How do I make a relative countdown?</summary><p>Use uppercase <code>R</code>. Pair it with <code>F</code> when the message should also retain an exact full date and time.</p></details>
+          <details><summary>How do I get the current Discord timestamp?</summary><p>Use the <strong>Now</strong> button. It loads your browser’s current Unix seconds and creates the selected tag; the Unix now readout updates every second.</p></details>
           <details><summary>Why does another person see a different clock time?</summary><p>The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently.</p></details>
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
           <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format.</p></details>
