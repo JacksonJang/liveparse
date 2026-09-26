@@ -131,7 +131,7 @@
         <div class="hero-card">
           <h2>Sintaxis actual</h2>
           <pre><code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code></pre>
-          <p>Ejemplo: <code>&lt;t:1754208000:F&gt;</code>. Sin estilo final, Discord aplica <code>f</code>.</p>
+          <p>Ejemplo: <code>&lt;t:1800000000:F&gt;</code>. Sin estilo final, Discord aplica <code>f</code>.</p>
         </div>
       </div>
     </header>
@@ -150,7 +150,7 @@
         <div class="section-heading"><p class="section-kicker">Flujo de 500 líneas</p><h2 id="lote-heading">Timestamps de Discord en lote: hasta 500 líneas</h2></div>
         <div class="prose-grid">
           <div>
-            <p>Pega un valor por línea: segundos Unix, una etiqueta completa <code>&lt;t:…&gt;</code>, <code>2026-08-03</code> o <code>2026-08-03 21:00</code>. Las fechas sin hora usan la medianoche de la zona horaria de origen y las fechas con hora respetan sus reglas de horario de verano.</p>
+            <p>Pega un valor por línea: segundos Unix, una etiqueta completa <code>&lt;t:…&gt;</code>, <code>2027-01-15</code> o <code>2027-01-15 21:00</code>. Las fechas sin hora usan la medianoche de la zona horaria de origen y las fechas con hora respetan sus reglas de horario de verano.</p>
             <p>La vista por lotes muestra cuántas líneas son válidas, presenta los primeros errores sin ocultar la lista y permite copiar el estilo seleccionado o los nueve formatos de cada línea válida. Nada del lote se sube a un servidor.</p>
           </div>
           <dl class="definition-list">
@@ -198,15 +198,15 @@
         <div class="section-heading"><p class="section-kicker">Unidades exactas</p><h2 id="units-heading">Segundos Unix, no milisegundos</h2></div>
         <div class="prose-grid">
           <div>
-            <p>La etiqueta usa segundos enteros. Un valor como <code>1785758400000</code> está en milisegundos; <code>1785758400</code> es el mismo instante en segundos.</p>
+            <p>La etiqueta usa segundos enteros. Un valor como <code>1800000000000</code> está en milisegundos; <code>1800000000</code> es el mismo instante en segundos.</p>
             <p>El decodificador detecta valores que parecen milisegundos, microsegundos o nanosegundos y ofrece una conversión sugerida en lugar de aceptar la escala incorrecta en silencio.</p>
             <p>Para conversiones generales usa el <a href="/unix-timestamp-converter/">convertidor de Unix</a> o la guía de <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">segundos y milisegundos</a>.</p>
           </div>
           <dl class="definition-list">
-            <div><dt>Segundos</dt><dd><code>1785758400</code> — unidad documentada.</dd></div>
-            <div><dt>Milisegundos</dt><dd><code>1785758400000</code> — común en JavaScript.</dd></div>
-            <div><dt>Microsegundos</dt><dd><code>1785758400000000</code> — bases de datos y trazas.</dd></div>
-            <div><dt>Nanosegundos</dt><dd><code>1785758400000000000</code> — relojes de alta resolución.</dd></div>
+            <div><dt>Segundos</dt><dd><code>1800000000</code> — unidad documentada.</dd></div>
+            <div><dt>Milisegundos</dt><dd><code>1800000000000</code> — común en JavaScript.</dd></div>
+            <div><dt>Microsegundos</dt><dd><code>1800000000000000</code> — bases de datos y trazas.</dd></div>
+            <div><dt>Nanosegundos</dt><dd><code>1800000000000000000</code> — relojes de alta resolución.</dd></div>
           </dl>
         </div>
       </section>

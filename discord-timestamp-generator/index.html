@@ -220,8 +220,8 @@
         <div class="hero-example" aria-label="Discord timestamp code example">
           <div class="example-bar"><span></span><span></span><span></span><strong>event-announcement.txt</strong></div>
           <pre><code>Event starts
-<span class="string">&lt;t:1785758400:F&gt;</span>
-(<span class="property">&lt;t:1785758400:R&gt;</span>)</code></pre>
+<span class="string">&lt;t:1800000000:F&gt;</span>
+(<span class="property">&lt;t:1800000000:R&gt;</span>)</code></pre>
           <p><strong>One instant</strong><span>Localized for every reader</span></p>
         </div>
       </div>
@@ -243,7 +243,7 @@
         <div class="section-heading"><p class="section-kicker">500-line workflow</p><h2 id="bulk-heading">Bulk Discord timestamps: up to 500 lines</h2></div>
         <div class="prose-grid">
           <div>
-            <p>Paste one value per line—Unix seconds, a complete <code>&lt;t:…&gt;</code> tag, <code>2026-08-03</code>, or <code>2026-08-03 21:00</code>. Date-only lines use midnight in the selected source timezone, while date-and-time lines honor that timezone and its daylight-saving rules.</p>
+            <p>Paste one value per line—Unix seconds, a complete <code>&lt;t:…&gt;</code> tag, <code>2027-01-15</code>, or <code>2027-01-15 21:00</code>. Date-only lines use midnight in the selected source timezone, while date-and-time lines honor that timezone and its daylight-saving rules.</p>
             <p>The batch view reports the number of valid lines, shows the first errors without hiding the rest of the list, and can copy either the selected style or all nine formats for every valid line. Nothing in the batch is uploaded.</p>
           </div>
           <dl class="definition-list">
@@ -264,7 +264,7 @@
         <ol class="steps-grid">
           <li><span>1</span><h3>Choose the source time</h3><p>Enter the date and clock time, then choose the timezone in which that wall clock should be understood. “9:00” in Seoul and “9:00” in New York are different instants, so the source zone is part of the input.</p></li>
           <li><span>2</span><h3>Pick a display style</h3><p>Select one of the nine current style letters. Use <code>F</code> for a complete event date, <code>R</code> for relative wording, or pair both when readers need a calendar anchor and countdown context.</p></li>
-          <li><span>3</span><h3>Copy and paste the tag</h3><p>Copy the generated code, such as <code>&lt;t:1785758400:F&gt;</code>, into the message you are composing. Test it in the intended Discord context before publishing an important announcement.</p></li>
+          <li><span>3</span><h3>Copy and paste the tag</h3><p>Copy the generated code, such as <code>&lt;t:1800000000:F&gt;</code>, into the message you are composing. Test it in the intended Discord context before publishing an important announcement.</p></li>
         </ol>
       </section>
 
@@ -273,7 +273,7 @@
         <div class="prose-grid">
           <div>
             <p>The documented timestamp structure is <code>&lt;t:TIMESTAMP&gt;</code>, with the styled form <code>&lt;t:TIMESTAMP:STYLE&gt;</code>. The first <code>t</code> identifies the timestamp construct. <code>TIMESTAMP</code> is a whole Unix timestamp in <strong>seconds</strong>. The optional final letter asks Discord to render a particular date, time, or relative form.</p>
-            <p>If the style is omitted, Discord documents <code>f</code> as the default. Therefore <code>&lt;t:1785758400&gt;</code> and <code>&lt;t:1785758400:f&gt;</code> request the same style. Keeping <code>:f</code> visible can make a template easier to review; omitting it makes the tag slightly shorter.</p>
+            <p>If the style is omitted, Discord documents <code>f</code> as the default. Therefore <code>&lt;t:1800000000&gt;</code> and <code>&lt;t:1800000000:f&gt;</code> request the same style. Keeping <code>:f</code> visible can make a template easier to review; omitting it makes the tag slightly shorter.</p>
             <p>Style letters are case-sensitive. Lowercase <code>t</code> and uppercase <code>T</code> are different styles, as are <code>d</code>/<code>D</code>, <code>f</code>/<code>F</code>, and <code>s</code>/<code>S</code>. Relative time uses uppercase <code>R</code>.</p>
           </div>
           <dl class="definition-list">
@@ -311,7 +311,7 @@
         <div class="prose-grid">
           <div>
             <p>The <code>R</code> style expresses an instant relative to the viewer’s current time. A future value might appear as “in 2 hours,” while a past value might appear as “3 days ago.” Discord owns the final wording, so do not assume every locale chooses the same unit or phrase.</p>
-            <p>Relative output is excellent for urgency but weak as the only permanent record. After enough time passes, “months ago” no longer identifies the exact calendar date. Pair <code>R</code> with <code>F</code>: <code>Event starts &lt;t:1785758400:F&gt; (&lt;t:1785758400:R&gt;).</code> The first tag anchors the schedule; the second makes remaining time easy to grasp.</p>
+            <p>Relative output is excellent for urgency but weak as the only permanent record. After enough time passes, “months ago” no longer identifies the exact calendar date. Pair <code>R</code> with <code>F</code>: <code>Event starts &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).</code> The first tag anchors the schedule; the second makes remaining time easy to grasp.</p>
             <p>The generator includes event, deadline, release, and maintenance templates using this pair. They are plain message text, so you can edit the surrounding words after copying.</p>
           </div>
           <dl class="definition-list">
@@ -326,7 +326,7 @@
       <section class="content-section" aria-labelledby="timezone-heading">
         <div class="section-heading"><p class="section-kicker">Source zone in, viewer zone out</p><h2 id="timezone-heading">How Discord timestamps handle timezones and locales</h2></div>
         <div class="benefit-grid">
-          <article><span aria-hidden="true">01</span><h3>The source timezone defines the instant</h3><p>“2026-08-03 09:00” needs a location. Select an IANA zone such as <code>Asia/Seoul</code> or <code>America/New_York</code>; the name carries regional offset and daylight-saving rules.</p></article>
+          <article><span aria-hidden="true">01</span><h3>The source timezone defines the instant</h3><p>“2027-01-15 09:00” needs a location. Select an IANA zone such as <code>Asia/Seoul</code> or <code>America/New_York</code>; the name carries regional offset and daylight-saving rules.</p></article>
           <article><span aria-hidden="true">02</span><h3>Unix seconds are zone-independent</h3><p>After conversion, the number represents one instant. The source zone is not embedded in the tag. A different preview zone changes calendar fields, not the moment.</p></article>
           <article><span aria-hidden="true">03</span><h3>Each reader gets a localized view</h3><p>Discord states that timestamps display using the user’s timezone and locale. Tokyo and Los Angeles readers can see different dates or clock times for the same code.</p></article>
           <article><span aria-hidden="true">04</span><h3>Preview text is illustrative</h3><p>LiveParse uses browser internationalization data. Discord controls final wording, punctuation, field order, and 12/24-hour preference. Test critical notices at their destination.</p></article>
@@ -338,14 +338,14 @@
         <div class="prose-grid">
           <div>
             <p>Discord’s reference specifies seconds. JavaScript’s <code>Date.now()</code> returns milliseconds. A current Unix seconds value is commonly about ten digits, while the same instant in milliseconds is commonly about thirteen. Pasting the larger value as seconds can produce an implausibly distant date.</p>
-            <p>For example, <code>1785758400</code> is seconds; <code>1785758400000</code> is milliseconds for the same instant. Convert deliberately by dividing whole milliseconds by 1,000 and deciding how to handle a remainder. In JavaScript, <code>Math.floor(milliseconds / 1000)</code> selects the containing Unix second, including the correct direction before the epoch.</p>
+            <p>For example, <code>1800000000</code> is seconds; <code>1800000000000</code> is milliseconds for the same instant. Convert deliberately by dividing whole milliseconds by 1,000 and deciding how to handle a remainder. In JavaScript, <code>Math.floor(milliseconds / 1000)</code> selects the containing Unix second, including the correct direction before the epoch.</p>
             <p>The decoder detects values that resemble modern milliseconds, microseconds, or nanoseconds and offers a seconds conversion rather than silently accepting the wrong scale. For broader work, use the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> and <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">timestamp unit guide</a>.</p>
           </div>
           <dl class="definition-list">
-            <div><dt>Seconds</dt><dd><code>1785758400</code> — the documented tag unit.</dd></div>
-            <div><dt>Milliseconds</dt><dd><code>1785758400000</code> — common in JavaScript.</dd></div>
-            <div><dt>Microseconds</dt><dd><code>1785758400000000</code> — common in databases and tracing.</dd></div>
-            <div><dt>Nanoseconds</dt><dd><code>1785758400000000000</code> — high-resolution time that must be rescaled.</dd></div>
+            <div><dt>Seconds</dt><dd><code>1800000000</code> — the documented tag unit.</dd></div>
+            <div><dt>Milliseconds</dt><dd><code>1800000000000</code> — common in JavaScript.</dd></div>
+            <div><dt>Microseconds</dt><dd><code>1800000000000000</code> — common in databases and tracing.</dd></div>
+            <div><dt>Nanoseconds</dt><dd><code>1800000000000000000</code> — high-resolution time that must be rescaled.</dd></div>
           </dl>
         </div>
       </section>
@@ -371,13 +371,13 @@
         <div class="section-heading"><p class="section-kicker">Work in both directions</p><h2 id="decode-heading">Discord timestamp converter: decode an existing tag</h2></div>
         <div class="prose-grid">
           <div>
-            <p>Paste a tag such as <code>&lt;t:1785758400:S&gt;</code>. The built-in Discord timestamp converter extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
+            <p>Paste a tag such as <code>&lt;t:1800000000:S&gt;</code>. The built-in Discord timestamp converter extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
             <p>Decoding helps when updating an old event message, reviewing a bot template, or checking a unit mistake. The parser accepts the timestamp structure rather than arbitrary message text. It rejects decimal seconds and undocumented style letters instead of guessing.</p>
             <p>This is different from a Discord snowflake ID. Snowflakes encode creation time plus other bits and use a separate calculation. Inline timestamp tags take ordinary Unix seconds directly.</p>
           </div>
           <dl class="definition-list">
-            <div><dt>Input</dt><dd><code>&lt;t:1785758400:S&gt;</code></dd></div>
-            <div><dt>Seconds</dt><dd><code>1785758400</code></dd></div>
+            <div><dt>Input</dt><dd><code>&lt;t:1800000000:S&gt;</code></dd></div>
+            <div><dt>Seconds</dt><dd><code>1800000000</code></dd></div>
             <div><dt>Style</dt><dd><code>S</code> — Short Date, Medium Time</dd></div>
             <div><dt>Alternatives</dt><dd>Regenerate the same instant in any documented style.</dd></div>
           </dl>

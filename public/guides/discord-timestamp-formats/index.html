@@ -79,7 +79,7 @@
                 "name": "What happens if I omit the style?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "The current Discord reference marks lowercase f as the default. Therefore <t:1754208000> uses the Long Date, Short Time presentation."
+                  "text": "The current Discord reference marks lowercase f as the default. Therefore <t:1800000000> uses the Long Date, Short Time presentation."
                 }
               },
               {
@@ -183,10 +183,10 @@
             <p>Discord describes timestamps as a custom part of its message formatting. A basic tag contains <code>t</code>, a colon, and a Unix timestamp wrapped in angle brackets. Add another colon and a style letter to choose the presentation:</p>
             <figure class="code-example">
               <figcaption class="code-label">Basic and styled timestamp tags</figcaption>
-              <pre><code>&lt;t:1754208000&gt;
-&lt;t:1754208000:F&gt;</code></pre>
+              <pre><code>&lt;t:1800000000&gt;
+&lt;t:1800000000:F&gt;</code></pre>
             </figure>
-            <p>The number <code>1754208000</code> identifies one instant. It does not carry a country, language, or timezone name. According to the current <a href="https://docs.discord.com/developers/reference#message-formatting" rel="external">Discord API message-formatting reference</a>, timestamps are expressed in seconds and displayed in the user’s timezone and locale. One reader may therefore see a 12-hour clock and month-first date while another sees a 24-hour clock and day-first date. Both renderings can identify the same instant.</p>
+            <p>The number <code>1800000000</code> identifies one instant: 2027-01-15 at 08:00 in UTC. The tag itself does not carry a country, language, or timezone name. According to the current <a href="https://docs.discord.com/developers/reference#message-formatting" rel="external">Discord API message-formatting reference</a>, timestamps are expressed in seconds and displayed in the user’s timezone and locale. One reader may therefore see a 12-hour clock and month-first date while another sees a 24-hour clock and day-first date. Both renderings can identify the same instant.</p>
             <p>Style letters are case-sensitive. <code>t</code> and <code>T</code> are different, as are <code>d</code> and <code>D</code>, <code>f</code> and <code>F</code>, and <code>s</code> and <code>S</code>. A generator should preserve the selected case exactly. If you want a ready-to-paste tag without doing the epoch calculation, use the <a href="/discord-timestamp-generator/">LiveParse Discord Timestamp Generator</a>.</p>
 
             <h2 id="reference-table">All nine Discord timestamp formats</h2>
@@ -195,15 +195,15 @@
               <table>
                 <thead><tr><th scope="col">Style</th><th scope="col">Example syntax</th><th scope="col">Documented description</th><th scope="col">Useful when</th></tr></thead>
                 <tbody>
-                  <tr><td><code>t</code></td><td><code>&lt;t:1754208000:t&gt;</code></td><td>Short Time</td><td>The date is already clear and seconds are unnecessary.</td></tr>
-                  <tr><td><code>T</code></td><td><code>&lt;t:1754208000:T&gt;</code></td><td>Medium Time</td><td>A clock time needs seconds.</td></tr>
-                  <tr><td><code>d</code></td><td><code>&lt;t:1754208000:d&gt;</code></td><td>Short Date</td><td>A compact numeric date is enough.</td></tr>
-                  <tr><td><code>D</code></td><td><code>&lt;t:1754208000:D&gt;</code></td><td>Long Date</td><td>A readable date is needed without a time.</td></tr>
-                  <tr><td><code>f</code></td><td><code>&lt;t:1754208000:f&gt;</code></td><td>Long Date, Short Time</td><td>A compact general-purpose date and time is wanted. This is the default.</td></tr>
-                  <tr><td><code>F</code></td><td><code>&lt;t:1754208000:F&gt;</code></td><td>Full Date, Short Time</td><td>The weekday helps make an event announcement clear.</td></tr>
-                  <tr><td><code>s</code></td><td><code>&lt;t:1754208000:s&gt;</code></td><td>Short Date, Short Time</td><td>Both date and time must fit in a compact layout.</td></tr>
-                  <tr><td><code>S</code></td><td><code>&lt;t:1754208000:S&gt;</code></td><td>Short Date, Medium Time</td><td>A compact date and a time with seconds are needed.</td></tr>
-                  <tr><td><code>R</code></td><td><code>&lt;t:1754208000:R&gt;</code></td><td>Relative Time</td><td>The message should describe the instant relative to when it is viewed.</td></tr>
+                  <tr><td><code>t</code></td><td><code>&lt;t:1800000000:t&gt;</code></td><td>Short Time</td><td>The date is already clear and seconds are unnecessary.</td></tr>
+                  <tr><td><code>T</code></td><td><code>&lt;t:1800000000:T&gt;</code></td><td>Medium Time</td><td>A clock time needs seconds.</td></tr>
+                  <tr><td><code>d</code></td><td><code>&lt;t:1800000000:d&gt;</code></td><td>Short Date</td><td>A compact numeric date is enough.</td></tr>
+                  <tr><td><code>D</code></td><td><code>&lt;t:1800000000:D&gt;</code></td><td>Long Date</td><td>A readable date is needed without a time.</td></tr>
+                  <tr><td><code>f</code></td><td><code>&lt;t:1800000000:f&gt;</code></td><td>Long Date, Short Time</td><td>A compact general-purpose date and time is wanted. This is the default.</td></tr>
+                  <tr><td><code>F</code></td><td><code>&lt;t:1800000000:F&gt;</code></td><td>Full Date, Short Time</td><td>The weekday helps make an event announcement clear.</td></tr>
+                  <tr><td><code>s</code></td><td><code>&lt;t:1800000000:s&gt;</code></td><td>Short Date, Short Time</td><td>Both date and time must fit in a compact layout.</td></tr>
+                  <tr><td><code>S</code></td><td><code>&lt;t:1800000000:S&gt;</code></td><td>Short Date, Medium Time</td><td>A compact date and a time with seconds are needed.</td></tr>
+                  <tr><td><code>R</code></td><td><code>&lt;t:1800000000:R&gt;</code></td><td>Relative Time</td><td>The message should describe the instant relative to when it is viewed.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -221,7 +221,7 @@
             <p>Relative text supplies urgency but can hide the calendar date. Pair it with an absolute style when people may revisit the message, cross a midnight boundary, or need to add the event to another system.</p>
             <figure class="code-example">
               <figcaption class="code-label">One instant shown as an absolute date and relative time</figcaption>
-              <pre><code>Event starts &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).</code></pre>
+              <pre><code>Event starts &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).</code></pre>
             </figure>
             <p>Both tags must use the same Unix value. If one number is regenerated later, the displayed date and relative description can disagree. A one-click combined template in the <a href="/discord-timestamp-generator/">Discord timestamp generator</a> avoids that copy error.</p>
 
@@ -229,11 +229,11 @@
             <p>Replace the sample number by generating the intended date and source timezone. The surrounding wording remains static while Discord formats each tag for the reader.</p>
             <figure class="code-example">
               <figcaption class="code-label">Event, deadline, release, and maintenance templates</figcaption>
-              <pre><code>Community event: &lt;t:1754208000:F&gt; — &lt;t:1754208000:R&gt;.
-Submissions close &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
-Release window opens &lt;t:1754208000:f&gt;.
-Maintenance begins &lt;t:1754208000:F&gt; and is expected to last 30 minutes.
-Incident began &lt;t:1754208000:R&gt; at &lt;t:1754208000:T&gt;.</code></pre>
+              <pre><code>Community event: &lt;t:1800000000:F&gt; — &lt;t:1800000000:R&gt;.
+Submissions close &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).
+Release window opens &lt;t:1800000000:f&gt;.
+Maintenance begins &lt;t:1800000000:F&gt; and is expected to last 30 minutes.
+Incident begins &lt;t:1800000000:R&gt; at &lt;t:1800000000:T&gt;.</code></pre>
             </figure>
             <p>Keep durations separate from instants. The timestamp identifies when maintenance begins; “30 minutes” describes an interval. Do not convert a duration such as 1,800 seconds into a date relative to 1970. For accessibility and resilience, give the timestamp a plain-language label such as “starts,” “closes,” or “began” instead of posting an unexplained tag by itself.</p>
 
@@ -241,11 +241,11 @@ Incident began &lt;t:1754208000:R&gt; at &lt;t:1754208000:T&gt;.</code></pre>
             <p>For a release list, recurring meeting plan, content calendar, or migration spreadsheet, paste one value per line rather than generating each tag by hand. LiveParse’s bulk Discord timestamp generator accepts up to 500 non-empty lines of Unix seconds, complete tags, dates, or dates with times. It returns the selected style for every valid line and can also copy all nine style letters for every input.</p>
             <figure class="code-example">
               <figcaption class="code-label">Accepted bulk input shapes</figcaption>
-              <pre><code>1754208000
-&lt;t:1754208000:F&gt;
-2026-08-03
-2026-08-03 21:00
-2026-08-03T21:00:00+09:00</code></pre>
+              <pre><code>1800000000
+&lt;t:1800000000:F&gt;
+2027-01-15
+2027-01-15 21:00
+2027-01-15T21:00:00+09:00</code></pre>
             </figure>
             <p>Keep the source timezone consistent before pasting date-only or clock-time lines: a date without a time resolves to midnight in that source zone, and a wall-clock time follows that zone’s daylight-saving rules. Leave an invalid line in place while correcting it—the tool reports the line number rather than silently omitting input.</p>
             <p><a href="/discord-timestamp-generator/#bulk">Open the bulk Discord timestamp generator</a>.</p>
@@ -259,16 +259,16 @@ Incident began &lt;t:1754208000:R&gt; at &lt;t:1754208000:T&gt;.</code></pre>
             <p>Discord’s reference says timestamp values are expressed in seconds. This differs from JavaScript’s <code>Date.now()</code>, which returns milliseconds. Around the present, Unix seconds are usually 10 digits while milliseconds are usually 13. Pasting a millisecond value directly into a Discord timestamp can produce an invalid or wildly distant date instead of the intended event.</p>
             <figure class="code-example">
               <figcaption class="code-label">Same instant at two scales</figcaption>
-              <pre><code>Unix seconds:      1754208000     ← use inside &lt;t:...:F&gt;
-Unix milliseconds: 1754208000000  ← divide by 1,000 first
+              <pre><code>Unix seconds:      1800000000     ← use inside &lt;t:...:F&gt;
+Unix milliseconds: 1800000000000  ← divide by 1,000 first
 
-Correct: &lt;t:1754208000:F&gt;
-Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
+Correct: &lt;t:1800000000:F&gt;
+Wrong unit: &lt;t:1800000000000:F&gt;</code></pre>
             </figure>
             <p>If the millisecond value is divisible by 1,000, exact conversion is simple integer division. If it contains a sub-second remainder, choose and document whether to floor, round, or reject it; the inline tag cannot communicate that extra precision. Do not rely only on digit count for historical or far-future values. The <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">seconds vs milliseconds guide</a> explains reliable unit detection, and the <a href="/unix-timestamp-converter/">Unix Timestamp Converter</a> can inspect seconds, milliseconds, microseconds, and nanoseconds directly.</p>
 
             <h2 id="decode">How to decode an existing timestamp tag</h2>
-            <p>To decode <code>&lt;t:1754208000:F&gt;</code>, remove the angle brackets and split on colons. The first field, <code>t</code>, identifies timestamp markup. The second field, <code>1754208000</code>, is the Unix-seconds value. The optional third field, <code>F</code>, selects the style. If no third field exists, use the default <code>f</code> interpretation described in Discord’s table.</p>
+            <p>To decode <code>&lt;t:1800000000:F&gt;</code>, remove the angle brackets and split on colons. The first field, <code>t</code>, identifies timestamp markup. The second field, <code>1800000000</code>, is the Unix-seconds value. The optional third field, <code>F</code>, selects the style. If no third field exists, use the default <code>f</code> interpretation described in Discord’s table.</p>
             <ol class="steps">
               <li><strong>Preserve the original tag.</strong> Do not edit the number while trying to read it.</li>
               <li><strong>Validate the shell.</strong> It should have angle brackets, a lowercase leading <code>t</code>, and colon-separated fields.</li>
@@ -304,7 +304,7 @@ Wrong unit: &lt;t:1754208000000:F&gt;</code></pre>
               <p>Discord currently documents <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. They select time-only, date-only, combined, compact combined, or relative presentations.</p>
 
               <h3>What happens if I omit the style?</h3>
-              <p>The current Discord reference marks lowercase <code>f</code> as the default. Therefore <code>&lt;t:1754208000&gt;</code> uses the Long Date, Short Time presentation.</p>
+              <p>The current Discord reference marks lowercase <code>f</code> as the default. Therefore <code>&lt;t:1800000000&gt;</code> uses the Long Date, Short Time presentation.</p>
 
               <h3>What is the difference between f and F?</h3>
               <p>Both show a date and short time. Uppercase <code>F</code> adds the weekday and uses the Full Date, Short Time style, while lowercase <code>f</code> is the more compact default.</p>

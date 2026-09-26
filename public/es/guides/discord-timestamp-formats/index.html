@@ -77,7 +77,7 @@
                 "name": "¿Qué pasa si omito el estilo?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "La f minúscula es el estilo predeterminado, así que <t:1754208000> se muestra como fecha larga y hora corta."
+                  "text": "La f minúscula es el estilo predeterminado, así que <t:1800000000> se muestra como fecha larga y hora corta."
                 }
               },
               {
@@ -142,9 +142,10 @@
             <section aria-labelledby="syntax-title">
               <h2 id="syntax-title">Sintaxis básica</h2>
               <p>La forma completa es <code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code>. El campo <code>t</code> identifica el marcado de Discord, el número central es un instante en <strong>segundos Unix</strong> y el tercer campo es opcional. Sin estilo, Discord aplica <code>f</code>.</p>
-              <pre><code>&lt;t:1754208000:F&gt;
-&lt;t:1754208000:R&gt;
-&lt;t:1754208000&gt;</code></pre>
+              <pre><code>&lt;t:1800000000:F&gt;
+&lt;t:1800000000:R&gt;
+&lt;t:1800000000&gt;</code></pre>
+              <p>El número <code>1800000000</code> identifica un instante: el 15 de enero de 2027 a las 08:00 en UTC. La etiqueta no guarda país, idioma ni zona horaria; Discord presenta ese instante con la configuración regional de cada lector.</p>
               <p>Los estilos distinguen mayúsculas: <code>d</code> y <code>D</code> no son equivalentes. Las letras no admitidas, espacios extra, comillas, paréntesis o formato de código impiden que Discord interprete la etiqueta.</p>
             </section>
             <section aria-labelledby="codes-title">
@@ -156,15 +157,15 @@
                     <tr><th scope="col">Código</th><th scope="col">Ejemplo</th><th scope="col">Presentación</th><th scope="col">Cuándo usarlo</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td><code>t</code></td><td><code>&lt;t:1754208000:t&gt;</code></td><td>Hora corta</td><td>Horarios breves y recordatorios del mismo día.</td></tr>
-                    <tr><td><code>T</code></td><td><code>&lt;t:1754208000:T&gt;</code></td><td>Hora larga</td><td>Horas con segundos cuando la precisión importa.</td></tr>
-                    <tr><td><code>d</code></td><td><code>&lt;t:1754208000:d&gt;</code></td><td>Fecha corta</td><td>Fechas compactas sin hora.</td></tr>
-                    <tr><td><code>D</code></td><td><code>&lt;t:1754208000:D&gt;</code></td><td>Fecha larga</td><td>Comunicados, reglas y anuncios formales.</td></tr>
-                    <tr><td><code>f</code></td><td><code>&lt;t:1754208000:f&gt;</code></td><td>Fecha corta y hora corta</td><td>Valor predeterminado para reuniones y eventos.</td></tr>
-                    <tr><td><code>F</code></td><td><code>&lt;t:1754208000:F&gt;</code></td><td>Fecha larga y hora corta</td><td>Invitaciones y plazos oficiales.</td></tr>
-                    <tr><td><code>s</code></td><td><code>&lt;t:1754208000:s&gt;</code></td><td>Fecha y hora compactas</td><td>Registros y listas densas.</td></tr>
-                    <tr><td><code>S</code></td><td><code>&lt;t:1754208000:S&gt;</code></td><td>Fecha y hora completas</td><td>Referencias archivadas y auditorías.</td></tr>
-                    <tr><td><code>R</code></td><td><code>&lt;t:1754208000:R&gt;</code></td><td>Tiempo relativo</td><td>“En 3 horas”, “hace 2 días” y cuentas regresivas.</td></tr>
+                    <tr><td><code>t</code></td><td><code>&lt;t:1800000000:t&gt;</code></td><td>Hora corta</td><td>Horarios breves y recordatorios del mismo día.</td></tr>
+                    <tr><td><code>T</code></td><td><code>&lt;t:1800000000:T&gt;</code></td><td>Hora larga</td><td>Horas con segundos cuando la precisión importa.</td></tr>
+                    <tr><td><code>d</code></td><td><code>&lt;t:1800000000:d&gt;</code></td><td>Fecha corta</td><td>Fechas compactas sin hora.</td></tr>
+                    <tr><td><code>D</code></td><td><code>&lt;t:1800000000:D&gt;</code></td><td>Fecha larga</td><td>Comunicados, reglas y anuncios formales.</td></tr>
+                    <tr><td><code>f</code></td><td><code>&lt;t:1800000000:f&gt;</code></td><td>Fecha corta y hora corta</td><td>Valor predeterminado para reuniones y eventos.</td></tr>
+                    <tr><td><code>F</code></td><td><code>&lt;t:1800000000:F&gt;</code></td><td>Fecha larga y hora corta</td><td>Invitaciones y plazos oficiales.</td></tr>
+                    <tr><td><code>s</code></td><td><code>&lt;t:1800000000:s&gt;</code></td><td>Fecha y hora compactas</td><td>Registros y listas densas.</td></tr>
+                    <tr><td><code>S</code></td><td><code>&lt;t:1800000000:S&gt;</code></td><td>Fecha y hora completas</td><td>Referencias archivadas y auditorías.</td></tr>
+                    <tr><td><code>R</code></td><td><code>&lt;t:1800000000:R&gt;</code></td><td>Tiempo relativo</td><td>“En 3 horas”, “hace 2 días” y cuentas regresivas.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -180,33 +181,33 @@
             <section aria-labelledby="plantillas-title">
               <h2 id="plantillas-title">Plantillas listas para pegar</h2>
               <p>Sustituye el número por el valor generado en tu zona horaria de origen y conserva el texto explicativo alrededor de la etiqueta:</p>
-              <pre><code>Evento comunitario: &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
-Las entregas cierran &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).
-La publicación abre &lt;t:1754208000:f&gt;.
-El mantenimiento empieza &lt;t:1754208000:F&gt; y durará unos 30 minutos.
-El incidente comenzó &lt;t:1754208000:R&gt; a las &lt;t:1754208000:T&gt;.</code></pre>
+              <pre><code>Evento comunitario: &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).
+Las entregas cierran &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).
+La publicación abre &lt;t:1800000000:f&gt;.
+El mantenimiento empieza &lt;t:1800000000:F&gt; y durará unos 30 minutos.
+El incidente empieza &lt;t:1800000000:R&gt; a las &lt;t:1800000000:T&gt;.</code></pre>
               <p>No conviertas una duración como “30 minutos” en un timestamp: la etiqueta identifica un instante, no un intervalo. Añade “empieza”, “cierra” o “comenzó” para que el mensaje sea claro incluso si el lector usa un lector de pantalla.</p>
             </section>
             <section aria-labelledby="units-title">
               <h2 id="units-title">Segundos, no milisegundos</h2>
-              <p>El error más común es pegar un valor de JavaScript <code>Date.now()</code> tal cual. Ese valor está en milisegundos; divídelo entre 1.000 y decide de forma explícita si trunca el resto hasta un segundo. Por ejemplo, <code>1754208000000</code> se convierte en <code>1754208000</code>.</p>
+              <p>El error más común es pegar un valor de JavaScript <code>Date.now()</code> tal cual. Ese valor está en milisegundos; divídelo entre 1.000 y decide de forma explícita si trunca el resto hasta un segundo. Por ejemplo, <code>1800000000000</code> se convierte en <code>1800000000</code>.</p>
               <p>Si procesas entradas de usuarios o respuestas de varias APIs, no uses la cantidad de dígitos como única prueba. Valida el rango de fecha y documenta si redondeas o rechazas el resto de milisegundos. La guía sobre <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">segundos y milisegundos</a> muestra pruebas más seguras, y el <a href="/unix-timestamp-converter/">convertidor de Unix</a> permite inspeccionar segundos, milisegundos, microsegundos y nanosegundos.</p>
             </section>
             <section aria-labelledby="timezone-title">
               <h2 id="timezone-title">Zona horaria y tiempo relativo</h2>
               <p>La etiqueta no guarda una zona horaria: guarda un instante absoluto. Discord muestra <code>F</code> en la zona horaria de cada lector, por lo que una reunión a las 21:00 en Seúl puede verse como 14:00 en Madrid o 09:00 en Ciudad de México. Evita escribir “21:00 UTC” fuera de la etiqueta y luego cambiar el instante sin actualizar el texto.</p>
               <p>Para eventos, combinar dos etiquetas del mismo número suele ser más claro:</p>
-              <pre><code>Empieza &lt;t:1754208000:F&gt; (&lt;t:1754208000:R&gt;).</code></pre>
+              <pre><code>Empieza &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).</code></pre>
               <p>El formato absoluto evita ambigüedad y el relativo comunica urgencia. Si el evento cambia, regenera ambas etiquetas desde el mismo valor; si solo cambias una, la fecha y la cuenta regresiva se contradicen.</p>
             </section>
             <section aria-labelledby="lote-title">
               <h2 id="lote-title">Convierte muchas fechas en lote</h2>
               <p>Para una lista de lanzamientos, un calendario editorial o una migración, pega un valor por línea en lugar de generar cada etiqueta a mano. El generador en lote de LiveParse acepta hasta 500 líneas no vacías con segundos Unix, etiquetas completas, fechas o fecha y hora. Devuelve el estilo seleccionado para cada línea válida y también puede copiar los nueve estilos de cada entrada.</p>
-              <pre><code>1754208000
-&lt;t:1754208000:F&gt;
-2026-08-03
-2026-08-03 21:00
-2026-08-03T21:00:00+09:00</code></pre>
+              <pre><code>1800000000
+&lt;t:1800000000:F&gt;
+2027-01-15
+2027-01-15 21:00
+2027-01-15T21:00:00+09:00</code></pre>
               <p>Mantén una sola zona horaria de origen antes de pegar fechas: una fecha sin hora se interpreta a medianoche en esa zona y una fecha con hora sigue sus reglas de horario de verano. Si una línea no es válida, la herramienta indica el número de línea en lugar de omitirla en silencio.</p>
               <p><a href="/es/generador-timestamp-discord/#lote">Abrir el generador de timestamps de Discord en lote</a>.</p>
             </section>
