@@ -37,7 +37,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 - [/5-business-days-from-today/](https://liveparse.com/5-business-days-from-today/): The exact date five business days from today
 - [/10-business-days-from-today/](https://liveparse.com/10-business-days-from-today/): The exact date ten business days from today
 - [/unix-timestamp-converter/](https://liveparse.com/unix-timestamp-converter/): Convert epoch seconds, milliseconds, microseconds, and nanoseconds without losing precision
-- [/discord-timestamp-generator/](https://liveparse.com/discord-timestamp-generator/): Convert up to 500 dates to Discord timestamps and copy all nine formats
+- [/discord-timestamp-generator/](https://liveparse.com/discord-timestamp-generator/): Convert up to 500 dates to Discord timestamps, decode existing tags, and copy all nine formats
 - [/es/generador-timestamp-discord/](https://liveparse.com/es/generador-timestamp-discord/): Spanish Discord timestamp generator with bulk conversion, IANA timezones, and tag decoding (Español)
 - [/age-calculator/](https://liveparse.com/age-calculator/): Exact calendar age with a stated February 29 policy
 - [/week-number-calculator/](https://liveparse.com/week-number-calculator/): ISO 8601 week-year, week number, and week boundaries

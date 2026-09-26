@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Discord Timestamp Generator – Bulk & All 9 Formats | LiveParse</title>
-    <meta name="description" content="Generate up to 500 Discord timestamp codes from dates or Unix seconds, or create one code in an IANA timezone. Copy all 9 current formats, including relative time." />
+    <meta name="description" content="Use the Discord timestamp converter and generator for up to 500 dates, decode existing tags, and copy all nine current styles in an IANA timezone." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/discord-timestamp-generator/" />
@@ -54,7 +54,7 @@
             "browserRequirements": "Requires JavaScript and a modern web browser",
             "isAccessibleForFree": true,
             "inLanguage": "en",
-            "description": "A free browser-based Discord timestamp generator for up to 500 dates in bulk and all nine documented styles, with IANA timezone conversion, DST ambiguity checks, existing-tag decoding, and ready-to-copy message templates.",
+            "description": "A free browser-based Discord timestamp generator and tag converter for up to 500 dates in bulk and all nine documented styles, with IANA timezone conversion, DST ambiguity checks, existing-tag decoding, and ready-to-copy message templates.",
             "featureList": [
               "Convert up to 500 Unix timestamps, Discord tags, or dates in one batch",
               "Generate all nine currently documented Discord timestamp styles",
@@ -74,7 +74,7 @@
             "@id": "https://liveparse.com/discord-timestamp-generator/#webpage",
             "url": "https://liveparse.com/discord-timestamp-generator/",
             "name": "Discord Timestamp Generator – Bulk & All 9 Formats",
-            "description": "Generate up to 500 bulk Discord timestamp tags and decode timezone-aware codes in all nine currently documented styles.",
+            "description": "Use the Discord timestamp converter and generator for up to 500 dates and decode timezone-aware codes in all nine currently documented styles.",
             "dateModified": "2026-09-26",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
@@ -162,7 +162,7 @@
                 "name": "Can I convert an existing tag back to a date?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes. Paste the complete tag into the decoder to extract its seconds and style, view the date, and regenerate every format."
+                  "text": "Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format."
                 }
               },
               {
@@ -368,10 +368,10 @@
       </section>
 
       <section class="content-section alt" aria-labelledby="decode-heading">
-        <div class="section-heading"><p class="section-kicker">Work in both directions</p><h2 id="decode-heading">Decode an existing Discord timestamp</h2></div>
+        <div class="section-heading"><p class="section-kicker">Work in both directions</p><h2 id="decode-heading">Discord timestamp converter: decode an existing tag</h2></div>
         <div class="prose-grid">
           <div>
-            <p>Paste a tag such as <code>&lt;t:1785758400:S&gt;</code>. LiveParse extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
+            <p>Paste a tag such as <code>&lt;t:1785758400:S&gt;</code>. The built-in Discord timestamp converter extracts the seconds, keeps the case-sensitive style, converts the instant to the selected source-zone clock, and makes all nine alternatives available. A tag without a style is decoded as default <code>f</code>.</p>
             <p>Decoding helps when updating an old event message, reviewing a bot template, or checking a unit mistake. The parser accepts the timestamp structure rather than arbitrary message text. It rejects decimal seconds and undocumented style letters instead of guessing.</p>
             <p>This is different from a Discord snowflake ID. Snowflakes encode creation time plus other bits and use a separate calculation. Inline timestamp tags take ordinary Unix seconds directly.</p>
           </div>
@@ -405,7 +405,7 @@
           <details><summary>How do I make a relative countdown?</summary><p>Use uppercase <code>R</code>. Pair it with <code>F</code> when the message should also retain an exact full date and time.</p></details>
           <details><summary>Why does another person see a different clock time?</summary><p>The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently.</p></details>
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
-          <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Paste the complete tag into the decoder to extract its seconds and style, view the date, and regenerate every format.</p></details>
+          <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format.</p></details>
           <details><summary>Do I need a bot?</summary><p>Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination.</p></details>
           <details><summary>Why is raw &lt;t:…&gt; text not rendering?</summary><p>Check the angle brackets, <code>t:</code> prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context.</p></details>
           <details><summary>Is LiveParse affiliated with Discord?</summary><p>No. LiveParse is an independent developer tool and is not affiliated with or endorsed by Discord.</p></details>
