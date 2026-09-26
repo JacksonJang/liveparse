@@ -28,6 +28,7 @@ export default defineConfig({
         jsonCompare: resolve(projectRoot, 'json-compare/index.html'),
         unixTimestampConverter: resolve(projectRoot, 'unix-timestamp-converter/index.html'),
         discordTimestampGenerator: resolve(projectRoot, 'discord-timestamp-generator/index.html'),
+        esDiscordTimestampGenerator: resolve(projectRoot, 'es/generador-timestamp-discord/index.html'),
         base64Decoder: resolve(projectRoot, 'base64-decoder/index.html'),
         base64Encoder: resolve(projectRoot, 'base64-encoder/index.html'),
         binaryConverter: resolve(projectRoot, 'binary-converter/index.html'),

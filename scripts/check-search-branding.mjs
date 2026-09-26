@@ -14,6 +14,7 @@ export const LIVE_SPANISH_ROUTES = [
   '/es/contador-de-palabras/',
   '/es/contador-de-caracteres/',
   '/es/formateador-json/',
+  '/es/generador-timestamp-discord/',
   '/es/guides/discord-timestamp-formats/',
 ];
 

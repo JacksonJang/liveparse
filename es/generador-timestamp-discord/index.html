@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Generador de timestamps de Discord: 9 formatos | LiveParse</title>
+    <meta name="description" content="Genera y decodifica timestamps de Discord con zona horaria IANA. Copia los nueve formatos actuales, incluye tiempo relativo y evita errores entre segundos y milisegundos." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/es/generador-timestamp-discord/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/discord-timestamp-generator/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/generador-timestamp-discord/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/discord-timestamp-generator/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/es/generador-timestamp-discord/" />
+    <meta property="og:title" content="Generador de timestamps de Discord: 9 formatos" />
+    <meta property="og:description" content="Elige fecha y zona horaria IANA, decodifica etiquetas existentes y copia los nueve formatos documentados de Discord." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Generador español de timestamps de Discord de LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Generador de timestamps de Discord: 9 formatos" />
+    <meta name="twitter:description" content="Crea etiquetas de Discord con zona horaria, tiempo relativo y decodificación precisa." />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#4854cf" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://liveparse.com/#website",
+            "url": "https://liveparse.com/",
+            "name": "LiveParse",
+            "description": "Herramientas privadas en el navegador para JSON, timestamps y datos de desarrolladores.",
+            "inLanguage": "es"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/es/generador-timestamp-discord/#application",
+            "name": "Generador de timestamps de Discord de LiveParse",
+            "url": "https://liveparse.com/es/generador-timestamp-discord/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "Generador de timestamps y convertidor de zona horaria",
+            "operatingSystem": "Cualquier sistema operativo con un navegador moderno",
+            "browserRequirements": "Requiere JavaScript y un navegador moderno",
+            "isAccessibleForFree": true,
+            "inLanguage": "es",
+            "description": "Generador gratuito en el navegador para los nueve estilos actuales de timestamps de Discord, con conversión IANA, comprobaciones de horario de verano, decodificación y plantillas listas para copiar.",
+            "featureList": [
+              "Genera los nueve estilos documentados de Discord",
+              "Interpreta la fecha y hora en una zona horaria IANA",
+              "Avisa de huecos y solapamientos de horario de verano",
+              "Decodifica etiquetas existentes de Discord",
+              "Detecta posibles milisegundos, microsegundos y nanosegundos",
+              "Procesa las fechas en la pestaña actual del navegador"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/es/generador-timestamp-discord/#webpage",
+            "url": "https://liveparse.com/es/generador-timestamp-discord/",
+            "name": "Generador de timestamps de Discord: 9 formatos",
+            "description": "Genera y decodifica etiquetas de Discord con zona horaria en los nueve estilos documentados.",
+            "dateModified": "2026-09-26",
+            "inLanguage": "es",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/es/generador-timestamp-discord/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/es/generador-timestamp-discord/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Generador de timestamps de Discord", "item": "https://liveparse.com/es/generador-timestamp-discord/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/es/generador-timestamp-discord/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "¿Qué sintaxis usa Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa <t:SEGUNDOS_UNIX> para el formato predeterminado o <t:SEGUNDOS_UNIX:ESTILO> para un estilo explícito y sensible a mayúsculas." } },
+              { "@type": "Question", "name": "¿Discord usa segundos o milisegundos?", "acceptedAnswer": { "@type": "Answer", "text": "Discord usa segundos Unix. Date.now() en JavaScript devuelve milisegundos y debe convertirse dividiéndolo entre 1.000." } },
+              { "@type": "Question", "name": "¿Cuántos formatos de timestamp tiene Discord?", "acceptedAnswer": { "@type": "Answer", "text": "La tabla actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
+              { "@type": "Question", "name": "¿Qué estilo es el predeterminado?", "acceptedAnswer": { "@type": "Answer", "text": "El estilo f—fecha larga y hora corta—es el predeterminado. Si omites el último campo, Discord aplica f." } },
+              { "@type": "Question", "name": "¿Por qué cada persona ve una hora distinta?", "acceptedAnswer": { "@type": "Answer", "text": "El instante es el mismo, pero Discord lo muestra con la zona horaria y configuración regional de cada lector." } },
+              { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es una herramienta independiente y no está afiliada ni respaldada por Discord." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="home-page" data-ui-locale="es">
+    <a class="skip-link" href="#generator">Ir al generador</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="brand" href="/" aria-label="Inicio de LiveParse"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">Todas las herramientas</a>
+          <a href="#generator">Generador</a>
+          <a href="/es/guides/discord-timestamp-formats/">Guía de formatos</a>
+          <a href="/unix-timestamp-converter/">Unix</a>
+          <a href="/guides/">Guides</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Local · Gratis · Sin registro</p>
+          <h1>Generador de timestamps de Discord</h1>
+          <p class="hero-lead">Crea etiquetas de Discord en los nueve formatos documentados, con zona horaria IANA, advertencias de horario de verano y decodificación de etiquetas existentes. Las fechas se procesan en tu navegador.</p>
+          <div class="hero-cta-row">
+            <a class="button" href="#generator">Abrir el generador</a>
+            <a class="button ghost" href="/es/guides/discord-timestamp-formats/">Ver la guía en español</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h2>Sintaxis actual</h2>
+          <pre><code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code></pre>
+          <p>Ejemplo: <code>&lt;t:1754208000:F&gt;</code>. Sin estilo final, Discord aplica <code>f</code>.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="content-section" id="generator" aria-labelledby="generator-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Herramienta</p>
+          <h2 id="generator-heading">Crea y decodifica timestamps de Discord</h2>
+          <p>Elige un instante, revisa la vista previa por zona horaria y copia la etiqueta exacta. El procesamiento local mantiene la fecha y el texto del mensaje en esta pestaña.</p>
+        </div>
+        <div id="root"></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="steps-heading">
+        <div class="section-heading"><p class="section-kicker">Flujo rápido</p><h2 id="steps-heading">Cómo generar una etiqueta</h2></div>
+        <div class="use-case-grid">
+          <article><h3>1. Elige la fecha</h3><p>Selecciona la fecha y hora local en la zona horaria donde ocurre el evento. Los accesos rápidos cargan ahora, +5, +30, +60 minutos o el próximo lunes.</p></article>
+          <article><h3>2. Comprueba la zona</h3><p>Usa nombres IANA como <code>America/Bogota</code> o <code>Europe/Madrid</code>. Si el instante ya es global, usa UTC.</p></article>
+          <article><h3>3. Selecciona el estilo</h3><p>Usa <code>F</code> para fecha completa y <code>R</code> para “en 3 horas”. Combinar ambas etiquetas es ideal para eventos.</p></article>
+          <article><h3>4. Copia la etiqueta</h3><p>Copia el código generado, no una hora renderizada. La etiqueta conserva el instante absoluto en cualquier cliente de Discord.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="formats-heading">
+        <div class="section-heading"><p class="section-kicker">Referencia</p><h2 id="formats-heading">Los nueve códigos actuales</h2></div>
+        <div class="table-wrap">
+          <table>
+            <caption>Estilos documentados y su uso recomendado</caption>
+            <thead><tr><th scope="col">Código</th><th scope="col">Formato</th><th scope="col">Uso</th></tr></thead>
+            <tbody>
+              <tr><td><code>t</code></td><td>Hora corta</td><td>Recordatorios breves del mismo día.</td></tr>
+              <tr><td><code>T</code></td><td>Hora con segundos</td><td>Cuando la precisión del segundo importa.</td></tr>
+              <tr><td><code>d</code></td><td>Fecha corta</td><td>Listas compactas sin hora.</td></tr>
+              <tr><td><code>D</code></td><td>Fecha larga</td><td>Anuncios y reglas formales.</td></tr>
+              <tr><td><code>f</code></td><td>Fecha corta y hora corta</td><td>Predeterminado de Discord.</td></tr>
+              <tr><td><code>F</code></td><td>Fecha completa y hora corta</td><td>Eventos y plazos oficiales.</td></tr>
+              <tr><td><code>s</code></td><td>Fecha y hora compactas</td><td>Registros densos.</td></tr>
+              <tr><td><code>S</code></td><td>Fecha y hora con segundos</td><td>Referencias auditariables.</td></tr>
+              <tr><td><code>R</code></td><td>Tiempo relativo</td><td>Cuentas regresivas y antigüedad.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>La explicación completa por código está en la <a href="/es/guides/discord-timestamp-formats/">guía de formatos de Discord</a>. También puedes consultar la versión original del <a href="/discord-timestamp-generator/" hreflang="en">generador en inglés</a>.</p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="units-heading">
+        <div class="section-heading"><p class="section-kicker">Unidades exactas</p><h2 id="units-heading">Segundos Unix, no milisegundos</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>La etiqueta usa segundos enteros. Un valor como <code>1785758400000</code> está en milisegundos; <code>1785758400</code> es el mismo instante en segundos.</p>
+            <p>El decodificador detecta valores que parecen milisegundos, microsegundos o nanosegundos y ofrece una conversión sugerida en lugar de aceptar la escala incorrecta en silencio.</p>
+            <p>Para conversiones generales usa el <a href="/unix-timestamp-converter/">convertidor de Unix</a> o la guía de <a href="/guides/unix-timestamp-seconds-vs-milliseconds/">segundos y milisegundos</a>.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Segundos</dt><dd><code>1785758400</code> — unidad documentada.</dd></div>
+            <div><dt>Milisegundos</dt><dd><code>1785758400000</code> — común en JavaScript.</dd></div>
+            <div><dt>Microsegundos</dt><dd><code>1785758400000000</code> — bases de datos y trazas.</dd></div>
+            <div><dt>Nanosegundos</dt><dd><code>1785758400000000000</code> — relojes de alta resolución.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="dst-heading">
+        <div class="section-heading"><p class="section-kicker">Reglas regionales</p><h2 id="dst-heading">Huecos y solapamientos de horario de verano</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p>Cuando el reloj se adelanta, una hora local puede no existir. LiveParse avisa en lugar de normalizarla en silencio a otro momento.</p>
+            <p>Cuando el reloj se atrasa, la misma hora puede ocurrir dos veces con desfases distintos. El generador detecta ambas y te permite elegir la aparición correcta.</p>
+            <p>Los nombres IANA incluyen reglas históricas y futuras; un desfase fijo como <code>UTC+2</code> no refleja cambios regionales posteriores.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Hueco</dt><dd>La hora local no existe porque el reloj se adelanta.</dd></div>
+            <div><dt>Solapamiento</dt><dd>La hora local ocurre dos veces porque el reloj se atrasa.</dd></div>
+            <div><dt>Zona IANA</dt><dd>Nombre con reglas, como <code>Europe/Madrid</code>.</dd></div>
+            <div><dt>UTC</dt><dd>Elección estable para un instante global.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Preguntas</p><h2 id="faq-heading">Preguntas frecuentes</h2></div>
+        <div class="faq-list">
+          <details open><summary>¿Qué sintaxis usa Discord?</summary><p>Usa <code>&lt;t:SEGUNDOS_UNIX&gt;</code> o <code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code>. El estilo distingue mayúsculas.</p></details>
+          <details><summary>¿Segundos o milisegundos?</summary><p>Segundos. Convierte <code>Date.now()</code> dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta.</p></details>
+          <details><summary>¿Hay siete o nueve formatos?</summary><p>La referencia actual documenta nueve: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code> y <code>R</code>.</p></details>
+          <details><summary>¿Cómo hago una cuenta regresiva?</summary><p>Usa <code>R</code>. Combínala con <code>F</code> para que el mensaje conserve una fecha absoluta.</p></details>
+          <details><summary>¿Puedo decodificar una etiqueta?</summary><p>Sí. Pega la etiqueta completa en el decodificador para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos.</p></details>
+          <details><summary>¿La etiqueta se muestra como texto?</summary><p>Revisa los signos <code>&lt;</code> y <code>&gt;</code>, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código.</p></details>
+          <details><summary>¿Necesito un bot?</summary><p>No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino.</p></details>
+          <details><summary>¿LiveParse está afiliada a Discord?</summary><p>No. LiveParse es independiente y no está respaldada por Discord.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Referencias</p><h2 id="references-heading">Comprueba el comportamiento actual</h2></div>
+        <ul>
+          <li><a href="https://docs.discord.com/developers/reference#message-formatting" target="_blank" rel="noreferrer">Referencia de Discord: formato de mensajes</a></li>
+          <li><a href="https://support.discord.com/hc/en-us/articles/4409494125719-Scheduled-Events" target="_blank" rel="noreferrer">Eventos programados de Discord</a></li>
+          <li><a href="/es/guides/discord-timestamp-formats/">Guía española de timestamps de Discord</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Herramientas locales en el navegador para timestamps, JSON, comparación, reparación y conversión.</p></div>
+      <div class="footer-links">
+        <a href="#generator">Generador</a>
+        <a href="/es/guides/discord-timestamp-formats/">Guía de 9 formatos</a>
+        <a href="/unix-timestamp-converter/">Unix</a>
+        <a href="/json-formatter/">JSON</a>
+        <a href="/privacy/">Privacidad</a>
+      </div>
+      <p class="footer-note">Revisado el 26 de septiembre de 2026 · Procesamiento local · No afiliada a Discord</p>
+    </footer>
+
+    <noscript><p class="noscript-note">JavaScript es necesario para generar y decodificar timestamps. La referencia de formatos sigue disponible sin JavaScript.</p></noscript>
+    <script type="module" src="/src/discord-timestamp.tsx"></script>
+  </body>
+</html>

@@ -14,6 +14,13 @@ import {
   timeZoneOffsetLabel,
   type DiscordTimestampStyle,
 } from './lib/discord-timestamp';
+import {
+  discordUiLocaleFromBody,
+  localizedDiscordStyleDefinitions,
+  localizedDiscordUnitLabel,
+  localizeDiscordDiagnostic,
+  type DiscordUiLocale,
+} from './lib/discord-timestamp-i18n';
 import './styles.css';
 import './discord-timestamp.css';
 
@@ -94,6 +101,10 @@ function calendarPreset(timeZone: string, kind: 'tomorrow' | 'monday'): string {
 }
 
 function App() {
+  const uiLocale: DiscordUiLocale = discordUiLocaleFromBody(document.body?.dataset.uiLocale);
+  const isSpanish = uiLocale === 'es';
+  const localizedStyles = localizedDiscordStyleDefinitions(uiLocale);
+  const pick = (english: string, spanish: string) => (isSpanish ? spanish : english);
   const initialSeconds = useRef(Math.floor(Date.now() / 1_000));
   const localZone = useMemo(browserTimeZone, []);
   const timeZones = useMemo(supportedTimeZones, []);
@@ -111,7 +122,7 @@ function App() {
   const [previewZoneChoice, setPreviewZoneChoice] = useState('local');
   const previewZone = previewZoneChoice === 'local' ? localZone : previewZoneChoice === 'source' ? sourceZone : previewZoneChoice;
   const [previewLocale, setPreviewLocale] = useState(() => {
-    const browserLocale = navigator.language || 'en-US';
+    const browserLocale = navigator.language || (isSpanish ? 'es-ES' : 'en-US');
     return PREVIEW_LOCALES.some(([value]) => value === browserLocale) ? browserLocale : 'en-US';
   });
   const [seconds, setSeconds] = useState(initialSeconds.current);
@@ -123,7 +134,10 @@ function App() {
   const [ambiguousCandidates, setAmbiguousCandidates] = useState<number[]>([]);
   const [dateError, setDateError] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [activity, setActivity] = useState('Ready. Date and timestamp processing stays in this browser tab.');
+  const [activity, setActivity] = useState(() => pick(
+    'Ready. Date and timestamp processing stays in this browser tab.',
+    'Listo. El procesamiento de fecha y timestamp permanece en esta pestaña del navegador.',
+  ));
   const [nowMilliseconds, setNowMilliseconds] = useState(Date.now());
   const copyTimer = useRef<number | null>(null);
 
@@ -136,20 +150,25 @@ function App() {
     if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
   }, []);
 
-  const decoded = useMemo(() => parseDiscordTimestampInput(decodeInput), [decodeInput]);
+  const decoded = useMemo(() => {
+    const result = parseDiscordTimestampInput(decodeInput);
+    return result.ok
+      ? { ...result, warning: localizeDiscordDiagnostic(result.warning, uiLocale) }
+      : { ...result, error: localizeDiscordDiagnostic(result.error, uiLocale) };
+  }, [decodeInput, uiLocale]);
   const codes = useMemo(() => allDiscordTimestampCodes(String(seconds)), [seconds]);
   const selectedCode = codes[activeStyle];
   const sourceOffset = useMemo(() => {
     try {
       return timeZoneOffsetLabel(seconds * 1_000, sourceZone);
     } catch {
-      return 'UTC offset unavailable';
+      return pick('UTC offset unavailable', 'Desfase UTC no disponible');
     }
-  }, [seconds, sourceZone]);
+  }, [isSpanish, seconds, sourceZone]);
 
-  const setInstant = (nextSeconds: number, style?: DiscordTimestampStyle, label = 'Timestamp updated.') => {
+  const setInstant = (nextSeconds: number, style?: DiscordTimestampStyle, label = pick('Timestamp updated.', 'Timestamp actualizado.')) => {
     if (!Number.isSafeInteger(nextSeconds)) {
-      setActivity('That timestamp cannot be represented safely in this browser.');
+      setActivity(pick('That timestamp cannot be represented safely in this browser.', 'Ese timestamp no puede representarse de forma segura en este navegador.'));
       return;
     }
     setSeconds(nextSeconds);
@@ -158,7 +177,7 @@ function App() {
     try {
       setDateInput(dateTimeInputForZone(nextSeconds * 1_000, sourceZone));
     } catch {
-      nextDateError = 'The selected timezone could not format this instant.';
+      nextDateError = pick('The selected timezone could not format this instant.', 'La zona horaria seleccionada no pudo formatear este instante.');
     }
     if (style) setActiveStyle(style);
     setDateError(nextDateError);
@@ -171,7 +190,7 @@ function App() {
   const applyWallClock = (value: string, timeZone: string) => {
     const resolution = resolveWallClock(value, timeZone);
     if (!resolution.ok) {
-      setDateError(resolution.error);
+      setDateError(localizeDiscordDiagnostic(resolution.error, uiLocale));
       setAmbiguousCandidates([]);
       setDateIsValid(false);
       return;
@@ -180,9 +199,11 @@ function App() {
     setAmbiguousCandidates(candidateSeconds);
     setSeconds(candidateSeconds[0]);
     setDecodeInput(String(candidateSeconds[0]));
-    setDateError(resolution.warning);
+    setDateError(localizeDiscordDiagnostic(resolution.warning, uiLocale));
     setDateIsValid(true);
-    setActivity(resolution.warning ? 'The earlier occurrence is selected. Choose later if needed.' : `Converted the wall-clock time in ${timeZone}.`);
+    setActivity(resolution.warning
+      ? pick('The earlier occurrence is selected. Choose later if needed.', 'Se seleccionó la aparición anterior. Elige la posterior si es necesario.')
+      : pick(`Converted the wall-clock time in ${timeZone}.`, `Se convirtió la hora local en ${timeZone}.`));
   };
 
   const resolveDateInput = (value: string) => {
@@ -203,9 +224,9 @@ function App() {
       setDateError(null);
       setDateIsValid(true);
       setAmbiguousCandidates([]);
-      setActivity(`Showing the selected instant in ${nextZone}.`);
+      setActivity(pick(`Showing the selected instant in ${nextZone}.`, `Mostrando el instante seleccionado en ${nextZone}.`));
     } catch {
-      setDateError('The selected timezone could not format this instant.');
+      setDateError(pick('The selected timezone could not format this instant.', 'La zona horaria seleccionada no pudo formatear este instante.'));
       setDateIsValid(false);
       setAmbiguousCandidates([]);
     }
@@ -218,15 +239,20 @@ function App() {
       if (!suggestedSeconds) return;
       const parsedSuggestion = parseDiscordTimestampInput(suggestedSeconds);
       if (!parsedSuggestion.ok) return;
-      setInstant(parsedSuggestion.milliseconds / 1_000, decoded.ok ? decoded.style : activeStyle, `Converted the likely ${decoded.suggestedUnit} value to Discord Unix seconds.`);
+      setInstant(parsedSuggestion.milliseconds / 1_000, decoded.ok ? decoded.style : activeStyle, pick(
+        `Converted the likely ${localizedDiscordUnitLabel(decoded.suggestedUnit, uiLocale)} value to Discord Unix seconds.`,
+        `Se convirtió el probable valor en ${localizedDiscordUnitLabel(decoded.suggestedUnit, uiLocale)} a segundos Unix de Discord.`,
+      ));
       return;
     }
     if (!decoded.ok) return;
     if (mode !== 'force' && decoded.warning && decoded.suggestedSeconds) {
-      setActivity('Review the unit warning or use the suggested seconds conversion.');
+      setActivity(pick('Review the unit warning or use the suggested seconds conversion.', 'Revisa la advertencia de unidad o usa la conversión sugerida a segundos.'));
       return;
     }
-    setInstant(decoded.milliseconds / 1_000, decoded.style, decoded.source === 'tag' ? 'Decoded the Discord timestamp tag.' : 'Loaded the Unix seconds value.');
+    setInstant(decoded.milliseconds / 1_000, decoded.style, decoded.source === 'tag'
+      ? pick('Decoded the Discord timestamp tag.', 'Se decodificó la etiqueta de timestamp de Discord.')
+      : pick('Loaded the Unix seconds value.', 'Se cargó el valor en segundos Unix.'));
   };
 
   const applyRelativePreset = (offsetSeconds: number, label: string) => {
@@ -237,7 +263,7 @@ function App() {
     try {
       resolveDateInput(calendarPreset(sourceZone, kind));
     } catch {
-      setDateError('The calendar preset could not be generated in this timezone.');
+      setDateError(pick('The calendar preset could not be generated in this timezone.', 'No se pudo generar el ajuste preestablecido de calendario en esta zona horaria.'));
     }
   };
 
@@ -245,88 +271,88 @@ function App() {
     setSeconds(candidate);
     setDecodeInput(String(candidate));
     setDateIsValid(true);
-    setActivity(`${label} daylight-saving occurrence selected.`);
+    setActivity(isSpanish ? `Aparición de horario de verano ${label.toLowerCase()} seleccionada.` : `${label} daylight-saving occurrence selected.`);
   };
 
   const copyValue = async (value: string, key: string, label: string) => {
     try {
       await copyText(value);
       setCopiedKey(key);
-      setActivity(`${label} copied.`);
+      setActivity(pick(`${label} copied.`, `Se copió: ${label}.`));
       if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
       copyTimer.current = window.setTimeout(() => setCopiedKey(null), 1_700);
     } catch {
-      setActivity('Clipboard access failed. Select the code and copy it manually.');
+      setActivity(pick('Clipboard access failed. Select the code and copy it manually.', 'No se pudo acceder al portapapeles. Selecciona el código y cópialo manualmente.'));
     }
   };
 
-  const allCodesText = DISCORD_STYLE_DEFINITIONS
+  const allCodesText = localizedStyles
     .map(({ style, name }) => `${style} — ${name}: ${codes[style]}`)
     .join('\n');
   const templates = [
-    { key: 'event', label: 'Event', text: `Event starts ${codes.F} (${codes.R}).` },
-    { key: 'deadline', label: 'Deadline', text: `Deadline: ${codes.F} — ${codes.R}.` },
-    { key: 'release', label: 'Release', text: `Going live ${codes.R} at ${codes.F}.` },
-    { key: 'maintenance', label: 'Maintenance', text: `Maintenance begins ${codes.F} (${codes.R}).` },
+    { key: 'event', label: pick('Event', 'Evento'), text: pick(`Event starts ${codes.F} (${codes.R}).`, `El evento empieza ${codes.F} (${codes.R}).`) },
+    { key: 'deadline', label: pick('Deadline', 'Fecha límite'), text: pick(`Deadline: ${codes.F} — ${codes.R}.`, `Fecha límite: ${codes.F} — ${codes.R}.`) },
+    { key: 'release', label: pick('Release', 'Lanzamiento'), text: pick(`Going live ${codes.R} at ${codes.F}.`, `Disponible ${codes.R} a las ${codes.F}.`) },
+    { key: 'maintenance', label: pick('Maintenance', 'Mantenimiento'), text: pick(`Maintenance begins ${codes.F} (${codes.R}).`, `El mantenimiento empieza ${codes.F} (${codes.R}).`) },
   ];
 
   return (
-    <section className="discord-app" aria-label="Discord timestamp generator">
+    <section className="discord-app" aria-label={pick('Discord timestamp generator', 'Generador de timestamps de Discord')}>
       <header className="discord-toolbar">
         <div className="discord-local-badge">
           <span aria-hidden="true" />
-          <div><strong>Local-only generator</strong><small>No date, timezone, or message text is uploaded</small></div>
+          <div><strong>{pick('Local-only generator', 'Generador solo local')}</strong><small>{pick('No date, timezone, or message text is uploaded', 'No se sube ninguna fecha, zona horaria ni texto del mensaje')}</small></div>
         </div>
-        <div className="discord-now" aria-label="Current Unix seconds"><span>Unix now</span><code>{Math.floor(nowMilliseconds / 1_000)}</code></div>
+        <div className="discord-now" aria-label={pick('Current Unix seconds', 'Segundos Unix actuales')}><span>{pick('Unix now', 'Unix ahora')}</span><code>{Math.floor(nowMilliseconds / 1_000)}</code></div>
       </header>
 
       <div className="discord-builder">
         <section className="discord-panel discord-input-panel" aria-labelledby="discord-date-heading">
           <div className="discord-panel-heading">
-            <div><p>Choose an instant</p><h2 id="discord-date-heading">Date, time, and source timezone</h2></div>
+            <div><p>{pick('Choose an instant', 'Elige un instante')}</p><h2 id="discord-date-heading">{pick('Date, time, and source timezone', 'Fecha, hora y zona horaria de origen')}</h2></div>
             <span className="discord-offset">{sourceOffset}</span>
           </div>
           <div className="discord-panel-body">
             <label className="discord-field">
-              <span>Date and time</span>
+              <span>{pick('Date and time', 'Fecha y hora')}</span>
               <input type="datetime-local" step="1" value={dateInput} onChange={(event) => resolveDateInput(event.target.value)} />
             </label>
             <label className="discord-field">
-              <span>Source timezone</span>
+              <span>{pick('Source timezone', 'Zona horaria de origen')}</span>
               <select value={sourceZoneChoice} onChange={(event) => changeSourceZone(event.target.value)}>
-                <option value="local">My browser — {localZone}</option>
+                <option value="local">{pick('My browser', 'Mi navegador')} — {localZone}</option>
                 <option value="UTC">UTC</option>
-                <optgroup label="Common timezones">
+                <optgroup label={pick('Common timezones', 'Zonas horarias comunes')}>
                   {commonZones.map((zone) => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}
                 </optgroup>
-                <optgroup label="IANA timezones">
+                <optgroup label={pick('IANA timezones', 'Zonas horarias IANA')}>
                   {otherTimeZones.map((zone) => <option key={zone} value={zone}>{zone.replace(/_/g, ' ')}</option>)}
                 </optgroup>
               </select>
             </label>
-            <div className="discord-presets" aria-label="Quick date presets">
-              <button type="button" onClick={() => applyRelativePreset(0, 'Loaded the current time.')}>Now</button>
-              <button type="button" onClick={() => applyRelativePreset(300, 'Loaded five minutes from now.')}>+5 min</button>
-              <button type="button" onClick={() => applyRelativePreset(1_800, 'Loaded thirty minutes from now.')}>+30 min</button>
-              <button type="button" onClick={() => applyRelativePreset(3_600, 'Loaded one hour from now.')}>+1 hour</button>
-              <button type="button" onClick={() => applyCalendarPreset('tomorrow')}>Tomorrow 09:00</button>
-              <button type="button" onClick={() => applyCalendarPreset('monday')}>Next Monday</button>
+            <div className="discord-presets" aria-label={pick('Quick date presets', 'Ajustes rápidos de fecha')}>
+              <button type="button" onClick={() => applyRelativePreset(0, pick('Loaded the current time.', 'Se cargó la hora actual.'))}>{pick('Now', 'Ahora')}</button>
+              <button type="button" onClick={() => applyRelativePreset(300, pick('Loaded five minutes from now.', 'Se cargó dentro de cinco minutos.'))}>+5 min</button>
+              <button type="button" onClick={() => applyRelativePreset(1_800, pick('Loaded thirty minutes from now.', 'Se cargó dentro de 30 minutos.'))}>+30 min</button>
+              <button type="button" onClick={() => applyRelativePreset(3_600, pick('Loaded one hour from now.', 'Se cargó dentro de una hora.'))}>+1 h</button>
+              <button type="button" onClick={() => applyCalendarPreset('tomorrow')}>{pick('Tomorrow 09:00', 'Mañana 09:00')}</button>
+              <button type="button" onClick={() => applyCalendarPreset('monday')}>{pick('Next Monday', 'Próximo lunes')}</button>
             </div>
             {dateError && <p className={ambiguousCandidates.length > 1 ? 'discord-notice warning' : 'discord-notice error'} role={ambiguousCandidates.length > 1 ? 'note' : 'alert'}>{dateError}</p>}
             {ambiguousCandidates.length > 1 && (
-              <div className="discord-ambiguity" aria-label="Choose daylight-saving occurrence">
-                <button type="button" onClick={() => selectAmbiguousCandidate(ambiguousCandidates[0], 'Earlier')}>Use earlier · {new Date(ambiguousCandidates[0] * 1_000).toISOString()}</button>
-                <button type="button" onClick={() => selectAmbiguousCandidate(ambiguousCandidates[ambiguousCandidates.length - 1], 'Later')}>Use later · {new Date(ambiguousCandidates[ambiguousCandidates.length - 1] * 1_000).toISOString()}</button>
+              <div className="discord-ambiguity" aria-label={pick('Choose daylight-saving occurrence', 'Elige la aparición en horario de verano')}>
+                <button type="button" onClick={() => selectAmbiguousCandidate(ambiguousCandidates[0], pick('Earlier', 'anterior'))}>{pick('Use earlier', 'Usar la anterior')} · {new Date(ambiguousCandidates[0] * 1_000).toISOString()}</button>
+                <button type="button" onClick={() => selectAmbiguousCandidate(ambiguousCandidates[ambiguousCandidates.length - 1], pick('Later', 'posterior'))}>{pick('Use later', 'Usar la posterior')} · {new Date(ambiguousCandidates[ambiguousCandidates.length - 1] * 1_000).toISOString()}</button>
               </div>
             )}
           </div>
         </section>
 
         <section className="discord-panel discord-decode-panel" aria-labelledby="discord-decode-heading">
-          <div className="discord-panel-heading"><div><p>Paste or decode</p><h2 id="discord-decode-heading">Unix seconds or an existing tag</h2></div></div>
+          <div className="discord-panel-heading"><div><p>{pick('Paste or decode', 'Pegar o decodificar')}</p><h2 id="discord-decode-heading">{pick('Unix seconds or an existing tag', 'Segundos Unix o etiqueta existente')}</h2></div></div>
           <div className="discord-panel-body">
             <label className="discord-field">
-              <span>Timestamp input</span>
+              <span>{pick('Timestamp input', 'Entrada de timestamp')}</span>
               <input
                 className="discord-mono"
                 type="text"
@@ -339,11 +365,11 @@ function App() {
                 placeholder="<t:1754208000:F> or 1754208000"
                 aria-describedby="discord-decode-help"
               />
-              <small id="discord-decode-help">Accepts whole Unix seconds or <code>&lt;t:UNIX_SECONDS:STYLE&gt;</code>.</small>
+              <small id="discord-decode-help">{pick('Accepts whole Unix seconds or', 'Acepta segundos Unix enteros o')} <code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code>.</small>
             </label>
             {decoded.ok && (
               <div className="discord-decoded">
-                <span>{decoded.source === 'tag' ? `Style ${decoded.style}` : 'Unix seconds'}</span>
+                <span>{decoded.source === 'tag' ? `${pick('Style', 'Estilo')} ${decoded.style}` : pick('Unix seconds', 'Segundos Unix')}</span>
                 <strong>{new Date(decoded.milliseconds).toISOString()}</strong>
               </div>
             )}
@@ -353,59 +379,61 @@ function App() {
               </p>
             )}
             <div className="discord-action-row">
-              <button type="button" className="discord-button primary" onClick={() => applyDecoded('input')} disabled={!decoded.ok || Boolean(decoded.ok && decoded.warning)}>Use timestamp</button>
+              <button type="button" className="discord-button primary" onClick={() => applyDecoded('input')} disabled={!decoded.ok || Boolean(decoded.ok && decoded.warning)}>{pick('Use timestamp', 'Usar timestamp')}</button>
               {decoded.suggestedSeconds && (
-                <button type="button" className="discord-button" onClick={() => applyDecoded('suggestion')}>Use as {decoded.suggestedUnit}</button>
+                <button type="button" className="discord-button" onClick={() => applyDecoded('suggestion')}>{pick('Use as', 'Usar como')} {localizedDiscordUnitLabel(decoded.suggestedUnit, uiLocale)}</button>
               )}
-              {decoded.ok && decoded.warning && <button type="button" className="discord-button" onClick={() => applyDecoded('force')}>Use as seconds anyway</button>}
+              {decoded.ok && decoded.warning && <button type="button" className="discord-button" onClick={() => applyDecoded('force')}>{pick('Use as seconds anyway', 'Usar como segundos de todos modos')}</button>}
             </div>
-            <p className="discord-seconds-output"><span>{dateIsValid ? 'Selected Unix seconds' : 'Last valid Unix seconds'}</span><code>{seconds}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(String(seconds), 'seconds', 'Unix seconds')}>{copiedKey === 'seconds' ? 'Copied' : 'Copy'}</button></p>
+            <p className="discord-seconds-output"><span>{dateIsValid ? pick('Selected Unix seconds', 'Segundos Unix seleccionados') : pick('Last valid Unix seconds', 'Últimos segundos Unix válidos')}</span><code>{seconds}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(String(seconds), 'seconds', pick('Unix seconds', 'segundos Unix'))}>{copiedKey === 'seconds' ? pick('Copied', 'Copiado') : pick('Copy', 'Copiar')}</button></p>
           </div>
         </section>
       </div>
 
       <section className="discord-formats" aria-labelledby="discord-formats-heading">
         <div className="discord-formats-heading">
-          <div><p>Current documented set</p><h2 id="discord-formats-heading">All 9 Discord timestamp formats</h2><small>Choose a card to make it the selected format. Every code is ready to paste.</small></div>
+          <div><p>{pick('Current documented set', 'Conjunto documentado actual')}</p><h2 id="discord-formats-heading">{pick('All 9 Discord timestamp formats', 'Los 9 formatos de timestamp de Discord')}</h2><small>{pick('Choose a card to make it the selected format. Every code is ready to paste.', 'Elige una tarjeta para seleccionar el formato. Cada código está listo para pegar.')}</small></div>
           <div className="discord-preview-settings">
-            <label><span>Preview timezone</span><select value={previewZoneChoice} onChange={(event) => setPreviewZoneChoice(event.target.value)}><option value="local">My browser — {localZone}</option><option value="source">Source — {sourceZone}</option><option value="UTC">UTC</option></select></label>
-            <label><span>Preview locale</span><select value={previewLocale} onChange={(event) => setPreviewLocale(event.target.value)}>{PREVIEW_LOCALES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+            <label><span>{pick('Preview timezone', 'Zona horaria de vista previa')}</span><select value={previewZoneChoice} onChange={(event) => setPreviewZoneChoice(event.target.value)}><option value="local">{pick('My browser', 'Mi navegador')} — {localZone}</option><option value="source">{pick('Source', 'Origen')} — {sourceZone}</option><option value="UTC">UTC</option></select></label>
+            <label><span>{pick('Preview locale', 'Configuración regional de vista previa')}</span><select value={previewLocale} onChange={(event) => setPreviewLocale(event.target.value)}>{PREVIEW_LOCALES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
           </div>
         </div>
-        <p className={dateIsValid ? 'discord-preview-note' : 'discord-preview-note invalid'} role={dateIsValid ? undefined : 'alert'}>{dateIsValid ? 'These are browser approximations. Discord controls the final wording and renders the same timestamp for each viewer’s locale, timezone, and time-format settings.' : 'Fix the date or timezone error before copying. The cards below show the last valid instant and all output copy controls are paused.'}</p>
+        <p className={dateIsValid ? 'discord-preview-note' : 'discord-preview-note invalid'} role={dateIsValid ? undefined : 'alert'}>{dateIsValid
+          ? pick('These are browser approximations. Discord controls the final wording and renders the same timestamp for each viewer’s locale, timezone, and time-format settings.', 'Estas son aproximaciones del navegador. Discord controla la redacción final y muestra el mismo timestamp según la configuración regional, zona horaria y formato horario de cada lector.')
+          : pick('Fix the date or timezone error before copying. The cards below show the last valid instant and all output copy controls are paused.', 'Corrige el error de fecha o zona horaria antes de copiar. Las tarjetas muestran el último instante válido y todos los controles de copia están pausados.')}</p>
         <div className="discord-format-grid">
-          {DISCORD_STYLE_DEFINITIONS.map(({ style, name, description }) => {
+          {localizedStyles.map(({ style, name, description }) => {
             const selected = activeStyle === style;
             return (
               <article className={selected ? 'discord-format-card selected' : 'discord-format-card'} key={style}>
                 <button type="button" className="discord-card-select" onClick={() => setActiveStyle(style)} aria-pressed={selected}>
                   <span className="discord-style-token">:{style}</span>
                   <span><strong>{name}</strong><small>{description}</small></span>
-                  {style === 'f' && <em>Default</em>}
+                  {style === 'f' && <em>{pick('Default', 'Predeterminado')}</em>}
                 </button>
                 <p className="discord-rendered">{discordTimestampPreview(seconds * 1_000, style, previewLocale, previewZone, nowMilliseconds)}</p>
-                <div className="discord-code-row"><code>{codes[style]}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(codes[style], `style-${style}`, `${name} code`)}>{copiedKey === `style-${style}` ? 'Copied' : 'Copy'}</button></div>
+                <div className="discord-code-row"><code>{codes[style]}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(codes[style], `style-${style}`, pick(`${name} code`, `código ${name}`))}>{copiedKey === `style-${style}` ? pick('Copied', 'Copiado') : pick('Copy', 'Copiar')}</button></div>
               </article>
             );
           })}
         </div>
         <div className="discord-format-actions">
-          <button type="button" className="discord-button primary" disabled={!dateIsValid} onClick={() => copyValue(selectedCode, 'selected', `${activeStyle} timestamp code`)}>{copiedKey === 'selected' ? 'Selected code copied' : `Copy selected :${activeStyle}`}</button>
-          <button type="button" className="discord-button" disabled={!dateIsValid} onClick={() => copyValue(discordTimestampCode(String(seconds)), 'default', 'Default timestamp code')}>{copiedKey === 'default' ? 'Default code copied' : 'Copy default tag (no :f)'}</button>
-          <button type="button" className="discord-button" disabled={!dateIsValid} onClick={() => copyValue(allCodesText, 'all', 'All nine timestamp codes')}>{copiedKey === 'all' ? 'All codes copied' : 'Copy all 9 formats'}</button>
+          <button type="button" className="discord-button primary" disabled={!dateIsValid} onClick={() => copyValue(selectedCode, 'selected', pick(`${activeStyle} timestamp code`, `timestamp ${activeStyle}`))}>{copiedKey === 'selected' ? pick('Selected code copied', 'Código seleccionado copiado') : pick(`Copy selected :${activeStyle}`, `Copiar :${activeStyle} seleccionado`)}</button>
+          <button type="button" className="discord-button" disabled={!dateIsValid} onClick={() => copyValue(discordTimestampCode(String(seconds)), 'default', pick('Default timestamp code', 'código de timestamp predeterminado'))}>{copiedKey === 'default' ? pick('Default code copied', 'Código predeterminado copiado') : pick('Copy default tag (no :f)', 'Copiar etiqueta predeterminada (sin :f)')}</button>
+          <button type="button" className="discord-button" disabled={!dateIsValid} onClick={() => copyValue(allCodesText, 'all', pick('All nine timestamp codes', 'los nueve códigos de timestamp'))}>{copiedKey === 'all' ? pick('All codes copied', 'Todos los códigos copiados') : pick('Copy all 9 formats', 'Copiar los 9 formatos')}</button>
         </div>
       </section>
 
       <section className="discord-composer" aria-labelledby="discord-composer-heading">
-        <div className="discord-panel-heading"><div><p>Ready-made messages</p><h2 id="discord-composer-heading">Copy a full date plus relative countdown</h2><small>Pairing <code>:F</code> with <code>:R</code> gives readers both a calendar anchor and relative context.</small></div></div>
+        <div className="discord-panel-heading"><div><p>{pick('Ready-made messages', 'Mensajes listos para usar')}</p><h2 id="discord-composer-heading">{pick('Copy a full date plus relative countdown', 'Copia una fecha completa y cuenta regresiva relativa')}</h2><small>{pick('Pairing', 'Combinar')} <code>:F</code> {pick('with', 'con')} <code>:R</code> {pick('gives readers both a calendar anchor and relative context.', 'ofrece a los lectores un anclaje de calendario y contexto relativo.')}</small></div></div>
         <div className="discord-template-grid">
           {templates.map((template) => (
-            <article key={template.key}><span>{template.label}</span><code>{template.text}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(template.text, `template-${template.key}`, `${template.label} message`)}>{copiedKey === `template-${template.key}` ? 'Copied' : 'Copy message'}</button></article>
+            <article key={template.key}><span>{template.label}</span><code>{template.text}</code><button type="button" disabled={!dateIsValid} onClick={() => copyValue(template.text, `template-${template.key}`, pick(`${template.label} message`, `mensaje de ${template.label.toLowerCase()}`))}>{copiedKey === `template-${template.key}` ? pick('Copied', 'Copiado') : pick('Copy message', 'Copiar mensaje')}</button></article>
           ))}
         </div>
       </section>
 
-      <p className="discord-activity" aria-live="polite"><strong>Generator status:</strong><span>{activity}</span></p>
+      <p className="discord-activity" aria-live="polite"><strong>{pick('Generator status:', 'Estado del generador:')}</strong><span>{activity}</span></p>
     </section>
   );
 }
