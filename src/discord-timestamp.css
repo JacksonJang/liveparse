@@ -3,6 +3,10 @@
 .discord-page .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0 0 14px; color: #526d75; font-size: 14px; }
 .discord-page .breadcrumb a { color: #087487; font-weight: 750; }
 .discord-page .breadcrumb span[aria-current="page"] { color: #526d75; }
+.discord-page .text-link { display: block; padding-block: 8px; }
+.discord-page .text-link a { display: inline-block; min-height: 44px; padding-block: 10px; }
+.discord-page .references ul { gap: 24px; }
+.discord-page .references a { min-height: 44px; padding: 10px 14px; }
 .discord-page .hero-example { transform: rotate(-1deg); }
 .discord-page .hero-example pre { min-height: 240px; }
 
