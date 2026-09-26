@@ -18,7 +18,7 @@ No account, no advertising, no analytics cookies, no upload endpoint.
 | **Encoding** | [Base64](https://liveparse.com/base64-decoder/) · [URL](https://liveparse.com/url-encoder/) · [Binary & hex](https://liveparse.com/binary-converter/) · [ASCII table](https://liveparse.com/ascii-table/) · [Morse code](https://liveparse.com/morse-code-translator/) |
 | **Security** | [Hashes](https://liveparse.com/hash-generator/) · [File checksum](https://liveparse.com/file-checksum/) · [UUIDs](https://liveparse.com/uuid-generator/) · [JWT decoder](https://liveparse.com/jwt-decoder/) |
 | **Images & text** | [Batch compressor](https://liveparse.com/image-compressor/) · [Resizer](https://liveparse.com/image-resizer/) · [Word counter](https://liveparse.com/word-counter/) · [Character counter](https://liveparse.com/character-counter/) · [Contador de palabras](https://liveparse.com/es/contador-de-palabras/) · [Contador de caracteres](https://liveparse.com/es/contador-de-caracteres/) |
-| **Reading** | [Guides](https://liveparse.com/guides/) · [About](https://liveparse.com/about/) · [Privacy](https://liveparse.com/privacy/) |
+| **Reading** | [Guides](https://liveparse.com/guides/) · [About](https://liveparse.com/about/) · [Author](https://liveparse.com/authors/jackson-jang/) · [Privacy](https://liveparse.com/privacy/) |
 
 ## What makes it different
 
