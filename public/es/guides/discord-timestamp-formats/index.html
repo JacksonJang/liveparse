@@ -253,7 +253,7 @@ const unixSeconds = Math.floor(Number(createdAtMs) / 1_000);
 
 console.log(createdAt.toISOString()); // 2024-01-24T21:56:25.579Z
 console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></pre>
-              <p>Usa <code>BigInt</code> para el desplazamiento y convierte solo el resultado en milisegundos. La fecha de creación de un snowflake es un metadato asignado por Discord y no es intercambiable con una etiqueta en línea elegida por el autor. Valida que el ID sea un número decimal y que la fecha resultante sea posterior a 2015 y esté en el rango esperado.</p>
+              <p>Usa <code>BigInt</code> para el desplazamiento y convierte solo el resultado en milisegundos. La fecha de creación de un snowflake es un metadato asignado por Discord y no es intercambiable con una etiqueta en línea elegida por el autor. Valida que el ID sea un número decimal y que la fecha resultante sea posterior a 2015 y esté en el rango esperado. <a href="/es/generador-timestamp-discord/#snowflake">Abre el convertidor de Snowflakes de Discord</a> para obtener la hora de creación sin hacer la aritmética de bits a mano.</p>
             </section>
             <section aria-labelledby="flujo-title">
               <h2 id="flujo-title">¿Etiqueta, <code>@time</code>, evento programado o bot?</h2>
