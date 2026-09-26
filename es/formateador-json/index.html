@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Formateador de JSON – validador y visor online | LiveParse</title>
+    <meta name="description" content="Formatea, valida, minifica y explora JSON online sin alterar IDs de 64 bits, exponentes desbordados ni claves duplicadas. Tus datos se quedan en esta pestaña del navegador." />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/es/formateador-json/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/json-formatter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/formateador-json/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/json-formatter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/es/formateador-json/" />
+    <meta property="og:title" content="Formateador de JSON – validador y visor online" />
+    <meta property="og:description" content="Formatea, valida, minifica y explora JSON sin alterar números grandes ni claves duplicadas. Procesamiento local en el navegador." />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="https://liveparse.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Formateador de JSON sin pérdida de LiveParse" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Formateador de JSON online | LiveParse" />
+    <meta name="twitter:description" content="Formatea, valida y visualiza JSON conservando números grandes y claves duplicadas." />
+    <meta name="twitter:image" content="https://liveparse.com/og.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/es/formateador-json/#application",
+            "name": "Formateador, validador y visor de JSON de LiveParse",
+            "alternateName": ["JSON parser", "Validador de JSON", "Embellecedor de JSON", "Visor de JSON"],
+            "url": "https://liveparse.com/es/formateador-json/",
+            "applicationCategory": "DeveloperApplication",
+            "applicationSubCategory": "Formateador, validador, embellecedor, analizador y visor de árbol de JSON",
+            "operatingSystem": "Cualquier sistema operativo con un navegador web moderno",
+            "browserRequirements": "Requiere JavaScript y un navegador web moderno",
+            "isAccessibleForFree": true,
+            "inLanguage": "es",
+            "creator": {
+              "@type": "Person",
+              "name": "Jackson Jang",
+              "url": "https://github.com/JacksonJang"
+            },
+            "description": "Formateador, validador, embellecedor, minificador, analizador y visor de árbol de JSON sin pérdida y gratuito que procesa la entrada localmente en el navegador.",
+            "featureList": [
+              "Análisis y validación de JSON estricto sin pérdida",
+              "Conservación de enteros de 64 bits y lexemas numéricos",
+              "Detección y conservación de claves de objeto duplicadas",
+              "Advertencias de enteros inseguros y desbordamiento de exponentes",
+              "Ubicación precisa de errores de sintaxis",
+              "Formateo con sangría de 2 o 4 espacios",
+              "Minificación de JSON",
+              "Vista de árbol de JSON interactiva",
+              "Resaltado de sintaxis",
+              "Procesamiento local en el navegador"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://liveparse.com/es/formateador-json/#webpage",
+            "url": "https://liveparse.com/es/formateador-json/",
+            "name": "Formateador, validador y visor de JSON online",
+            "description": "Formatea, embellece, valida, minifica y visualiza JSON sin alterar números grandes ni claves duplicadas.",
+            "dateModified": "2026-09-26",
+            "inLanguage": "es",
+            "isPartOf": { "@id": "https://liveparse.com/#website" },
+            "mainEntity": { "@id": "https://liveparse.com/es/formateador-json/#application" },
+            "breadcrumb": { "@id": "https://liveparse.com/es/formateador-json/#breadcrumb" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/es/formateador-json/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Formateador de JSON", "item": "https://liveparse.com/es/formateador-json/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/es/formateador-json/#faq-schema",
+            "mainEntity": [
+              { "@type": "Question", "name": "¿Este formateador y validador de JSON es gratis?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. LiveParse es de uso gratuito, sin cuenta, sin medición de uso y sin niveles de pago." } },
+              { "@type": "Question", "name": "¿LiveParse sube o almacena mi JSON?", "acceptedAnswer": { "@type": "Answer", "text": "No. El análisis, el formateo, la minificación y el renderizado del árbol ocurren localmente en tu navegador. La entrada se mantiene en la memoria de la pestaña actual y no se envía a LiveParse." } },
+              { "@type": "Question", "name": "¿Cuál es la diferencia entre un analizador, un validador y un formateador de JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Un analizador convierte el texto JSON en valores estructurados. Un validador comprueba si la sintaxis es legal. Un formateador reescribe JSON válido con espacios en blanco consistentes. LiveParse combina las tres funciones en una sola herramienta." } },
+              { "@type": "Question", "name": "¿Por qué se rechazan los comentarios y las comas finales?", "acceptedAnswer": { "@type": "Answer", "text": "Son válidos en algunos contextos de JavaScript pero no en el JSON estándar. LiveParse usa deliberadamente el análisis estricto para que el resultado se comporte como el JSON que consumen los navegadores, las API y la mayoría de los lenguajes de programación." } },
+              { "@type": "Question", "name": "¿Qué ocurre si un objeto tiene claves duplicadas?", "acceptedAnswer": { "@type": "Answer", "text": "LiveParse conserva cada miembro repetido en su árbol sin pérdida y en la salida formateada, y muestra una advertencia con la ubicación del duplicado." } },
+              { "@type": "Question", "name": "¿Puede LiveParse conservar IDs de 64 bits y números muy grandes?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Tokens numéricos como 9007199254740993 o 1e400 se almacenan y copian como texto, nunca se convierten para la salida. LiveParse también advierte cuando un valor supera el rango seguro de enteros de JavaScript, desborda un número o cambiaría de escritura al reserializarse." } },
+              { "@type": "Question", "name": "¿Puedo analizar datos sensibles de una API?", "acceptedAnswer": { "@type": "Answer", "text": "El procesamiento local reduce la exposición, pero conviene eliminar los secretos cuando sea posible y seguir las reglas de manejo de datos de tu organización. La página se carga desde internet, pero el JSON que pegas no es transmitido por la herramienta." } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="home-page" data-ui-locale="es">
+    <a class="skip-link" href="#json-input">Ir al formateador de JSON</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a class="brand" href="/" aria-label="Inicio de LiveParse"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links">
+          <a href="/">Todas las herramientas</a>
+          <a href="#parser">Formateador</a>
+          <a href="/json-compare/">Comparar JSON</a>
+          <a href="/sql-formatter/">SQL</a>
+          <a href="/xml-formatter/">XML</a>
+          <a href="/yaml-formatter/">YAML</a>
+          <a href="/es/contador-de-palabras/">Contador de palabras</a>
+          <a href="/guides/">Guías</a>
+        </div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">Sin pérdida · Privado · Sin registro</p>
+          <h1>Formateador, validador y visor de JSON</h1>
+          <p class="hero-lead">Formatea, embellece, valida, minifica y visualiza JSON online sin alterar silenciosamente IDs de 64 bits, exponentes desbordados ni claves duplicadas. LiveParse conserva cada token numérico y mantiene tus datos en esta pestaña.</p>
+          <div class="hero-cta-row">
+            <a class="hero-cta" href="#parser">Formatear JSON ahora</a>
+            <span>Se ejecuta localmente en tu navegador</span>
+          </div>
+        </div>
+        <div class="hero-example" aria-label="Ejemplo del formateador y validador de JSON">
+          <div class="example-bar"><span></span><span></span><span></span><strong>response.json</strong></div>
+          <pre><code><span class="property">"status"</span>: <span class="string">"ok"</span>,
+<span class="property">"private"</span>: <span class="boolean">true</span>,
+<span class="property">"items"</span>: [<span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>]</code></pre>
+          <p><strong>Válido · Sin pérdida</strong><span>Los valores riesgosos se marcan</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="parser" aria-labelledby="parser-heading">
+        <div>
+          <p class="section-kicker">Herramienta JSON online</p>
+          <h2 id="parser-heading">Pega JSON para formatearlo, embellecerlo y validarlo</h2>
+        </div>
+        <p>LiveParse usa un analizador de tokens sin pérdida en un worker del navegador. Los números y los miembros duplicados no se convierten en valores con pérdida de JavaScript, y nada de lo que pegues se sube a ningún servidor.</p>
+      </section>
+
+      <div id="root">
+        <section class="parser-fallback" aria-label="Cargando el formateador de JSON">
+          <p><strong>Cargando el formateador de JSON interactivo…</strong></p>
+          <p>Activa JavaScript para usar el formateo, la validación, la minificación y el visor de árbol.</p>
+        </section>
+      </div>
+
+      <section class="content-section" id="how-to-format-json" aria-labelledby="how-heading">
+        <div class="section-heading"><p class="section-kicker">Inicio rápido</p><h2 id="how-heading">Cómo formatear y validar JSON online</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>Pega o abre JSON</h3><p>Pega un documento JSON o usa <strong>Abrir archivo</strong>. La validación se ejecuta automáticamente y muestra el primer error de sintaxis con su ubicación.</p></li>
+          <li><span>2</span><h3>Formatea o minifica</h3><p>Elige dos o cuatro espacios y pulsa <strong>Formatear</strong> para un JSON legible o <strong>Minificar</strong> para una salida compacta.</p></li>
+          <li><span>3</span><h3>Explora o exporta</h3><p>Cambia a <strong>Árbol</strong> para explorar los valores anidados, o copia y descarga el texto formateado.</p></li>
+        </ol>
+        <p>Por ejemplo, formatear <code>{&quot;id&quot;:9007199254740993,&quot;amount&quot;:1.2300}</code> añade sangría manteniendo <code>9007199254740993</code> y <code>1.2300</code> exactamente como están escritos. Las claves duplicadas también se conservan y se marcan. El formateo comprueba la sintaxis JSON; no valida un esquema de aplicación.</p>
+        <p>Todo el análisis y formateo se ejecuta en un worker del navegador. El texto pegado y los archivos abiertos se quedan en esta pestaña.</p>
+      </section>
+
+      <section class="content-section" id="what-is-a-json-formatter" aria-labelledby="what-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Lo esencial</p>
+          <h2 id="what-heading">¿Qué es un formateador de JSON?</h2>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>Un <strong>formateador de JSON</strong> —también llamado embellecedor o pretty printer— añade sangría y saltos de línea consistentes al JSON compacto para que las personas puedan leer su estructura. El formateo cambia los espacios en blanco, no los objetos, arrays, claves ni valores previstos.</p>
+            <p>Un formateador fiable debe analizar y validar la entrada antes de reescribirla. LiveParse combina validación estricta, formateo sin pérdida, minificación, resaltado de sintaxis y un visor de árbol con búsqueda. A diferencia de un viaje de ida y vuelta por JavaScript nativo, conserva los tokens numéricos grandes y los miembros repetidos tal como están escritos.</p>
+            <a class="text-link" href="/guides/json-parser-vs-formatter-validator/">Comparar formateadores, analizadores y validadores de JSON <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Embellecer</dt><dd>Añadir sangría y saltos de línea para lectura.</dd></div>
+            <div><dt>Validar</dt><dd>Encontrar sintaxis inválida y su ubicación.</dd></div>
+            <div><dt>Visualizar</dt><dd>Explorar valores anidados en un árbol plegable.</dd></div>
+            <div><dt>Minificar</dt><dd>Eliminar espacios innecesarios para el transporte.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section" id="common-json-errors" aria-labelledby="errors-heading">
+        <div class="section-heading split-heading">
+          <div><p class="section-kicker">Depura más rápido</p><h2 id="errors-heading">Errores de sintaxis JSON frecuentes</h2></div>
+          <a class="text-link" href="/guides/common-json-errors/">Ver ejemplos y soluciones <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="error-table" role="table" aria-label="Errores de JSON frecuentes y soluciones">
+          <div class="error-row error-head" role="row"><span role="columnheader">Problema</span><span role="columnheader">Inválido</span><span role="columnheader">Solución</span></div>
+          <div class="error-row" role="row"><strong role="cell">Coma final</strong><code role="cell">{"ok": true,}</code><span role="cell">Elimina la coma antes de <code>}</code> o <code>]</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Comillas simples</strong><code role="cell">{'name': 'Ada'}</code><span role="cell">Usa comillas dobles en claves y cadenas.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Clave sin comillas</strong><code role="cell">{status: "ok"}</code><span role="cell">Escribe la clave como <code>"status"</code>.</span></div>
+          <div class="error-row" role="row"><strong role="cell">Escape incorrecto</strong><code role="cell">{"path": "C:\users"}</code><span role="cell">Escapa la barra invertida como <code>\\</code>.</span></div>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="why-heading">
+        <div class="section-heading"><p class="section-kicker">Diseñado para payloads reales</p><h2 id="why-heading">¿Por qué usar LiveParse?</h2></div>
+        <div class="benefit-grid">
+          <article><span aria-hidden="true">01</span><h3>Privado por diseño</h3><p>Tu entrada se queda en la pestaña actual del navegador. El analizador no envía, guarda ni registra el JSON que pegas.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Sin pérdida y predecible</h3><p>LiveParse valida JSON estricto conservando cada token numérico y cada miembro repetido. Avisa antes de que JavaScript pudiera redondear un entero o convertir un exponente desbordado en <code>null</code>.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Vistas de texto y árbol rápidas</h3><p>Lee payloads compactos como texto resaltado o busca en un árbol virtualizado que mantiene pequeña la página incluso con documentos grandes.</p></article>
+          <article><span aria-hidden="true">04</span><h3>Contexto de error útil</h3><p>Cuando hay posición de error, LiveParse la convierte en línea y columna para localizar el primer problema de sintaxis.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="use-cases-heading">
+        <div class="section-heading"><p class="section-kicker">Flujos de trabajo prácticos</p><h2 id="use-cases-heading">Cuándo ayuda un analizador de JSON</h2></div>
+        <div class="use-case-grid">
+          <article><h3>Depurar una respuesta de API</h3><p>Confirma que la respuesta es válida, inspecciona las claves principales y sigue los datos anidados antes de cambiar el código.</p></article>
+          <article><h3>Inspeccionar un webhook</h3><p>Explora tipos de evento, IDs y objetos anidados manteniendo los datos de clientes o integraciones en tu dispositivo.</p></article>
+          <article><h3>Revisar configuración</h3><p>Formatea configuraciones minificadas, detecta delimitadores que faltan y verifica la estructura final antes del despliegue.</p></article>
+          <article><h3>Preparar JSON compacto</h3><p>Elimina sangría y saltos de línea cuando necesites un payload más pequeño para una petición, un fixture o una variable de entorno.</p></article>
+        </div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="tools-heading">
+        <div class="section-heading"><p class="section-kicker">Sigue trabajando con JSON</p><h2 id="tools-heading">Repara, compara y convierte JSON</h2><p>Elige la siguiente herramienta para tu documento. Todas procesan la entrada en tu navegador.</p></div>
+        <div class="use-case-grid">
+          <article><h3><a href="/json-repair/">JSON Repair</a></h3><p>Corrige comas finales, comillas simples o JSON truncado, revisa cada edición propuesta y vuelve aquí para formatear y validar.</p></article>
+          <article><h3><a href="/json-compare/">Comparar JSON</a></h3><p>Compara dos respuestas de API por sus valores analizados, inspecciona las rutas cambiadas y distingue cambios de formato de cambios de datos.</p></article>
+          <article><h3><a href="/jsonl-parser/">Analizador JSONL</a></h3><p>Valida registros JSON delimitados por líneas uno a uno, localiza líneas inválidas y no pierde IDs numéricos grandes.</p></article>
+          <article><h3><a href="/json-to-csv/">JSON a CSV</a></h3><p>Convierte arrays de registros JSON en CSV con selección explícita de columnas y manejo de valores anidados.</p></article>
+          <article><h3><a href="/guides/common-json-errors/">Errores de JSON frecuentes</a></h3><p>Encuentra ejemplos de comas que faltan, comillas inválidas, comas finales y valores incompletos con JSON corregido.</p></article>
+          <article><h3><a href="/guides/json-parser-vs-formatter-validator/">¿Analizador, formateador o validador?</a></h3><p>Entiende qué comprueban el análisis, la validación de sintaxis y el formateo, y cuándo tu aplicación necesita además validación de esquema.</p></article>
+        </div>
+        <p><a href="/#tools">Ver todas las herramientas de LiveParse</a></p>
+      </section>
+
+      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">Preguntas respondidas</p><h2 id="faq-heading">Preguntas frecuentes sobre el formateador de JSON</h2></div>
+        <div class="faq-list">
+          <details open><summary>¿Este formateador y validador de JSON es gratis?</summary><p>Sí. LiveParse es de uso gratuito, sin cuenta, sin medición de uso y sin niveles de pago.</p></details>
+          <details><summary>¿LiveParse sube o almacena mi JSON?</summary><p>No. El análisis, el formateo, la minificación y el renderizado del árbol ocurren localmente en tu navegador. La entrada se mantiene en la memoria de la pestaña actual y no se envía a LiveParse.</p></details>
+          <details><summary>¿Diferencia entre analizador, validador y formateador?</summary><p>El analizador convierte el texto JSON en valores estructurados; el validador comprueba si la sintaxis es legal; el formateador reescribe JSON válido con espacios consistentes. LiveParse combina las tres funciones. Para más detalle, lee <a href="/guides/json-parser-vs-formatter-validator/">JSON parser vs. formatter vs. validator</a>.</p></details>
+          <details><summary>¿Por qué se rechazan comentarios y comas finales?</summary><p>Son válidos en algunos contextos de JavaScript pero no en el JSON estándar. LiveParse usa análisis estricto a propósito para que el resultado se comporte como el JSON que consumen navegadores, API y la mayoría de lenguajes.</p></details>
+          <details><summary>¿Qué pasa con las claves duplicadas?</summary><p>LiveParse conserva cada miembro repetido en su árbol sin pérdida y en la salida formateada, y muestra una advertencia con la ubicación del duplicado.</p></details>
+          <details><summary>¿Conserva IDs de 64 bits y números muy grandes?</summary><p>Sí. Tokens como <code>9007199254740993</code> y <code>1e400</code> se almacenan y copian como texto, nunca se convierten para la salida. LiveParse avisa cuando un valor supera el rango entero seguro de JavaScript, desborda un número o cambiaría de escritura al reserializarse de forma nativa.</p></details>
+          <details><summary>¿Puedo analizar datos sensibles de una API?</summary><p>El procesamiento local reduce la exposición, pero elimina los secretos cuando sea posible y sigue las reglas de manejo de datos de tu organización. La página se carga desde internet, pero el JSON pegado no es transmitido por la herramienta.</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="references-heading">
+        <div><p class="section-kicker">Estándares y referencias</p><h2 id="references-heading">Aprende de fuentes primarias</h2></div>
+        <ul>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noreferrer">RFC 8259: The JSON Data Interchange Format</a></li>
+          <li><a href="https://www.json.org/json-es.html" target="_blank" rel="noreferrer">Introducción a JSON (español)</a></li>
+          <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noreferrer">MDN: JSON.parse()</a></li>
+          <li><a href="/json-formatter/" hreflang="en">JSON Formatter (English)</a></li>
+          <li><a href="/es/contador-de-palabras/">Contador de palabras</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>Herramientas privadas en el navegador para formatear, validar, comparar, reparar y convertir datos.</p></div><div class="footer-links"><a href="#parser">Formateador JSON</a><a href="/json-compare/">Comparar JSON</a><a href="/sql-formatter/">SQL</a><a href="/xml-formatter/">XML</a><a href="/yaml-formatter/">YAML</a><a href="/es/contador-de-palabras/">Contador de palabras</a><a href="/es/contador-de-caracteres/">Contador de caracteres</a><a href="/guides/">Guías</a><a href="/privacy/">Privacidad</a></div><p class="footer-note">Revisado el 26 de septiembre de 2026 · La entrada de las herramientas se queda local · Sin cookies de publicidad ni analítica</p></footer>
+    <noscript><p class="noscript-note">Se necesita JavaScript para ejecutar el analizador interactivo. La referencia de JSON y las guías siguen disponibles sin él.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

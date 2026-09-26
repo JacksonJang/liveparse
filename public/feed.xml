@@ -3,7 +3,7 @@
   <id>https://liveparse.com/feed.xml</id>
   <title>LiveParse Developer Tool Updates</title>
   <subtitle>Recent local-first developer tools and standards-based guides published by LiveParse.</subtitle>
-  <updated>2026-09-25T23:56:51Z</updated>
+  <updated>2026-09-26T00:03:13Z</updated>
   <link rel="self" type="application/atom+xml" href="https://liveparse.com/feed.xml" />
   <link rel="alternate" type="text/html" href="https://liveparse.com/" />
   <link rel="hub" href="https://pubsubhubbub.appspot.com/" />
@@ -13,6 +13,15 @@
   </author>
   <rights>Copyright 2026 Jackson Jang</rights>
 
+  <entry>
+    <id>https://liveparse.com/es/formateador-json/</id>
+    <title>Formateador de JSON</title>
+    <link rel="alternate" type="text/html" href="https://liveparse.com/es/formateador-json/" />
+    <published>2026-09-26T09:03:13+09:00</published>
+    <updated>2026-09-26T09:03:13+09:00</updated>
+    <category term="JSON formatter (Spanish)" />
+    <summary>Formatea, valida, minifica y explora JSON sin alterar IDs de 64 bits ni claves duplicadas, procesando todo localmente en el navegador.</summary>
+  </entry>
   <entry>
     <id>https://liveparse.com/ko/word-counter/</id>
     <title>단어 수 세기</title>
@@ -463,15 +472,6 @@
     <updated>2026-08-04T06:15:45+09:00</updated>
     <category term="Hashing guides" />
     <summary>Compare digest sizes, collision resistance, compatibility uses, and the security limits of MD5 and SHA-256.</summary>
-  </entry>
-  <entry>
-    <id>https://liveparse.com/guides/hash-vs-encryption/</id>
-    <title>Hashing vs Encryption</title>
-    <link rel="alternate" type="text/html" href="https://liveparse.com/guides/hash-vs-encryption/" />
-    <published>2026-08-04T06:15:45+09:00</published>
-    <updated>2026-08-04T06:15:45+09:00</updated>
-    <category term="Hashing guides" />
-    <summary>Distinguish one-way digests from reversible encryption, authentication codes, signatures, and password hashing.</summary>
   </entry>
   <entry>
     <id>https://liveparse.com/guides/how-to-verify-file-checksum/</id>
