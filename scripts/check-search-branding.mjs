@@ -18,10 +18,12 @@ export const LIVE_SPANISH_ROUTES = [
 export const LIVE_KOREAN_ROUTES = [
   '/ko/json-parser/',
   '/ko/character-counter/',
+  '/ko/word-counter/',
 ];
 
 export const LIVE_JAPANESE_ROUTES = [
   '/ja/character-counter/',
+  '/ja/word-counter/',
 ];
 
 export async function runSearchBrandingCheck({ baseUrl = 'https://liveparse.com', fetchImpl = fetch } = {}) {

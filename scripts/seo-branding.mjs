@@ -6,6 +6,8 @@ const LIVE_LOCALIZED_PAGES = new Map([
   ['/ko/json-parser/', { language: 'ko', ogLocale: 'ko_KR' }],
   ['/ko/character-counter/', { language: 'ko', ogLocale: 'ko_KR' }],
   ['/ja/character-counter/', { language: 'ja', ogLocale: 'ja_JP' }],
+  ['/ko/word-counter/', { language: 'ko', ogLocale: 'ko_KR' }],
+  ['/ja/word-counter/', { language: 'ja', ogLocale: 'ja_JP' }],
 ]);
 const ALLOWED_HREFLANG_VALUES = new Set(['en', 'es', 'ko', 'ja', 'x-default']);
 const RETIRED_LANGUAGE_PREFIX = /^(?:https:\/\/liveparse\.com)?\/(?:ko|ja|es)\//;

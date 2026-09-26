@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>ワードカウンター – 単語・文・読了時間 | LiveParse</title>
+    <meta name="description" content="すべての言語を空白だけで区切らずに、単語・文・段落・論理行を数えます。ロケール対応の分割、調整可能な読了・発話時間、ブラウザー内でのローカル処理。" />
+    <meta name="author" content="Jackson Jang" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <link rel="canonical" href="https://liveparse.com/ja/word-counter/" />
+    <link rel="alternate" hreflang="en" href="https://liveparse.com/word-counter/" />
+    <link rel="alternate" hreflang="es" href="https://liveparse.com/es/contador-de-palabras/" />
+    <link rel="alternate" hreflang="ko" href="https://liveparse.com/ko/word-counter/" />
+    <link rel="alternate" hreflang="ja" href="https://liveparse.com/ja/word-counter/" />
+    <link rel="alternate" hreflang="x-default" href="https://liveparse.com/word-counter/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://liveparse.com/ja/word-counter/" />
+    <meta property="og:title" content="ワードカウンター – 単語・文・読了時間" />
+    <meta property="og:description" content="ロケール対応の分割で単語とテキスト構造を測定します。処理はこのブラウザータブの中だけで行われます。" />
+    <meta property="og:site_name" content="LiveParse" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:image" content="https://liveparse.com/og-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LiveParse のロケール対応ワードカウンター" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ワードカウンター – ロケール対応テキスト指標 | LiveParse" />
+    <meta name="twitter:description" content="単語・文・段落・行を数え、読了・発話時間をローカルで推定します。" />
+    <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
+    <meta name="theme-color" content="#3458d4" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/text-counter.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "@id": "https://liveparse.com/ja/word-counter/#application",
+            "name": "LiveParse ワードカウンター",
+            "url": "https://liveparse.com/ja/word-counter/",
+            "applicationCategory": "UtilitiesApplication",
+            "applicationSubCategory": "ロケール対応の単語・テキスト構造カウンター",
+            "operatingSystem": "最新のウェブブラウザーが動くすべてのOS",
+            "browserRequirements": "JavaScript、Intl.Segmenter、TextEncoderが必要",
+            "isAccessibleForFree": true,
+            "inLanguage": "ja",
+            "description": "ロケール対応の単語・文、空でない段落、論理行を数え、調整可能な読了・発話時間をブラウザー内で推定します。",
+            "featureList": [
+              "ロケール対応の単語・文分割",
+              "自動と日本語・英語・スペイン語・韓国語・中国語・タイ語の選択",
+              "段落・論理行の計数",
+              "1分あたり単語数を調整できる読了時間",
+              "1分あたり単語数を調整できる発話時間",
+              "正規化なしのブラウザーローカル処理"
+            ],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "creator": { "@type": "Person", "name": "Jackson Jang", "url": "https://github.com/JacksonJang" }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://liveparse.com/ja/word-counter/#breadcrumb",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
+              { "@type": "ListItem", "position": 2, "name": "ワードカウンター", "item": "https://liveparse.com/ja/word-counter/" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://liveparse.com/ja/word-counter/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "このワードカウンターは何を数えますか？", "acceptedAnswer": { "@type": "Answer", "text": "選択したロケールで単語様セグメントと文を数え、別々に空でない段落と論理行を数えます。単語数と1分あたり単語数の設定から読了・発話時間も推定します。" } },
+              { "@type": "Question", "name": "ワードカウンターによって結果が違うのはなぜですか？", "acceptedAnswer": { "@type": "Answer", "text": "単語の境界は普遍ではありません。カウンターによって句読点、縮約形、ハイフン、絵文字、空白を持たない文字の扱いが異なります。このツールはブラウザーのロケール対応分割データを使うため、選択したロケールとブラウザーエンジンが境界事例に影響します。" } },
+              { "@type": "Question", "name": "中国語・日本語・韓国語・タイ語も数えられますか？", "acceptedAnswer": { "@type": "Answer", "text": "はい。中国語、日本語、韓国語、タイ語を選択するか、自動のままでブラウザーの設定に任せられます。ロケール対応の分割は空白だけの分割より適切ですが、ブラウザーのUnicode・辞書データにより結果は変わることがあります。" } },
+              { "@type": "Question", "name": "段落と行はどのように数えますか？", "acceptedAnswer": { "@type": "Answer", "text": "段落は1つ以上の空行で区切られた空でないブロックです。分析規則はCRLFを1つの改行として認識し、CR、LF、NEL、行区切り文字、段落区切り文字も認識します。空の入力は0行で、末尾の改行は最後の空行を作ります。" } },
+              { "@type": "Question", "name": "読了・発話時間はどう計算されますか？", "acceptedAnswer": { "@type": "Answer", "text": "各推定値は単語数を選択した1分あたり単語数で割ります。聴衆、難易度、間、話し方で実際の時間は変わるため、速度は調整可能で、結果は計画用の推定です。" } },
+              { "@type": "Question", "name": "テキストはアップロードや正規化されますか？", "acceptedAnswer": { "@type": "Answer", "text": "いいえ。計数は現在のブラウザータブで実行され、テキストはアップロードされません。Unicode正規化なしでテキストエリアの値を分析するため、正規化等価な表記が異なるコードポイント数・バイト数を持つことがあります。" } }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body class="text-counter-page" data-page="word-counter" data-ui-locale="ja" data-analysis-locale="ja">
+    <a class="skip-link" href="#counter">ワードカウンターへ</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="メインナビゲーション">
+        <a class="brand" href="/" aria-label="LiveParse ホーム"><span aria-hidden="true">{ }</span> LiveParse</a>
+        <div class="nav-links"><a href="/ja/character-counter/">文字数カウンター</a><a href="#method">方式</a><a href="#faq">FAQ</a><a href="/guides/">ガイド</a><a href="/privacy/">プライバシー</a></div>
+      </nav>
+      <div class="seo-hero">
+        <div class="seo-hero-copy">
+          <p class="eyebrow">ロケール対応分割 · 調整可能なペース · ローカル処理</p>
+          <h1>ワードカウンター</h1>
+          <p class="hero-lead">すべての言語を空白だけで区切ることなく、単語・文・段落・論理行を数えます。ロケールを選び、読了・発話速度を調整し、テキストはこのブラウザータブに保持されます。</p>
+          <div class="hero-cta-row"><a class="hero-cta" href="#counter">単語を数える</a><span>自動 · 日本語 · 韓国語 · スペイン語 · 英語 · 中国語 · タイ語</span></div>
+        </div>
+        <div class="hero-example" aria-label="単語数の指標例">
+          <div class="example-bar"><span></span><span></span><span></span><strong>draft.txt</strong></div>
+          <pre><code><span class="property">単語</span>       428
+<span class="string">文</span>    24
+<span class="boolean">段落</span>    7
+行          31</code></pre>
+          <p><strong>≈ 2分で読了</strong><span>聴衆に合わせて速度を調整</span></p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="tool-intro" id="counter" aria-labelledby="counter-heading">
+        <div><p class="section-kicker">貼り付け・入力・推敲</p><h2 id="counter-heading">原稿の構造とペースを測定</h2></div>
+        <p>対話型ワークスペースは複数の単位を並べて報告します。再現可能な言語の前提が必要な場合は、自動ではなく日本語・韓国語・スペイン語・英語・中国語・タイ語を明示的に選択してください。</p>
+      </section>
+      <div id="root"><section class="parser-fallback" aria-label="ワードカウンター読み込み中"><p><strong>ワードカウンターを読み込んでいます…</strong></p><p>テキストを解析するにはJavaScriptを有効にしてください。下の分割方式、構造の定義、時間のガイダンスはそのまま利用できます。</p></section></div>
+
+      <section class="content-section" id="method" aria-labelledby="method-heading">
+        <div class="section-heading"><p class="section-kicker">空白ではなく境界</p><h2 id="method-heading">ロケール対応の単語計数の仕組み</h2></div>
+        <div class="prose-grid">
+          <div>
+            <p><code>text.split(/\s+/)</code>のような単純な方法は、空白の間のすべての区間を単語として扱います。これはすべての単語の間に空白を置かない文字体系では破綻し、句読点や繰り返しの区切り文字に偶然の意味を与えます。このカウンターは<code>Intl.Segmenter</code>に単語セグメントを要求し、実装が単語様とマークしたセグメントを数えます。</p>
+            <p>選択したロケールは明示的な分割コンテキストを与えます。自動はブラウザーのロケールネゴシエーションに従い、明示的な選択は<code>ja</code>、<code>ko</code>、<code>en</code>、<code>es</code>、<code>zh</code>、<code>th</code>を要求します。同じインターフェースが文の境界には文単位を使います。APIの標準的背景は<a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter定義</a>と<a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode Standard Annex #29</a>を参照してください。</p>
+            <p>これらの標準は、すべての入力に対して1つの永遠の合計を約束しません。Unicodeデータ、ロケール調整、辞書分割、実装定義の<code>isWordLike</code>分類は、ブラウザーエンジンやバージョンによって変わることがあります。計数が契約的な出版・課金業務の一部なら、ロケール、ブラウザー、規則を記録してください。</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>単語</dt><dd>ブラウザーが単語様と分類したロケール対応セグメント。</dd></div>
+            <div><dt>文</dt><dd>ロケール対応の文境界分析が返す空でないセグメント。</dd></div>
+            <div><dt>段落</dt><dd>1つ以上の空行で区切られた空でないブロック。</dd></div>
+            <div><dt>行</dt><dd>認識されたUnicode改行文字で区切られた論理行。</dd></div>
+            <div><dt>時間</dt><dd>単語数を選択した読了・発話速度で割った値。</dd></div>
+          </dl>
+        </div>
+        <p class="text-link"><a href="/guides/how-word-counting-works/">単語計数の規則を解説した完全ガイドを読む →</a></p>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="structure-heading">
+        <div class="section-heading"><p class="section-kicker">4つの関連する測定</p><h2 id="structure-heading">単語・文・段落・行は異なる問いに答えます</h2></div>
+        <div class="error-table" role="table" aria-label="テキスト構造の測定定義">
+          <div class="error-row error-head" role="row"><span role="columnheader">指標</span><span role="columnheader">活用</span><span role="columnheader">境界規則</span></div>
+          <div class="error-row" role="row"><strong role="cell">単語数</strong><span role="cell">編集分量、課題、コンテンツ計画</span><span role="cell">空白分割ではなくロケール対応の単語様セグメント。</span></div>
+          <div class="error-row" role="row"><strong role="cell">文数</strong><span role="cell">ペースとおおよその読みやすさ確認</span><span role="cell">ロケール対応の文分割。ピリオドだけですべての事例が決まるわけではありません。</span></div>
+          <div class="error-row" role="row"><strong role="cell">段落数</strong><span role="cell">文書構造と流し読み</span><span role="cell">1つ以上の空行で区切られた空でないテキストブロック。</span></div>
+          <div class="error-row" role="row"><strong role="cell">行数</strong><span role="cell">台本、字幕、原文、エクスポート</span><span role="cell">CRLFは1つの改行。CR、LF、NEL、U+2028、U+2029も行を作ります。</span></div>
+        </div>
+        <p>空の入力は0行です。テキストが存在すれば、認識されたすべての改行が1つの行を終わらせ別の行を始めるため、末尾の改行は意図的に最後の空行を追加します。このインターフェースでは、テキストエリアのHTML動作が解析前にCRLFとCRをLFへ変換します。論理行の合計は変わりませんが、バイト・コードユニットの比較ではこの変換を織り込む必要があります。</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="time-heading">
+        <div class="section-heading"><p class="section-kicker">透明な経験則</p><h2 id="time-heading">調整可能なペースで読了・発話時間を推定</h2></div>
+        <div class="prose-grid"><div>
+          <p>読了時間と発話時間は同じ単語合計から計算されますが、別々の1分あたり単語数設定を使います。算術は意図的に単純です。単語数を1分あたり単語数で割ります。速度を上げると推定は短くなり、下げると長くなります。</p>
+          <p>速度は文書の属性ではありません。密度の高い技術文、馴染みのない名前、数式、画面での実演、聴衆の質問、劇的な間、言語学習者のペースは、すべて実際の時間を汎用的な既定値から遠ざけます。コントロールで特定の読者や発表をモデル化し、時間が決まった発表はリハーサルしてください。</p>
+          <p>多言語テキストでは、単語分割と発話ペースは別々の選択です。日本語やタイ語を選ぶと境界の要求方法が変わりますが、1つの汎用的なWPM値ですべての言語を比較できるという意味ではありません。</p>
+        </div><div class="callout-card"><strong>プラットフォームの上限が必要ですか？</strong><p>単語数は編集分量を推定します。ユーザー名、メッセージ、データベース列、APIペイロードは書記素、UTF-16ユニット、コードポイント、バイトを指定することが多いです。</p><a href="/ja/character-counter/">文字数カウンターを開く →</a></div></div>
+      </section>
+
+      <section class="content-section alt" aria-labelledby="reproduce-heading">
+        <div class="section-heading"><p class="section-kicker">契約を再現可能に</p><h2 id="reproduce-heading">正式な計数にはロケールとエンジンバージョンが必要な理由</h2></div>
+        <ol class="steps-grid">
+          <li><span>1</span><h3>原文を保存</h3><p>公開される正確な原稿を数えます。このツールはUnicode正規化、大文字小文字の統一、句読点の書き換えをしません。ブラウザーはCRLF・CRの行末をLFとして露出します。</p></li>
+          <li><span>2</span><h3>ロケールを記録</h3><p>他のレビュアーやビルドシステムが前提を再現する必要があるなら、自動ではなく名前付きのロケールを使ってください。</p></li>
+          <li><span>3</span><h3>争点の事例をテスト</h3><p>縮約形、ハイフン、略語、絵文字、空白を持たない文字を含む例を選択した環境の回帰事例として保管してください。</p></li>
+        </ol>
+        <p>ECMA-402は一部の境界の詳細を実装とその国際化データに委ねています。サーバーライブラリ、デスクトップエディター、検索インデックス、ブラウザーは、すべて標準に準拠しながら境界事例で不一致になることがあります。外部の提出ポータルが権威なら、その公開規則と最終表示の合計がこの計画ツールに優先します。</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="privacy-heading">
+        <div class="section-heading"><p class="section-kicker">ブラウザーの文字列はローカルに保持</p><h2 id="privacy-heading">Unicode正規化なしでローカル計数</h2></div>
+        <div class="prose-grid"><div>
+          <p>分析は現在のブラウザータブで実行されます。LiveParseは入力されたテキストを計数サービスに送ったり、サーバー側の文書履歴を作ったりしません。知らないリモートAPIに貼り付けるべきでない下書きに有用であり、ブラウザー拡張・クリップボード管理・デバイスバックアップ・スクリーンショットは別個のプライバシー境界です。</p>
+          <p>このツールはテキストエリアの値にNFC、NFD、NFKC、NFKD正規化を適用しません。事前合成されたアクセント付き文字と分解された文字+記号の列は区別されたままです。テキストエリアのHTML動作は解析前にCRLFとCRをLFへ変換します。コードポイント・UTF-16・UTF-8の単位は文字数カウンターで確認してください。</p>
+          <p>JavaScriptの文字列はペアのないUTF-16サロゲートを含むことがあります。ロケール分割はエンジンが保持する文字列を分析できますが、厳密なUTF-8エンコードは孤立したコードユニットをUnicodeスカラー値として保存できません。関連する文字ツールは、このような入力に対してUTF-8バイトを利用不可と報告します。</p>
+        </div><div class="callout-card"><strong>層を学ぶ</strong><p>書記素クラスタ、コードポイント、UTF-16コードユニット、UTF-8バイトは、異なる上限・切り詰め動作を持つ別個の単位です。</p><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">Unicode長さ単位を比較 →</a></div></div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading"><p class="section-kicker">質問と回答</p><h2 id="faq-heading">ワードカウンターFAQ</h2></div>
+        <div class="faq-list">
+          <details open><summary>このワードカウンターは何を数えますか？</summary><p>選択したロケールで単語様セグメントと文を数え、別々に空でない段落と論理行を数えます。単語数と1分あたり単語数の設定から読了・発話時間も推定します。</p></details>
+          <details><summary>ワードカウンターによって結果が違う理由は？</summary><p>単語の境界は普遍ではありません。句読点、縮約形、ハイフン、絵文字、空白を持たない文字の扱いはカウンターごとに異なります。このツールはブラウザーのロケール対応分割データを使うため、選択したロケールとエンジンが境界事例に影響します。</p></details>
+          <details><summary>中国語・日本語・韓国語・タイ語も数えられますか？</summary><p>はい。中国語、日本語、韓国語、タイ語を選択するか、自動のままでブラウザーの設定に任せられます。ロケール対応の分割が空白だけの分割より適切ですが、ブラウザーのUnicode・辞書データにより結果は変わることがあります。</p></details>
+          <details><summary>段落と行はどう数えますか？</summary><p>段落は1つ以上の空行で区切られた空でないブロックです。分析規則はCRLFを1つの改行として認識し、CR、LF、NEL、行区切り、段落区切りも認識します。空の入力は0行で、末尾の改行は最後の空行を作ります。</p></details>
+          <details><summary>読了・発話時間はどう計算されますか？</summary><p>各推定値は単語数を選択した1分あたり単語数で割ります。聴衆、言語、難易度、間、話し方で実際の時間は変わるため、速度は調整可能で、結果は計画用の推定です。</p></details>
+          <details><summary>テキストはアップロードや正規化されますか？</summary><p>いいえ。計数は現在のブラウザータブで実行され、テキストはアップロードされません。Unicode正規化なしでテキストエリアの値を分析するため、正規化等価な表記が異なるコードポイント数・バイト数を持つことがあります。テキストエリアのHTML動作は解析前にCRLFとCRをLFへ変換します。</p></details>
+        </div>
+      </section>
+
+      <aside class="references" aria-labelledby="related-heading"><div><p class="section-kicker">テキスト探検を続ける</p><h2 id="related-heading">カウンター・標準・実用ガイド</h2></div><ul><li><a href="/ja/character-counter/">文字数カウンター</a></li><li><a href="/word-counter/" hreflang="en">Word Counter（英語）</a></li><li><a href="/guides/how-word-counting-works/">単語計数の仕組み</a></li><li><a href="/guides/grapheme-clusters-vs-code-points-and-bytes/">書記素・コードポイント・バイト</a></li><li><a href="/guides/ascii-vs-unicode-utf8/">ASCII vs Unicode vs UTF-8</a></li><li><a href="https://tc39.es/ecma402/#sec-intl-segmenter-constructor" rel="external">ECMA-402 Intl.Segmenter</a></li><li><a href="https://www.unicode.org/reports/tr29/" rel="external">Unicode UAX #29</a></li></ul></aside>
+    </main>
+
+    <footer class="site-footer"><div><a class="brand" href="/"><span aria-hidden="true">{ }</span> LiveParse</a><p>正確なデータ操作のためのプライベートなブラウザーツールです。</p></div><div class="footer-links"><a href="/ja/word-counter/">単語</a><a href="/ja/character-counter/">文字</a><a href="/guides/">ガイド</a><a href="/privacy/">プライバシー</a></div><p class="footer-note">© 2026 Jackson Jang. 合計を比較する前にロケールと計数単位を名指ししてください。</p></footer>
+    <noscript><p class="noscript-note">対話型の計数にはJavaScriptが必要です。分割規則、構造の定義、時間のガイダンスはJavaScriptなしでも読めます。</p></noscript>
+    <script type="module" src="/src/text-counter.tsx"></script>
+  </body>
+</html>
