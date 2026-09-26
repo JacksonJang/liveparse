@@ -24,6 +24,7 @@ const DIRECTORY_ROUTES = new Set([
   '/ja/character-counter',
   '/ko/word-counter',
   '/ja/word-counter',
+  '/ja/json-formatter',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',

@@ -25,6 +25,7 @@ export const LIVE_KOREAN_ROUTES = [
 export const LIVE_JAPANESE_ROUTES = [
   '/ja/character-counter/',
   '/ja/word-counter/',
+  '/ja/json-formatter/',
 ];
 
 export async function runSearchBrandingCheck({ baseUrl = 'https://liveparse.com', fetchImpl = fetch } = {}) {

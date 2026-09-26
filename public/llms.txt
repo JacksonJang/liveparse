@@ -8,6 +8,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 
 - [/json-formatter/](https://liveparse.com/json-formatter/): Format, validate, minify, and explore JSON without rounding 64-bit numbers or dropping duplicate keys
 - [/es/formateador-json/](https://liveparse.com/es/formateador-json/): Spanish JSON formatter, validator, and viewer that preserves 64-bit numbers and duplicate keys (Español)
+- [/ja/json-formatter/](https://liveparse.com/ja/json-formatter/): Japanese JSON formatter, validator, and viewer that preserves 64-bit numbers and duplicate keys (日本語)
 - [/json-compare/](https://liveparse.com/json-compare/): Compare two JSON documents semantically and inspect every changed path
 - [/json-repair/](https://liveparse.com/json-repair/): Repair malformed JSON with a diff, a confidence score, and a change log
 - [/jsonl-parser/](https://liveparse.com/jsonl-parser/): Validate JSONL and NDJSON line by line and export CSV

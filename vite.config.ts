@@ -19,6 +19,7 @@ export default defineConfig({
         koWordCounter: resolve(projectRoot, 'ko/word-counter/index.html'),
         jaWordCounter: resolve(projectRoot, 'ja/word-counter/index.html'),
         esJsonFormatter: resolve(projectRoot, 'es/formateador-json/index.html'),
+        jaJsonFormatter: resolve(projectRoot, 'ja/json-formatter/index.html'),
         jsonFormatter: resolve(projectRoot, 'json-formatter/index.html'),
         jsonRepair: resolve(projectRoot, 'json-repair/index.html'),
         jsonlParser: resolve(projectRoot, 'jsonl-parser/index.html'),
