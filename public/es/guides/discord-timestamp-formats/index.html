@@ -52,7 +52,7 @@
             "url": "https://liveparse.com/es/guides/discord-timestamp-formats/",
             "image": "https://liveparse.com/og-discord-timestamp.png",
             "datePublished": "2026-09-26",
-            "dateModified": "2026-09-26T05:45:00Z",
+            "dateModified": "2026-09-26T07:07:00Z",
             "author": {
               "@type": "Person",
               "@id": "https://liveparse.com/authors/jackson-jang/#person",
@@ -139,6 +139,30 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Sí. Desplaza el ID snowflake 22 bits a la derecha y suma la época de Discord, 1420070400000 milisegundos. El resultado es la hora de creación del objeto en milisegundos Unix; divídelo entre 1.000 para una etiqueta en línea."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Se repiten automáticamente los timestamps de Discord?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Cada etiqueta representa un instante único. Para un evento semanal, genera un timestamp independiente para cada ocurrencia; un bot puede automatizarlo desde una programación."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo usar un timestamp en el nombre de un canal de Discord?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Los nombres de canales de Discord no procesan etiquetas de formato de mensajes. Escribe la fecha y hora como texto plano en el campo del nombre."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo usar un timestamp de Discord en mi biografía de perfil?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Las biografías de perfil de Discord muestran texto plano y no interpretan etiquetas de timestamp. Un código <t:…> pegado aparece literal. Usa una fecha legible como “Miembro desde marzo de 2024”."
                 }
               }
             ]
@@ -291,6 +315,15 @@ console.log(`&lt;t:${unixSeconds}:F&gt;`);   // &lt;t:1706133385:F&gt;</code></p
 
               <h3>¿Puedo convertir un ID de mensaje de Discord en un timestamp?</h3>
               <p>Sí. Desplaza el ID snowflake 22 bits a la derecha y suma la época de Discord, 1420070400000 milisegundos. El resultado es la hora de creación del objeto en milisegundos Unix; divídelo entre 1.000 para una etiqueta en línea.</p>
+
+              <h3>¿Se repiten automáticamente los timestamps de Discord?</h3>
+              <p>No. Cada etiqueta representa un instante único. Para un evento semanal, genera un timestamp independiente para cada ocurrencia; un bot puede automatizarlo desde una programación.</p>
+
+              <h3>¿Puedo usar un timestamp en el nombre de un canal de Discord?</h3>
+              <p>No. Los nombres de canales de Discord no procesan etiquetas de formato de mensajes. Escribe la fecha y hora como texto plano en el campo del nombre.</p>
+
+              <h3>¿Puedo usar un timestamp de Discord en mi biografía de perfil?</h3>
+              <p>Las biografías de perfil de Discord muestran texto plano y no interpretan etiquetas de timestamp. Un código <code>&lt;t:…&gt;</code> pegado aparece literal. Usa una fecha legible como “Miembro desde marzo de 2024”.</p>
             </section>
             <div class="tool-callout">
               <p><strong>¿Listo para crear una etiqueta?</strong> Elige una fecha y zona horaria, convierte un ID Snowflake, compara los nueve formatos y copia el resultado. Si queda como texto, consulta las <a href="/es/generador-timestamp-discord/#soluciones">soluciones para timestamps de Discord</a>.</p>
