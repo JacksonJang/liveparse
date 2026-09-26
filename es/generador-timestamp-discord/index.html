@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Generador y convertidor de timestamps de Discord | LiveParse</title>
-    <meta name="description" content="Genera hasta 500 timestamps de Discord, decodifica etiquetas o IDs Snowflake y copia los 9 formatos con zonas horarias IANA." />
+    <meta name="description" content="Genera hasta 500 timestamps de Discord, crea cuenta regresiva y decodifica etiquetas o IDs Snowflake con los 9 formatos y zonas IANA." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/es/generador-timestamp-discord/" />
@@ -19,7 +19,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/es/generador-timestamp-discord/" />
     <meta property="og:title" content="Generador y convertidor de timestamps de Discord" />
-    <meta property="og:description" content="Convierte hasta 500 fechas, decodifica etiquetas o IDs Snowflake de Discord y copia los nueve formatos documentados." />
+    <meta property="og:description" content="Convierte 500 fechas, crea cuenta regresiva, decodifica IDs Snowflake y copia los nueve formatos de Discord." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -28,7 +28,7 @@
     <meta property="og:image:alt" content="Generador español de timestamps de Discord de LiveParse" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Generador y convertidor de timestamps de Discord" />
-    <meta name="twitter:description" content="Crea hasta 500 etiquetas de Discord con zona horaria y decodifica etiquetas o IDs Snowflake." />
+    <meta name="twitter:description" content="Crea 500 etiquetas o mensajes de cuenta regresiva y decodifica etiquetas o IDs Snowflake de Discord." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
@@ -49,15 +49,16 @@
             "name": "Generador y convertidor de timestamps de Discord de LiveParse",
             "url": "https://liveparse.com/es/generador-timestamp-discord/",
             "applicationCategory": "UtilitiesApplication",
-            "applicationSubCategory": "Generador, convertidor de etiquetas y convertidor de zona horaria",
+            "applicationSubCategory": "Generador de timestamps y cuenta regresiva, convertidor de etiquetas y decodificador Snowflake",
             "operatingSystem": "Cualquier sistema operativo con un navegador moderno",
             "browserRequirements": "Requiere JavaScript y un navegador moderno",
             "isAccessibleForFree": true,
             "inLanguage": "es",
-            "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, decodificar etiquetas y snowflakes, y crear los nueve estilos actuales de timestamps de Discord con zonas horarias IANA.",
+            "description": "Generador y convertidor gratuito en el navegador para procesar hasta 500 fechas en lote, crear cuenta regresiva, decodificar etiquetas y Snowflakes, y crear los nueve estilos actuales de Discord.",
             "featureList": [
               "Convierte hasta 500 segundos Unix, etiquetas de Discord o fechas en un lote",
               "Genera los nueve estilos documentados de Discord",
+              "Crea mensajes de cuenta regresiva con fecha absoluta y tiempo relativo",
               "Interpreta la fecha y hora en una zona horaria IANA",
               "Avisa de huecos y solapamientos de horario de verano",
               "Decodifica etiquetas existentes de Discord",
@@ -73,7 +74,7 @@
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#webpage",
             "url": "https://liveparse.com/es/generador-timestamp-discord/",
             "name": "Generador y convertidor de timestamps de Discord",
-            "description": "Usa el generador de timestamps de Discord para 500 fechas en lote y convierte etiquetas o IDs Snowflake en los nueve estilos documentados.",
+            "description": "Usa el generador de timestamps de Discord para 500 fechas en lote, cuenta regresiva, etiquetas existentes y conversión de IDs Snowflake.",
             "dateModified": "2026-09-26",
             "inLanguage": "es",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
@@ -85,7 +86,7 @@
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#breadcrumb",
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "LiveParse", "item": "https://liveparse.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Generador de timestamps de Discord", "item": "https://liveparse.com/es/generador-timestamp-discord/" }
+              { "@type": "ListItem", "position": 2, "name": "Generador y convertidor de timestamps de Discord", "item": "https://liveparse.com/es/generador-timestamp-discord/" }
             ]
           },
           {
@@ -109,7 +110,7 @@
       }
     </script>
   </head>
-  <body class="home-page" data-ui-locale="es">
+  <body class="home-page discord-page" data-ui-locale="es">
     <a class="skip-link" href="#generator">Ir al generador</a>
     <header class="site-header">
       <nav class="site-nav" aria-label="Navegación principal">
@@ -124,8 +125,9 @@
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
+          <nav class="breadcrumb" aria-label="Ruta de navegación"><a href="/">LiveParse</a><span aria-hidden="true">›</span><span aria-current="page">Generador y convertidor de timestamps de Discord</span></nav>
           <p class="eyebrow">Local · Gratis · Sin registro</p>
-          <h1>Generador de timestamps de Discord</h1>
+          <h1>Generador y convertidor de timestamps de Discord</h1>
           <p class="hero-lead">Este <strong>Discord timestamp generator</strong> en español crea etiquetas de Discord en los nueve formatos documentados, acepta lotes de hasta 500 fechas y decodifica etiquetas existentes o IDs Snowflake. Las fechas se procesan en tu navegador.</p>
           <div class="hero-cta-row">
             <a class="button" href="#generator">Abrir el generador</a>
