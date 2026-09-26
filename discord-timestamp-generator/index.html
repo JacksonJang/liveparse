@@ -8,8 +8,8 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Discord Timestamp Generator &amp; Converter – Bulk | LiveParse</title>
-    <meta name="description" content="Free Discord timestamp converter and generator: turn up to 500 dates or Unix seconds into all nine tags, decode codes, and use IANA timezones locally." />
+    <title>Discord Timestamp Generator &amp; Snowflake Converter | LiveParse</title>
+    <meta name="description" content="Convert 500 dates to Discord timestamps or decode a message ID and timestamp tag. All nine styles, IANA zones, and Snowflake decoding run locally." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/discord-timestamp-generator/" />
@@ -18,8 +18,8 @@
     <link rel="alternate" hreflang="x-default" href="https://liveparse.com/discord-timestamp-generator/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://liveparse.com/discord-timestamp-generator/" />
-    <meta property="og:title" content="Discord Timestamp Generator & Converter – Bulk" />
-    <meta property="og:description" content="Convert up to 500 dates or Unix seconds at once, decode existing tags, and copy all nine currently documented Discord timestamp styles." />
+    <meta property="og:title" content="Discord Timestamp Generator & Snowflake Converter" />
+    <meta property="og:description" content="Convert up to 500 dates, decode timestamp tags and Discord message IDs, and copy all nine documented timestamp styles." />
     <meta property="og:site_name" content="LiveParse" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://liveparse.com/og-tools.png" />
@@ -27,8 +27,8 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="LiveParse developer tools for timestamps, conversion, and structured data" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Discord Timestamp Generator & Converter – Bulk" />
-    <meta name="twitter:description" content="Generate up to 500 timezone-aware Discord timestamp codes, including s, S, and relative R formats." />
+    <meta name="twitter:title" content="Discord Timestamp Generator & Snowflake Converter" />
+    <meta name="twitter:description" content="Generate 500 timezone-aware Discord timestamp codes and decode Snowflake message IDs locally, including s, S, and R formats." />
     <meta name="twitter:image" content="https://liveparse.com/og-tools.png" />
     <meta name="theme-color" content="#4854cf" />
     <script type="application/ld+json">
@@ -49,7 +49,7 @@
             "name": "LiveParse Discord Timestamp Generator",
             "url": "https://liveparse.com/discord-timestamp-generator/",
             "applicationCategory": "UtilitiesApplication",
-            "applicationSubCategory": "Timestamp generator and timezone converter",
+            "applicationSubCategory": "Timestamp generator, timezone converter, and Snowflake decoder",
             "operatingSystem": "Any operating system with a modern web browser",
             "browserRequirements": "Requires JavaScript and a modern web browser",
             "isAccessibleForFree": true,
@@ -74,8 +74,8 @@
             "@type": "WebPage",
             "@id": "https://liveparse.com/discord-timestamp-generator/#webpage",
             "url": "https://liveparse.com/discord-timestamp-generator/",
-            "name": "Discord Timestamp Generator & Converter – Bulk",
-            "description": "Use the Discord timestamp converter and generator for up to 500 dates and decode timezone-aware codes in all nine currently documented styles.",
+            "name": "Discord Timestamp Generator & Snowflake Converter",
+            "description": "Use the Discord timestamp generator for 500 dates in bulk, decode timestamp tags, and convert Snowflake message IDs to creation times.",
             "dateModified": "2026-09-26",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
@@ -226,9 +226,9 @@
       </nav>
       <div class="seo-hero">
         <div class="seo-hero-copy">
-          <p class="eyebrow">Free · 9 formats · IANA timezones</p>
+          <p class="eyebrow">Free · 9 formats · Message IDs · IANA timezones</p>
           <h1>Discord Timestamp Generator</h1>
-          <p class="hero-lead">Choose a date, time, and source timezone. Copy a Discord timestamp code that renders for each reader in their own locale and timezone—including the often-missed <code>:s</code> and <code>:S</code> styles.</p>
+          <p class="hero-lead">Choose a date, time, or Discord message ID. Copy a timestamp code that renders for each reader in their own timezone—including the often-missed <code>:s</code> and <code>:S</code> styles.</p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#generator">Generate a timestamp</a>
             <span>No sign-up · Runs in your browser</span>
@@ -247,7 +247,7 @@
     <main>
       <section class="tool-intro" id="generator" aria-labelledby="generator-heading">
         <div><p class="section-kicker">Date → Discord code</p><h2 id="generator-heading">Generate, convert, or decode a Discord timestamp</h2></div>
-        <p>Pick a common or full IANA timezone, use a quick future preset, paste an existing <code>&lt;t:…&gt;</code> tag, or paste up to 500 dates and timestamps in bulk. Touch-sized controls keep copying comfortable on phones, and the generator validates whole Unix seconds while keeping every date and message in this tab.</p>
+        <p>Pick a common or full IANA timezone, use a quick future preset, paste an existing <code>&lt;t:…&gt;</code> tag or decimal message ID, or paste up to 500 dates and timestamps in bulk. The generator validates whole Unix seconds and keeps every date and message in this tab.</p>
       </section>
       <div id="root">
         <section class="parser-fallback" aria-label="Discord timestamp generator loading">
@@ -411,7 +411,27 @@
         </div>
       </section>
 
-      <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
+      <section class="content-section alt" id="snowflake" aria-labelledby="snowflake-heading">
+        <div class="section-heading">
+          <p class="section-kicker">Message ID → creation time</p>
+          <h2 id="snowflake-heading">Discord Snowflake converter: decode a message ID</h2>
+          <p>Discord calls its 64-bit message, channel, and user identifiers Snowflake IDs. The first 42 bits encode the creation instant, so a decimal ID can reveal when the object was created without account access.</p>
+        </div>
+        <div class="prose-grid">
+          <div>
+            <p>Paste a decimal ID such as <code>1199835124667021433</code> into the decoder. LiveParse shifts the ID right by 22 bits, adds Discord’s epoch of <code>1420070400000</code> milliseconds, and shows <code>2024-01-24 21:56:25.579 UTC</code>. Use <strong>Use creation time</strong> to load the equivalent whole second, <code>1706133385</code>, into the timestamp generator.</p>
+            <p>The result also separates worker, process, and increment fields. This helps when correlating logs, reviewing bot output, or checking whether a supposedly old ID was really created at the stated time. The decoder runs in your browser and accepts only decimal IDs within Discord’s unsigned 64-bit range.</p>
+          </div>
+          <dl class="definition-list">
+            <div><dt>Input</dt><dd>A decimal Discord message, channel, or user ID.</dd></div>
+            <div><dt>Creation time</dt><dd><code>((ID &gt;&gt; 22) + 1420070400000)</code> milliseconds.</dd></div>
+            <div><dt>Timestamp input</dt><dd>Floor the creation milliseconds to Unix seconds.</dd></div>
+            <div><dt>Output</dt><dd>All nine Discord timestamp styles and message templates.</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="content-section faq-section" id="faq" aria-labelledby="faq-heading">
         <div class="section-heading"><p class="section-kicker">Questions answered</p><h2 id="faq-heading">Discord Timestamp Generator FAQ</h2></div>
         <div class="faq-list">
           <details open><summary>Can I make multiple Discord timestamps at once?</summary><p>Yes. Paste up to 500 non-empty lines with Unix seconds, existing tags, dates, or dates and times. The bulk generator returns tags for all nine styles and flags invalid lines.</p></details>

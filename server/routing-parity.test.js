@@ -132,6 +132,27 @@ describe('production routing parity', () => {
     expect(redirects.get('/uuid-checker')).toBe('/uuid-validator/');
   });
 
+  it('consolidates Discord timestamp and Snowflake converter intents into the canonical generator', async () => {
+    const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
+    const redirects = new Map(routeRedirects(source));
+    const aliases = [
+      '/discord-timestamp',
+      '/discord-timestamp-converter',
+      '/discord-time-converter',
+      '/discord-time-generator',
+      '/discord-snowflake-converter',
+      '/discord-message-id-converter',
+      '/discord-id-converter',
+    ];
+
+    for (const alias of aliases) {
+      expect(redirects.get(alias)).toBe('/discord-timestamp-generator/');
+      expect(redirects.get(`${alias}/`)).toBe('/discord-timestamp-generator/');
+    }
+    expect(redirects.has('/discord-timestamp-generator')).toBe(false);
+    expect(directoryRoutes(source)).toContain('/discord-timestamp-generator');
+  });
+
   it('includes the hash and checksum cluster with intentional canonical aliases', async () => {
     const source = await readFile(resolve(projectRoot, 'scripts/serve-production.mjs'), 'utf8');
     const directories = directoryRoutes(source);
