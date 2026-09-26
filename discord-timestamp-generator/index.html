@@ -72,7 +72,7 @@
             "isAccessibleForFree": true,
             "inLanguage": "en",
             "datePublished": "2026-08-04",
-            "dateModified": "2026-09-26T06:35:00Z",
+            "dateModified": "2026-09-26T06:36:00Z",
             "screenshot": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
             "description": "A free browser-based Discord timestamp generator and converter for up to 500 dates in bulk, all nine documented styles, countdown messages, IANA timezone conversion, DST checks, tag and Snowflake decoding.",
             "featureList": [
@@ -114,8 +114,8 @@
             "name": "Discord Timestamp Generator – All 9 Formats & Snowflake",
             "description": "Turn dates into all 9 Discord timestamp formats, build countdowns, and decode tags or Snowflake message IDs in your browser.",
             "datePublished": "2026-08-04",
-            "dateModified": "2026-09-26T06:35:00Z",
-            "lastReviewed": "2026-09-26T06:35:00Z",
+            "dateModified": "2026-09-26T06:36:00Z",
+            "lastReviewed": "2026-09-26T06:36:00Z",
             "inLanguage": "en",
             "isPartOf": { "@id": "https://liveparse.com/#website" },
             "primaryImageOfPage": { "@id": "https://liveparse.com/discord-timestamp-generator/#primary-image" },
@@ -224,6 +224,14 @@
               },
               {
                 "@type": "Question",
+                "name": "How do I find a Discord message ID?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Enable Developer Mode in Discord’s settings, use the message context menu’s copy-ID action, or copy the message link and use its final numeric segment. Paste that decimal ID into the Snowflake decoder."
+                }
+              },
+              {
+                "@type": "Question",
                 "name": "Does Discord have an @time command?",
                 "acceptedAnswer": {
                   "@type": "Answer",
@@ -279,7 +287,7 @@
           <p class="eyebrow">Free · 9 formats · Message IDs · IANA timezones</p>
           <h1>Discord Timestamp Generator &amp; Snowflake Converter</h1>
           <p class="hero-lead">Turn a date, time, or Discord message ID into all nine timestamp formats. Copy one tag or the whole set in one click—each reader sees the time in their own timezone, including the often-missed <code>:s</code> and <code>:S</code> styles.</p>
-          <p class="hero-byline"><span>By <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Updated <time datetime="2026-09-26T06:35:00Z">September 26, 2026</time></span></p>
+          <p class="hero-byline"><span>By <a href="/authors/jackson-jang/">Jackson Jang</a></span><span>Updated <time datetime="2026-09-26T06:36:00Z">September 26, 2026</time></span></p>
           <div class="hero-cta-row">
             <a class="hero-cta" href="#generator">Generate a timestamp</a>
             <span>No sign-up · Runs in your browser</span>
@@ -533,6 +541,7 @@
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
           <details><summary>Can I convert an existing tag back to a date?</summary><p>Yes. Use the built-in Discord timestamp converter: paste the complete tag to extract its seconds and style, view the date, and regenerate every format.</p></details>
           <details><summary>How do I convert a Discord message ID to a timestamp?</summary><p>Paste the decimal Snowflake ID into the decoder. LiveParse shifts it right by 22 bits, adds Discord’s epoch, <code>1420070400000</code> ms, shows the UTC creation time, and loads its Unix seconds into the generator.</p></details>
+          <details><summary>How do I find a Discord message ID?</summary><p>Enable Developer Mode in Discord’s settings, use the message context menu’s copy-ID action, or copy the message link and use its final numeric segment. Paste that decimal ID into the Snowflake decoder.</p></details>
           <details><summary>Does Discord have an @time command?</summary><p>Yes. Discord’s February 4, 2026 patch notes describe an <code>@time</code> command on Desktop that helps generate a Linux timestamp and clarify the referenced time. Availability can vary by platform, so test the client where you plan to post.</p></details>
           <details><summary>Do I need a bot?</summary><p>Generating the documented message-formatting text does not require this site to connect to a bot or account. Support can vary by message surface, so test the destination.</p></details>
           <details><summary>Why is raw &lt;t:…&gt; text not rendering?</summary><p>Check the angle brackets, <code>t:</code> prefix, whole seconds, exact style letter, and whether a code block or escaping forces literal text. Test in the intended Discord context.</p></details>
