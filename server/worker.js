@@ -8,6 +8,8 @@ const DIRECTORY_ROUTES = new Set([
   '/ko/word-counter',
   '/ja/word-counter',
   '/ja/json-formatter',
+  '/es/formateador-json',
+  '/es/guides/discord-timestamp-formats',
   '/json-formatter',
   '/json-repair',
   '/jsonl-parser',

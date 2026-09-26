@@ -79,6 +79,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 ## Background reading
 
 - [/guides/](https://liveparse.com/guides/): Standards-based guides explaining the formats behind each tool
+- [/es/guides/discord-timestamp-formats/](https://liveparse.com/es/guides/discord-timestamp-formats/): Spanish Discord timestamp guide — all nine style codes and timezone behavior (Español)
 - [/about/](https://liveparse.com/about/): What LiveParse is, who builds it, and its principles
 - [/privacy/](https://liveparse.com/privacy/): How data is handled: tool input never leaves the browser
 

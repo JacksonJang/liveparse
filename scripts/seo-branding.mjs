@@ -4,6 +4,7 @@ const LIVE_LOCALIZED_PAGES = new Map([
   ['/es/contador-de-palabras/', { language: 'es', ogLocale: 'es_ES' }],
   ['/es/contador-de-caracteres/', { language: 'es', ogLocale: 'es_ES' }],
   ['/es/formateador-json/', { language: 'es', ogLocale: 'es_ES' }],
+  ['/es/guides/discord-timestamp-formats/', { language: 'es', ogLocale: 'es_ES' }],
   ['/ko/json-parser/', { language: 'ko', ogLocale: 'ko_KR' }],
   ['/ko/character-counter/', { language: 'ko', ogLocale: 'ko_KR' }],
   ['/ja/character-counter/', { language: 'ja', ogLocale: 'ja_JP' }],
