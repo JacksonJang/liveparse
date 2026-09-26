@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>Discord Timestamp Generator &amp; Snowflake Converter | LiveParse</title>
-    <meta name="description" content="Generate up to 500 Discord timestamps, decode tags, and convert a Discord message ID (Snowflake) to a timestamp. All 9 styles run locally." />
+    <meta name="description" content="Generate up to 500 Discord timestamps, create countdown tags, and convert a Discord message ID (Snowflake) to a timestamp. All 9 styles run locally." />
     <meta name="author" content="Jackson Jang" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://liveparse.com/discord-timestamp-generator/" />
@@ -65,7 +65,7 @@
               "Decode existing Discord timestamp tags",
               "Convert a Discord message ID (Snowflake) to a creation timestamp",
               "Detect likely milliseconds, microseconds, and nanoseconds",
-              "Copy full-date and relative-time message templates",
+              "Create Discord countdown messages with absolute-date and relative-time templates",
               "Process dates and messages in the current browser tab"
             ],
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -137,10 +137,10 @@
               },
               {
                 "@type": "Question",
-                "name": "How do I make a relative countdown?",
+                "name": "How do I make a Discord countdown?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Use uppercase R. Pair it with F when the message should also retain an exact full date and time."
+                  "text": "Use uppercase R—for example, <t:1800000000:R>. It is not an interactive timer; Discord recalculates the wording each time the message is shown. Pair it with F when the exact date also matters."
                 }
               },
               {
@@ -219,8 +219,9 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="LiveParse home"><span aria-hidden="true">{ }</span> LiveParse</a>
         <div class="nav-links">
-          <a href="/json-formatter/">JSON Formatter</a>
-          <a href="/unix-timestamp-converter/">Unix Timestamp</a>
+          <a href="#bulk">Bulk</a>
+          <a href="#relative">Countdown</a>
+          <a href="#snowflake">Message ID</a>
           <a href="#formats">9 formats</a>
           <a href="#faq">FAQ</a>
         </div>
@@ -325,12 +326,12 @@
       </section>
 
       <section class="content-section alt" aria-labelledby="relative-heading">
-        <div class="section-heading"><p class="section-kicker">Countdown without timezone math</p><h2 id="relative-heading">Create a relative Discord timestamp with R</h2></div>
+        <div class="section-heading"><p class="section-kicker">Countdown without timezone math</p><h2 id="relative-heading">Discord countdown generator: relative timestamps with R</h2></div>
         <div class="prose-grid">
           <div>
             <p>The <code>R</code> style expresses an instant relative to the viewer’s current time. A future value might appear as “in 2 hours,” while a past value might appear as “3 days ago.” Discord owns the final wording, so do not assume every locale chooses the same unit or phrase.</p>
             <p>Relative output is excellent for urgency but weak as the only permanent record. After enough time passes, “months ago” no longer identifies the exact calendar date. Pair <code>R</code> with <code>F</code>: <code>Event starts &lt;t:1800000000:F&gt; (&lt;t:1800000000:R&gt;).</code> The first tag anchors the schedule; the second makes remaining time easy to grasp.</p>
-            <p>The generator includes event, deadline, release, and maintenance templates using this pair. They are plain message text, so you can edit the surrounding words after copying.</p>
+            <p>This creates a Discord countdown timestamp, not an interactive timer widget or embed. Discord recalculates the relative wording whenever the message is viewed. The generator includes event, deadline, release, and maintenance templates using this pair; they are plain message text, so you can edit the surrounding words after copying.</p>
           </div>
           <dl class="definition-list">
             <div><dt>Event</dt><dd><code>Event starts &lt;t:…:F&gt; (&lt;t:…:R&gt;).</code></dd></div>
@@ -440,7 +441,7 @@
           <details><summary>Does Discord use Unix seconds or milliseconds?</summary><p>The current reference says timestamps are expressed in seconds. JavaScript <code>Date.now()</code> returns milliseconds and must be deliberately converted.</p></details>
           <details><summary>Are there seven or nine timestamp formats?</summary><p>The current official table lists nine: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code>, and <code>R</code>. Older guides often omit <code>s</code> and <code>S</code>.</p></details>
           <details><summary>Which style is the default?</summary><p>Discord marks <code>f</code>—Long Date, Short Time—as default. Omitting the final style requests that form.</p></details>
-          <details><summary>How do I make a relative countdown?</summary><p>Use uppercase <code>R</code>. Pair it with <code>F</code> when the message should also retain an exact full date and time.</p></details>
+          <details><summary>How do I make a Discord countdown?</summary><p>Use uppercase R—for example, &lt;t:1800000000:R&gt;. It is not an interactive timer; Discord recalculates the wording each time the message is shown. Pair it with F when the exact date also matters.</p></details>
           <details><summary>How do I get the current Discord timestamp?</summary><p>Use the <strong>Now</strong> button. It loads your browser’s current Unix seconds and creates the selected tag; the Unix now readout updates every second.</p></details>
           <details><summary>Why does another person see a different clock time?</summary><p>The instant is identical, but Discord displays it using each reader’s timezone and locale. Timezones can cross a date boundary, and locales format dates differently.</p></details>
           <details><summary>Why did my timestamp show an implausible date?</summary><p>Check seconds versus milliseconds first. Also confirm the source timezone, whole-number input, and exact case of the style letter.</p></details>
