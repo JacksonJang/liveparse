@@ -83,6 +83,7 @@ Every page is server-rendered static HTML with its own explanation, worked examp
 - [/guides/discord-timestamp-formats/](https://liveparse.com/guides/discord-timestamp-formats/): Discord timestamp guide — nine style codes, relative countdowns, timezone behavior, Snowflake conversion, bulk conversion, and troubleshooting
 - [/es/guides/discord-timestamp-formats/](https://liveparse.com/es/guides/discord-timestamp-formats/): Spanish Discord timestamp guide — nine style codes, timezone behavior, snowflake conversion, and bulk conversion (Español)
 - [/about/](https://liveparse.com/about/): What LiveParse is, who builds it, and its principles
+- [/authors/jackson-jang/](https://liveparse.com/authors/jackson-jang/): Author profile for Jackson Jang, LiveParse's designer, writer, operator, and maintainer
 - [/privacy/](https://liveparse.com/privacy/): How data is handled: tool input never leaves the browser
 
 ## Optional

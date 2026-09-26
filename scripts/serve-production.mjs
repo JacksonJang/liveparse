@@ -106,6 +106,7 @@ const DIRECTORY_ROUTES = new Set([
   '/json-to-yaml',
   '/privacy',
   '/about',
+  '/authors/jackson-jang',
   '/guides',
   '/guides/what-is-a-json-parser',
   '/guides/common-json-errors',
