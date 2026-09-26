@@ -92,13 +92,14 @@
             "@id": "https://liveparse.com/es/generador-timestamp-discord/#faq-schema",
             "mainEntity": [
               { "@type": "Question", "name": "¿Puedo crear varios timestamps de Discord a la vez?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Pega hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora. El generador en lote devuelve los nueve estilos y marca las líneas no válidas." } },
-              { "@type": "Question", "name": "¿Qué sintaxis usa Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa <t:SEGUNDOS_UNIX> para el formato predeterminado o <t:SEGUNDOS_UNIX:ESTILO> para un estilo explícito y sensible a mayúsculas." } },
-              { "@type": "Question", "name": "¿Discord usa segundos o milisegundos?", "acceptedAnswer": { "@type": "Answer", "text": "Discord usa segundos Unix. Date.now() en JavaScript devuelve milisegundos y debe convertirse dividiéndolo entre 1.000." } },
-              { "@type": "Question", "name": "¿Cuántos formatos de timestamp tiene Discord?", "acceptedAnswer": { "@type": "Answer", "text": "La tabla actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
-              { "@type": "Question", "name": "¿Qué estilo es el predeterminado?", "acceptedAnswer": { "@type": "Answer", "text": "El estilo f—fecha larga y hora corta—es el predeterminado. Si omites el último campo, Discord aplica f." } },
-              { "@type": "Question", "name": "¿Por qué cada persona ve una hora distinta?", "acceptedAnswer": { "@type": "Answer", "text": "El instante es el mismo, pero Discord lo muestra con la zona horaria y configuración regional de cada lector." } },
+              { "@type": "Question", "name": "¿Qué sintaxis usa Discord?", "acceptedAnswer": { "@type": "Answer", "text": "Usa <t:SEGUNDOS_UNIX> o <t:SEGUNDOS_UNIX:ESTILO>. El estilo distingue mayúsculas." } },
+              { "@type": "Question", "name": "¿Segundos o milisegundos?", "acceptedAnswer": { "@type": "Answer", "text": "Segundos. Convierte Date.now() dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta." } },
+              { "@type": "Question", "name": "¿Hay siete o nueve formatos?", "acceptedAnswer": { "@type": "Answer", "text": "La referencia actual documenta nueve: t, T, d, D, f, F, s, S y R." } },
+              { "@type": "Question", "name": "¿Cómo hago una cuenta regresiva?", "acceptedAnswer": { "@type": "Answer", "text": "Usa R. Combínala con F para que el mensaje conserve una fecha absoluta." } },
               { "@type": "Question", "name": "¿Puedo convertir una etiqueta existente?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Usa el convertidor integrado: pega la etiqueta completa para extraer segundos y estilo, ver la fecha y regenerar los nueve formatos." } },
-              { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es una herramienta independiente y no está afiliada ni respaldada por Discord." } }
+              { "@type": "Question", "name": "¿La etiqueta se muestra como texto?", "acceptedAnswer": { "@type": "Answer", "text": "Revisa los signos < y >, los dos puntos, los segundos enteros, la letra exacta del estilo y que no esté dentro de un bloque de código." } },
+              { "@type": "Question", "name": "¿Necesito un bot?", "acceptedAnswer": { "@type": "Answer", "text": "No para generar el texto de formato. Las funciones pueden variar según la superficie de Discord, así que prueba en el canal destino." } },
+              { "@type": "Question", "name": "¿LiveParse está afiliada a Discord?", "acceptedAnswer": { "@type": "Answer", "text": "No. LiveParse es independiente y no está respaldada por Discord." } }
             ]
           }
         ]
@@ -231,6 +232,7 @@
       <section class="content-section alt faq-section" id="faq" aria-labelledby="faq-heading">
         <div class="section-heading"><p class="section-kicker">Preguntas</p><h2 id="faq-heading">Preguntas frecuentes</h2></div>
         <div class="faq-list">
+          <details open><summary>¿Puedo crear varios timestamps de Discord a la vez?</summary><p>Sí. Pega hasta 500 líneas no vacías con segundos Unix, etiquetas existentes, fechas o fecha y hora. El generador en lote devuelve los nueve estilos y marca las líneas no válidas.</p></details>
           <details open><summary>¿Qué sintaxis usa Discord?</summary><p>Usa <code>&lt;t:SEGUNDOS_UNIX&gt;</code> o <code>&lt;t:SEGUNDOS_UNIX:ESTILO&gt;</code>. El estilo distingue mayúsculas.</p></details>
           <details><summary>¿Segundos o milisegundos?</summary><p>Segundos. Convierte <code>Date.now()</code> dividiéndolo entre 1.000 y decide cómo tratar el resto antes de crear la etiqueta.</p></details>
           <details><summary>¿Hay siete o nueve formatos?</summary><p>La referencia actual documenta nueve: <code>t</code>, <code>T</code>, <code>d</code>, <code>D</code>, <code>f</code>, <code>F</code>, <code>s</code>, <code>S</code> y <code>R</code>.</p></details>
