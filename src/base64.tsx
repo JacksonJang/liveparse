@@ -15,6 +15,7 @@ import {
 } from './lib/base64';
 import './styles.css';
 import './base64.css';
+import { shouldAutoFocus } from './lib/auto-focus';
 
 type ToolMode = 'decode' | 'encode';
 type DecodeAlphabet = Base64Alphabet | 'auto';
@@ -444,7 +445,7 @@ function App({ mode }: { mode: ToolMode }) {
           ) : (
             <label className="base64-text-label">
               <span className="visually-hidden">{mode === 'decode' ? 'Base64 input' : 'Text to encode'}</span>
-              <textarea autoFocus className="base64-textarea" value={input} onChange={(event) => updateInput(event.target.value)} spellCheck={false} placeholder={mode === 'decode' ? 'Paste SGVsbG8… or data:…;base64,…' : 'Type text to encode as UTF-8'} />
+              <textarea autoFocus={shouldAutoFocus()} className="base64-textarea" value={input} onChange={(event) => updateInput(event.target.value)} spellCheck={false} placeholder={mode === 'decode' ? 'Paste SGVsbG8… or data:…;base64,…' : 'Type text to encode as UTF-8'} />
             </label>
           )}
 

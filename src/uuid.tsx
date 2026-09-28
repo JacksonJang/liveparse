@@ -12,6 +12,7 @@ import {
 } from './lib/uuid';
 import './styles.css';
 import './uuid.css';
+import { shouldAutoFocus } from './lib/auto-focus';
 
 type PageMode = 'generator' | 'v4' | 'v7' | 'validator' | 'decoder';
 type GeneratorVersion = 4 | 7;
@@ -360,7 +361,7 @@ function UuidApp({ mode, initialGeneration }: { mode: PageMode; initialGeneratio
             <button type="button" aria-pressed={validationMode === 'normalized'} onClick={() => setValidationMode('normalized')}><strong>Normalize</strong><span>URN, braces, compact</span></button>
           </div>
         </fieldset>
-        <label className="uuid-output-field"><span>UUID values — one per line, comma separated, or a JSON string array</span><textarea autoFocus spellCheck={false} maxLength={MAX_VALIDATION_CHARACTERS} value={validationInput} onChange={(event) => setValidationInput(event.target.value)} rows={6} placeholder="0191f7d0-e7b7-7cc3-98c4-dc0c0c07398f" /></label>
+        <label className="uuid-output-field"><span>UUID values — one per line, comma separated, or a JSON string array</span><textarea autoFocus={(mode === 'validator' || mode === 'decoder') && shouldAutoFocus()} spellCheck={false} maxLength={MAX_VALIDATION_CHARACTERS} value={validationInput} onChange={(event) => setValidationInput(event.target.value)} rows={6} placeholder="0191f7d0-e7b7-7cc3-98c4-dc0c0c07398f" /></label>
         {mode === 'decoder' ? <div className="uuid-actions" aria-label="RFC 9562 decoder examples">
           {DECODER_SAMPLES.map(([label, sample]) => <button className="uuid-button quiet" type="button" key={label} onClick={() => setValidationInput(sample)}>{label}</button>)}
         </div> : null}

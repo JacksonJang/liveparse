@@ -13,6 +13,7 @@ import {
 import type { SqlWorkerRequest, SqlWorkerResponse } from './lib/sql-worker-protocol';
 import './styles.css';
 import './sql.css';
+import { shouldAutoFocus } from './lib/auto-focus';
 
 const FORMAT_TIMEOUT_MILLISECONDS = 2_000;
 const WORKER_LOAD_TIMEOUT_MILLISECONDS = 12_000;
@@ -271,7 +272,7 @@ function SqlFormatterApp(): React.JSX.Element {
         <section className="sql-editor-card" aria-labelledby="sql-input-heading">
           <header><div><p>Source</p><h3 id="sql-input-heading">SQL input</h3></div><span>{textLineCount(input).toLocaleString('en-US')} lines · {input.length.toLocaleString('en-US')} chars</span></header>
           <label className="visually-hidden" htmlFor="sql-input">SQL query to format</label>
-          <textarea id="sql-input" autoFocus value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_SQL_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={19} />
+          <textarea id="sql-input" autoFocus={shouldAutoFocus()} value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_SQL_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={19} />
           <div className="sql-actions">
             <button className="sql-button primary" type="submit" disabled={busy}>{busy ? 'Formatting…' : 'Format SQL'}</button>
             <button className="sql-button" type="button" onClick={loadSample} disabled={busy}>Load safe sample</button>

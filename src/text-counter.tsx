@@ -16,6 +16,7 @@ import {
 import type { TextCounterWorkerResponse } from './lib/text-counter-worker-protocol';
 import './styles.css';
 import './text-counter.css';
+import { shouldAutoFocus } from './lib/auto-focus';
 
 type PageMode = 'word-counter' | 'character-counter';
 type AnalysisState = 'starting' | 'analyzing' | 'ready' | 'error';
@@ -379,7 +380,7 @@ function TextCounterApp(): React.JSX.Element {
             limit: MAX_TEXT_INPUT_CODE_UNITS.toLocaleString(numberLocale),
           })}</span></header>
           <div className="text-input-body">
-            <textarea autoFocus
+            <textarea autoFocus={shouldAutoFocus()}
               value={input}
               onChange={(event) => updateInput(event.target.value)}
               rows={16}

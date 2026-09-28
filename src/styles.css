@@ -315,6 +315,7 @@ pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 @media (max-width: 760px) {
   .lp-tree-button { min-height: 44px; }
+  .shortcut-bar { display: none; }
 }
 
 /* Readability floor: <small> must not drop below 12px on tool pages */

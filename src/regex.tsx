@@ -15,6 +15,7 @@ import { REGEX_PRESETS, type RegexPreset } from './lib/regex-presets';
 import type { RegexWorkerResponse } from './lib/regex-worker-protocol';
 import './styles.css';
 import './regex.css';
+import { shouldAutoFocus } from './lib/auto-focus';
 
 type WorkerState =
   | { status: 'idle' }
@@ -229,6 +230,7 @@ function App(): React.JSX.Element {
               <span aria-hidden="true">/</span>
               <input
                 id="regex-pattern"
+                autoFocus={shouldAutoFocus()}
                 value={pattern}
                 spellCheck={false}
                 autoComplete="off"
@@ -264,7 +266,7 @@ function App(): React.JSX.Element {
               <label htmlFor="regex-text">Test text</label>
               <span>{text.length.toLocaleString('en-US')} / {MAX_REGEX_TEXT_CODE_UNITS.toLocaleString('en-US')} UTF-16</span>
             </div>
-            <textarea autoFocus
+            <textarea
               id="regex-text"
               value={text}
               spellCheck={false}

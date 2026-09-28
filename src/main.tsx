@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import VirtualJsonTree from './components/VirtualJsonTree';
 import { selectJsonDropFile } from './lib/json-file';
+import { shouldAutoFocus } from './lib/auto-focus';
 import type { JsonStats, JsonWarning } from './lib/lossless-json';
 import { useLosslessJsonWorker } from './useLosslessJsonWorker';
 import './styles.css';
@@ -498,6 +499,7 @@ function App() {
   const [fileMessage, setFileMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const shortcutsRef = useRef({ copyOutput: () => {}, focusInput: () => {} });
   const workerState = useLosslessJsonWorker(input, sortKeys);
 
   const inputEmpty = !input.trim();
@@ -575,8 +577,11 @@ function App() {
   };
 
   useEffect(() => {
-    textareaRef.current?.focus();
+    if (shouldAutoFocus()) textareaRef.current?.focus();
   }, []);
+
+  shortcutsRef.current.copyOutput = copyOutput;
+  shortcutsRef.current.focusInput = () => textareaRef.current?.focus();
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -586,15 +591,15 @@ function App() {
         const target = event.target as HTMLElement;
         if (target === textareaRef.current) return;
         event.preventDefault();
-        void copyOutput();
+        void shortcutsRef.current.copyOutput();
       } else if (!event.shiftKey && event.key.toLowerCase() === 'k') {
         event.preventDefault();
-        textareaRef.current?.focus();
+        shortcutsRef.current.focusInput();
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  });
+  }, []);
 
   const isPending = !inputEmpty && (!stateMatchesInput || workerState.status === 'pending');
   const statusClass = isPending
