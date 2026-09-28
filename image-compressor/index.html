@@ -79,7 +79,37 @@
               { "@type": "Question", "name": "Is my image uploaded while it is compressed?", "acceptedAnswer": { "@type": "Answer", "text": "The selected image is decoded, processed, previewed, and exported in the current browser tab without intentionally sending its bytes to an image-conversion service. Page requests, browser extensions, operating-system services, downloaded files, and destinations where you later share the result remain separate boundaries." } }
             ]
           }
-        ]
+        ,
+          {
+  "@type": "HowTo",
+  "@id": "https://liveparse.com/image-compressor/#howto",
+  "name": "How to use the Image Compressor – Batch Compress to File Size",
+  "description": "Step-by-step instructions for using the LiveParse Image Compressor – Batch Compress to File Size.",
+  "totalTime": "PT1M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Validate and decode",
+      "text": "The tool checks PNG, JPEG, or WebP signature bytes instead of trusting a renamed extension. It then decodes the static image and rejects unsupported, animated, oversized, or undecodable input.",
+      "url": "https://liveparse.com/image-compressor/#step-1"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Search quality where it exists",
+      "text": "For JPEG and WebP output, candidates are encoded at different quality values. The compressor retains the highest-quality candidate found at or below the selected target rather than claiming one quality setting always yields one size.",
+      "url": "https://liveparse.com/image-compressor/#step-2"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Resize only when required",
+      "text": "If quality search cannot meet the limit, width and height are reduced together and the search repeats. A smaller pixel grid often saves more bytes than another small quality reduction, but it also removes spatial detail.",
+      "url": "https://liveparse.com/image-compressor/#step-3"
+    }
+  ]
+}]
       }
     </script>
   </head>

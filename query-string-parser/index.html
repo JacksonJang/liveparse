@@ -84,7 +84,37 @@
               { "@type": "Question", "name": "What are the query string parser limits?", "acceptedAnswer": { "@type": "Answer", "text": "The parser accepts at most 200,000 UTF-16 code units and 10,000 non-empty fields in one operation. Empty segments between separators are counted and reported but not returned as pairs. Real browsers, proxies, servers, and applications can impose much smaller request-target limits." } }
             ]
           }
-        ]
+        ,
+          {
+  "@type": "HowTo",
+  "@id": "https://liveparse.com/query-string-parser/#howto",
+  "name": "How to use the Query String Parser – Inspect URL Parameters",
+  "description": "Step-by-step instructions for using the LiveParse Query String Parser – Inspect URL Parameters.",
+  "totalTime": "PT1M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Paste one supported input shape",
+      "text": "Use a hierarchical scheme:// URL, query text beginning with ?, or a raw query string. For opaque schemes, host, path, or relative resolution, use the full URL parser.",
+      "url": "https://liveparse.com/query-string-parser/#step-1"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Review ordered entries",
+      "text": "Look for repeated names, empty names or values, plus signs, encoded delimiters, and parameters whose position differs from the expected request.",
+      "url": "https://liveparse.com/query-string-parser/#step-2"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Apply destination rules separately",
+      "text": "Confirm whether the receiving framework keeps the first value, last value, every value, or rejects duplicates. URLSearchParams parsing cannot determine that business rule.",
+      "url": "https://liveparse.com/query-string-parser/#step-3"
+    }
+  ]
+}]
       }
     </script>
   </head>

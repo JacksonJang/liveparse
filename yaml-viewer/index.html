@@ -61,7 +61,37 @@
               { "@type": "Question", "name": "Does viewing YAML validate a Kubernetes or Compose schema?", "acceptedAnswer": { "@type": "Answer", "text": "No. The viewer parses supported YAML syntax for display. It does not validate Kubernetes, Docker Compose, CI, OpenAPI, or application-specific schemas." } }
             ]
           }
-        ]
+        ,
+          {
+  "@type": "HowTo",
+  "@id": "https://liveparse.com/yaml-viewer/#howto",
+  "name": "How to use the YAML Viewer Online – Explore YAML as a Tree",
+  "description": "Step-by-step instructions for using the LiveParse YAML Viewer Online – Explore YAML as a Tree.",
+  "totalTime": "PT1M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Paste a YAML stream",
+      "text": "Include one document or several documents separated by ---. Choose YAML 1.2 Core unless the actual consumer requires YAML 1.1 scalar resolution.",
+      "url": "https://liveparse.com/yaml-viewer/#step-1"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Build the local tree",
+      "text": "Mappings, sequences, scalars, alias references, and document boundaries receive rows; anchors and tags are shown on their owning rows. Block scalar values are shown as text rather than executable content.",
+      "url": "https://liveparse.com/yaml-viewer/#step-2"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Search and collapse",
+      "text": "Filter displayed keys, indices, types, and values or collapse a mapping or sequence to focus on nearby structure. Display state never changes the YAML input.",
+      "url": "https://liveparse.com/yaml-viewer/#step-3"
+    }
+  ]
+}]
       }
     </script>
   </head>
