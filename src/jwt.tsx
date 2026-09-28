@@ -297,7 +297,7 @@ function JwtApp({ mode }: { mode: PageMode }): React.JSX.Element {
       <form className="jwt-input-card" onSubmit={runDecode}>
         <div className="jwt-input-heading"><div><p>{mode === 'expiration' ? 'Expiration input' : 'Compact JWT input'}</p><h2>{mode === 'expiration' ? 'Check JWT time claims locally' : 'Decode a JWT locally'}</h2></div><span>{input.length.toLocaleString('en-US')} / {MAX_JWT_INPUT_CHARACTERS.toLocaleString('en-US')}</span></div>
         <label htmlFor="jwt-token-input">Compact JWT or <code>Bearer …</code> value</label>
-        <textarea id="jwt-token-input" className="jwt-token-input" spellCheck={false} autoCapitalize="off" autoComplete="off" value={input} maxLength={MAX_JWT_INPUT_CHARACTERS} onChange={(event) => changeInput(event.target.value)} rows={7} />
+        <textarea autoFocus id="jwt-token-input" className="jwt-token-input" spellCheck={false} autoCapitalize="off" autoComplete="off" value={input} maxLength={MAX_JWT_INPUT_CHARACTERS} onChange={(event) => changeInput(event.target.value)} rows={7} />
         <div className="jwt-input-actions">
           <button className="jwt-button primary" type="submit">{mode === 'expiration' ? 'Decode & check expiration' : 'Decode JWT'}</button>
           <button className="jwt-button" type="button" onClick={() => { setInput(SAMPLE_TOKEN); setDecoded(null); setEvaluation(null); setDecodeError(null); setTimeError(null); setMessage('Loaded a synthetic demo token with a fake, unverified signature. Decode again to inspect it.'); }}>Load safe sample</button>

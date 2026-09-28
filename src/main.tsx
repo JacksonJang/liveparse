@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import VirtualJsonTree from './components/VirtualJsonTree';
 import { selectJsonDropFile } from './lib/json-file';
@@ -152,6 +152,9 @@ type UiText = {
   warningDuplicate: (key: string, occurrence: number) => string;
   largeTextPlain: string;
   kindNames: Record<string, string>;
+  shortcutFormat: string;
+  shortcutCopy: string;
+  shortcutFocus: string;
 };
 
 const en: UiText = {
@@ -225,6 +228,9 @@ const en: UiText = {
   warningDuplicate: (key, occurrence) => `Duplicate key ${JSON.stringify(key)} (occurrence ${occurrence}) was preserved instead of replacing an earlier value.`,
   largeTextPlain: 'Syntax color is disabled above 100 KB to keep the page responsive.',
   kindNames: {},
+  shortcutFormat: '⌘↵ Format',
+  shortcutCopy: '⌘⇧C Copy',
+  shortcutFocus: '⌘K Focus',
 };
 const ko: UiText = {
   sampleLabels: {
@@ -297,6 +303,9 @@ const ko: UiText = {
   warningDuplicate: (key, occurrence) => `중복 키 ${JSON.stringify(key)}(${occurrence}번째)는 이전 값을 덮어쓰지 않고 보존되었습니다.`,
   largeTextPlain: '페이지 응답성을 위해 100KB를 넘으면 구문 강조가 꺼집니다.',
   kindNames: { object: '객체', array: '배열' },
+  shortcutFormat: '⌘↵ 포맷',
+  shortcutCopy: '⌘⇧C 복사',
+  shortcutFocus: '⌘K 입력',
 };
 const es: UiText = {
   sampleLabels: {
@@ -369,6 +378,9 @@ const es: UiText = {
   warningDuplicate: (key, occurrence) => `La clave duplicada ${JSON.stringify(key)} (ocurrencia ${occurrence}) se conservó en lugar de reemplazar un valor anterior.`,
   largeTextPlain: 'El resaltado de sintaxis se desactiva por encima de 100 KB para mantener la página fluida.',
   kindNames: { object: 'objeto', array: 'array' },
+  shortcutFormat: '⌘↵ Formatear',
+  shortcutCopy: '⌘⇧C Copiar',
+  shortcutFocus: '⌘K Entrada',
 };
 const ja: UiText = {
   sampleLabels: {
@@ -441,6 +453,9 @@ const ja: UiText = {
   warningDuplicate: (key, occurrence) => `重複キー ${JSON.stringify(key)}（${occurrence}回目）は以前の値を上書きせず保持されました。`,
   largeTextPlain: 'ページの応答性を保つため、100KBを超えると構文ハイライトが無効になります。',
   kindNames: { object: 'オブジェクト', array: '配列' },
+  shortcutFormat: '⌘↵ 整形',
+  shortcutCopy: '⌘⇧C コピー',
+  shortcutFocus: '⌘K 入力',
 };
 function resolveJsonFormatterUiText(locale: string | undefined): UiText {
   const primaryLanguage = locale?.trim().toLowerCase().replace('_', '-').split('-')[0];
@@ -482,6 +497,7 @@ function App() {
   const [dragActive, setDragActive] = useState(false);
   const [fileMessage, setFileMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const workerState = useLosslessJsonWorker(input, sortKeys);
 
   const inputEmpty = !input.trim();
@@ -558,6 +574,28 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      const mod = event.metaKey || event.ctrlKey;
+      if (!mod) return;
+      if (event.shiftKey && event.key.toLowerCase() === 'c') {
+        const target = event.target as HTMLElement;
+        if (target === textareaRef.current) return;
+        event.preventDefault();
+        void copyOutput();
+      } else if (!event.shiftKey && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        textareaRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  });
+
   const isPending = !inputEmpty && (!stateMatchesInput || workerState.status === 'pending');
   const statusClass = isPending
     ? 'json-pending'
@@ -599,6 +637,12 @@ function App() {
         </div>
       </div>
 
+      <div className="shortcut-bar" aria-hidden="true">
+        <kbd>{t.shortcutFormat}</kbd>
+        <kbd>{t.shortcutCopy}</kbd>
+        <kbd>{t.shortcutFocus}</kbd>
+      </div>
+
       <div className={`workspace ${layout}`}>
         <section className={`panel input-card${dragActive ? ' drop-target' : ''}`} aria-labelledby="input-title">
           <PanelHeader
@@ -615,6 +659,7 @@ function App() {
           />
           <textarea
             id="json-input"
+            ref={textareaRef}
             className="input-pane mono"
             spellCheck={false}
             value={input}

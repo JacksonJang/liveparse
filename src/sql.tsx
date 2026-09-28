@@ -271,7 +271,7 @@ function SqlFormatterApp(): React.JSX.Element {
         <section className="sql-editor-card" aria-labelledby="sql-input-heading">
           <header><div><p>Source</p><h3 id="sql-input-heading">SQL input</h3></div><span>{textLineCount(input).toLocaleString('en-US')} lines · {input.length.toLocaleString('en-US')} chars</span></header>
           <label className="visually-hidden" htmlFor="sql-input">SQL query to format</label>
-          <textarea id="sql-input" value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_SQL_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={19} />
+          <textarea id="sql-input" autoFocus value={input} onChange={(event) => changeInput(event.target.value)} maxLength={MAX_SQL_INPUT_CHARACTERS} spellCheck={false} autoCapitalize="off" autoComplete="off" rows={19} />
           <div className="sql-actions">
             <button className="sql-button primary" type="submit" disabled={busy}>{busy ? 'Formatting…' : 'Format SQL'}</button>
             <button className="sql-button" type="button" onClick={loadSample} disabled={busy}>Load safe sample</button>

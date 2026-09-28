@@ -264,7 +264,7 @@ function App(): React.JSX.Element {
               <label htmlFor="regex-text">Test text</label>
               <span>{text.length.toLocaleString('en-US')} / {MAX_REGEX_TEXT_CODE_UNITS.toLocaleString('en-US')} UTF-16</span>
             </div>
-            <textarea
+            <textarea autoFocus
               id="regex-text"
               value={text}
               spellCheck={false}

@@ -379,7 +379,7 @@ function TextCounterApp(): React.JSX.Element {
             limit: MAX_TEXT_INPUT_CODE_UNITS.toLocaleString(numberLocale),
           })}</span></header>
           <div className="text-input-body">
-            <textarea
+            <textarea autoFocus
               value={input}
               onChange={(event) => updateInput(event.target.value)}
               rows={16}
